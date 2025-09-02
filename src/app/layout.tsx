@@ -1,16 +1,22 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
 import { CssBaseline } from '@mui/material';
 import GlobalStyles from '@mui/material/GlobalStyles';
-import { Metadata } from 'next';
-import * as React from 'react';
 import { Toaster } from 'react-hot-toast';
-
-import '../styles/globals.css';
-
 import { SITE_CONFIG } from '@/constants/config';
 import { GLOBAL_STYLES } from '@/styles';
 
-// !STARTERCONF Change these default meta
-// !STARTERCONF Look at @/constant/config to change them
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: {
     default: SITE_CONFIG.title,
@@ -50,9 +56,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang='en' suppressHydrationWarning>
       <GlobalStyles styles={GLOBAL_STYLES} />
