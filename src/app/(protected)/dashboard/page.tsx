@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-export default function SignIn() {
+export default function Dashboard() {
 
   return (
     <div></div>

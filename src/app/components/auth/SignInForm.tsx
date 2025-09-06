@@ -1,25 +1,19 @@
 "use client";
 
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import SyncIcon from "@mui/icons-material/Sync";
-import { IconButton, InputAdornment } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { LockOutlined, Sync } from "@mui/icons-material";
+import { IconButton, InputAdornment } from "@mui/material";
+import { Avatar, Box, Button, Container } from "@mui/material";
+import { CssBaseline, Grid, TextField, Typography } from "@mui/material";
 import toast from "react-hot-toast";
 
-import { loginWithEmailAndPassword, handleAuthResult } from "@/app/(auth)/actions";
+import { signInMeNow } from "@/app/(auth)/actions";
+import { GridLink } from "../general/GridLink";
+import { handleAuthResult } from "./Actions";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -41,7 +35,7 @@ export default function SignInForm() {
   function onSubmit(data: FormData) {
     startTransition(async () => {
       try {
-        const result = await loginWithEmailAndPassword(data);
+        const result = await signInMeNow(data);
         handleAuthResult(result);
       } catch (err) {
         const message =
@@ -67,7 +61,7 @@ export default function SignInForm() {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
+          <LockOutlined />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
@@ -120,17 +114,17 @@ export default function SignInForm() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            endIcon={isPending && <SyncIcon className="animate-spin" />}
+            endIcon={isPending && <Sync className="animate-spin" />}
             disabled={isPending}
           >
             Sign In
           </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid size={2}>
-              <Link href="/sign-up" variant="body2">
-                Don't have an account? Sign Up
-              </Link>
-            </Grid>
+          <Grid justifyContent="flex-end">
+            <GridLink
+              size={2}
+              href="/signup"
+              label="Don't have an account? Sign Up"
+            />
           </Grid>
         </Box>
       </Box>

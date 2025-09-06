@@ -1,23 +1,33 @@
 "use client";
 
 import * as React from "react";
-
 import { CssBaseline, PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Dashboard from "./(protected)/dashboard/page";
+import { checkTheUser } from "./(auth)/actions";
+import SignInForm from "./components/auth/SignInForm";
+import Loader from "./components/general/Loader";
 
 export default function Home() {
   const [mode, setMode] = React.useState<PaletteMode>("light");
+  const [user, setUser] = React.useState<any>(undefined);
 
   const defaultTheme = createTheme({ palette: { mode } });
 
-  const toggleColorMode = () => {
-    setMode((prev) => (prev === "dark" ? "light" : "dark"));
-  };
+  React.useEffect(() => {
+    checkTheUser().then(setUser);
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-      <div></div>
+      {user === undefined ? (
+        <Loader/>
+      ) : user ? (
+        <Dashboard />
+      ) : (
+        <SignInForm />
+      )}
     </ThemeProvider>
   );
 }
