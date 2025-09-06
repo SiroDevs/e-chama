@@ -11,25 +11,14 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
-
   {
-    plugins: {
-      "unused-imports": require("eslint-plugin-unused-imports"),
-    },
-    rules: {
-      // Fix: make sure the rule is recognized
-      "unused-imports/no-unused-vars": "error",
-      "unused-imports/no-unused-imports": "error",
-
-      // Let `unused-imports` handle unused vars instead of typescript-eslint
-      "@typescript-eslint/no-unused-vars": "off",
-
-      // React escaping for apostrophes
-      "react/no-unescaped-entities": "error",
-
-      // You can also silence console warnings if you want
-      "no-console": "warn",
-    },
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
   },
 ];
 
