@@ -9,7 +9,6 @@ import { LockOutlined, Sync } from "@mui/icons-material";
 import { IconButton, InputAdornment, Box } from "@mui/material";
 import { Avatar, Button, Container, Grid } from "@mui/material";
 import { CssBaseline, TextField, Typography } from "@mui/material";
-import { Toaster } from "react-hot-toast";
 
 import { GridLink } from "../general/GridLink";
 import { handleSigninAction } from "./Actions";
@@ -52,7 +51,6 @@ export default function SignInForm() {
           alignItems: "center",
         }}
       >
-        <Toaster position="top-center" reverseOrder={false} />
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlined />
         </Avatar>

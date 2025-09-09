@@ -8,7 +8,6 @@ import { LockOutlined, Sync } from "@mui/icons-material";
 import { Avatar, Box, Button } from "@mui/material";
 import { Checkbox, Container, FormControlLabel } from "@mui/material";
 import { CssBaseline, Grid, Typography } from "@mui/material";
-import { Toaster } from "react-hot-toast";
 
 import { FormInput } from "../inputs/FormInput";
 import { GridLink } from "../general/GridLink";
@@ -72,7 +71,6 @@ export default function SignUp() {
           alignItems: "center",
         }}
       >
-        <Toaster position="top-center" reverseOrder={false} />
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlined />
         </Avatar>
