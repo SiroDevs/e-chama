@@ -24,10 +24,6 @@ export async function signInMeNow(data: {
 
   const result = await supabase.auth.signInWithPassword(data);
 
-  if (result.error) {
-    throw new Error(result.error.message);
-  }
-
   return JSON.stringify(result);
 }
 
@@ -51,10 +47,6 @@ export async function signUpMeNow(data: {
       },
     },
   });
-
-  if (result.error) {
-    throw new Error(result.error.message);
-  }
 
   return JSON.stringify(result);
 }

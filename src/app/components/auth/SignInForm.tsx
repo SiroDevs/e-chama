@@ -6,14 +6,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { LockOutlined, Sync } from "@mui/icons-material";
-import { IconButton, InputAdornment } from "@mui/material";
-import { Avatar, Box, Button, Container } from "@mui/material";
-import { CssBaseline, Grid, TextField, Typography } from "@mui/material";
-import toast from "react-hot-toast";
+import { IconButton, InputAdornment, Box } from "@mui/material";
+import { Avatar, Button, Container, Grid } from "@mui/material";
+import { CssBaseline, TextField, Typography } from "@mui/material";
+import { Toaster } from "react-hot-toast";
 
-import { signInMeNow } from "@/app/(auth)/actions";
 import { GridLink } from "../general/GridLink";
-import { handleAuthResult } from "./Actions";
+import { handleSigninAction } from "./Actions";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -30,18 +29,11 @@ export default function SignInForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const [isPending, startTransition] = useTransition();
+  const [loading, startTransition] = useTransition();
 
   function onSubmit(data: FormData) {
     startTransition(async () => {
-      try {
-        const result = await signInMeNow(data);
-        handleAuthResult(result);
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Something went wrong.";
-        toast.error(message);
-      }
+      await handleSigninAction(data);
     });
   }
 
@@ -60,6 +52,7 @@ export default function SignInForm() {
           alignItems: "center",
         }}
       >
+        <Toaster position="top-center" reverseOrder={false} />
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlined />
         </Avatar>
@@ -114,8 +107,8 @@ export default function SignInForm() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            endIcon={isPending && <Sync className="animate-spin" />}
-            disabled={isPending}
+            endIcon={loading && <Sync className="animate-spin" />}
+            disabled={loading}
           >
             Sign In
           </Button>

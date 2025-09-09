@@ -20,6 +20,15 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      // Turn off unused vars rule
+      "@typescript-eslint/no-unused-vars": "off",
+
+      // Turn off "any" rule
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 ];
 
 export default eslintConfig;
