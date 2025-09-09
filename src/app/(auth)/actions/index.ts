@@ -1,6 +1,7 @@
-import { getServerClient } from '@/lib/supabase/server';
-import { redirect } from 'next/navigation';
+'use server';
+
 import { supabase } from '@/lib/supabase/client';
+import { redirect } from 'next/navigation';
 
 export async function checkTheUser() {
   const { data: { user } } = await supabase.auth.getUser()
@@ -11,10 +12,8 @@ export async function signInMeNow(data: {
   email: string;
   password: string;
 }) {
-  const supabase = await getServerClient();
-  const result = await supabase.auth.signInWithPassword(data);
-
-  return JSON.stringify(result);
+  // const supabase = await getServerClient();
+  return await supabase.auth.signInWithPassword(data);
 }
 
 export async function signUpMeNow(data: {
@@ -33,8 +32,6 @@ export async function signUpMeNow(data: {
   });
 }
 
-export async function logout() {
-  const supabase = await getServerClient();
-  await supabase.auth.signOut();
-  redirect('/');
+export async function signMeOut() {
+  return supabase.auth.signOut();
 }

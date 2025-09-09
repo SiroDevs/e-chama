@@ -9,6 +9,7 @@ import { LockOutlined, Sync } from "@mui/icons-material";
 import { IconButton, InputAdornment, Box } from "@mui/material";
 import { Avatar, Button, Container, Grid } from "@mui/material";
 import { CssBaseline, TextField, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 import { GridLink } from "../general/GridLink";
 import { handleSigninAction } from "./Actions";
@@ -22,18 +23,21 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 export default function SignInForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const [loading, startTransition] = useTransition();
 
-  function onSubmit(data: FormData) {
-    startTransition(async () => {
-      await handleSigninAction(data);
-    });
+  async function onSubmit(data: FormData) {
+    setIsLoading(true);
+    await handleSigninAction(data);
+    router.push("/home");
+    setIsLoading(false);
   }
 
   return (
@@ -105,8 +109,8 @@ export default function SignInForm() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            endIcon={loading && <Sync className="animate-spin" />}
-            disabled={loading}
+            endIcon={isLoading && <Sync className="animate-spin" />}
+            disabled={isLoading}
           >
             Sign In
           </Button>

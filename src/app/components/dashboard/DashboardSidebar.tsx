@@ -1,14 +1,10 @@
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
-import GroupsIcon from "@mui/icons-material/Groups";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { AccountBox, BookmarkAdded, Groups } from "@mui/icons-material";
+import { LibraryBooks, ShoppingCart } from "@mui/icons-material";
 import { ListItem, ListItemButton, ListItemIcon } from "@mui/material";
 import { ListItemText, List } from "@mui/material";
 import { Divider, Toolbar, Typography, Drawer } from "@mui/material";
 import Link from "next/link";
-
-// import SignOut from '@/components/auth/SignOut';
+import SignOut from "../auth/SignOut";
 
 const drawerWidth = 240;
 
@@ -16,36 +12,36 @@ const DashboardSidebar = ({ role }: { role: string }) => {
   const menuItems = [
     {
       label: "Dashboard",
-      icon: <LibraryBooksIcon />,
+      icon: <LibraryBooks />,
       link: "/dashboard",
     },
     {
       label: "My Favorite Books",
-      icon: <BookmarkAddedIcon />,
+      icon: <BookmarkAdded />,
       link: "/dashboard/my-favorite-books",
       role: "user",
     },
     {
       label: "My Order",
-      icon: <ShoppingCartIcon />,
+      icon: <ShoppingCart />,
       link: "/dashboard/my-order",
       role: "user",
     },
     {
       label: "User Order",
-      icon: <ShoppingCartIcon />,
+      icon: <ShoppingCart />,
       link: "/dashboard/user-order",
       role: "admin",
     },
     {
       label: "All User",
-      icon: <GroupsIcon />,
+      icon: <Groups />,
       link: "/dashboard/all-user",
       role: "admin",
     },
     {
       label: "My Profile",
-      icon: <AccountBoxIcon />,
+      icon: <AccountBox />,
       link: "/dashboard/my-profile",
     },
   ];
@@ -91,7 +87,7 @@ const DashboardSidebar = ({ role }: { role: string }) => {
             </ListItemButton>
           ))}
         <Divider sx={{ my: 1 }} />
-        <ListItem>{/* <SignOut /> */}</ListItem>
+        <ListItem><SignOut /></ListItem>
       </List>
     </Drawer>
   );

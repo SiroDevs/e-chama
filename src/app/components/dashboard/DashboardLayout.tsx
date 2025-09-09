@@ -16,7 +16,6 @@ const DashboardLayout = ({ children, role }: DashboardLayoutProps) => {
     <Box sx={{ display: "flex" }}>
       <DashboardHeader />
       <DashboardSidebar role={role} />
-
       <Box
         component="div"
         sx={{

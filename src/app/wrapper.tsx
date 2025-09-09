@@ -6,6 +6,7 @@ import DashboardLayout from "./components/dashboard/DashboardLayout";
 import { checkTheUser } from "./(auth)/actions";
 import Loader from "./components/general/Loader";
 import { readAccess } from "./(protected)/actions";
+import { Toaster } from "react-hot-toast";
 
 export default function LayoutWrapper({
   children,
@@ -38,6 +39,7 @@ export default function LayoutWrapper({
 
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false} />
       {loading ? (
         <Loader />
       ) : user ? (

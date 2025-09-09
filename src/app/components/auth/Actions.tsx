@@ -1,18 +1,16 @@
-import { signInMeNow, signUpMeNow } from "@/app/(auth)/actions";
+import { signInMeNow, signMeOut, signUpMeNow } from "@/app/(auth)/actions";
 import { EmailOutlined } from "@mui/icons-material";
 import toast from "react-hot-toast";
 import { NotificationCard } from "../general/NotificationCard";
 
-export async function handleSigninAction(data: {
+export async function handleSigninAction(payload: {
   email: string;
   password: string;
 }) {
   try {
-    const result = await signInMeNow(data);
-    const parsedResult = JSON.parse(result);
-
-    if (parsedResult.error?.status) {
-      switch (parsedResult.error.status) {
+    const { data, error } = await signInMeNow(payload);
+    if (error) {
+      switch (error.status) {
         case 400:
           toast.error(
             "Invalid credentials. Please check your email and password."
@@ -32,13 +30,15 @@ export async function handleSigninAction(data: {
         default:
           toast.error("An unknown error occurred.");
       }
+      return { success: false };
     } else {
-      toast.success("You have been logged in.");
+      return { success: true };
     }
   } catch (err) {
     const message =
       err instanceof Error ? err.message : "Something went wrong.";
     toast.error(message);
+    return { success: false };
   }
 }
 
@@ -71,6 +71,7 @@ export async function handleSignupAction(payload: {
         default:
           toast.error(error.message ?? "An unknown error occurred.");
       }
+      return { success: false };
     } else {
       toast.custom((t) => (
         <NotificationCard
@@ -82,6 +83,7 @@ export async function handleSignupAction(payload: {
           onAction={() => toast.dismiss(t.id)}
         />
       ));
+      return { success: true };
     }
   } catch (err) {
     toast.error(
@@ -89,5 +91,24 @@ export async function handleSignupAction(payload: {
         ? err.message
         : "An error occurred during signup. Please try again."
     );
+    return { success: false };
+  }
+}
+
+export async function handleSignOutAction() {
+  try {
+    const { error } = await signMeOut();
+    if (error) {
+      toast.error(`Internal server error: ${error.message}`);
+      return { success: false };
+    } else {
+      toast.success("You have been logged out.");
+      return { success: true };
+    }
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Something went wrong.";
+    toast.error(message);
+    return { success: false };
   }
 }

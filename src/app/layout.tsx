@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { CssBaseline, GlobalStyles } from "@mui/material";
-import { Toaster } from "react-hot-toast";
 
 import { GLOBAL_STYLES } from "@/styles";
 import LayoutWrapper from "./wrapper";
@@ -34,7 +33,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster position="top-center" reverseOrder={false} />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
