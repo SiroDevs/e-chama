@@ -50,6 +50,7 @@ export async function handleSignupAction(payload: {
   try {
     const { data, error } = await signUpMeNow(payload);
     if (error) {
+      console.error("Signup error:", error);
       switch (error.status) {
         case 400:
           toast.error(

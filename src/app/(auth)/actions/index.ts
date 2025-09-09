@@ -17,17 +17,17 @@ export async function signInMeNow(data: {
   return JSON.stringify(result);
 }
 
-export async function signUpMeNow(payload: {
+export async function signUpMeNow(data: {
   email: string;
   password: string;
   full_name: string;
 }) {
   return await supabase.auth.signUp({
-    email: payload.email,
-    password: payload.password,
+    email: data.email,
+    password: data.password,
     options: {
       data: {
-        full_name: payload.full_name,
+        full_name: data.full_name,
       },
     },
   });
