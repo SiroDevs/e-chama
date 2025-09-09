@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import React, { useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LockOutlined, Sync } from "@mui/icons-material";
@@ -53,6 +53,9 @@ export default function SignUp() {
       await handleSignupAction(payload);
     });
   }
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
 
   return (
     <Container

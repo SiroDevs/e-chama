@@ -1,24 +1,13 @@
 'use server';
 
 import {
-  createBrowserClient,
   createServerClient,
-  type CookieOptions
+  type CookieOptions,
 } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
-export async function createSupabaseClient({
-  isBrowser = false,
-  readOnly = false
-} = {}) {
+export async function getServerClient({ readOnly = false } = {}) {
   const cookieStore = cookies();
-
-  if (isBrowser) {
-    return createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-  }
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -26,19 +15,27 @@ export async function createSupabaseClient({
     {
       cookies: {
         async getAll() {
-          return (await cookieStore).getAll().map(({ name, value }) => ({ name, value }));
+          return (await cookieStore).getAll().map(({ name, value }) => ({
+            name,
+            value,
+          }));
         },
         ...(readOnly
           ? {}
           : {
-              setAll(cookiesToSet: { name: string; value: string; options?: CookieOptions }[]) {
+              setAll(
+                cookiesToSet: {
+                  name: string;
+                  value: string;
+                  options?: CookieOptions;
+                }[]
+              ) {
                 try {
                   cookiesToSet.forEach(async ({ name, value, options }) =>
                     (await cookieStore).set({ name, value, ...options })
                   );
                 } catch {
-                  // If called from a Server Component, setAll may error.
-                  // This is safe if session management is handled elsewhere.
+                  // safe to ignore on RSC
                 }
               },
             }),
@@ -47,18 +44,8 @@ export async function createSupabaseClient({
   );
 }
 
-export async function createSupabaseAdmin({
-  isBrowser = false,
-  readOnly = false
-} = {}) {
+export async function getAdminClient({ readOnly = false } = {}) {
   const cookieStore = cookies();
-
-  if (isBrowser) {
-    return createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SERVICE_ROLE!
-    );
-  }
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -66,18 +53,27 @@ export async function createSupabaseAdmin({
     {
       cookies: {
         async getAll() {
-          return (await cookieStore).getAll().map(({ name, value }) => ({ name, value }));
+          return (await cookieStore).getAll().map(({ name, value }) => ({
+            name,
+            value,
+          }));
         },
         ...(readOnly
           ? {}
           : {
-              setAll(cookiesToSet: { name: string; value: string; options?: CookieOptions }[]) {
+              setAll(
+                cookiesToSet: {
+                  name: string;
+                  value: string;
+                  options?: CookieOptions;
+                }[]
+              ) {
                 try {
                   cookiesToSet.forEach(async ({ name, value, options }) =>
                     (await cookieStore).set({ name, value, ...options })
                   );
                 } catch {
-                  // Safe to ignore if called from a Server Component
+                  // safe to ignore on RSC
                 }
               },
             }),
