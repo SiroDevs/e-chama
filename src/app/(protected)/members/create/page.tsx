@@ -1,0 +1,37 @@
+"use client";
+
+import * as React from "react";
+import { Box, Typography } from "@mui/material";
+import { Header, NavbarBreadcrumbs } from "@/components/navigation";
+import { Copyright } from "@/components/general";
+
+export default function CreateMemberPage() {
+  return (
+    <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
+      <Header />
+      <NavbarBreadcrumbs
+        items={[
+          { label: "Members", href: "/members" },
+          { label: "New Member" },
+        ]}
+      />
+      <Box
+        sx={{
+          height: {
+            xs: "100%",
+            sm: "calc(100dvh - var(--template-frame-height, 0px))",
+          },
+          mt: { xs: 4, sm: 0 },
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+        }}
+      >
+        <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
+          Register a New Member
+        </Typography>
+      </Box>
+      <Copyright sx={{ flex: 1, my: 4 }} />
+    </Box>
+  );
+}

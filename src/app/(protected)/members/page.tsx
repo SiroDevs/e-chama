@@ -17,6 +17,7 @@ import { useState, useCallback, useRef } from "react"; // Added useRef
 import PageContainer from "@/components/actions/PageContainer";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
+import { useRouter } from "next/navigation";
 
 export default function MembersPage() {
   const { isAuthenticated, member } = useAuthStore();
@@ -28,10 +29,10 @@ export default function MembersPage() {
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [],
   });
-  
+
   // Create a ref to access GroupMembers methods
   const groupMembersRef = useRef<GroupMembersRef>(null);
-
+  const router = useRouter();
   if (!isAuthenticated) {
     window.location.href = "/";
     return null;
@@ -59,7 +60,18 @@ export default function MembersPage() {
     }));
   };
 
-  // Refresh function that calls the child component's refresh
+  const handleCreateMember = () => {
+    router.push("/members/create");
+  };
+
+  const handleEditMember = (memberId: string) => {
+    router.push(`/members/edit/${memberId}`);
+  };
+
+  const handleViewMember = (memberId: string) => {
+    router.push(`/members/${memberId}`);
+  };
+
   const handleRefresh = () => {
     if (groupMembersRef.current) {
       groupMembersRef.current.refresh();
@@ -67,7 +79,7 @@ export default function MembersPage() {
   };
 
   const pageTitle = "Chama Members";
-  
+
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Header />
@@ -101,7 +113,7 @@ export default function MembersPage() {
               </Tooltip>
               <Button
                 variant="contained"
-                // onClick={handleCreateClick}
+                onClick={handleCreateMember}
                 startIcon={<AddIcon />}
               >
                 New Member
