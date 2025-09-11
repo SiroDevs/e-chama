@@ -58,10 +58,9 @@ export default function MemberProfile() {
     "Unknown Member";
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Paper elevation={2} sx={{ p: 4, borderRadius: 2 }}>
+      <Paper elevation={2} sx={{ p: 2, borderRadius: 2 }}>
         <Grid container spacing={4} alignItems="center">
-          <Grid size={3}>
+          <Grid size={12}>
             <Box display="flex" justifyContent="center">
               {profile.avatar ? (
                 <Avatar
@@ -71,7 +70,6 @@ export default function MemberProfile() {
                     width: 120,
                     height: 120,
                     fontSize: "2.5rem",
-                    bgcolor: theme.palette.primary.main,
                   }}
                 />
               ) : (
@@ -80,7 +78,6 @@ export default function MemberProfile() {
                     width: 120,
                     height: 120,
                     fontSize: "2.5rem",
-                    bgcolor: theme.palette.primary.main,
                   }}
                 >
                   {getInitials(profile.first_name, profile.last_name)}
@@ -89,7 +86,7 @@ export default function MemberProfile() {
             </Box>
           </Grid>
 
-          <Grid size={9}>
+          <Grid size={12}>
             <Box>
               <Typography variant="h4" component="h1" gutterBottom>
                 {fullName}
@@ -118,10 +115,10 @@ export default function MemberProfile() {
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 4 }} />
+        <Divider sx={{ my: 2 }} />
 
-        <Grid container spacing={3}>
-          <Grid size={6}>
+        <Grid container spacing={2}>
+          <Grid size={12}>
             <Card variant="outlined">
               <CardContent>
                 <Typography
@@ -159,7 +156,7 @@ export default function MemberProfile() {
             </Card>
           </Grid>
 
-          <Grid size={6}>
+          <Grid size={12}>
             <Card variant="outlined">
               <CardContent>
                 <Typography
@@ -189,6 +186,5 @@ export default function MemberProfile() {
           </Grid>
         </Grid>
       </Paper>
-    </Container>
   );
 }

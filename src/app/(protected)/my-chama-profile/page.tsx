@@ -6,8 +6,6 @@ import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
-import { AppIcon } from "@/components/general/CustomIcons";
-import Info from "./Info";
 import InfoMobile from "./InfoMobile";
 import Review from "./Review";
 import MemberProfile from "./MemberProfile";
@@ -27,7 +25,6 @@ export default function Dashboard() {
       <NavbarBreadcrumbs
         items={[{ label: "My Chama Profile", href: "/my-chama-profile" }]}
       />
-
       <Grid
         container
         sx={{
@@ -35,7 +32,7 @@ export default function Dashboard() {
             xs: "100%",
             sm: "calc(100dvh - var(--template-frame-height, 0px))",
           },
-          mt: { xs: 4, sm: 0},
+          mt: { xs: 4, sm: 0 },
         }}
       >
         <Grid
@@ -46,25 +43,13 @@ export default function Dashboard() {
             borderRight: { sm: "none", md: "1px solid" },
             borderColor: { sm: "none", md: "divider" },
             alignItems: "start",
-            pt: 16,
-            px: 10,
-            gap: 4,
+            pt: 2,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: 1,
-              width: "100%",
-              maxWidth: 500,
-            }}
-          >
-            <MemberProfile/>
-            {/* <Info totalPrice="$134.98" /> */}
-          </Box>
+          {/* <MemberProfile /> */}
         </Grid>
-        <Grid
+
+        {/* <Grid
           size={{ sm: 12, md: 7, lg: 8 }}
           sx={{
             display: "flex",
@@ -73,8 +58,8 @@ export default function Dashboard() {
             width: "100%",
             backgroundColor: { xs: "transparent", sm: "background.default" },
             alignItems: "start",
-            pt: { xs: 0, sm: 16 },
-            px: { xs: 2, sm: 10 },
+            pt: 2,
+            px: 2,
             gap: { xs: 4, md: 8 },
           }}
         >
@@ -91,13 +76,9 @@ export default function Dashboard() {
                 <Typography variant="subtitle2" gutterBottom>
                   Selected products
                 </Typography>
-                <Typography variant="body1">
-                  $134.98
-                </Typography>
+                <Typography variant="body1">$134.98</Typography>
               </div>
-              <InfoMobile
-                totalPrice="$134.98"
-              />
+              <InfoMobile totalPrice="$134.98" />
             </CardContent>
           </Card>
           <Box
@@ -115,7 +96,7 @@ export default function Dashboard() {
               <Review />
             </React.Fragment>
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
       <Copyright sx={{ flex: 1, my: 4 }} />
     </Box>
