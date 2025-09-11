@@ -2,13 +2,14 @@
 
 import * as React from "react";
 
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Box, Card, CardContent, Grid, Toolbar, Typography } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
 import InfoMobile from "./InfoMobile";
 import Review from "./Review";
 import MemberProfile from "./MemberProfile";
+import { Outlet } from "@mui/icons-material";
 
 const steps = ["Shipping address", "Payment details", "Review your order"];
 
@@ -46,10 +47,10 @@ export default function Dashboard() {
             pt: 2,
           }}
         >
-          {/* <MemberProfile /> */}
+          <MemberProfile />
         </Grid>
 
-        {/* <Grid
+        <Grid
           size={{ sm: 12, md: 7, lg: 8 }}
           sx={{
             display: "flex",
@@ -81,7 +82,7 @@ export default function Dashboard() {
               <InfoMobile totalPrice="$134.98" />
             </CardContent>
           </Card>
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -92,11 +93,30 @@ export default function Dashboard() {
               gap: { xs: 5, md: "none" },
             }}
           >
-            <React.Fragment>
-              <Review />
-            </React.Fragment>
+            <Review />
+          </Box> */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              minWidth: 0,
+            }}
+          >
+            <Toolbar sx={{ displayPrint: "none" }} />
+            <Box
+              component="main"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                flex: 1,
+                overflow: "auto",
+              }}
+            >
+              <Outlet />
+            </Box>
           </Box>
-        </Grid> */}
+        </Grid>
       </Grid>
       <Copyright sx={{ flex: 1, my: 4 }} />
     </Box>
