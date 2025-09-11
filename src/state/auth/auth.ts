@@ -7,6 +7,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   user: User | null;
+  userId: string | null;
   profile: Profile | null;
 }
 
@@ -23,12 +24,14 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       isAuthenticated: false,
       isLoading: true,
       user: null,
+      userId: null,
       profile: null,
 
       loginUser: async (user: User, profile: Profile) => {
         set({ 
           isAuthenticated: true, 
           user: user, 
+          userId: user.id.toString(), 
           profile: profile,
           isLoading: false
         });
@@ -38,6 +41,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         set({ 
           isAuthenticated: false, 
           user: null, 
+          userId: null, 
           profile: null,
           isLoading: false
         });
@@ -47,6 +51,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         set({ 
           isAuthenticated: false, 
           user: null, 
+          userId: null, 
           profile: null,
           isLoading: false
         });

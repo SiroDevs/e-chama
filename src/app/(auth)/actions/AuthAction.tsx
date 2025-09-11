@@ -1,10 +1,8 @@
 import { EmailOutlined } from "@mui/icons-material";
 import toast from "react-hot-toast";
 
-import { signInMeNow, signUpMeNow, signMeOut } from "@/services/AuthService";
+import { signInMeNow, signUpMeNow } from "@/services/AuthService";
 import { NotificationCard } from "@/components/general";
-import { getUserGroups } from "@/services/GroupService";
-import { UserGroup } from "@/state/auth/types";
 
 export async function handleSigninAction(payload: {
   email: string;
@@ -42,20 +40,12 @@ export async function handleSigninAction(payload: {
         default:
           toast.error(errorMessage);
       }
-
       return { success: false };
     } else if (data) {
-      let groups: UserGroup[] = [];
-      try {
-        groups = await getUserGroups(data.user.id);
-      } catch (groupError) {
-        console.warn("No groups found for this user:", groupError);
-      }
       return {
         success: true,
         user: data.user,
         profile: data.profile,
-        groups: groups,
       };
     } else {
       toast.error("No data returned from sign in");
