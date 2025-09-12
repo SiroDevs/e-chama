@@ -22,10 +22,10 @@ const eslintConfig = [
   },
   {
     rules: {
-      // Turn off unused vars rule
+      "@typescript-eslint/ban-ts-comment": "off",
+      "react/display-name": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-unused-vars": "off",
-
-      // Turn off "any" rule
       "@typescript-eslint/no-explicit-any": "off",
     },
   },

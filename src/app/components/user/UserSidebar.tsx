@@ -1,48 +1,48 @@
-import SignOut from "@/app/(auth)/signout";
 import { AccountBox, BookmarkAdded, Groups } from "@mui/icons-material";
 import { LibraryBooks, ShoppingCart } from "@mui/icons-material";
 import { ListItem, ListItemButton, ListItemIcon } from "@mui/material";
 import { ListItemText, List } from "@mui/material";
 import { Divider, Toolbar, Typography, Drawer } from "@mui/material";
 import Link from "next/link";
+import SignOut from "../../(auth)/signout";
 
 const drawerWidth = 240;
 
-const DashboardSidebar = ({ role }: { role: string }) => {
+const UserSidebar = ({ role }: { role: string }) => {
   const menuItems = [
     {
-      label: "Dashboard",
+      label: "User",
       icon: <LibraryBooks />,
-      link: "/dashboard",
+      link: "/",
     },
     {
       label: "My Favorite Books",
       icon: <BookmarkAdded />,
-      link: "/dashboard/my-favorite-books",
+      link: "/dashboard",
       role: "user",
     },
     {
       label: "My Order",
       icon: <ShoppingCart />,
-      link: "/dashboard/my-order",
+      link: "/dashboard",
       role: "user",
     },
     {
       label: "User Order",
       icon: <ShoppingCart />,
-      link: "/dashboard/user-order",
+      link: "/dashboard",
       role: "admin",
     },
     {
       label: "All User",
       icon: <Groups />,
-      link: "/dashboard/all-user",
+      link: "/dashboard",
       role: "admin",
     },
     {
       label: "My Profile",
       icon: <AccountBox />,
-      link: "/dashboard/my-profile",
+      link: "/dashboard",
     },
   ];
 
@@ -73,7 +73,7 @@ const DashboardSidebar = ({ role }: { role: string }) => {
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          Buku Online
+          eChama
         </Typography>
       </Toolbar>
       <Divider />
@@ -93,4 +93,4 @@ const DashboardSidebar = ({ role }: { role: string }) => {
   );
 };
 
-export default DashboardSidebar;
+export default UserSidebar;

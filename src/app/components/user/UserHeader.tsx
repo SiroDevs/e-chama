@@ -1,7 +1,7 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 
-const DashboardHeader = () => {
+const UserHeader = () => {
   return (
     <AppBar position="absolute">
       <Toolbar sx={{ pr: "24px" }}>
@@ -22,4 +22,4 @@ const DashboardHeader = () => {
   );
 };
 
-export default DashboardHeader;
+export default UserHeader;

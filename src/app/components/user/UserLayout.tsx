@@ -2,20 +2,20 @@ import { ReactNode } from "react";
 import { Box, Container, Grid, Paper, Toolbar } from "@mui/material";
 import { Copyright } from "@mui/icons-material";
 
-import DashboardHeader from "./DashboardHeader";
-import DashboardSidebar from "./DashboardSidebar";
+import UserSidebar from "./UserSidebar";
+import UserHeader from "./UserHeader";
 import { Role } from "@/types";
 
-type DashboardLayoutProps = {
+type UserLayoutProps = {
   children: ReactNode;
   role: Role;
 };
 
-const DashboardLayout = ({ children, role }: DashboardLayoutProps) => {
+export const UserLayout = ({ children, role }: UserLayoutProps) => {
   return (
     <Box sx={{ display: "flex" }}>
-      <DashboardHeader />
-      <DashboardSidebar role={role} />
+      <UserHeader />
+      <UserSidebar role={role} />
       <Box
         component="div"
         sx={{
@@ -38,4 +38,3 @@ const DashboardLayout = ({ children, role }: DashboardLayoutProps) => {
   );
 };
 
-export default DashboardLayout;

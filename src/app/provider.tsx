@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 
-import DashboardLayout from "./components/dashboard/DashboardLayout";
 import Loader from "./components/general/Loader";
 import { readAccess } from "./(protected)/actions";
 import { Toaster } from "react-hot-toast";
 import { checkTheUser } from "./(auth)/actions/server";
+import { UserLayout } from "./components/user/UserLayout";
 
 export function AppProvider({
   children,
@@ -43,7 +43,7 @@ export function AppProvider({
       {loading ? (
         <Loader />
       ) : user ? (
-        <DashboardLayout role={role || "user"}>{children}</DashboardLayout>
+        <UserLayout role={role || "user"}>{children}</UserLayout>
       ) : (
         children
       )}
