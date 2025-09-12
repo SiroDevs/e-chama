@@ -1,7 +1,7 @@
-import { signInMeNow, signMeOut, signUpMeNow } from "@/app/(auth)/actions";
+import { signInMeNow, signMeOut, signUpMeNow } from "@/app/(auth)/actions/server";
+import { NotificationCard } from "@/app/components/general/NotificationCard";
 import { EmailOutlined } from "@mui/icons-material";
 import toast from "react-hot-toast";
-import { NotificationCard } from "../general/NotificationCard";
 
 export async function handleSigninAction(payload: {
   email: string;
@@ -96,19 +96,6 @@ export async function handleSignupAction(payload: {
 }
 
 export async function handleSignOutAction() {
-  try {
-    const { error } = await signMeOut();
-    if (error) {
-      toast.error(`Internal server error: ${error.message}`);
-      return { success: false };
-    } else {
-      toast.success("You have been logged out.");
-      return { success: true };
-    }
-  } catch (err) {
-    const message =
-      err instanceof Error ? err.message : "Something went wrong.";
-    toast.error(message);
-    return { success: false };
-  }
+  await signMeOut();
+  toast.success("You have been logged out.");
 }

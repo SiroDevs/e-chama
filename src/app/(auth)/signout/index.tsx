@@ -5,17 +5,15 @@ import { Button, Dialog } from "@mui/material";
 import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
 
-import { useRouter } from "next/navigation";
-import { signMeOut } from "@/app/(auth)/actions";
+import { handleSignOutAction } from "../actions/client";
 
 export default function SignOut() {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   const handleSignOut = () => {
     handleClose();
-    signMeOut();
-    router.push("/home");
+    handleSignOutAction();
+    window.location.href = "/";
   };
 
   const handleClickOpen = () => {

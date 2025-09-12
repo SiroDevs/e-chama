@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from "react";
 
-import SignUpForm from '@/app/components/auth/SignUpForm';
+import { AuthWrapper, SignUpCard } from "@/app/components/auth";
 
-export default async function page() {
+export default function SignUp() {
   return (
-    <div className='flex items-center justify-center h-screen'>
-      <SignUpForm />
-    </div>
+    <AuthWrapper>
+      <SignUpCard />
+    </AuthWrapper>
   );
 }

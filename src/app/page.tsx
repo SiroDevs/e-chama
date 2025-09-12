@@ -3,10 +3,11 @@
 import * as React from "react";
 import { CssBaseline, PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import Dashboard from "./(protected)/dashboard/page";
-import { checkTheUser } from "./(auth)/actions";
-import SignInForm from "./components/auth/SignInForm";
+import { AuthWrapper, SignInCard } from "@/app/components/auth";
 import Loader from "./components/general/Loader";
+import { checkTheUser } from "./(auth)/actions/server";
 
 export default function Home() {
   const [mode, setMode] = React.useState<PaletteMode>("light");
@@ -22,11 +23,13 @@ export default function Home() {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       {user === undefined ? (
-        <Loader/>
+        <Loader />
       ) : user ? (
         <Dashboard />
       ) : (
-        <SignInForm />
+        <AuthWrapper>
+          <SignInCard />
+        </AuthWrapper>
       )}
     </ThemeProvider>
   );

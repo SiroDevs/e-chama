@@ -1,7 +1,6 @@
 'use server';
 
 import { supabase } from '@/lib/supabase/client';
-import { redirect } from 'next/navigation';
 
 export async function checkTheUser() {
   const { data: { user } } = await supabase.auth.getUser()
@@ -12,7 +11,6 @@ export async function signInMeNow(data: {
   email: string;
   password: string;
 }) {
-  // const supabase = await getServerClient();
   return await supabase.auth.signInWithPassword(data);
 }
 
@@ -33,5 +31,5 @@ export async function signUpMeNow(data: {
 }
 
 export async function signMeOut() {
-  return supabase.auth.signOut();
+  supabase.auth.signOut();
 }

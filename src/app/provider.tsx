@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from "react";
 
 import DashboardLayout from "./components/dashboard/DashboardLayout";
-import { checkTheUser } from "./(auth)/actions";
 import Loader from "./components/general/Loader";
 import { readAccess } from "./(protected)/actions";
 import { Toaster } from "react-hot-toast";
+import { checkTheUser } from "./(auth)/actions/server";
 
-export default function LayoutWrapper({
+export function AppProvider({
   children,
 }: {
   children: React.ReactNode;

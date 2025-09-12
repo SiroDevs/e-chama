@@ -1,10 +1,10 @@
+import SignOut from "@/app/(auth)/signout";
 import { AccountBox, BookmarkAdded, Groups } from "@mui/icons-material";
 import { LibraryBooks, ShoppingCart } from "@mui/icons-material";
 import { ListItem, ListItemButton, ListItemIcon } from "@mui/material";
 import { ListItemText, List } from "@mui/material";
 import { Divider, Toolbar, Typography, Drawer } from "@mui/material";
 import Link from "next/link";
-import SignOut from "../auth/SignOut";
 
 const drawerWidth = 240;
 
