@@ -1,5 +1,6 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import ColorModeSelect from "../shared/ColorModeSelect";
 
 const UserHeader = () => {
   return (
@@ -8,6 +9,9 @@ const UserHeader = () => {
         <IconButton edge="start" color="inherit" aria-label="open drawer">
           <MenuIcon />
         </IconButton>
+        <ColorModeSelect
+          sx={{ position: "fixed", top: "1rem", right: "1rem" }}
+        />
         <Typography
           component="h1"
           variant="h6"
