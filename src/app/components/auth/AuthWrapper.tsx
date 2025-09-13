@@ -18,7 +18,7 @@ export function AuthWrapper(props: AuthWrapperProps) {
     <AppTheme>
       <CssBaseline enableColorScheme />
       <ColorModeSelect
-        sx={{ position: "fixed", bottom: "1rem", left: "1rem" }}
+        sx={{ position: "fixed", top: "1rem", right: "1rem" }}
       />
       <Stack
         direction="column"
