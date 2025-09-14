@@ -1,18 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
-import Loader from "./components/general/Loader";
-import { readAccess } from "./(protected)/actions";
 import { Toaster } from "react-hot-toast";
-import { checkTheUser } from "./(auth)/actions/server";
-import { UserLayout } from "./components/user/UserLayout";
 
-export function AppProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { readAccess } from "./(protected)/actions";
+import { checkTheUser } from "./(auth)/actions/server";
+import { UserLayout } from "@/components/user/UserLayout";
+import { Loader } from "@/components/general/Loader";
+
+export function AppProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(undefined);
   const [role, setRole] = useState<any>(undefined);
   const [loading, setLoading] = useState(true);

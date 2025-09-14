@@ -5,6 +5,7 @@ import { CssBaseline, GlobalStyles } from "@mui/material";
 import { GLOBAL_STYLES } from "@/styles";
 import { AppProvider } from "./provider";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AppProvider>{children}</AppProvider>
+        <Toaster position="top-center" reverseOrder={false} />
+        {children}
       </body>
     </html>
   );

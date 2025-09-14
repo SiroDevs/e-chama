@@ -2,7 +2,7 @@ import * as React from "react";
 import Image from "next/image";
 import SvgIcon from "@mui/material/SvgIcon";
 
-import appSvg from "../../../../public/appicon.svg";
+import appSvg from "../../../public/appicon.svg";
 
 export function AppIcon() {
   return (

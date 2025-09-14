@@ -6,7 +6,7 @@ import {
   signMeOut,
   signUpMeNow,
 } from "@/app/(auth)/actions/server";
-import { NotificationCard } from "@/app/components/general/NotificationCard";
+import { NotificationCard } from "@/components/general/NotificationCard";
 
 export async function handleSigninAction(payload: {
   email: string;
@@ -40,7 +40,6 @@ export async function handleSigninAction(payload: {
       return {
         success: true,
         user: data.user,
-        session: data.session,
       };
     }
   } catch (err) {
@@ -92,7 +91,10 @@ export async function handleSignupAction(payload: {
           onAction={() => toast.dismiss(t.id)}
         />
       ));
-      return { success: true };
+      return {
+        success: true,
+        user: data.user,
+      };
     }
   } catch (err) {
     toast.error(
