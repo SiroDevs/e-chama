@@ -7,7 +7,7 @@ import appSvg from "../../../../public/appicon.svg";
 export function AppIcon() {
   return (
     <div>
-      <Image src={appSvg} alt="Description of" width={200} height={50} />
+      <Image src={appSvg} alt="Description of" width={150} />
     </div>
   );
 }

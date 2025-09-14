@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, Link } from "@mui/material";
+import { Grid } from "@mui/material";
+import Link from "next/link";
 
 type GridLinkProps = {
   label: string;
@@ -10,7 +11,7 @@ type GridLinkProps = {
 export function GridLink({ label, href = "/", size = 12 }: GridLinkProps) {
   return (
     <Grid size={size}>
-      <Link href={href} variant="body2">
+      <Link href={href}>
         {label}
       </Link>
     </Grid>

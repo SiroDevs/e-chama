@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Stack from "@mui/material/Stack";
-import { CssBaseline } from "@mui/material";
-import { AuthContent } from ".";
+import { Box, CssBaseline } from "@mui/material";
+import { AppIcon, AuthContent } from ".";
 
 import ColorModeSelect from "../shared/ColorModeSelect";
 import AppTheme from "../shared/AppTheme";
@@ -17,9 +17,6 @@ export function AuthWrapper(props: AuthWrapperProps) {
   return (
     <AppTheme>
       <CssBaseline enableColorScheme />
-      <ColorModeSelect
-        sx={{ position: "fixed", top: "1rem", right: "1rem" }}
-      />
       <Stack
         direction="column"
         component="main"
@@ -27,7 +24,6 @@ export function AuthWrapper(props: AuthWrapperProps) {
           {
             justifyContent: "center",
             height: "calc((1 - var(--template-frame-height, 0)) * 100%)",
-            marginTop: "max(40px - var(--template-frame-height, 0px), 0px)",
             minHeight: "100%",
           },
           (theme) => ({
@@ -66,7 +62,9 @@ export function AuthWrapper(props: AuthWrapperProps) {
               m: "auto",
             }}
           >
-            <AuthContent />
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <AuthContent />
+            </Box>
             {children}
           </Stack>
         </Stack>

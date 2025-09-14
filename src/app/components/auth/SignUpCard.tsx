@@ -12,6 +12,7 @@ import { FormInput, MuiCard } from "../inputs/FormInput";
 import { GridLink } from "../general/GridLink";
 import { handleSignupAction } from "@/app/(auth)/actions/client";
 import { AppIcon, GoogleIcon } from "./CustomIcons";
+import ColorModeSelect from "../shared/ColorModeSelect";
 
 const schema = z
   .object({
@@ -61,9 +62,14 @@ export function SignUpCard() {
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
         <AppIcon />
       </Box>
-      <Typography component="h1" variant="h5">
-        <LockOutlined /> Sign Up
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography component="h1" variant="h5">
+          <LockOutlined /> Sign Up
+        </Typography>
+
+        <ColorModeSelect sx={{ alignSelf: "baseline" }} />
+      </Box>
+      
       <Box
         component="form"
         noValidate

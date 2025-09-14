@@ -10,8 +10,8 @@ interface State {
 
 interface Actions {
   loginUser: (user: User) => Promise<any>;
-  resetPassword: (data: any) => Promise<any>;
-  logout: () => void;
+  resetPassword: () => void;
+  logoutUser: () => void;
 }
 
 export const useAuthStore = create<State & Actions>()(
@@ -22,14 +22,12 @@ export const useAuthStore = create<State & Actions>()(
       session: null,
       token: null,
       loginUser: async (user: User) => {
-        set({
-          isAuthenticated: true,
-          user: user,
-        });
+        set({ isAuthenticated: true, user: user });
       },
-      resetPassword: async (data) => {
+      resetPassword: () => {
+        set({ isAuthenticated: false, user: null });
       },
-      logout: () => {
+      logoutUser: () => {
         set({ isAuthenticated: false, user: null });
       },
     }),

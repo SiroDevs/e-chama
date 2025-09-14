@@ -31,5 +31,5 @@ export async function signUpMeNow(data: {
 }
 
 export async function signMeOut() {
-  supabase.auth.signOut();
+  return await supabase.auth.signOut();
 }
