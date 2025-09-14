@@ -40,7 +40,6 @@ export async function handleSigninAction(payload: {
       return {
         success: true,
         user: data.user,
-        session: data.session,
       };
     }
   } catch (err) {
@@ -92,7 +91,10 @@ export async function handleSignupAction(payload: {
           onAction={() => toast.dismiss(t.id)}
         />
       ));
-      return { success: true };
+      return {
+        success: true,
+        user: data.user,
+      };
     }
   } catch (err) {
     toast.error(

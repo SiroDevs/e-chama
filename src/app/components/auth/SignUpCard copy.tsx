@@ -1,18 +1,17 @@
 "use client";
 
 import * as z from "zod";
-import { useState, useTransition } from "react";
-import { Box, Button, Typography, Grid } from "@mui/material";
-import { FormControlLabel, Checkbox } from "@mui/material";
-import { LockOutlined, Sync } from "@mui/icons-material";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LockOutlined, Sync } from "@mui/icons-material";
+import { Box, Button, Divider, Grid } from "@mui/material";
+import { Checkbox, FormControlLabel, Typography } from "@mui/material";
 
-import { handleSignupAction } from "@/app/(auth)/actions/client";
-import { useAuthStore } from "@/state/auth/auth";
-import { AppIcon } from "./CustomIcons";
-import { GridLink } from "../general/GridLink";
 import { FormInput, MuiCard } from "../inputs/FormInput";
+import { GridLink } from "../general/GridLink";
+import { handleSignupAction } from "@/app/(auth)/actions/client";
+import { AppIcon, GoogleIcon } from "./CustomIcons";
 import ColorModeSelect from "../shared/ColorModeSelect";
 
 const schema = z
@@ -24,33 +23,39 @@ const schema = z
     password: z
       .string()
       .min(6, { message: "Password must be at least 6 characters" }),
+    confirm_password: z.string(),
     terms: z.literal(true, {
       message: "You must agree to the terms & conditions",
     }),
   })
+  .refine((data) => data.password === data.confirm_password, {
+    message: "Passwords don't match",
+    path: ["confirm_password"],
+  });
 
 type FormData = z.infer<typeof schema>;
+
 export function SignUpCard() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const [loading, startTransition] = useTransition();
 
-  const { loginUser } = useAuthStore();
+  const [isPending, startTransition] = useTransition();
 
-  function onSubmit(data: FormData) {
+  async function onSubmit(data: FormData) {
+    const { confirm_password, terms, ...payload } = data;
+
     startTransition(async () => {
-      const result = await handleSignupAction(data);
-      if (result.success) {
-        await loginUser(result.user!);
-        window.location.href = "/";
-      }
+      await handleSignupAction(payload);
     });
   }
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
 
   return (
     <MuiCard variant="outlined">
@@ -58,21 +63,17 @@ export function SignUpCard() {
         <AppIcon />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
-        >
+        <Typography component="h1" variant="h5">
           <LockOutlined /> Sign Up
         </Typography>
 
         <ColorModeSelect sx={{ alignSelf: "baseline" }} />
       </Box>
-
+      
       <Box
         component="form"
-        onSubmit={handleSubmit(onSubmit)}
         noValidate
+        onSubmit={handleSubmit(onSubmit)}
         sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}
       >
         <FormInput
@@ -107,6 +108,16 @@ export function SignUpCard() {
           withPasswordToggle
         />
 
+        <FormInput
+          id="confirm_password"
+          label="Confirm Password"
+          required
+          autoComplete="confirm-password"
+          placeholder="..."
+          error={errors.confirm_password}
+          registration={register("confirm_password")}
+          withPasswordToggle
+        />
         <Grid size={12}>
           <FormControlLabel
             control={<Checkbox color="primary" {...register("terms")} />}
@@ -123,8 +134,9 @@ export function SignUpCard() {
           type="submit"
           fullWidth
           variant="contained"
-          endIcon={loading && <Sync className="animate-spin" />}
-          disabled={loading}
+          sx={{ mt: 3, mb: 2 }}
+          disabled={isPending}
+          endIcon={isPending && <Sync className="animate-spin" />}
         >
           Sign Up
         </Button>
@@ -135,6 +147,17 @@ export function SignUpCard() {
             label="Already have an account? Sign in"
           />
         </Typography>
+      </Box>
+      <Divider>or</Divider>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={() => alert("Sign in with Google")}
+          startIcon={<GoogleIcon />}
+        >
+          Sign up with Google
+        </Button>
       </Box>
     </MuiCard>
   );

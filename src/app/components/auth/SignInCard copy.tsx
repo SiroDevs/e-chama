@@ -2,20 +2,20 @@
 
 import * as z from "zod";
 import { useState, useTransition } from "react";
-import { InputAdornment, Divider, TextField, Typography } from "@mui/material";
-import { Button, Link, FormControlLabel, Checkbox } from "@mui/material";
-import { Box, IconButton, FormControl, FormLabel } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { LockOutlined, Sync } from "@mui/icons-material";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { IconButton, FormControl, FormLabel, Link } from "@mui/material";
+import { Box, Button, InputAdornment } from "@mui/material";
+import { Divider, TextField, Typography } from "@mui/material";
 
 import { handleSigninAction } from "@/app/(auth)/actions/client";
-import { useAuthStore } from "@/state/auth/auth";
-import { GoogleIcon, AppIcon } from "./CustomIcons";
+import { AppIcon, GoogleIcon } from ".";
+import { MuiCard, FormInput } from "../inputs/FormInput";
 import { GridLink } from "../general/GridLink";
-import { FormInput, MuiCard } from "../inputs/FormInput";
 import ColorModeSelect from "../shared/ColorModeSelect";
+import { useAuthStore } from "@/state/auth/auth";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -54,11 +54,7 @@ export function SignInCard() {
         <AppIcon />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
-        >
+        <Typography component="h1" variant="h5">
           <LockOutlined /> Sign In
         </Typography>
 
@@ -80,7 +76,6 @@ export function SignInCard() {
           error={errors.email}
           registration={register("email")}
         />
-
         <FormControl>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <FormLabel htmlFor="password">Password</FormLabel>
@@ -120,16 +115,11 @@ export function SignInCard() {
             }}
           />
         </FormControl>
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-        />
-        {/* <ForgotPassword open={open} handleClose={handleClose} /> */}
-
         <Button
           type="submit"
           fullWidth
           variant="contained"
+          sx={{ mt: 3, mb: 2 }}
           endIcon={loading && <Sync className="animate-spin" />}
           disabled={loading}
         >
@@ -156,7 +146,7 @@ export function SignInCard() {
         {/* <Button
           fullWidth
           variant="outlined"
-          onClick={() => alert('Sign in with Facebook')}
+          onClick={() => alert("Sign in with Facebook")}
           startIcon={<FacebookIcon />}
         >
           Sign in with Facebook

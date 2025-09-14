@@ -5,7 +5,7 @@ import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
 
-import { AppIcon } from "./CustomIcons";
+import { AppIcon } from ".";
 
 const items = [
   {
