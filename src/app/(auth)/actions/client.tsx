@@ -1,5 +1,6 @@
 import { signInMeNow, signMeOut, signUpMeNow } from "@/app/(auth)/actions/server";
 import { NotificationCard } from "@/app/components/general/NotificationCard";
+import { useAuthStore } from "@/state/auth/auth";
 import { EmailOutlined } from "@mui/icons-material";
 import toast from "react-hot-toast";
 
@@ -7,6 +8,7 @@ export async function handleSigninAction(payload: {
   email: string;
   password: string;
 }) {
+  const { loginUser } = useAuthStore();
   try {
     const { data, error } = await signInMeNow(payload);
     if (error) {
@@ -32,6 +34,7 @@ export async function handleSigninAction(payload: {
       }
       return { success: false };
     } else {
+      await loginUser(data.user!);
       return { success: true };
     }
   } catch (err) {
@@ -97,5 +100,5 @@ export async function handleSignupAction(payload: {
 
 export async function handleSignOutAction() {
   await signMeOut();
-  toast.success("You have been logged out.");
+  toast.success("You have been logged out. Check back soon");
 }
