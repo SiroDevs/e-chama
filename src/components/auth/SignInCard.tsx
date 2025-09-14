@@ -14,7 +14,6 @@ import { handleSigninAction } from "@/app/(auth)/actions/client";
 import { useAuthStore } from "@/state/auth/auth";
 import { GoogleIcon, AppIcon } from "./CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
-import ColorModeSelect from "../shared/ColorModeSelect";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),

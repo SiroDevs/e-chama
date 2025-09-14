@@ -6,7 +6,7 @@ import {
   signMeOut,
   signUpMeNow,
 } from "@/app/(auth)/actions/server";
-import { NotificationCard } from "@/app/components/general/NotificationCard";
+import { NotificationCard } from "@/components/general/NotificationCard";
 
 export async function handleSigninAction(payload: {
   email: string;
