@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import { useState, useTransition } from "react";
-import { InputAdornment, Divider, TextField, Typography } from "@mui/material";
+import { InputAdornment, Divider, TextField, Typography, Grid } from "@mui/material";
 import { Button, Link, FormControlLabel, Checkbox } from "@mui/material";
 import { Box, IconButton, FormControl, FormLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -13,7 +13,6 @@ import { useForm } from "react-hook-form";
 import { handleSigninAction } from "@/app/(auth)/actions/client";
 import { useAuthStore } from "@/state/auth/auth";
 import { GoogleIcon, AppIcon } from "./CustomIcons";
-import { GridLink } from "../general/GridLink";
 import { FormInput, MuiCard } from "../inputs/FormInput";
 import ColorModeSelect from "../shared/ColorModeSelect";
 
@@ -53,17 +52,13 @@ export function SignInCard() {
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
         <AppIcon />
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
-        >
-          <LockOutlined /> Sign In
-        </Typography>
 
-        <ColorModeSelect sx={{ alignSelf: "baseline" }} />
-      </Box>
+      <Typography
+        component="h1"
+        sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+      >
+        <LockOutlined /> Sign In
+      </Typography>
 
       <Box
         component="form"
@@ -136,11 +131,9 @@ export function SignInCard() {
           Sign In
         </Button>
         <Typography sx={{ textAlign: "center" }}>
-          <GridLink
-            size={2}
-            href="/signup"
-            label="Don't have an account? Sign Up"
-          />
+          <Grid size={2}>
+            <Link href="/signup">"Don't have an account? Sign Up"</Link>
+          </Grid>
         </Typography>
       </Box>
       <Divider>or</Divider>

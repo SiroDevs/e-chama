@@ -6,14 +6,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { LockOutlined, Sync } from "@mui/icons-material";
-import { IconButton, FormControl, FormLabel, Link } from "@mui/material";
+import { IconButton, FormControl, FormLabel, Link, Grid } from "@mui/material";
 import { Box, Button, InputAdornment } from "@mui/material";
 import { Divider, TextField, Typography } from "@mui/material";
 
 import { handleSigninAction } from "@/app/(auth)/actions/client";
 import { AppIcon, GoogleIcon } from ".";
 import { MuiCard, FormInput } from "../inputs/FormInput";
-import { GridLink } from "../general/GridLink";
 import ColorModeSelect from "../shared/ColorModeSelect";
 import { useAuthStore } from "@/state/auth/auth";
 
@@ -126,11 +125,9 @@ export function SignInCard() {
           Sign In
         </Button>
         <Typography sx={{ textAlign: "center" }}>
-          <GridLink
-            size={2}
-            href="/signup"
-            label="Don't have an account? Sign Up"
-          />
+          <Grid size={2}>
+            <Link href="/signup">"Don't have an account? Sign Up"</Link>
+          </Grid>
         </Typography>
       </Box>
       <Divider>or</Divider>

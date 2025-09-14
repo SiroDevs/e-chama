@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import { useState, useTransition } from "react";
-import { Box, Button, Typography, Grid } from "@mui/material";
+import { Box, Button, Typography, Grid, Link } from "@mui/material";
 import { FormControlLabel, Checkbox } from "@mui/material";
 import { LockOutlined, Sync } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,23 +11,20 @@ import { useForm } from "react-hook-form";
 import { handleSignupAction } from "@/app/(auth)/actions/client";
 import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "./CustomIcons";
-import { GridLink } from "../general/GridLink";
 import { FormInput, MuiCard } from "../inputs/FormInput";
-import ColorModeSelect from "../shared/ColorModeSelect";
 
-const schema = z
-  .object({
-    full_name: z
-      .string()
-      .min(4, { message: "Your name must be at least 4 characters" }),
-    email: z.string().email({ message: "Invalid email address" }),
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters" }),
-    terms: z.literal(true, {
-      message: "You must agree to the terms & conditions",
-    }),
-  })
+const schema = z.object({
+  full_name: z
+    .string()
+    .min(4, { message: "Your name must be at least 4 characters" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
+  terms: z.literal(true, {
+    message: "You must agree to the terms & conditions",
+  }),
+});
 
 type FormData = z.infer<typeof schema>;
 export function SignUpCard() {
@@ -57,17 +54,13 @@ export function SignUpCard() {
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
         <AppIcon />
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
-        >
-          <LockOutlined /> Sign Up
-        </Typography>
 
-        <ColorModeSelect sx={{ alignSelf: "baseline" }} />
-      </Box>
+      <Typography
+        component="h1"
+        sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+      >
+        <LockOutlined /> Sign Up
+      </Typography>
 
       <Box
         component="form"
@@ -129,11 +122,9 @@ export function SignUpCard() {
           Sign Up
         </Button>
         <Typography sx={{ textAlign: "center" }}>
-          <GridLink
-            size={2}
-            href="/"
-            label="Already have an account? Sign in"
-          />
+          <Grid size={2}>
+            <Link href="/signup">"Don't have an account? Sign Up"</Link>
+          </Grid>
         </Typography>
       </Box>
     </MuiCard>

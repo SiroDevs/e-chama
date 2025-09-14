@@ -5,11 +5,10 @@ import React, { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LockOutlined, Sync } from "@mui/icons-material";
-import { Box, Button, Divider, Grid } from "@mui/material";
+import { Box, Button, Divider, Grid, Link } from "@mui/material";
 import { Checkbox, FormControlLabel, Typography } from "@mui/material";
 
 import { FormInput, MuiCard } from "../inputs/FormInput";
-import { GridLink } from "../general/GridLink";
 import { handleSignupAction } from "@/app/(auth)/actions/client";
 import { AppIcon, GoogleIcon } from "./CustomIcons";
 import ColorModeSelect from "../shared/ColorModeSelect";
@@ -69,7 +68,7 @@ export function SignUpCard() {
 
         <ColorModeSelect sx={{ alignSelf: "baseline" }} />
       </Box>
-      
+
       <Box
         component="form"
         noValidate
@@ -141,11 +140,9 @@ export function SignUpCard() {
           Sign Up
         </Button>
         <Typography sx={{ textAlign: "center" }}>
-          <GridLink
-            size={2}
-            href="/"
-            label="Already have an account? Sign in"
-          />
+          <Grid size={2}>
+            <Link href="/signup">"Don't have an account? Sign Up"</Link>
+          </Grid>
         </Typography>
       </Box>
       <Divider>or</Divider>
