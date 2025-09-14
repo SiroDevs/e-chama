@@ -6,13 +6,16 @@ import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
 
 import { handleSignOutAction } from "../actions/client";
+import { useAuthStore } from "@/state/auth/auth";
 
 export default function SignOut() {
+  const { logoutUser } = useAuthStore();
   const [open, setOpen] = useState(false);
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     handleClose();
-    handleSignOutAction();
+    const result = await handleSignOutAction();
+    await logoutUser();
     window.location.href = "/";
   };
 
@@ -48,4 +51,7 @@ export default function SignOut() {
       </Dialog>
     </div>
   );
+}
+function loginUser(arg0: any) {
+  throw new Error("Function not implemented.");
 }

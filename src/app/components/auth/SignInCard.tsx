@@ -11,9 +11,11 @@ import { Box, Button, InputAdornment } from "@mui/material";
 import { Divider, TextField, Typography } from "@mui/material";
 
 import { handleSigninAction } from "@/app/(auth)/actions/client";
-import { AppIcon, GoogleIcon} from ".";
+import { AppIcon, GoogleIcon } from ".";
 import { MuiCard, FormInput } from "../inputs/FormInput";
 import { GridLink } from "../general/GridLink";
+import ColorModeSelect from "../shared/ColorModeSelect";
+import { useAuthStore } from "@/state/auth/auth";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -33,13 +35,16 @@ export function SignInCard() {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
   const [loading, startTransition] = useTransition();
 
+  const { loginUser } = useAuthStore();
   const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   function onSubmit(data: FormData) {
     startTransition(async () => {
-      await handleSigninAction(data);
-      window.location.href = "/";
+      const result = await handleSigninAction(data);
+      if (result.success) {
+        await loginUser(result.user!);
+        window.location.href = "/";
+      }
     });
   }
 
@@ -48,9 +53,14 @@ export function SignInCard() {
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
         <AppIcon />
       </Box>
-      <Typography component="h1" variant="h5">
-        <LockOutlined /> Sign in
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography component="h1" variant="h5">
+          <LockOutlined /> Sign In
+        </Typography>
+
+        <ColorModeSelect sx={{ alignSelf: "baseline" }} />
+      </Box>
+
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}

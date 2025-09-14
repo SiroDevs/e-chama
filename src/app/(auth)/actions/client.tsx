@@ -1,7 +1,12 @@
-import { signInMeNow, signMeOut, signUpMeNow } from "@/app/(auth)/actions/server";
-import { NotificationCard } from "@/app/components/general/NotificationCard";
 import { EmailOutlined } from "@mui/icons-material";
 import toast from "react-hot-toast";
+
+import {
+  signInMeNow,
+  signMeOut,
+  signUpMeNow,
+} from "@/app/(auth)/actions/server";
+import { NotificationCard } from "@/app/components/general/NotificationCard";
 
 export async function handleSigninAction(payload: {
   email: string;
@@ -32,7 +37,11 @@ export async function handleSigninAction(payload: {
       }
       return { success: false };
     } else {
-      return { success: true };
+      return {
+        success: true,
+        user: data.user,
+        session: data.session,
+      };
     }
   } catch (err) {
     const message =
@@ -97,5 +106,6 @@ export async function handleSignupAction(payload: {
 
 export async function handleSignOutAction() {
   await signMeOut();
-  toast.success("You have been logged out.");
+  toast.success("You have been logged out. Check back soon");
+  return { success: true };
 }
