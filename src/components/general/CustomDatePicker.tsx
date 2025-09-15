@@ -39,7 +39,7 @@ function ButtonField(props: ButtonFieldProps) {
   );
 }
 
-export default function CustomDatePicker() {
+export function CustomDatePicker() {
   const [value, setValue] = React.useState<Dayjs | null>(dayjs('2023-04-17'));
 
   return (

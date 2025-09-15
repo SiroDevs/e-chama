@@ -23,7 +23,6 @@ export default function RootLayout({
       <GlobalStyles styles={GLOBAL_STYLES} />
       <CssBaseline />
       <body className={inter.className}>
-        <Toaster position="top-center" reverseOrder={false} />
         {children}
       </body>
     </html>

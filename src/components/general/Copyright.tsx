@@ -1,8 +1,7 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
+import * as React from "react";
+import { Link, Typography } from "@mui/material";
 
-export default function Copyright(props: any) {
+export function Copyright(props: any) {
   return (
     <Typography
       variant="body2"
@@ -10,17 +9,17 @@ export default function Copyright(props: any) {
       {...props}
       sx={[
         {
-          color: 'text.secondary',
+          color: "text.secondary",
         },
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}
     >
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Sitemark
-      </Link>{' '}
+      {"Copyright © "}
+      <Link color="inherit" href="https://echama.vercel.app">
+        eChama
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }

@@ -121,7 +121,7 @@ const colors = [
   'hsl(220, 20%, 25%)',
 ];
 
-export default function ChartUserByCountry() {
+export function ChartUserByCountry() {
   return (
     <Card
       variant="outlined"
