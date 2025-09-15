@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "node --trace-deprecation node_modules/.bin/next build --turbopack",
     "start": "next start",
     "lint": "eslint"
   },
@@ -14,8 +14,13 @@
     "@hookform/resolvers": "^5.2.1",
     "@mui/icons-material": "^7.3.2",
     "@mui/material": "^7.3.2",
+    "@mui/x-data-grid": "^8.11.2",
+    "@mui/x-data-grid-pro": "^8.11.2",
+    "@mui/x-date-pickers": "^8.11.2",
+    "@mui/x-date-pickers-pro": "^8.11.2",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.57.2",
+    "dayjs": "^1.11.18",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",

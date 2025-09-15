@@ -123,7 +123,7 @@ export function SignUpCard() {
         </Button>
         <Typography sx={{ textAlign: "center" }}>
           <Grid size={2}>
-            <Link href="/signup">"Don't have an account? Sign Up"</Link>
+            <Link href="/">Already have an Account? Sign In</Link>
           </Grid>
         </Typography>
       </Box>

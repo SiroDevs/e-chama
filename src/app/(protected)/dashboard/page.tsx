@@ -1,10 +1,20 @@
 "use client";
 
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import EmployeeCreate from "@/components/dashboard/EmployeeCreate";
+import EmployeeEdit from "@/components/dashboard/EmployeeEdit";
+import EmployeeList from "@/components/dashboard/EmployeeList";
+import EmployeeShow from "@/components/dashboard/EmployeeShow";
 import { UserLayout } from "@/components/user/UserLayout";
 import DialogsProvider from "@/hooks/useDialogs/DialogsProvider";
 import NotificationsProvider from "@/hooks/useNotifications/NotificationsProvider";
-import router from "next/router";
 import { createHashRouter, RouterProvider } from "react-router";
+import {
+  dataGridCustomizations,
+  datePickersCustomizations,
+  sidebarCustomizations,
+  formInputCustomizations,
+} from '@/components/shared/customizations';
 
 const router = createHashRouter([
   {

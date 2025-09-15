@@ -29,6 +29,7 @@ const eslintConfig = [
       "@typescript-eslint/no-explicit-any": "off",
       "@next/next/no-html-link-for-pages": "error",
       "react-hooks/exhaustive-deps": "warn",
+      "eslint-comments/no-unused-disable": "error",
     },
   },
 ];
