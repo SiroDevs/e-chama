@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 
 import { handleSignupAction } from "@/app/(auth)/actions/client";
 import { useAuthStore } from "@/state/auth/auth";
-import { AppIcon } from "./CustomIcons";
+import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
 
 const schema = z.object({
