@@ -1,10 +1,10 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Avatar from "@mui/material/Avatar";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
-import { Box, Divider, Stack, Typography } from "@mui/material";
-import { CardAlert, SelectContent, OptionsMenu } from "../general";
+import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
+import { SelectContent, OptionsMenu } from "../general";
 import { MenuContent } from ".";
+import { useAuthStore } from "@/state/auth/auth";
 
 const drawerWidth = 240;
 
@@ -20,6 +20,7 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export function SideMenu() {
+  const { user } = useAuthStore();
   return (
     <Drawer
       variant="permanent"
@@ -30,7 +31,7 @@ export function SideMenu() {
         },
       }}
     >
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           mt: "calc(var(--template-frame-height, 0px) + 4px)",
@@ -38,7 +39,7 @@ export function SideMenu() {
         }}
       >
         <SelectContent />
-      </Box>
+      </Box> */}
       <Divider />
       <Box
         sx={{
@@ -49,37 +50,39 @@ export function SideMenu() {
         }}
       >
         <MenuContent />
-        <CardAlert />
       </Box>
-      <Stack
-        direction="row"
-        sx={{
-          p: 2,
-          gap: 1,
-          alignItems: "center",
-          borderTop: "1px solid",
-          borderColor: "divider",
-        }}
-      >
-        <Avatar
-          sizes="small"
-          alt="Riley Carter"
-          src="/static/images/avatar/7.jpg"
-          sx={{ width: 36, height: 36 }}
-        />
-        <Box sx={{ mr: "auto" }}>
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 500, lineHeight: "16px" }}
-          >
-            Riley Carter
-          </Typography>
-          <Typography variant="caption" sx={{ color: "text.secondary" }}>
-            riley@email.com
-          </Typography>
-        </Box>
-        <OptionsMenu />
-      </Stack>
+      {userMenu()}
     </Drawer>
   );
+
+  function userMenu() {
+    return <Stack
+      direction="row"
+      sx={{
+        p: 2,
+        gap: 1,
+        alignItems: "center",
+        borderTop: "1px solid",
+        borderColor: "divider",
+      }}
+    >
+      <Avatar
+        sizes="small"
+        alt="Riley Carter"
+        src="/static/images/avatar/7.jpg"
+        sx={{ width: 36, height: 36 }} />
+      <Box sx={{ mr: "auto" }}>
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: 500, lineHeight: "16px" }}
+        >
+          {user.name}
+        </Typography>
+        <Typography variant="caption" sx={{ color: "text.secondary" }}>
+          {user.email}
+        </Typography>
+      </Box>
+      <OptionsMenu />
+    </Stack>;
+  }
 }

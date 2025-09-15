@@ -6,7 +6,6 @@ import type {} from "@mui/x-charts/themeAugmentation";
 import type {} from "@mui/x-data-grid-pro/themeAugmentation";
 import type {} from "@mui/x-tree-view/themeAugmentation";
 import { alpha, Box, CssBaseline, Stack } from "@mui/material";
-import { MainGrid } from "@/components/general";
 import { AppNavbar, Header, SideMenu } from "@/components/navigation";
 import AppTheme from "@/components/shared/AppTheme";
 import {
@@ -23,9 +22,14 @@ const xThemeComponents = {
   ...treeViewCustomizations,
 };
 
-export default function Dashboard(props: { disableCustomTheme?: boolean }) {
+interface UserWrapperProps {
+  children: React.ReactNode;
+}
+
+export function UserWrapper(props: UserWrapperProps) {
+  const { children } = props;
   return (
-    <AppTheme {...props} themeComponents={xThemeComponents}>
+    <AppTheme themeComponents={xThemeComponents}>
       <CssBaseline enableColorScheme />
       <Box sx={{ display: "flex" }}>
         <SideMenu />
@@ -50,7 +54,7 @@ export default function Dashboard(props: { disableCustomTheme?: boolean }) {
             }}
           >
             <Header />
-            <MainGrid />
+            {children}
           </Stack>
         </Box>
       </Box>
