@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 
 import { handleSigninAction } from "@/app/(auth)/actions/client";
 import { useAuthStore } from "@/state/auth/auth";
-import { GoogleIcon, AppIcon } from "./CustomIcons";
+import { GoogleIcon, AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
 
 const schema = z.object({
