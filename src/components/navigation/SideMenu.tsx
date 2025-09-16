@@ -2,7 +2,8 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
-import { SelectContent, OptionsMenu } from "../general";
+import { SelectContent } from "../general";
+import { OptionsMenu } from "../navigation";
 import { MenuContent } from ".";
 import { useAuthStore } from "@/state/auth/auth";
 

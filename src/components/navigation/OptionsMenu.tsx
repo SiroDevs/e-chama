@@ -1,11 +1,10 @@
 import * as React from "react";
 import Divider, { dividerClasses } from "@mui/material/Divider";
-import { Menu, styled, paperClasses } from "@mui/material";
+import { Menu, listClasses, styled, paperClasses } from "@mui/material";
 import MuiMenuItem from "@mui/material/MenuItem";
-import { listClasses, ListItemText } from "@mui/material";
-import ListItemIcon, { listItemIconClasses } from "@mui/material/ListItemIcon";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import { listItemIconClasses } from "@mui/material/ListItemIcon";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import SignOut from "@/app/(auth)/signout";
 import { MenuButton } from "../navigation";
 
 const MenuItem = styled(MuiMenuItem)({
@@ -35,7 +34,6 @@ export function OptionsMenu() {
         id="menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         sx={{
@@ -53,11 +51,10 @@ export function OptionsMenu() {
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>Add another account</MenuItem>
+        {/* <MenuItem onClick={handleClose}>Add another account</MenuItem> */}
         <MenuItem onClick={handleClose}>Settings</MenuItem>
         <Divider />
         <MenuItem
-          onClick={handleClose}
           sx={{
             [`& .${listItemIconClasses.root}`]: {
               ml: "auto",
@@ -65,10 +62,7 @@ export function OptionsMenu() {
             },
           }}
         >
-          <ListItemText>Logout</ListItemText>
-          <ListItemIcon>
-            <LogoutRoundedIcon fontSize="small" />
-          </ListItemIcon>
+          <SignOut />
         </MenuItem>
       </Menu>
     </React.Fragment>

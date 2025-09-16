@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import { useState, useTransition } from "react";
-import { InputAdornment, Divider, TextField, Typography, Grid } from "@mui/material";
+import { InputAdornment, Divider, TextField, Typography } from "@mui/material";
 import { Button, Link, FormControlLabel, Checkbox } from "@mui/material";
 import { Box, IconButton, FormControl, FormLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 
 import { handleSigninAction } from "@/app/(auth)/actions/client";
 import { useAuthStore } from "@/state/auth/auth";
-import { GoogleIcon, AppIcon } from "../general/CustomIcons";
+import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
 
 const schema = z.object({
@@ -40,7 +40,7 @@ export function SignInCard() {
     startTransition(async () => {
       const result = await handleSigninAction(data);
       if (result.success) {
-        await loginUser(result.user!);
+        await loginUser(result.user!, result.profile!);
         window.location.href = "/";
       }
     });
@@ -92,7 +92,7 @@ export function SignInCard() {
             margin="normal"
             required
             fullWidth
-            placeholder="••••••"
+            placeholder="******"
             type={showPassword ? "text" : "password"}
             id="password"
             autoComplete="current-password"
@@ -130,12 +130,10 @@ export function SignInCard() {
           Sign In
         </Button>
         <Typography sx={{ textAlign: "center" }}>
-          <Grid size={2}>
-            <Link href="/signup">Don&apos;t have an account? Sign Up</Link>
-          </Grid>
+          <Link href="/signup">Don&apos;t have an account? Sign Up</Link>
         </Typography>
       </Box>
-      <Divider>or</Divider>
+      {/* <Divider>or</Divider>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <Button
           fullWidth
@@ -145,15 +143,15 @@ export function SignInCard() {
         >
           Sign in with Google
         </Button>
-        {/* <Button
+        <Button
           fullWidth
           variant="outlined"
           onClick={() => alert('Sign in with Facebook')}
           startIcon={<FacebookIcon />}
         >
           Sign in with Facebook
-        </Button> */}
-      </Box>
+        </Button>
+      </Box> */}
     </MuiCard>
   );
 }

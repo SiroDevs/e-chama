@@ -8,7 +8,6 @@ export * from "./HighlightedCard";
 export * from "./Loader";
 export * from "./MainGrid";
 export * from "./NotificationCard";
-export * from "./OptionsMenu";
 export * from "./PageViewsBarChart";
 export * from "./Search";
 export * from "./SelectContent";
