@@ -23,7 +23,7 @@ const ListItemAvatar = styled(MuiListItemAvatar)({
   marginRight: 12,
 });
 
-export function SelectContent() {
+export function SelectGroup() {
   const [company, setCompany] = React.useState("");
 
   const handleChange = (event: SelectChangeEvent) => {

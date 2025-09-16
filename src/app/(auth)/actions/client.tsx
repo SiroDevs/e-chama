@@ -1,12 +1,9 @@
 import { EmailOutlined } from "@mui/icons-material";
 import toast from "react-hot-toast";
 
-import {
-  signInMeNow,
-  signMeOut,
-  signUpMeNow,
-} from "@/app/(auth)/actions/server";
-import { NotificationCard } from "@/components/general/NotificationCard";
+import { signInMeNow, signUpMeNow, signMeOut } from "@/services/auth";
+import { NotificationCard } from "@/components/general";
+import { getUserGroups } from "@/services/group";
 
 export async function handleSigninAction(payload: {
   email: string;
@@ -14,22 +11,26 @@ export async function handleSigninAction(payload: {
 }) {
   try {
     const { data, error } = await signInMeNow(payload);
-    
+
     if (error) {
       console.error("Signin error:", error);
-      
+
       const errorMessage = error.message || "An unknown error occurred";
-      const status = 'status' in error ? error.status : undefined;
-      
+      const status = "status" in error ? error.status : undefined;
+
       switch (status) {
         case 400:
-          toast.error("Invalid credentials. Please check your email and password.");
+          toast.error(
+            "Invalid credentials. Please check your email and password."
+          );
           break;
         case 401:
           toast.error("Unauthorized. Please try again.");
           break;
         case 403:
-          toast.error("Access forbidden. Contact support if this issue persists.");
+          toast.error(
+            "Access forbidden. Contact support if this issue persists."
+          );
           break;
         case 404:
           toast.error("User profile not found.");
@@ -40,20 +41,23 @@ export async function handleSigninAction(payload: {
         default:
           toast.error(errorMessage);
       }
-      
+
       return { success: false };
     } else if (data) {
+      const groupResult = await getUserGroups(data.user.id);
       return {
         success: true,
         user: data.user,
-        profile: data.profile
+        profile: data.profile,
+        groups: groupResult,
       };
     } else {
       toast.error("No data returned from sign in");
       return { success: false };
     }
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Something went wrong.";
+    const message =
+      err instanceof Error ? err.message : "Something went wrong.";
     toast.error(message);
     return { success: false };
   }
@@ -67,22 +71,26 @@ export async function handleSignupAction(payload: {
 }) {
   try {
     const { data, error } = await signUpMeNow(payload);
-    
+
     if (error) {
       console.error("Signup error:", error);
-      
+
       const errorMessage = error.message || "An unknown error occurred";
-      const status = 'status' in error ? error.status : undefined;
-      
+      const status = "status" in error ? error.status : undefined;
+
       switch (status) {
         case 400:
-          toast.error("Invalid credentials. Please check your email and password.");
+          toast.error(
+            "Invalid credentials. Please check your email and password."
+          );
           break;
         case 401:
           toast.error("Unauthorized. Please try again.");
           break;
         case 403:
-          toast.error("Access forbidden. Contact support if this issue persists.");
+          toast.error(
+            "Access forbidden. Contact support if this issue persists."
+          );
           break;
         case 500:
           toast.error(`Internal server error: ${errorMessage}`);
@@ -90,7 +98,7 @@ export async function handleSignupAction(payload: {
         default:
           toast.error(errorMessage);
       }
-      
+
       return { success: false };
     } else if (data) {
       toast.custom((t) => (
@@ -103,14 +111,14 @@ export async function handleSignupAction(payload: {
           onAction={() => toast.dismiss(t.id)}
         />
       ));
-      
+
       return {
         success: true,
         user: data.user,
-        profile: data.profile
+        profile: data.profile,
       };
     } else {
-      toast.error("No data returned from sign up");
+      toast.error("Signup failed");
       return { success: false };
     }
   } catch (err) {

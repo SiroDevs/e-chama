@@ -1,27 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import {
-  Container,
-  Paper,
-  Typography,
-  Box,
-  CircularProgress,
-  Button,
-  Alert,
-  CssBaseline,
-} from "@mui/material";
-import { CheckCircle, Error, ArrowForward } from "@mui/icons-material";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
+import { Container, Paper, Typography, Box } from "@mui/material";
+import { Button, Alert, CssBaseline } from "@mui/material";
+import { CheckCircle, Error, ArrowForward } from "@mui/icons-material";
 import AppTheme from "@/components/shared/AppTheme";
 import { AppIcon } from "@/components/general/CustomIcons";
+import { Loader } from "@/components/general/Loader";
+import { verifyToken } from "@/services/auth";
 
-export default function VerifyEmail() {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-  const type = searchParams.get("type");
+interface VerifyEmailProps {
+  searchParams: {
+    token?: string;
+    type?: string;
+  };
+}
+
+export default function VerifyEmail({ searchParams }: VerifyEmailProps) {
+  const token = searchParams.token;
+  const type = searchParams.type;
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading"
   );
@@ -36,10 +34,7 @@ export default function VerifyEmail() {
       }
 
       try {
-        const { error } = await supabase.auth.verifyOtp({
-          token_hash: token,
-          type: "signup",
-        });
+        const { error } = await verifyToken(token);
 
         if (error) {
           console.error("Verification error:", error);
@@ -80,15 +75,10 @@ export default function VerifyEmail() {
             sx={{ p: 4, width: "100%", textAlign: "center" }}
           >
             {status === "loading" && (
-              <>
-                <CircularProgress size={60} sx={{ mb: 2 }} />
-                <Typography variant="h5" component="h1" gutterBottom>
-                  Verifying your email...
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Please wait while we verify your email address.
-                </Typography>
-              </>
+              <Loader
+                title="Verifying your email ..."
+                message="Please wait while we verify your email address."
+              />
             )}
 
             {status === "success" && (
@@ -126,7 +116,8 @@ export default function VerifyEmail() {
                   {message}
                 </Alert>
                 <Typography variant="body2" sx={{ mb: 3 }}>
-                  The verification link may be invalid or expired.<br></br>Please try again or contact support.
+                  The verification link may be invalid or expired.<br></br>
+                  Please try again or contact support.
                 </Typography>
                 <Button
                   variant="outlined"
