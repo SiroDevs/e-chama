@@ -108,7 +108,7 @@ export default function VerifyEmail() {
                   variant="contained"
                   endIcon={<ArrowForward />}
                   component={Link}
-                  href="/signin"
+                  href="/"
                   size="large"
                 >
                   Go to Sign In
@@ -126,8 +126,7 @@ export default function VerifyEmail() {
                   {message}
                 </Alert>
                 <Typography variant="body2" sx={{ mb: 3 }}>
-                  The verification link may be invalid or expired. Please try
-                  signing up again.
+                  The verification link may be invalid or expired.<br></br>Please try again or contact support.
                 </Typography>
                 <Button
                   variant="outlined"
