@@ -66,6 +66,10 @@ export async function signUpMeNow(data: {
   password: string;
 }) {
   try {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const redirectTo = isProduction 
+      ? 'https://echama.vercel.app/verify' 
+      : 'http://localhost:3000/verify';
     const authResult = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
@@ -73,6 +77,7 @@ export async function signUpMeNow(data: {
         data: {
           full_name: data.first_name + ' ' + data.last_name,
         },
+        emailRedirectTo: redirectTo,
       },
     });
 
