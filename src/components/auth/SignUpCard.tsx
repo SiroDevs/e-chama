@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { Box, Button, Typography, Grid, Link } from "@mui/material";
 import { FormControlLabel, Checkbox } from "@mui/material";
 import { LockOutlined, Sync } from "@mui/icons-material";
@@ -14,7 +14,10 @@ import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
 
 const schema = z.object({
-  full_name: z
+  first_name: z
+    .string()
+    .min(4, { message: "Your name must be at least 4 characters" }),
+  last_name: z
     .string()
     .min(4, { message: "Your name must be at least 4 characters" }),
   email: z.string().email({ message: "Invalid email address" }),
@@ -28,8 +31,6 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 export function SignUpCard() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [open, setOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -43,7 +44,7 @@ export function SignUpCard() {
     startTransition(async () => {
       const result = await handleSignupAction(data);
       if (result.success) {
-        await loginUser(result.user!);
+        await loginUser(result.user!, result.profile!);
         window.location.href = "/";
       }
     });
@@ -68,16 +69,34 @@ export function SignUpCard() {
         noValidate
         sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}
       >
-        <FormInput
-          id="full_name"
-          label="Full Name"
-          placeholder="Kamau Onyango"
-          required
-          autoComplete="given-name"
-          autoFocus
-          error={errors.full_name}
-          registration={register("full_name")}
-        />
+        <Typography
+          component="div"
+          sx={{
+            width: "100%",
+            display: "flex",
+            gap: 2,
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
+          <FormInput
+            id="first_name"
+            label="First Name"
+            placeholder="Kamau"
+            required
+            autoComplete="given-name"
+            error={errors.first_name}
+            registration={register("first_name")}
+          />
+          <FormInput
+            id="last_name"
+            label="Last Name"
+            placeholder="Onyango"
+            required
+            autoComplete="family-name"
+            error={errors.last_name}
+            registration={register("last_name")}
+          />
+        </Typography>
 
         <FormInput
           id="email"
@@ -94,7 +113,7 @@ export function SignUpCard() {
           label="Password"
           required
           autoComplete="new-password"
-          placeholder="..."
+          placeholder="******"
           error={errors.password}
           registration={register("password")}
           withPasswordToggle
@@ -122,9 +141,7 @@ export function SignUpCard() {
           Sign Up
         </Button>
         <Typography sx={{ textAlign: "center" }}>
-          <Grid size={2}>
-            <Link href="/">Already have an Account? Sign In</Link>
-          </Grid>
+          <Link href="/">Already have an Account? Sign In</Link>
         </Typography>
       </Box>
     </MuiCard>

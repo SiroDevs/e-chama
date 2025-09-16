@@ -30,11 +30,11 @@ export default function SignOut() {
   return (
     <div className="flex w-full">
       <Button
-        startIcon={<Logout />}
+        endIcon={<Logout />}
         className="w-full gap-6 flex items-center justify-start"
         onClick={handleClickOpen}
       >
-        SignOut
+        Sign Out
       </Button>
 
       <Dialog open={open} onClose={handleClose}>
