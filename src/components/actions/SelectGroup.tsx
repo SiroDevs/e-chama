@@ -49,7 +49,7 @@ export function SelectGroup() {
     >
       <ListSubheader sx={{ pt: 0 }}>My Chamas</ListSubheader>
       {userGroups.map((group) => (
-        <MenuItem value="">
+        <MenuItem key={group.group_id} value="">
           <ListItemAvatar>
             <GroupAdd />
           </ListItemAvatar>
@@ -60,7 +60,7 @@ export function SelectGroup() {
         </MenuItem>
       ))}
       <Divider sx={{ mx: -1 }} />
-      <MenuItem value={40}>
+      <MenuItem key="new-chama" value={40}>
         <ListItemIcon>
           <AddRoundedIcon />
         </ListItemIcon>

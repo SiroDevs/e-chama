@@ -48,7 +48,7 @@ export async function createGroupAction(payload: {
 
       return { success: false };
     } else if (data) {
-      let groups = await getUserGroups(payload.userId);
+      const groups = await getUserGroups(payload.userId);
       return { success: true, groups: groups, group: data.group.id };
     } else {
       toast.error("Chama creation failed");
