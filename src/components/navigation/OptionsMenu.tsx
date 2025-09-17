@@ -9,9 +9,9 @@ import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import ListItemText from '@mui/material/ListItemText';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
-import { handleSignOutAction } from "@/app/(auth)/actions/client";
 import { useAuthStore } from "@/state/auth/auth";
 import { MenuButton } from "../navigation";
+import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 
 const MenuItem = styled(MuiMenuItem)({
   margin: "2px 0",
@@ -31,7 +31,7 @@ export function OptionsMenu() {
   const handleSignOut = async () => {
     await handleSignOutAction();
     await logoutUser();
-    window.location.href = "/";
+    window.location.reload();
   };
 
   return (

@@ -4,9 +4,9 @@ export interface Group {
   title: string;
   description: string | null;
   avatar: string | null;
-  field1: string | null;
-  field2: string | null;
-  field3: string | null;
+  initials: string | null;
+  location: string | null;
+  address: string | null;
   created_at: string;
   updated_at: string | null;
 }
@@ -34,7 +34,9 @@ export interface UserGroup {
   title: string;
   description: string | null;
   avatar: string | null;
-  group_owner: string;
+  initials: string | null;
+  location: string | null;
+  address: string | null;
   created_at: string;
   updated_at: string | null;
   role: string;

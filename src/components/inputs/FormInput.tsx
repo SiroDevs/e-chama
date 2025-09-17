@@ -30,7 +30,6 @@ export function FormInput({
   error,
   registration,
   withPasswordToggle = false,
-  size = 12,
 }: FormInputProps) {
   const [show, setShow] = React.useState(false);
 

@@ -1,9 +1,9 @@
 import { EmailOutlined } from "@mui/icons-material";
 import toast from "react-hot-toast";
 
-import { signInMeNow, signUpMeNow, signMeOut } from "@/services/auth";
+import { signInMeNow, signUpMeNow, signMeOut } from "@/services/AuthService";
 import { NotificationCard } from "@/components/general";
-import { getUserGroups } from "@/services/group";
+import { getUserGroups } from "@/services/GroupService";
 import { UserGroup } from "@/state/auth/types";
 
 export async function handleSigninAction(payload: {
@@ -135,10 +135,4 @@ export async function handleSignupAction(payload: {
     );
     return { success: false };
   }
-}
-
-export async function handleSignOutAction() {
-  await signMeOut();
-  toast.success("You have been logged out. Check back soon");
-  return { success: true };
 }

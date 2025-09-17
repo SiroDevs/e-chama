@@ -6,6 +6,7 @@ import type {} from "@mui/x-charts/themeAugmentation";
 import type {} from "@mui/x-data-grid-pro/themeAugmentation";
 import type {} from "@mui/x-tree-view/themeAugmentation";
 import { alpha, Box, CssBaseline, Stack } from "@mui/material";
+
 import { AppNavbar, Header, SideMenu } from "@/components/navigation";
 import AppTheme from "@/components/shared/AppTheme";
 import {

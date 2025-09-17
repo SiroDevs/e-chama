@@ -2,8 +2,35 @@
 
 import { getServerClient } from "@/lib/supabase/server";
 import { UserGroup, PaginatedResp } from "@/state/auth/types";
+import { supabase } from "@/lib/supabase/client";
 
-  export async function getUserGroups(userId: string): Promise < UserGroup[] > {
+export async function createGroup(data: {
+  user: string, 
+  title: string, 
+  description: string,
+  initials: string,
+  location: string,
+  address: string,
+}) {
+  const { data: groupData, error } = await supabase
+    .from("groups")
+    .insert([
+      {
+        owner: data.user,
+        title: data.title,
+        description: data.description,
+        initials: data.initials,
+        location: data.location,
+        address: data.address,
+      },
+    ])
+    .select()
+    .single();
+  return { data: groupData, error };
+}
+
+
+export async function getUserGroups(userId: string): Promise<UserGroup[]> {
   const supabase = await getServerClient();
   const { data, error } = await supabase
     .from("user_groups")
@@ -11,16 +38,16 @@ import { UserGroup, PaginatedResp } from "@/state/auth/types";
     .eq("user_id", userId)
     .order("title");
 
-  if(error) {
+  if (error) {
     throw new Error(`Failed to fetch user groups: ${error.message}`);
   }
-    return data as UserGroup[];
+  return data as UserGroup[];
 }
 
-  export async function getUserGroupDetails(
+export async function getUserGroupDetails(
   userId: string,
   groupId: string
-): Promise < UserGroup | null > {
+): Promise<UserGroup | null> {
   const supabase = await getServerClient();
   const { data, error } = await supabase
     .from("user_groups")
@@ -29,20 +56,20 @@ import { UserGroup, PaginatedResp } from "@/state/auth/types";
     .eq("group_id", groupId)
     .single();
 
-  if(error) {
+  if (error) {
     if (error.code === "PGRST116") {
       return null;
     }
     throw new Error(`Failed to fetch group details: ${error.message}`);
   }
 
-    return data as UserGroup;
+  return data as UserGroup;
 }
 
-  export async function searchUserGroups(
+export async function searchUserGroups(
   userId: string,
   searchTerm: string
-): Promise < UserGroup[] > {
+): Promise<UserGroup[]> {
   const supabase = await getServerClient();
   const { data, error } = await supabase
     .from("user_groups")
@@ -51,18 +78,18 @@ import { UserGroup, PaginatedResp } from "@/state/auth/types";
     .ilike("title", `%${searchTerm}%`)
     .order("title");
 
-  if(error) {
+  if (error) {
     throw new Error(`Failed to search groups: ${error.message}`);
   }
 
-    return data as UserGroup[];
+  return data as UserGroup[];
 }
 
-  export async function getUserGroupsPaginated(
+export async function getUserGroupsPaginated(
   userId: string,
   page: number = 1,
   pageSize: number = 10
-): Promise < PaginatedResp < UserGroup >> {
+): Promise<PaginatedResp<UserGroup>> {
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
@@ -74,11 +101,11 @@ import { UserGroup, PaginatedResp } from "@/state/auth/types";
     .range(from, to)
     .order("title");
 
-  if(error) {
+  if (error) {
     throw new Error(`Failed to fetch paginated groups: ${error.message}`);
   }
 
-    const totalCount = count;
+  const totalCount = count;
   const totalPages = totalCount ? Math.ceil(totalCount / pageSize) : 0;
 
   return {
@@ -90,10 +117,10 @@ import { UserGroup, PaginatedResp } from "@/state/auth/types";
   };
 }
 
-  export async function getUserRoleInGroup(
+export async function getUserRoleInGroup(
   userId: string,
   groupId: string
-): Promise < string | null > {
+): Promise<string | null> {
   const supabase = await getServerClient();
   const { data, error } = await supabase
     .from("members")
@@ -102,7 +129,7 @@ import { UserGroup, PaginatedResp } from "@/state/auth/types";
     .eq("group", groupId)
     .single();
 
-  if(error) {
+  if (error) {
     if (error.code === "PGRST116") {
       // No rows found
       return null;
@@ -110,10 +137,10 @@ import { UserGroup, PaginatedResp } from "@/state/auth/types";
     throw new Error(`Failed to fetch user role: ${error.message}`);
   }
 
-    return data.role;
+  return data.role;
 }
 
-  export async function isUserMemberOfGroup(userId: string, groupId: string): Promise < boolean > {
+export async function isUserMemberOfGroup(userId: string, groupId: string): Promise<boolean> {
   const supabase = await getServerClient();
   const { data, error } = await supabase
     .from("members")
@@ -122,12 +149,12 @@ import { UserGroup, PaginatedResp } from "@/state/auth/types";
     .eq("group", groupId)
     .single();
 
-  if(error) {
+  if (error) {
     if (error.code === "PGRST116") {
       return false;
     }
     throw new Error(`Failed to check membership: ${error.message}`);
   }
 
-    return !!data;
+  return !!data;
 }

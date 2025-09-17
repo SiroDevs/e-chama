@@ -8,7 +8,7 @@ import { CheckCircle, Error, ArrowForward } from "@mui/icons-material";
 import AppTheme from "@/components/shared/AppTheme";
 import { AppIcon } from "@/components/general/CustomIcons";
 import { Loader } from "@/components/general/Loader";
-import { verifyToken } from "@/services/auth";
+import { verifyToken } from "@/services/AuthService";
 
 interface VerifyEmailProps {
   searchParams: {

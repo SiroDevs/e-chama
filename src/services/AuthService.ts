@@ -1,7 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
-import { newUser } from "./user";
+import { createProfile } from "./ProfileService";
 
 export async function signInMeNow(data: { email: string; password: string }) {
   try {
@@ -77,7 +77,7 @@ export async function signUpMeNow(data: {
       };
     }
 
-    const profileResult = await newUser(
+    const profileResult = await createProfile(
       authResult.data.user.id,
       data.first_name,
       data.last_name

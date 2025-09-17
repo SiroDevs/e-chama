@@ -10,7 +10,7 @@ import { LockOutlined, Sync } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { handleSigninAction } from "@/app/(auth)/actions/client";
+import { handleSigninAction } from "@/app/(auth)/actions/AuthAction";
 import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
@@ -41,14 +41,13 @@ export function SignInCard() {
       const result = await handleSigninAction(data);
       if (result.success) {
         await loginUser(result.user!, result.profile!);
-
         if (result.groups && result.groups.length > 0) {
           await setUserGroups(result.groups, result.profile?.group || null);
         } else {
           await setUserGroups([], null);
         }
 
-        window.location.href = "/";
+        window.location.reload();
       }
     });
   }
