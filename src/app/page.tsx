@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CssBaseline, PaletteMode } from "@mui/material";
+import { Toaster } from "react-hot-toast";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CssBaseline, PaletteMode } from "@mui/material";
 
 import { AuthWrapper, SignInCard } from "@/components/auth";
-import { useAuthStore } from "@/state/auth/auth";
-import { Toaster } from "react-hot-toast";
-import { Loader } from "@/components/general/Loader";
 import { UserWrapper } from "@/components/user/UserWrapper";
+import { Loader } from "@/components/general/Loader";
+import { useAuthStore } from "@/state/auth/auth";
 import Dashboard from "./(protected)/dashboard";
 
 export default function Home() {

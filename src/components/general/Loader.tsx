@@ -11,8 +11,8 @@ interface LoaderProps {
 }
 
 export function Loader({
-  title = "Verifying your email...",
-  message = "Please wait while we verify your email address.",
+  title = "",
+  message = "",
   showSpinner = true,
   size = 60,
   thickness = 4

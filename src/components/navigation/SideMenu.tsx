@@ -78,10 +78,10 @@ export function SideMenu() {
           variant="body2"
           sx={{ fontWeight: 500, lineHeight: "16px" }}
         >
-          {profile.first_name} {profile.last_name}
+          {profile!.first_name} {profile!.last_name}
         </Typography>
         <Typography variant="caption" sx={{ color: "text.secondary" }}>
-          {user.email}
+          {user!.email}
         </Typography>
       </Box>
       <OptionsMenu />

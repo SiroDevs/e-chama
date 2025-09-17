@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { signInMeNow, signUpMeNow, signMeOut } from "@/services/auth";
 import { NotificationCard } from "@/components/general";
 import { getUserGroups } from "@/services/group";
+import { UserGroup } from "@/state/auth/types";
 
 export async function handleSigninAction(payload: {
   email: string;
@@ -44,12 +45,17 @@ export async function handleSigninAction(payload: {
 
       return { success: false };
     } else if (data) {
-      const groupResult = await getUserGroups(data.user.id);
+      let groups: UserGroup[] = [];
+      try {
+        groups = await getUserGroups(data.user.id);
+      } catch (groupError) {
+        console.warn("No groups found for this user:", groupError);
+      }
       return {
         success: true,
         user: data.user,
         profile: data.profile,
-        groups: groupResult,
+        groups: groups,
       };
     } else {
       toast.error("No data returned from sign in");

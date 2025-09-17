@@ -14,7 +14,7 @@ export default function SignOut() {
 
   const handleSignOut = async () => {
     handleClose();
-    const result = await handleSignOutAction();
+    await handleSignOutAction();
     await logoutUser();
     window.location.href = "/";
   };
