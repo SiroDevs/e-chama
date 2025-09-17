@@ -1,17 +1,24 @@
+"use client";
+
 import * as React from "react";
 import Divider, { dividerClasses } from "@mui/material/Divider";
 import { Menu, listClasses, styled, paperClasses } from "@mui/material";
 import MuiMenuItem from "@mui/material/MenuItem";
-import { listItemIconClasses } from "@mui/material/ListItemIcon";
+import ListItemIcon, { listItemIconClasses } from '@mui/material/ListItemIcon';
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
-import SignOut from "@/app/(auth)/signout";
+import ListItemText from '@mui/material/ListItemText';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+
+import { useAuthStore } from "@/state/auth/auth";
 import { MenuButton } from "../navigation";
+import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 
 const MenuItem = styled(MuiMenuItem)({
   margin: "2px 0",
 });
 
 export function OptionsMenu() {
+  const { logoutUser } = useAuthStore();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,6 +27,13 @@ export function OptionsMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleSignOut = async () => {
+    await handleSignOutAction();
+    await logoutUser();
+    window.location.reload();
+  };
+
   return (
     <React.Fragment>
       <MenuButton
@@ -55,14 +69,18 @@ export function OptionsMenu() {
         <MenuItem onClick={handleClose}>Settings</MenuItem>
         <Divider />
         <MenuItem
+          onClick={handleSignOut}
           sx={{
             [`& .${listItemIconClasses.root}`]: {
-              ml: "auto",
+              ml: 'auto',
               minWidth: 0,
             },
           }}
         >
-          <SignOut />
+          <ListItemText>Sign Out</ListItemText>
+          <ListItemIcon>
+            <LogoutRoundedIcon fontSize="small" />
+          </ListItemIcon>
         </MenuItem>
       </Menu>
     </React.Fragment>

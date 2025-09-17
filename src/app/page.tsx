@@ -1,29 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CssBaseline, PaletteMode } from "@mui/material";
+import { Toaster } from "react-hot-toast";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CssBaseline, PaletteMode } from "@mui/material";
 
 import { AuthWrapper, SignInCard } from "@/components/auth";
-import { useAuthStore } from "@/state/auth/auth";
-import { Toaster } from "react-hot-toast";
-import { Loader } from "@/components/general/Loader";
 import { UserWrapper } from "@/components/user/UserWrapper";
+import { Loader } from "@/components/general/Loader";
+import { useAuthStore } from "@/state/auth/auth";
 import Dashboard from "./(protected)/dashboard";
+import NoGroups from "./(protected)/nogroups";
 
 export default function Home() {
   const [mode] = useState<PaletteMode>("light");
   const [isLoading, setIsLoading] = useState(true);
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, userGroups } = useAuthStore();
 
   const defaultTheme = createTheme({ palette: { mode } });
 
   useEffect(() => {
-    const checkAuth = () => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    };
-    checkAuth();
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
+
+  const hasGroups = Array.isArray(userGroups) && userGroups.length > 0;
 
   if (isLoading) {
     return (
@@ -36,12 +40,16 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <CssBaseline /> 
+      <CssBaseline />
       <Toaster position="top-center" reverseOrder={false} />
       {isAuthenticated ? (
-        <UserWrapper >
-          <Dashboard />
-        </UserWrapper>
+        hasGroups ? (
+          <UserWrapper>
+            <Dashboard />
+          </UserWrapper>
+        ) : (
+          <NoGroups />
+        )
       ) : (
         <AuthWrapper>
           <SignInCard />

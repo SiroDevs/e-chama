@@ -2,10 +2,11 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
-import { SelectContent } from "../general";
-import { OptionsMenu } from "../navigation";
-import { MenuContent } from ".";
+
 import { useAuthStore } from "@/state/auth/auth";
+import { OptionsMenu } from "../navigation";
+import { SelectGroup } from "../general";
+import { MenuContent } from ".";
 
 const drawerWidth = 240;
 
@@ -21,7 +22,7 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export function SideMenu() {
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
   return (
     <Drawer
       variant="permanent"
@@ -32,15 +33,15 @@ export function SideMenu() {
         },
       }}
     >
-      {/* <Box
+      <Box
         sx={{
           display: "flex",
           mt: "calc(var(--template-frame-height, 0px) + 4px)",
           p: 1.5,
         }}
       >
-        <SelectContent />
-      </Box> */}
+        <SelectGroup />
+      </Box>
       <Divider />
       <Box
         sx={{
@@ -77,10 +78,10 @@ export function SideMenu() {
           variant="body2"
           sx={{ fontWeight: 500, lineHeight: "16px" }}
         >
-          {user.name}
+          {profile!.first_name} {profile!.last_name}
         </Typography>
         <Typography variant="caption" sx={{ color: "text.secondary" }}>
-          {user.email}
+          {user!.email}
         </Typography>
       </Box>
       <OptionsMenu />

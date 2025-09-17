@@ -5,8 +5,8 @@ import { Button, Dialog } from "@mui/material";
 import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
 
-import { handleSignOutAction } from "../actions/client";
 import { useAuthStore } from "@/state/auth/auth";
+import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 
 export default function SignOut() {
   const { logoutUser } = useAuthStore();
@@ -14,9 +14,9 @@ export default function SignOut() {
 
   const handleSignOut = async () => {
     handleClose();
-    const result = await handleSignOutAction();
+    await handleSignOutAction();
     await logoutUser();
-    window.location.href = "/";
+    window.location.reload();
   };
 
   const handleClickOpen = () => {

@@ -10,6 +10,6 @@ export * from "./MainGrid";
 export * from "./NotificationCard";
 export * from "./PageViewsBarChart";
 export * from "./Search";
-export * from "./SelectContent";
+export * from "../actions/SelectGroup";
 export * from "./SessionsChart";
 export * from "./StatCard";

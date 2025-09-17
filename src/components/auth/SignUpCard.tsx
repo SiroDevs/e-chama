@@ -8,7 +8,7 @@ import { LockOutlined, Sync } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { handleSignupAction } from "@/app/(auth)/actions/client";
+import { handleSignupAction } from "@/app/(auth)/actions/AuthAction";
 import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
@@ -45,7 +45,7 @@ export function SignUpCard() {
       const result = await handleSignupAction(data);
       if (result.success) {
         await loginUser(result.user!, result.profile!);
-        window.location.href = "/";
+        window.location.reload();
       }
     });
   }

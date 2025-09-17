@@ -1,0 +1,160 @@
+"use server";
+
+import { getServerClient } from "@/lib/supabase/server";
+import { UserGroup, PaginatedResp } from "@/state/auth/types";
+import { supabase } from "@/lib/supabase/client";
+
+export async function createGroup(data: {
+  user: string, 
+  title: string, 
+  description: string,
+  initials: string,
+  location: string,
+  address: string,
+}) {
+  const { data: groupData, error } = await supabase
+    .from("groups")
+    .insert([
+      {
+        owner: data.user,
+        title: data.title,
+        description: data.description,
+        initials: data.initials,
+        location: data.location,
+        address: data.address,
+      },
+    ])
+    .select()
+    .single();
+  return { data: groupData, error };
+}
+
+
+export async function getUserGroups(userId: string): Promise<UserGroup[]> {
+  const supabase = await getServerClient();
+  const { data, error } = await supabase
+    .from("user_groups")
+    .select("*")
+    .eq("user_id", userId)
+    .order("title");
+
+  if (error) {
+    throw new Error(`Failed to fetch user groups: ${error.message}`);
+  }
+  return data as UserGroup[];
+}
+
+export async function getUserGroupDetails(
+  userId: string,
+  groupId: string
+): Promise<UserGroup | null> {
+  const supabase = await getServerClient();
+  const { data, error } = await supabase
+    .from("user_groups")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("group_id", groupId)
+    .single();
+
+  if (error) {
+    if (error.code === "PGRST116") {
+      return null;
+    }
+    throw new Error(`Failed to fetch group details: ${error.message}`);
+  }
+
+  return data as UserGroup;
+}
+
+export async function searchUserGroups(
+  userId: string,
+  searchTerm: string
+): Promise<UserGroup[]> {
+  const supabase = await getServerClient();
+  const { data, error } = await supabase
+    .from("user_groups")
+    .select("*")
+    .eq("user_id", userId)
+    .ilike("title", `%${searchTerm}%`)
+    .order("title");
+
+  if (error) {
+    throw new Error(`Failed to search groups: ${error.message}`);
+  }
+
+  return data as UserGroup[];
+}
+
+export async function getUserGroupsPaginated(
+  userId: string,
+  page: number = 1,
+  pageSize: number = 10
+): Promise<PaginatedResp<UserGroup>> {
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const supabase = await getServerClient();
+  const { data, error, count } = await supabase
+    .from("user_groups")
+    .select("*", { count: "exact" })
+    .eq("user_id", userId)
+    .range(from, to)
+    .order("title");
+
+  if (error) {
+    throw new Error(`Failed to fetch paginated groups: ${error.message}`);
+  }
+
+  const totalCount = count;
+  const totalPages = totalCount ? Math.ceil(totalCount / pageSize) : 0;
+
+  return {
+    data: data as UserGroup[],
+    totalCount,
+    page,
+    pageSize,
+    totalPages,
+  };
+}
+
+export async function getUserRoleInGroup(
+  userId: string,
+  groupId: string
+): Promise<string | null> {
+  const supabase = await getServerClient();
+  const { data, error } = await supabase
+    .from("members")
+    .select("role")
+    .eq("user", userId)
+    .eq("group", groupId)
+    .single();
+
+  if (error) {
+    if (error.code === "PGRST116") {
+      // No rows found
+      return null;
+    }
+    throw new Error(`Failed to fetch user role: ${error.message}`);
+  }
+
+  return data.role;
+}
+
+export async function isUserMemberOfGroup(userId: string, groupId: string): Promise<boolean> {
+  const supabase = await getServerClient();
+  const { data, error } = await supabase
+    .from("members")
+    .select("id")
+    .eq("user", userId)
+    .eq("group", groupId)
+    .single();
+
+  if (error) {
+    if (error.code === "PGRST116") {
+      return false;
+    }
+    throw new Error(`Failed to check membership: ${error.message}`);
+  }
+
+  return !!data;
+}
