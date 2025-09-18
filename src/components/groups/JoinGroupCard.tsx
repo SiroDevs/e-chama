@@ -17,7 +17,7 @@ interface JoinGroupCardProps {
 }
 
 export function JoinGroupCard({ hasGroups = true }: JoinGroupCardProps) {
-  const { logoutUser } = useAuthStore();
+  const { profile, logoutUser } = useAuthStore();
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleOpenDialog = () => {
@@ -69,7 +69,7 @@ export function JoinGroupCard({ hasGroups = true }: JoinGroupCardProps) {
                   ⚠️ You aren&apos;t in any Chama
                 </Typography>
                 <Alert severity="error" sx={{ my: 2 }}>
-                  This will go away, if you become a member of a chama.
+                 Hey, {profile!.first_name} this screen will go away, as soon as you become a member of a chama.
                 </Alert>
                 <Divider />
               </>

@@ -1,7 +1,7 @@
 "use server";
 
 import { getServerClient } from "@/lib/supabase/server";
-import { UserGroup, PaginatedResp, Group } from "@/state/auth/groups";
+import { UserGroup, PaginatedResp, Group } from "@/state/auth/types";
 import { supabase } from "@/lib/supabase/client";
 import { getMemberCount } from "./MemberService";
 

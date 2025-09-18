@@ -1,70 +1,155 @@
 import * as React from "react";
-import MuiAvatar from "@mui/material/Avatar";
-import MuiListItemAvatar from "@mui/material/ListItemAvatar";
-import { MenuItem, ListItemText, ListItemIcon } from "@mui/material";
-import { Divider, ListSubheader } from "@mui/material";
+import { Avatar, Box, MenuItem } from "@mui/material";
+import { ListItemText, ListItemIcon } from "@mui/material";
 import Select, { SelectChangeEvent, selectClasses } from "@mui/material/Select";
-import { styled } from "@mui/material/styles";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import { getRoleInfo, isUserRole, UserRole } from "@/state/role/profiles";
 
-import { useAuthStore } from "@/state/auth/auth";
-import { useState } from "react";
-import { GroupAdd } from "@mui/icons-material";
+const getRoleColor = (role: string) => {
+  if (!isUserRole(role)) return "default";
 
-const ListItemAvatar = styled(MuiListItemAvatar)({
-  minWidth: 0,
-  marginRight: 12,
-});
+  switch (role) {
+    case "admin":
+      return "error";
+    case "treasurer":
+      return "warning";
+    case "accountant":
+      return "secondary";
+    case "secretary":
+      return "info";
+    case "chairperson":
+      return "success";
+    case "vicechairperson":
+      return "success";
+    case "official":
+      return "primary";
+    case "member":
+      return "default";
+    default:
+      return "default";
+  }
+};
 
-export function SelectGroup() {
-  const { userGroups, selectedGroup, setSelectedGroup } = useAuthStore();
-  const [group, setGroup] = useState("");
+const getRoleIcon = (role: string) => {
+  if (!isUserRole(role)) return "👤";
 
+  switch (role) {
+    case "admin":
+      return "⚙️";
+    case "treasurer":
+      return "💰";
+    case "accountant":
+      return "📊";
+    case "secretary":
+      return "📝";
+    case "chairperson":
+      return "👑";
+    case "vicechairperson":
+      return "🎖️";
+    case "official":
+      return "⭐";
+    case "member":
+      return "👤";
+    default:
+      return "👤";
+  }
+};
+
+interface SelectRoleProps {
+  currentRole: UserRole;
+  availableRoles: UserRole[];
+  onRoleChange: (role: UserRole) => void;
+  size?: "small" | "medium";
+}
+
+export function SelectRole({
+  currentRole,
+  availableRoles,
+  onRoleChange,
+  size = "medium",
+}: SelectRoleProps) {
   const handleChange = (event: SelectChangeEvent) => {
-    setGroup(event.target.value as string);
+    const newRole = event.target.value;
+    if (isUserRole(newRole)) {
+      onRoleChange(newRole);
+    }
   };
+
+  const rolesWithMember = availableRoles.includes("member")
+    ? availableRoles
+    : [...availableRoles, "member"];
+
+  const uniqueRoles = Array.from(new Set(rolesWithMember)).filter(isUserRole);
 
   return (
     <Select
-      labelId="group-select"
-      id="group-simple-select"
-      value={group}
+      value={currentRole}
       onChange={handleChange}
       displayEmpty
-      inputProps={{ "aria-label": "Select Group" }}
-      fullWidth
+      inputProps={{ "aria-label": "Select Role" }}
       sx={{
-        maxHeight: 56,
-        width: 215,
-        "&.MuiList-root": {
-          p: "8px",
-        },
+        maxHeight: size === "small" ? 32 : 40,
+        minWidth: size === "small" ? 130 : 150,
         [`& .${selectClasses.select}`]: {
           display: "flex",
           alignItems: "center",
-          gap: "2px",
-          pl: 1,
+          gap: "6px",
+          padding: size === "small" ? "2px 6px" : "4px 8px",
+          fontSize: size === "small" ? "0.875rem" : "1rem",
         },
       }}
+      renderValue={(selected) => {
+        const roleInfo = getRoleInfo(selected);
+        return (
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            color={getRoleColor(selected)}
+          >
+            <Avatar
+              sx={{
+                width: size === "small" ? 20 : 24,
+                height: size === "small" ? 20 : 24,
+                fontSize: size === "small" ? "12px" : "14px",
+              }}
+            >
+              {getRoleIcon(selected)}
+            </Avatar>
+            <ListItemText primary={roleInfo.label} />
+          </Box>
+        );
+      }}
     >
-      <ListSubheader sx={{ pt: 0 }}>My Chamas</ListSubheader>
-      {userGroups.map((group) => (
-        <MenuItem key={group.group_id} value="">
-          <ListItemAvatar>
-            <GroupAdd />
-          </ListItemAvatar>
-          <ListItemText
-            primary={group.title}
-          />
-        </MenuItem>
-      ))}
-      <Divider sx={{ mx: -1 }} />
-      <MenuItem key="new-chama" value={40}>
-        <ListItemIcon>
-          <AddRoundedIcon />
-        </ListItemIcon>
-        <ListItemText primary="Add a Chama" secondary="Add or Join aNew Chama" />
-      </MenuItem>
+      {uniqueRoles.map((role) => {
+        const roleInfo = getRoleInfo(role);
+        const roleDescription =
+          role === currentRole ? "Current Dashboard View" : roleInfo.description;
+        return (
+          <MenuItem key={role} value={role} color="primary">
+            <ListItemIcon>
+              <Avatar
+                sx={{
+                  width: size === "small" ? 20 : 24,
+                  height: size === "small" ? 20 : 24,
+                  fontSize: size === "small" ? "12px" : "14px",
+                }}
+              >
+                {getRoleIcon(role)}
+              </Avatar>
+            </ListItemIcon>
+            <ListItemText
+              primary={"CHAMA " +roleInfo.label.toUpperCase()}
+              secondary={roleDescription}
+              primaryTypographyProps={{
+                fontSize: size === "small" ? "0.875rem" : "1rem",
+              }}
+              secondaryTypographyProps={{
+                fontSize: size === "small" ? "0.75rem" : "0.875rem",
+              }}
+            />
+          </MenuItem>
+        );
+      })}
     </Select>
   );
 }

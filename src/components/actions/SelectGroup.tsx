@@ -6,9 +6,8 @@ import Select, { SelectChangeEvent, selectClasses } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
-import { useAuthStore } from "@/state/auth/auth";
-import { useState } from "react";
 import { GroupAdd } from "@mui/icons-material";
+import { useGroupStore } from "@/state/auth/group";
 
 const ListItemAvatar = styled(MuiListItemAvatar)({
   minWidth: 0,
@@ -16,18 +15,24 @@ const ListItemAvatar = styled(MuiListItemAvatar)({
 });
 
 export function SelectGroup() {
-  const { userGroups, selectedGroup, setSelectedGroup } = useAuthStore();
-  const [group, setGroup] = useState("");
-
+  const { userGroups, selectedGroup, setSelectedGroup } = useGroupStore();
   const handleChange = (event: SelectChangeEvent) => {
-    setGroup(event.target.value as string);
+    const groupId = event.target.value;
+    if (groupId === "add-new") {
+      window.location.href = '/join-a-chama';
+      event.target.value = selectedGroup || "";
+    } else {
+      setSelectedGroup(groupId);
+    }
   };
+
+  const currentGroup = userGroups.find(group => group.group_id === selectedGroup);
 
   return (
     <Select
       labelId="group-select"
       id="group-simple-select"
-      value={group}
+      value={selectedGroup || ""}
       onChange={handleChange}
       displayEmpty
       inputProps={{ "aria-label": "Select Chama" }}
@@ -45,24 +50,38 @@ export function SelectGroup() {
           pl: 1,
         },
       }}
+      renderValue={(selected) => {
+        if (!selected) {
+          return "Select a Chama";
+        }
+        const selectedGroup = userGroups.find(group => group.group_id === selected);
+        return selectedGroup ? selectedGroup.title : "Select a Chama";
+      }}
     >
       <ListSubheader sx={{ pt: 0 }}>My Chamas</ListSubheader>
-      {userGroups.map((group) => (
-        <MenuItem key={group.group_id} value="">
-          <ListItemAvatar>
-            <GroupAdd />
-          </ListItemAvatar>
-          <ListItemText
-            primary={group.title}
-          />
+      {userGroups.length === 0 ? (
+        <MenuItem disabled value="">
+          <ListItemText primary="No groups available" />
         </MenuItem>
-      ))}
+      ) : (
+        userGroups.map((group) => (
+          <MenuItem key={group.group_id} value={group.group_id}>
+            <ListItemAvatar>
+              <GroupAdd />
+            </ListItemAvatar>
+            <ListItemText
+              primary={group.title}
+              secondary={group.group_id === selectedGroup ? "Current" : ""}
+            />
+          </MenuItem>
+        ))
+      )}
       <Divider sx={{ mx: -1 }} />
-      <MenuItem key="new-chama" value={40}>
+      <MenuItem key="new-chama" value="add-new">
         <ListItemIcon>
           <AddRoundedIcon />
         </ListItemIcon>
-        <ListItemText primary="Add a Chama" secondary="Add or Join aNew Chama" />
+        <ListItemText primary="Add a Chama" secondary="Add or Join a New Chama" />
       </MenuItem>
     </Select>
   );

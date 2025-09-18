@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { signInMeNow, signUpMeNow, signMeOut } from "@/services/AuthService";
 import { NotificationCard } from "@/components/general";
 import { getUserGroups } from "@/services/GroupService";
-import { UserGroup } from "@/state/auth/groups";
+import { UserGroup } from "@/state/auth/types";
 
 export async function handleSigninAction(payload: {
   email: string;

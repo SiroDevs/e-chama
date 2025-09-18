@@ -7,13 +7,15 @@ import { useAuthStore } from "@/state/auth/auth";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { LoadingWrapper } from "./LoadingWrapper";
+import { useGroupStore } from "@/state/auth/group";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, userGroups, isLoading } = useAuthStore();
+  const { isAuthenticated, isLoading } = useAuthStore();
+  const { userGroups } = useGroupStore();
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const hasGroups = Array.isArray(userGroups) && userGroups.length > 0;
 

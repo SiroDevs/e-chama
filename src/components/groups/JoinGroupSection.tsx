@@ -6,12 +6,14 @@ import { Box, Typography, TextField, CircularProgress } from "@mui/material";
 import { Alert as MuiAlert, InputAdornment, IconButton } from "@mui/material";
 
 import { joinGroupAction, searchGroupAction } from "@/app/(protected)/actions/GroupAction";
-import { GroupExt } from "@/state/auth/groups";
+import { GroupExt } from "@/state/auth/types";
 import { useAuthStore } from "@/state/auth/auth";
 import { JoinGroupItem } from "@/components/actions/JoinGroupItem";
+import { useGroupStore } from "@/state/auth/group";
 
 export function JoinGroupSection() {
-  const { user, setUserGroups } = useAuthStore();
+  const { user } = useAuthStore();
+  const { setUserGroups } = useGroupStore();
   const [joinCode, setJoinCode] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [foundGroup, setFoundGroup] = useState<GroupExt | null>(null);

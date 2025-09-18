@@ -13,6 +13,7 @@ import { useAuthStore } from "@/state/auth/auth";
 import { FormInput } from "@/components/inputs/FormInput";
 import { createGroupAction } from "@/app/(protected)/actions/GroupAction";
 import { createGroupLabels, createGroupSchema } from "./arrays";
+import { useGroupStore } from "@/state/auth/group";
 
 type CreateGroupFormData = z.infer<typeof createGroupSchema>;
 
@@ -29,7 +30,8 @@ export default function CreateGroupDialog({
 }: CreateGroupDialogProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { user, setUserGroups } = useAuthStore();
+  const { user } = useAuthStore();
+  const { setUserGroups } = useGroupStore();
 
   const {
     register,

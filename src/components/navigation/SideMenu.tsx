@@ -1,11 +1,11 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
-import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 
-import { useAuthStore } from "@/state/auth/auth";
-import { SelectGroup } from "../general";
 import { MenuContent } from ".";
+import { SelectRole } from "../actions/SelectRole";
+import { useGroupStore } from "@/state/auth/group";
 
 const drawerWidth = 240;
 
@@ -21,7 +21,7 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export function SideMenu() {
-  const { user, profile } = useAuthStore();
+  const { currentRole, availableRoles, setCurrentRole } = useGroupStore();
   return (
     <Drawer
       variant="permanent"
@@ -39,7 +39,11 @@ export function SideMenu() {
           p: 1.5,
         }}
       >
-        <SelectGroup />
+        <SelectRole
+          currentRole={currentRole}
+          availableRoles={availableRoles}
+          onRoleChange={setCurrentRole}
+        />
       </Box>
       <Divider />
       <Box

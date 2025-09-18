@@ -14,6 +14,7 @@ import { handleSigninAction } from "@/app/(auth)/actions/AuthAction";
 import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
+import { useGroupStore } from "@/state/auth/group";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -33,7 +34,8 @@ export function SignInCard() {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
   const [loading, startTransition] = useTransition();
 
-  const { loginUser, setUserGroups } = useAuthStore();
+  const { loginUser } = useAuthStore();
+  const { setUserGroups } = useGroupStore();
   const handleClickOpen = () => setOpen(true);
 
   function onSubmit(data: FormData) {
