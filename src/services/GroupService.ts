@@ -1,7 +1,7 @@
 "use server";
 
 import { getServerClient } from "@/lib/supabase/server";
-import { UserGroup, PaginatedResp } from "@/state/auth/types";
+import { UserGroup, PaginatedResp, Group } from "@/state/auth/groups";
 import { supabase } from "@/lib/supabase/client";
 
 export async function createGroup(data: {
@@ -157,4 +157,87 @@ export async function isUserMemberOfGroup(userId: string, groupId: string): Prom
   }
 
   return !!data;
+}
+
+export async function searchByCode(code: string): Promise<(Group & { member_count: number }) | null> {
+  const supabase = await getServerClient();
+  const { data, error } = await supabase
+    .from("groups")
+    .select("*")
+    .eq("code", code)
+    .single();
+
+  if (error) {
+    if (error.code === "PGRST116") {
+      return null;
+    }
+    throw new Error(`Failed to search group by code: ${error.message}`);
+  }
+
+  // Get member count
+  const memberCount = await getMemberCount(data.id);
+
+  return { 
+    ...data as Group, 
+    member_count: memberCount 
+  };
+}
+
+export async function joinGroup(groupId: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = await getServerClient();
+    const { data: user } = await supabase.auth.getUser();
+    if (!user.user) {
+      return { success: false, error: "User not authenticated" };
+    }
+
+    const { data: existingMember, error: checkError } = await supabase
+      .from("members")
+      .select("id")
+      .eq("user", user.user.id)
+      .eq("group", groupId)
+      .single();
+
+    if (!checkError || checkError.code !== "PGRST116") {
+      return { success: false, error: "You are already a member of this group" };
+    }
+
+    const { error: joinError } = await supabase
+      .from("members")
+      .insert([
+        {
+          user: user.user.id,
+          group: groupId,
+          role: "member"
+        }
+      ]);
+
+    if (joinError) {
+      console.error("Join group error:", joinError);
+      return { success: false, error: joinError.message };
+    }
+
+    return { success: true };
+  } catch (err) {
+    console.error("Join group exception:", err);
+    return { 
+      success: false, 
+      error: err instanceof Error ? err.message : "Unknown error occurred" 
+    };
+  }
+}
+
+export async function getMemberCount(groupId: string): Promise<number> {
+  const supabase = await getServerClient();
+  const { count, error } = await supabase
+    .from("members")
+    .select("*", { count: "exact" })
+    .eq("group", groupId);
+
+  if (error) {
+    console.error("Error getting member count:", error);
+    return 0;
+  }
+
+  return count || 0;
 }

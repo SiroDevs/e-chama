@@ -1,7 +1,9 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand";
 import { User } from "@supabase/supabase-js";
-import { Profile, UserGroup } from "./types";
+
+import { UserGroup } from "./groups";
+import { Profile } from "./profiles";
 
 interface State {
   isAuthenticated: boolean;

@@ -5,18 +5,18 @@ import { createGroup } from "./GroupService";
 import { updateSelectedGroup } from "./ProfileService";
 
 export async function createMember(
-  groupId: string,
-  userId: string,
-  memberNo: string,
+  group_id: string,
+  user_id: string,
+  member_no: string,
   role: string
 ) {
   const { data: memberData, error } = await supabase
     .from("members")
     .insert([
       {
-        group: groupId,
-        user: userId,
-        member_no: memberNo,
+        group_id: group_id,
+        user_id: user_id,
+        member_no: member_no,
         role: role,
       },
     ])
