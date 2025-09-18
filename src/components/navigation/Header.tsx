@@ -4,8 +4,10 @@ import { Search } from "@mui/icons-material";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 
 import ColorModeIconDropdown from "../shared/ColorModeSelect";
-import { MenuButton, NavbarBreadcrumbs } from ".";
-import { CustomDatePicker } from "../general";
+import { MenuButton } from ".";
+import { useAuthStore } from "@/state/auth/auth";
+import { SelectGroup } from "../general";
+import AccountMenu from "./AccountMenu";
 
 export function Header() {
   return (
@@ -21,7 +23,7 @@ export function Header() {
       }}
       spacing={2}
     >
-      <NavbarBreadcrumbs />
+      <SelectGroup />
       <Stack direction="row" sx={{ gap: 1 }}>
         <Search />
         {/* <CustomDatePicker /> */}
@@ -29,7 +31,10 @@ export function Header() {
           <NotificationsRoundedIcon />
         </MenuButton>
         <ColorModeIconDropdown />
+        {/* {userMenu()} */}
+        <AccountMenu/>
       </Stack>
     </Stack>
   );
+
 }

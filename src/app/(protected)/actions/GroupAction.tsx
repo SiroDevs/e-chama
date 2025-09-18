@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 
 import { createMember, createMemberGroup } from "@/services/MemberService";
 import { getUserGroups, searchByCode } from "@/services/GroupService";
-import { GroupExt } from "@/state/auth/groups";
+import { GroupExt } from "@/state/auth/types";
 
 export async function createGroupAction(payload: {
   userId: string;

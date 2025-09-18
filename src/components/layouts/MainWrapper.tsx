@@ -23,11 +23,11 @@ const xThemeComponents = {
   ...treeViewCustomizations,
 };
 
-interface UserWrapperProps {
+interface MainWrapperProps {
   children: React.ReactNode;
 }
 
-export function UserWrapper(props: UserWrapperProps) {
+export function MainWrapper(props: MainWrapperProps) {
   const { children } = props;
   return (
     <AppTheme themeComponents={xThemeComponents}>

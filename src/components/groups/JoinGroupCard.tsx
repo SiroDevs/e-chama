@@ -8,12 +8,16 @@ import { Button, Alert, CssBaseline } from "@mui/material";
 import { useAuthStore } from "@/state/auth/auth";
 import AppTheme from "@/components/shared/AppTheme";
 import { AppIcon } from "@/components/general/CustomIcons";
-import NewGroupDialog from "@/app/(protected)/nogroups/NewGroupDialog";
-import { handleSignOutAction } from "../actions/AuthAction";
+import NewGroupDialog from "@/components/groups/NewGroupDialog";
+import { handleSignOutAction } from "../../app/(protected)/actions/AuthAction";
 import { JoinGroupSection } from "./JoinGroupSection";
 
-export default function NoGroups() {
-  const { logoutUser } = useAuthStore();
+interface JoinGroupCardProps {
+  hasGroups?: boolean;
+}
+
+export function JoinGroupCard({ hasGroups = true }: JoinGroupCardProps) {
+  const { profile, logoutUser } = useAuthStore();
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleOpenDialog = () => {
@@ -46,9 +50,11 @@ export default function NoGroups() {
             alignItems: "center",
           }}
         >
-          <Box sx={{ margin: 3 }}>
-            <AppIcon />
-          </Box>
+          {!hasGroups && (
+            <Box sx={{ margin: 3 }}>
+              <AppIcon />
+            </Box>
+          )}
           <Paper
             elevation={3}
             sx={{
@@ -57,19 +63,22 @@ export default function NoGroups() {
               textAlign: "center",
             }}
           >
-            <Typography variant="h5" component="h1" gutterBottom>
-              ⚠️ You aren&apos;t in any Chama
-            </Typography>
-            <Alert severity="error" sx={{ my: 2 }}>
-              This will go away, if you become a member of a chama.
-            </Alert>
+            {!hasGroups && (
+              <>
+                <Typography variant="h5" component="h1" gutterBottom>
+                  ⚠️ You aren&apos;t in any Chama
+                </Typography>
+                <Alert severity="error" sx={{ my: 2 }}>
+                 Hey, {profile!.first_name} this screen will go away, as soon as you become a member of a chama.
+                </Alert>
+                <Divider />
+              </>
+            )}
 
-            <Divider />
             <JoinGroupSection />
             <Divider />
             <Typography variant="body2" sx={{ mb: 3 }}>
-              Create a new one, request an official of your Chama to add you, or
-              join an existing one with a code.
+              Create a new one or request an official of your Chama to add you.
             </Typography>
             <Box
               sx={{
@@ -92,19 +101,21 @@ export default function NoGroups() {
               >
                 Create a Chama
               </Button>
-              <Button
-                fullWidth
-                variant="outlined"
-                size="large"
-                startIcon={<ExitToApp />}
-                onClick={handleSignOut}
-                sx={{
-                  py: 2,
-                  order: { xs: 2, sm: 2 },
-                }}
-              >
-                Sign Out
-              </Button>
+              {!hasGroups && (
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  size="large"
+                  startIcon={<ExitToApp />}
+                  onClick={handleSignOut}
+                  sx={{
+                    py: 2,
+                    order: { xs: 2, sm: 2 },
+                  }}
+                >
+                  Sign Out
+                </Button>
+              )}
             </Box>
           </Paper>
           <NewGroupDialog

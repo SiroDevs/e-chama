@@ -1,14 +1,15 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import { AppBar, Avatar, Box, Stack, Typography } from "@mui/material";
+import { AppBar, Stack } from "@mui/material";
 import MuiToolbar from "@mui/material/Toolbar";
 import { tabsClasses } from "@mui/material/Tabs";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 
-import { SideMenuMobile, MenuButton, OptionsMenu } from "../navigation";
+import { SideMenuMobile, MenuButton } from "../navigation";
 import { AppIcon } from "../general/CustomIcons";
 import { useAuthStore } from "@/state/auth/auth";
+import AccountMenu from "./AccountMenu";
 
 const Toolbar = styled(MuiToolbar)({
   width: "100%",
@@ -65,18 +66,12 @@ export function AppNavbar() {
             spacing={1}
             sx={{ justifyContent: "center", mr: "auto" }}
           >
-            <Typography
-              variant="h4"
-              component="h1"
-              sx={{ color: "text.primary" }}
-            >
-              <AppIcon />
-            </Typography>
+            <AppIcon />
           </Stack>
           <MenuButton showBadge>
             <NotificationsRoundedIcon />
           </MenuButton>
-        <OptionsMenu />
+           <AccountMenu/>
           <SideMenuMobile open={open} toggleDrawer={toggleDrawer} />
         </Stack>
       </Toolbar>

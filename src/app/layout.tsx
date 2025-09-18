@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { CssBaseline, GlobalStyles } from "@mui/material";
-import { Toaster } from "react-hot-toast";
 
 import { GLOBAL_STYLES } from "@/styles";
-import "./globals.css";
+import Provider from "./provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +22,7 @@ export default function RootLayout({
       <GlobalStyles styles={GLOBAL_STYLES} />
       <CssBaseline />
       <body className={inter.className}>
-        {children}
+        <Provider>{children}</Provider>
       </body>
     </html>
   );

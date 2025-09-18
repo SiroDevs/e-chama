@@ -1,8 +1,9 @@
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
+
 import AppTheme from "../shared/AppTheme";
-import { AuthContent } from ".";
+import { AuthContent } from "../auth";
 import { Box } from "@mui/material";
 import ColorModeSelect from "../shared/ColorModeSelect";
 
@@ -18,15 +19,13 @@ export function AuthWrapper(props: AuthWrapperProps) {
       <ColorModeSelect
         sx={{ position: "fixed", bottom: "1rem", right: "1rem" }}
       />
-
       <Stack
         direction="column"
         component="main"
         sx={[
           {
             justifyContent: "center",
-            height: "calc((1 - var(--template-frame-height, 0)) * 100%)",
-            minHeight: "100%",
+            minHeight: "100vh",
           },
           (theme) => ({
             "&::before": {
