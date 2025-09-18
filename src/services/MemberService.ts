@@ -14,14 +14,15 @@ export async function createMember(
   const { error: checkError } = await supabase
     .from("members")
     .select("id")
-    .eq("user", user_id)
-    .eq("group", group_id)
+    .eq("user_id", user_id)
+    .eq("group_id", group_id)
     .single();
 
   if (!checkError || checkError.code !== "PGRST116") {
-    return { success: false, error: "You are already a member of this Chama" };
+    console.error("Join group error:", checkError);
+    return { data: null, error: checkError };
   }
-  const { data: memberData, error } = await supabase
+  return await supabase
     .from("members")
     .insert([
       {
@@ -33,8 +34,6 @@ export async function createMember(
     ])
     .select()
     .single();
-
-  return { data: memberData, error };
 }
 export async function createMemberGroup(
   userId: string,
@@ -70,7 +69,7 @@ export async function createMemberGroup(
     );
 
     if (memberResult.error) {
-      console.error("Member creation error:", memberResult.error);
+      console.error("Member creation error:", memberResult.error.message);
       return {
         data: null,
         error: memberResult.error,
@@ -78,7 +77,7 @@ export async function createMemberGroup(
     }
 
     await updateSelectedGroup(userId, groupResult.data.id);
-    
+
     return {
       data: {
         group: groupResult.data,
@@ -91,30 +90,6 @@ export async function createMemberGroup(
     return {
       data: null,
       error: error instanceof Error ? error : new Error("Unknown error occurred")
-    };
-  }
-}
-
-export async function joinGroup(userId: string, group: GroupExt) {
-  try {
-    const { error: joinError } = await createMember(
-      group.id,
-      userId,
-      "000",
-      'member'
-    );
-
-    if (joinError) {
-      console.error("Join group error:", joinError);
-      return { success: false, error: joinError };
-    }
-
-    return { success: true };
-  } catch (err) {
-    console.error("Join group exception:", err);
-    return {
-      success: false,
-      error: err instanceof Error ? err.message : "Unknown error occurred"
     };
   }
 }
