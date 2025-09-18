@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Group } from "@mui/icons-material";
-import { Chip, Button, Box, Typography, TextField } from "@mui/material";
+import { Search } from "@mui/icons-material";
+import { Box, Typography, TextField, CircularProgress } from "@mui/material";
 import { Alert as MuiAlert, InputAdornment, IconButton } from "@mui/material";
-import { List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
 
 import { joinGroupAction, searchGroupAction } from "../actions/GroupAction";
 import { GroupExt } from "@/state/auth/groups";
+import { useAuthStore } from "@/state/auth/auth";
+import { JoinGroup } from "@/components/actions/JoinGroup";
 
-export const JoinGroupSection = () => {
+export function JoinGroupSection() {
+  const { user, setUserGroups } = useAuthStore();
   const [joinCode, setJoinCode] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [foundGroup, setFoundGroup] = useState<GroupExt | null>(null);
@@ -55,13 +57,14 @@ export const JoinGroupSection = () => {
     setError("");
 
     try {
-      const result = await joinGroupAction(foundGroup.id);
+      const result = await joinGroupAction(user!.id, foundGroup);
       if (result.success) {
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        await setUserGroups(result.groups!, foundGroup.id || null);
+        window.location.reload();
       } else {
-        setError(result.error || "Failed to join group. Please try again.");
+        setError(
+          result.error?.toString() || "Failed to join group. Please try again."
+        );
       }
     } catch (err) {
       setError("Failed to join group. Please try again.");
@@ -80,6 +83,7 @@ export const JoinGroupSection = () => {
         fullWidth
         placeholder="Enter group code"
         value={joinCode}
+        autoComplete="off"
         onChange={handleJoinCodeChange}
         onKeyPress={handleKeyPress}
         disabled={isSearching || isJoining}
@@ -91,7 +95,11 @@ export const JoinGroupSection = () => {
                 disabled={isSearching || !joinCode.trim()}
                 edge="end"
               >
-                <Search />
+                {isSearching ? (
+                  <CircularProgress size={20} thickness={5} />
+                ) : (
+                  <Search />
+                )}
               </IconButton>
             </InputAdornment>
           ),
@@ -106,44 +114,12 @@ export const JoinGroupSection = () => {
       )}
 
       {foundGroup && (
-        <List sx={{ width: "100%", bgcolor: "background.paper", mb: 2 }}>
-          <ListItem
-            alignItems="flex-start"
-            secondaryAction={
-              <Button
-                variant="contained"
-                onClick={handleJoinGroup}
-                disabled={isJoining}
-              >
-                {isJoining ? "Joining..." : "Join"}
-              </Button>
-            }
-          >
-            <ListItemIcon>
-              <Group />
-            </ListItemIcon>
-            <ListItemText
-              primary={foundGroup.title}
-              secondary={
-                <Box sx={{ mt: 1 }}>
-                  <Chip
-                    label={`${foundGroup.member_count} members`}
-                    size="small"
-                    variant="outlined"
-                    sx={{ mr: 1 }}
-                  />
-                  <Chip
-                    label={`Code: ${joinCode}`}
-                    size="small"
-                    variant="outlined"
-                    color="primary"
-                  />
-                </Box>
-              }
-            />
-          </ListItem>
-        </List>
+        <JoinGroup
+          group={foundGroup}
+          isJoining={isJoining}
+          onJoinGroup={handleJoinGroup}
+        />
       )}
     </Box>
   );
-};
+}

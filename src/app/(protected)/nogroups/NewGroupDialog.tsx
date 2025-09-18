@@ -56,12 +56,12 @@ export default function CreateGroupDialog({
         title: data.title.trim(),
         description: data.description?.trim() || "",
         initials: data.initials?.trim() || "",
-        location: data.location?.trim() || "",
+        location: data.location?.trim(),
         address: data.address?.trim() || "",
       });
 
       if (result.groups && result.groups.length > 0) {
-        await setUserGroups(result.groups, result.group || null);
+        await setUserGroups(result.groups, result.groupId || null);
       }
       handleClose();
       onGroupCreated();
