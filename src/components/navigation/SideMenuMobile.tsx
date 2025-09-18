@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Avatar, Button, Divider } from "@mui/material";
+import { Avatar, Box, Button, Divider } from "@mui/material";
 import { Stack, Typography } from "@mui/material";
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
@@ -8,6 +8,7 @@ import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 import { useAuthStore } from "@/state/auth/auth";
 import { MenuButton, MenuContent } from ".";
 import ColorModeIconDropdown from "../shared/ColorModeSelect";
+import { SelectGroup } from "../general";
 
 interface SideMenuMobileProps {
   open: boolean | undefined;
@@ -63,6 +64,16 @@ export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
         </Stack>
         <Divider />
         <Stack sx={{ flexGrow: 1 }}>
+          <Box
+            sx={{
+              display: "flex",
+              mt: "calc(var(--template-frame-height, 0px) + 4px)",
+              p: 1.5,
+            }}
+          >
+            <SelectGroup />
+          </Box>
+          <Divider />
           <MenuContent />
           <Divider />
         </Stack>
@@ -79,5 +90,4 @@ export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
       </Stack>
     </Drawer>
   );
-
 }

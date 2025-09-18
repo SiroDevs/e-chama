@@ -1,11 +1,7 @@
 import toast from "react-hot-toast";
 
-import { createMemberGroup } from "@/services/MemberService";
-import {
-  getUserGroups,
-  searchByCode,
-  joinGroup,
-} from "@/services/GroupService";
+import { createMemberGroup, joinGroup } from "@/services/MemberService";
+import { getUserGroups, searchByCode } from "@/services/GroupService";
 import { GroupExt } from "@/state/auth/groups";
 
 export async function createGroupAction(payload: {
@@ -28,44 +24,80 @@ export async function createGroupAction(payload: {
 
     if (error) {
       console.error("Group creation error:", error);
-
-      const errorMessage = error.message || "An unknown error occurred";
-      const status = "status" in error ? error.status : undefined;
-
-      switch (status) {
-        case 400:
-          toast.error("Invalid data. Please check your text fields.");
-          break;
-        case 401:
-          toast.error("Unauthorized. Please try again.");
-          break;
-        case 403:
-          toast.error(
-            "Access forbidden. Contact support if this issue persists."
-          );
-          break;
-        case 500:
-          toast.error(`Internal server error: ${errorMessage}`);
-          break;
-        default:
-          toast.error(errorMessage);
+      let errorMessage = "An unknown error occurred";
+      let errorCode: string | number | undefined;
+      
+      if (typeof error === 'string') {
+        errorMessage = error;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+        if ('code' in error) {
+          errorCode = error.code;
+        }
+      } else if (error && typeof error === 'object') {
+        if ('message' in error) {
+          errorMessage = (error as any).message;
+        }
+        if ('code' in error) {
+          errorCode = (error as any).code;
+        }
+        if ('status' in error) {
+          errorCode = (error as any).status;
+        }
       }
 
-      return { success: false };
-    } else if (data) {
+      if (errorCode) {
+        switch (errorCode) {
+          case '23505':
+          case '23505':
+            toast.error("A group with similar details already exists.");
+            break;
+          case '42501':
+          case '42501':
+            toast.error("You don't have permission to create a group.");
+            break;
+          case 400:
+            toast.error("Invalid data. Please check your text fields.");
+            break;
+          case 401:
+            toast.error("Unauthorized. Please try again.");
+            break;
+          case 403:
+            toast.error("Access forbidden. Contact support if this issue persists.");
+            break;
+          case 500:
+            toast.error(`Internal server error: ${errorMessage}`);
+            break;
+          default:
+            toast.error(errorMessage);
+        }
+      } else {
+        toast.error(errorMessage);
+      }
+
+      return { success: false, error: errorMessage };
+    } 
+    
+    if (data && data.group) {
       const groups = await getUserGroups(payload.userId);
-      return { success: true, groups: groups, group: data.group.id };
+      return { 
+        success: true, 
+        groups: groups, 
+        groupId: data.group.id
+      };
     } else {
-      toast.error("Chama creation failed");
-      return { success: false };
+      toast.error("Chama creation failed - no data returned");
+      return { success: false, error: "No data returned from group creation" };
     }
   } catch (err) {
-    toast.error(
-      err instanceof Error
-        ? err.message
-        : "An error occurred during signup. Please try again."
-    );
-    return { success: false };
+    const errorMessage = err instanceof Error
+      ? err.message
+      : "An error occurred during group creation. Please try again.";
+    
+    toast.error(errorMessage);
+    console.error("Unexpected error in createGroupAction:", err);
+    
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -76,29 +108,29 @@ export async function searchGroupAction(joinCode: string): Promise<{
 }> {
   try {
     if (!joinCode.trim()) {
-      return { success: false, error: "Please enter a group code" };
+      return { success: false, error: "Please enter a Chama code" };
     }
 
     const group = await searchByCode(joinCode);
     if (group) {
       return { success: true, group };
     } else {
-      return { success: false, error: "No group found with this code" };
+      return { success: false, error: "No Chama found with this code" };
     }
   } catch (err) {
     console.error("Search group error:", err);
-    return { 
-      success: false, 
-      error: "Failed to search for group. Please try again." 
+    return {
+      success: false,
+      error: "Failed to search for that Chama. Please try again.",
     };
   }
 }
 
-export async function joinGroupAction(groupId: string) {
+export async function joinGroupAction(userId: string, group: GroupExt) {
   try {
-    const result = await joinGroup(groupId);
+    const result = await joinGroup(userId, group);
     if (result.success) {
-      toast.success("Successfully joined the group!");
+      toast.success("Successfully joined the Chama!");
       return { success: true };
     } else {
       return { success: false, error: result.error };
@@ -107,7 +139,7 @@ export async function joinGroupAction(groupId: string) {
     console.error("Join group error:", err);
     return {
       success: false,
-      error: "Failed to join group. Please try again.",
+      error: "Failed to join Chama. Please try again.",
     };
   }
 }

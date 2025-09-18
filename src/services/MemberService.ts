@@ -3,6 +3,7 @@
 import { supabase } from "@/lib/supabase/client";
 import { createGroup } from "./GroupService";
 import { updateSelectedGroup } from "./ProfileService";
+import { GroupExt } from "@/state/auth/groups";
 
 export async function createMember(
   group_id: string,
@@ -10,6 +11,16 @@ export async function createMember(
   member_no: string,
   role: string
 ) {
+  const { error: checkError } = await supabase
+    .from("members")
+    .select("id")
+    .eq("user", user_id)
+    .eq("group", group_id)
+    .single();
+
+  if (!checkError || checkError.code !== "PGRST116") {
+    return { success: false, error: "You are already a member of this Chama" };
+  }
   const { data: memberData, error } = await supabase
     .from("members")
     .insert([
@@ -25,7 +36,6 @@ export async function createMember(
 
   return { data: memberData, error };
 }
-
 export async function createMemberGroup(
   userId: string,
   title: string,
@@ -34,43 +44,91 @@ export async function createMemberGroup(
   location: string,
   address: string,
 ) {
-  const groupResult = await createGroup({
-    user: userId,
-    title: title,
-    description: description,
-    initials: initials,
-    location: location,
-    address: address,
-  });
+  try {
+    const groupResult = await createGroup({
+      user: userId,
+      title: title,
+      description: description,
+      initials: initials,
+      location: location,
+      address: address,
+    });
 
-  if (groupResult.error) {
-    console.error("Group creation error:", groupResult.error);
+    if (groupResult.error) {
+      console.error("Group creation error:", groupResult.error);
+      return {
+        data: null,
+        error: groupResult.error,
+      };
+    }
+
+    const memberResult = await createMember(
+      groupResult.data.id,
+      userId,
+      "001",
+      'official'
+    );
+
+    if (memberResult.error) {
+      console.error("Member creation error:", memberResult.error);
+      return {
+        data: null,
+        error: memberResult.error,
+      };
+    }
+
+    await updateSelectedGroup(userId, groupResult.data.id);
+    
+    return {
+      data: {
+        group: groupResult.data,
+        member: memberResult.data
+      },
+      error: null
+    };
+  } catch (error) {
+    console.error("Unexpected error in createMemberGroup:", error);
     return {
       data: null,
-      error: groupResult.error,
+      error: error instanceof Error ? error : new Error("Unknown error occurred")
     };
   }
-  const memberResult = await createMember(
-    groupResult.data.id,
-    userId,
-    "001",
-    'official'
-  );
+}
 
-  if (memberResult.error) {
-    console.error("Member creation error:", memberResult.error);
+export async function joinGroup(userId: string, group: GroupExt) {
+  try {
+    const { error: joinError } = await createMember(
+      group.id,
+      userId,
+      "000",
+      'member'
+    );
+
+    if (joinError) {
+      console.error("Join group error:", joinError);
+      return { success: false, error: joinError };
+    }
+
+    return { success: true };
+  } catch (err) {
+    console.error("Join group exception:", err);
     return {
-      data: null,
-      error: memberResult.error,
+      success: false,
+      error: err instanceof Error ? err.message : "Unknown error occurred"
     };
   }
+}
 
-  await updateSelectedGroup(userId, groupResult.data.id);
-  return {
-    data: {
-      group: groupResult.data,
-      member: memberResult.data
-    },
-    error: null
-  };
+export async function getMemberCount(group_id: string): Promise<number> {
+  const { count, error } = await supabase
+    .from("members")
+    .select("*", { count: "exact" })
+    .eq("group_id", group_id);
+
+  if (error) {
+    console.error("Error getting member count:", error);
+    return 0;
+  }
+
+  return count || 0;
 }

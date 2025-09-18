@@ -8,8 +8,10 @@ import { List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
 
 import { joinGroupAction, searchGroupAction } from "../actions/GroupAction";
 import { GroupExt } from "@/state/auth/groups";
+import { useAuthStore } from "@/state/auth/auth";
 
 export const JoinGroupSection = () => {
+  const { user, setUserGroups } = useAuthStore();
   const [joinCode, setJoinCode] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [foundGroup, setFoundGroup] = useState<GroupExt | null>(null);
@@ -55,13 +57,13 @@ export const JoinGroupSection = () => {
     setError("");
 
     try {
-      const result = await joinGroupAction(foundGroup.id);
+      const result = await joinGroupAction(user!.id, foundGroup);
       if (result.success) {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } else {
-        setError(result.error || "Failed to join group. Please try again.");
+        setError(result.error?.toString || "Failed to join group. Please try again.");
       }
     } catch (err) {
       setError("Failed to join group. Please try again.");
@@ -123,20 +125,20 @@ export const JoinGroupSection = () => {
               <Group />
             </ListItemIcon>
             <ListItemText
-              primary={foundGroup.title}
+              primary={`${foundGroup.title} (${foundGroup.initials})`}
               secondary={
                 <Box sx={{ mt: 1 }}>
                   <Chip
-                    label={`${foundGroup.member_count} members`}
+                    label={foundGroup.location}
                     size="small"
                     variant="outlined"
                     sx={{ mr: 1 }}
                   />
                   <Chip
-                    label={`Code: ${joinCode}`}
+                    label={`${foundGroup.member_count} members`}
                     size="small"
                     variant="outlined"
-                    color="primary"
+                    sx={{ mr: 1 }}
                   />
                 </Box>
               }
