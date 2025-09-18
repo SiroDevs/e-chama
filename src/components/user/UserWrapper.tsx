@@ -7,7 +7,7 @@ import type {} from "@mui/x-data-grid-pro/themeAugmentation";
 import type {} from "@mui/x-tree-view/themeAugmentation";
 import { alpha, Box, CssBaseline, Stack } from "@mui/material";
 
-import { AppNavbar, Header, SideMenu } from "@/components/navigation";
+import { AppNavbar, SideMenu } from "@/components/navigation";
 import AppTheme from "@/components/shared/AppTheme";
 import {
   chartsCustomizations,
@@ -54,7 +54,6 @@ export function UserWrapper(props: UserWrapperProps) {
               mt: { xs: 8, md: 0 },
             }}
           >
-            <Header />
             {children}
           </Stack>
         </Box>

@@ -9,13 +9,11 @@ import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import ListItemText from '@mui/material/ListItemText';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
+import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 import { useAuthStore } from "@/state/auth/auth";
 import { MenuButton } from "../navigation";
-import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 
-const MenuItem = styled(MuiMenuItem)({
-  margin: "2px 0",
-});
+const MenuItem = styled(MuiMenuItem)({ margin: "2px 0" });
 
 export function OptionsMenu() {
   const { logoutUser } = useAuthStore();
