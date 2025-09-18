@@ -3,9 +3,11 @@ import { Avatar, Button, Divider } from "@mui/material";
 import { Stack, Typography } from "@mui/material";
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
+
+import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
+import { useAuthStore } from "@/state/auth/auth";
 import { MenuButton, MenuContent } from ".";
-import { CardAlert } from "../general";
+import ColorModeIconDropdown from "../shared/ColorModeSelect";
 
 interface SideMenuMobileProps {
   open: boolean | undefined;
@@ -13,9 +15,17 @@ interface SideMenuMobileProps {
 }
 
 export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
+  const { profile, logoutUser } = useAuthStore();
+
+  const handleSignOut = async () => {
+    await handleSignOutAction();
+    await logoutUser();
+    window.location.reload();
+  };
+
   return (
     <Drawer
-      anchor="right"
+      anchor="left"
       open={open}
       onClose={toggleDrawer(false)}
       sx={{
@@ -39,16 +49,16 @@ export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
           >
             <Avatar
               sizes="small"
-              alt="Riley Carter"
+              alt={`${profile!.first_name} ${profile!.last_name}`}
               src="/static/images/avatar/7.jpg"
               sx={{ width: 24, height: 24 }}
             />
             <Typography component="p" variant="h6">
-              Riley Carter
+              {profile!.first_name} {profile!.last_name}
             </Typography>
           </Stack>
-          <MenuButton showBadge>
-            <NotificationsRoundedIcon />
+          <MenuButton>
+            <ColorModeIconDropdown />
           </MenuButton>
         </Stack>
         <Divider />
@@ -56,17 +66,18 @@ export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
           <MenuContent />
           <Divider />
         </Stack>
-        <CardAlert />
         <Stack sx={{ p: 2 }}>
           <Button
             variant="outlined"
             fullWidth
+            onClick={handleSignOut}
             startIcon={<LogoutRoundedIcon />}
           >
-            Logout
+            Sign Out
           </Button>
         </Stack>
       </Stack>
     </Drawer>
   );
+
 }

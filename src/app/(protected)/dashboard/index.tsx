@@ -1,11 +1,14 @@
 "use client";
 
-import { MainGrid } from "@/components/general";
 import * as React from "react";
+
+import { Header } from "@/components/navigation";
+import { Box } from "@mui/material";
 
 export default function Dashboard() {
   return (
-    // <MainGrid />
-    <div></div>
+    <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
+      <Header />
+    </Box>
   );
 }
