@@ -10,19 +10,12 @@ interface AppIconProps {
 }
 
 export function AppIcon({ width = 150, alt = "App Icon" }: AppIconProps) {
-  const height = width;
-  
   return (
     <div>
       <Image 
         src={appSvg} 
         alt={alt} 
-        width={width} 
-        height={height}
-        style={{ 
-          width: 'auto', 
-          height: 'auto'
-        }}
+        width={width}
       />
     </div>
   );
