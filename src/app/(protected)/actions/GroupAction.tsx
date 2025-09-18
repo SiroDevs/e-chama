@@ -1,7 +1,12 @@
 import toast from "react-hot-toast";
 
 import { createMemberGroup } from "@/services/MemberService";
-import { getUserGroups } from "@/services/GroupService";
+import {
+  getUserGroups,
+  searchByCode,
+  joinGroup,
+} from "@/services/GroupService";
+import { GroupExt } from "@/state/auth/groups";
 
 export async function createGroupAction(payload: {
   userId: string;
@@ -61,5 +66,48 @@ export async function createGroupAction(payload: {
         : "An error occurred during signup. Please try again."
     );
     return { success: false };
+  }
+}
+
+export async function searchGroupAction(joinCode: string): Promise<{
+  success: boolean;
+  group?: GroupExt;
+  error?: any;
+}> {
+  try {
+    if (!joinCode.trim()) {
+      return { success: false, error: "Please enter a group code" };
+    }
+
+    const group = await searchByCode(joinCode);
+    if (group) {
+      return { success: true, group };
+    } else {
+      return { success: false, error: "No group found with this code" };
+    }
+  } catch (err) {
+    console.error("Search group error:", err);
+    return { 
+      success: false, 
+      error: "Failed to search for group. Please try again." 
+    };
+  }
+}
+
+export async function joinGroupAction(groupId: string) {
+  try {
+    const result = await joinGroup(groupId);
+    if (result.success) {
+      toast.success("Successfully joined the group!");
+      return { success: true };
+    } else {
+      return { success: false, error: result.error };
+    }
+  } catch (err) {
+    console.error("Join group error:", err);
+    return {
+      success: false,
+      error: "Failed to join group. Please try again.",
+    };
   }
 }
