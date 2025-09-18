@@ -4,14 +4,29 @@ import SvgIcon from '@mui/material/SvgIcon';
 
 import appSvg from "../../../public/appicon.svg";
 
-export function AppIcon() {
+interface AppIconProps {
+  width?: number;
+  alt?: string;
+}
+
+export function AppIcon({ width = 150, alt = "App Icon" }: AppIconProps) {
+  const height = width;
+  
   return (
     <div>
-      <Image src={appSvg} alt="Description of" width={150} />
+      <Image 
+        src={appSvg} 
+        alt={alt} 
+        width={width} 
+        height={height}
+        style={{ 
+          width: 'auto', 
+          height: 'auto'
+        }}
+      />
     </div>
   );
 }
-
 export function FacebookIcon() {
   return (
     <SvgIcon>

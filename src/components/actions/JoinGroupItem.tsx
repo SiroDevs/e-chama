@@ -5,7 +5,7 @@ import { Button, Box, Chip, Paper } from "@mui/material";
 import { Typography, Avatar, CircularProgress } from "@mui/material";
 import { GroupExt } from "@/state/auth/groups";
 
-interface JoinGroupProps {
+interface JoinGroupItemProps {
   group: GroupExt;
   isJoining: boolean;
   onJoinGroup: () => void;
@@ -14,11 +14,11 @@ interface JoinGroupProps {
 const getMemberText = (count: number) => {
   return count === 1 ? `${count} member` : `${count} members`;
 };
-export const JoinGroup = ({
+export const JoinGroupItem = ({
   group,
   isJoining,
   onJoinGroup,
-}: JoinGroupProps) => {
+}: JoinGroupItemProps) => {
   const getAvatarContent = () => {
     if (group.initials) {
       return group.initials;
@@ -75,7 +75,7 @@ export const JoinGroup = ({
             <Chip
               icon={<People sx={{ fontSize: 16 }} />}
               label={getMemberText(group.member_count)}
-              size="medium"
+              size="small"
               variant="outlined"
               sx={{ borderRadius: 6, fontSize: "0.75rem" }}
             />

@@ -5,10 +5,10 @@ import { Search } from "@mui/icons-material";
 import { Box, Typography, TextField, CircularProgress } from "@mui/material";
 import { Alert as MuiAlert, InputAdornment, IconButton } from "@mui/material";
 
-import { joinGroupAction, searchGroupAction } from "../actions/GroupAction";
+import { joinGroupAction, searchGroupAction } from "@/app/(protected)/actions/GroupAction";
 import { GroupExt } from "@/state/auth/groups";
 import { useAuthStore } from "@/state/auth/auth";
-import { JoinGroup } from "@/components/actions/JoinGroup";
+import { JoinGroupItem } from "@/components/actions/JoinGroupItem";
 
 export function JoinGroupSection() {
   const { user, setUserGroups } = useAuthStore();
@@ -81,7 +81,7 @@ export function JoinGroupSection() {
       </Typography>
       <TextField
         fullWidth
-        placeholder="Enter group code"
+        placeholder="Enter chama code"
         value={joinCode}
         autoComplete="off"
         onChange={handleJoinCodeChange}
@@ -114,7 +114,7 @@ export function JoinGroupSection() {
       )}
 
       {foundGroup && (
-        <JoinGroup
+        <JoinGroupItem
           group={foundGroup}
           isJoining={isJoining}
           onJoinGroup={handleJoinGroup}

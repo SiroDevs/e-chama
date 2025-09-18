@@ -1,39 +1,36 @@
 "use client";
 
-import { useState } from "react";
-import { Toaster } from "react-hot-toast";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CssBaseline, PaletteMode } from "@mui/material";
-
-import { AuthWrapper, SignInCard } from "@/components/auth";
-import { UserWrapper } from "@/components/user/UserWrapper";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "@/state/auth/auth";
 import Dashboard from "./(protected)/dashboard";
-import NoGroups from "./(protected)/nogroups";
+import { SignInCard } from "@/components/auth";
+import { AppIcon } from "@/components/general/CustomIcons";
+import { Box } from "@mui/material";
 
 export default function Home() {
-  const [mode] = useState<PaletteMode>("light");
-  const { isAuthenticated, userGroups } = useAuthStore();
-  const defaultTheme = createTheme({ palette: { mode } });
-  const hasGroups = Array.isArray(userGroups) && userGroups.length > 0;
+  const { isAuthenticated, isLoading } = useAuthStore();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <CssBaseline />
-      <Toaster position="top-center" reverseOrder={false} />
-      {isAuthenticated ? (
-        hasGroups ? (
-          <UserWrapper>
-            <Dashboard />
-          </UserWrapper>
-        ) : (
-          <NoGroups />
-        )
-      ) : (
-        <AuthWrapper>
-          <SignInCard />
-        </AuthWrapper>
-      )}
-    </ThemeProvider>
-  );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsCheckingAuth(false);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading || isCheckingAuth) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        <AppIcon width={200} />
+      </Box>
+    );
+  }
+
+  return <div>{isAuthenticated ? <Dashboard /> : <SignInCard />}</div>;
 }

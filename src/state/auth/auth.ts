@@ -1,12 +1,12 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand";
 import { User } from "@supabase/supabase-js";
-
 import { UserGroup } from "./groups";
 import { Profile } from "./profiles";
 
 interface State {
   isAuthenticated: boolean;
+  isLoading: boolean;
   user: User | null;
   profile: Profile | null;
   userGroups: UserGroup[];
@@ -19,12 +19,14 @@ interface Actions {
   setSelectedGroup: (groupId: string | null) => void;
   resetPassword: () => void;
   logoutUser: () => void;
+  setLoading: (loading: boolean) => void;
 }
 
 export const useAuthStore = create<State & Actions>()(
   persist(
     (set) => ({
       isAuthenticated: false,
+      isLoading: true,
       user: null,
       profile: null,
       userGroups: [],
@@ -35,7 +37,8 @@ export const useAuthStore = create<State & Actions>()(
           isAuthenticated: true, 
           user: user, 
           profile: profile,
-          selectedGroup: profile.group
+          selectedGroup: profile.group,
+          isLoading: false
         });
       },
 
@@ -61,7 +64,8 @@ export const useAuthStore = create<State & Actions>()(
           user: null, 
           profile: null,
           userGroups: [],
-          selectedGroup: null 
+          selectedGroup: null,
+          isLoading: false
         });
       },
 
@@ -71,13 +75,23 @@ export const useAuthStore = create<State & Actions>()(
           user: null, 
           profile: null,
           userGroups: [],
-          selectedGroup: null 
+          selectedGroup: null,
+          isLoading: false
         });
+      },
+
+      setLoading: (loading: boolean) => {
+        set({ isLoading: loading });
       },
     }),
     {
       name: "echama:auth",
       storage: createJSONStorage(() => sessionStorage),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.isLoading = false;
+        }
+      },
     }
   )
 );

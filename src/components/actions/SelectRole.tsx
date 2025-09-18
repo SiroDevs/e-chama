@@ -1,4 +1,5 @@
 import * as React from "react";
+import MuiAvatar from "@mui/material/Avatar";
 import MuiListItemAvatar from "@mui/material/ListItemAvatar";
 import { MenuItem, ListItemText, ListItemIcon } from "@mui/material";
 import { Divider, ListSubheader } from "@mui/material";
@@ -30,7 +31,7 @@ export function SelectGroup() {
       value={group}
       onChange={handleChange}
       displayEmpty
-      inputProps={{ "aria-label": "Select Chama" }}
+      inputProps={{ "aria-label": "Select Group" }}
       fullWidth
       sx={{
         maxHeight: 56,
