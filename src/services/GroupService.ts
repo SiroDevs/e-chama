@@ -1,13 +1,13 @@
 "use server";
 
 import { getServerClient } from "@/lib/supabase/server";
-import { UserGroup, PaginatedResp, Group } from "@/state/auth/types";
+import { UserGroup, PaginatedResp, Group } from "@/types/types";
 import { supabase } from "@/lib/supabase/client";
 import { getMemberCount } from "./MemberService";
 
 export async function createGroup(data: {
-  user: string, 
-  title: string, 
+  user: string,
+  title: string,
   description: string,
   initials: string,
   location: string,
@@ -41,6 +41,23 @@ export async function getUserGroups(userId: string): Promise<UserGroup[]> {
     throw new Error(`Failed to fetch user groups: ${error.message}`);
   }
   return data as UserGroup[];
+}
+
+export async function getUserGroup(
+  userId: string, groupId: string
+): Promise<UserGroup> {
+  const supabase = await getServerClient();
+  const { data, error } = await supabase
+    .from("user_groups")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("group_id", groupId)
+    .single();
+
+  if (error) {
+    throw new Error(`Failed to fetch user group: ${error.message}`);
+  }
+  return data as UserGroup;
 }
 
 export async function getUserGroupDetails(
@@ -174,8 +191,8 @@ export async function searchByCode(code: string): Promise<(Group & { member_coun
   }
 
   const memberCount = await getMemberCount(data.id);
-  return { 
-    ...data as Group, 
-    member_count: memberCount 
+  return {
+    ...data as Group,
+    member_count: memberCount
   };
 }

@@ -2,39 +2,18 @@
 
 import { supabase } from "@/lib/supabase/client";
 import { createProfile } from "./ProfileService";
+import { handleAuthResponse, fetchUserMember } from "./UserService";
 
 export async function signInMeNow(data: { email: string; password: string }) {
   try {
     const authResult = await supabase.auth.signInWithPassword(data);
-    if (authResult.error || !authResult.data.user) {
-      return { data: null, error: authResult.error };
-    }
-
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", authResult.data.user.id)
-      .single();
-
-    if (profileError) {
-      console.error("Profile fetch error:", profileError);
-      return {
-        data: { user: authResult.data.user, profile: null },
-        error: profileError,
-      };
-    }
-
-    return {
-      data: { user: authResult.data.user, profile: profile },
-      error: null,
-    };
+    return await handleAuthResponse(authResult);
   } catch (err) {
     console.error("Sign in error:", err);
     return {
       data: null,
       error: {
-        message:
-          err instanceof Error ? err.message : "Unknown error occurred",
+        message: err instanceof Error ? err.message : "Unknown error occurred",
         status: 500,
       },
     };
@@ -52,6 +31,7 @@ export async function signUpMeNow(data: {
     const redirectTo = isProduction
       ? "https://echama.vercel.app/verify"
       : "http://localhost:3000/verify";
+
     const authResult = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
@@ -77,47 +57,42 @@ export async function signUpMeNow(data: {
       };
     }
 
-    const profileResult = await createProfile(
-      authResult.data.user.id,
+    const user = authResult.data.user;
+
+    const { data: profile, error: profileError } = await createProfile(
+      user.id,
       data.first_name,
       data.last_name
     );
 
-    if (profileResult.error) {
-      console.error("Profile creation error:", profileResult.error);
+    if (profileError) {
+      console.error("Profile creation error:", profileError);
       return {
-        data: {
-          user: authResult.data.user,
-          profile: null,
-        },
-        error: profileResult.error,
+        data: { user, profile: null, member: null },
+        error: profileError,
       };
     }
 
-    const { data: profile, error: profileFetchError } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", authResult.data.user.id)
-      .single();
+    const { data: member, error: memberError } = await fetchUserMember(
+      user.id,
+      profile?.group_id || null
+    );
 
-    if (profileFetchError) {
-      console.error("Profile fetch error:", profileFetchError);
-      return {
-        data: { user: authResult.data.user, profile: null },
-        error: profileFetchError,
-      };
-    }
     return {
-      data: { user: authResult.data.user, profile: profile },
-      error: null,
+      data: {
+        user,
+        profile,
+        member: memberError ? null : member,
+      },
+      error: memberError,
     };
+
   } catch (err) {
     console.error("Signup error:", err);
     return {
       data: null,
       error: {
-        message:
-          err instanceof Error ? err.message : "Unknown error occurred",
+        message: err instanceof Error ? err.message : "Unknown error occurred",
         status: 500,
       },
     };
@@ -139,12 +114,12 @@ export async function verifyToken(token: string) {
     return { data, error: null }
   } catch (err) {
     console.error('Unexpected verification error:', err)
-    return { 
-      data: null, 
-      error: { 
+    return {
+      data: null,
+      error: {
         message: 'An unexpected error occurred during verification',
         name: 'UnexpectedError'
-      } 
+      }
     }
   }
 }

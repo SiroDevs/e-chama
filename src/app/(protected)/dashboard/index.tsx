@@ -3,15 +3,21 @@
 import * as React from "react";
 
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
-import { Box } from "@mui/material";
-import { MainGrid } from "@/components/general";
+import { Box, Typography } from "@mui/material";
+import { Copyright } from "@/components/general";
 
 export default function Dashboard() {
   return (
-    <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
+    <div>
       <Header />
       <NavbarBreadcrumbs />
-      <MainGrid/>
-    </Box>
+
+      <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
+        <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+          Overview
+        </Typography>
+        <Copyright sx={{ my: 4 }} />
+      </Box>
+    </div>
   );
 }

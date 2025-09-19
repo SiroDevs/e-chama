@@ -3,7 +3,7 @@
 import { Group, LocationOn, People } from "@mui/icons-material";
 import { Button, Box, Chip, Paper } from "@mui/material";
 import { Typography, Avatar, CircularProgress } from "@mui/material";
-import { GroupExt } from "@/state/auth/types";
+import { GroupExt } from "@/types/types";
 
 interface JoinGroupItemProps {
   group: GroupExt;
