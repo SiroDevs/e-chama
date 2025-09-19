@@ -44,7 +44,7 @@ export function SignUpCard() {
     startTransition(async () => {
       const result = await handleSignupAction(data);
       if (result.success) {
-        await loginUser(result.user!, result.profile!);
+        await loginUser(result.user!, result.profile!, result.member!);
         window.location.reload();
       }
     });

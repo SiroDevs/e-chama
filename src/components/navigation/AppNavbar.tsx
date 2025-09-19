@@ -6,10 +6,11 @@ import { tabsClasses } from "@mui/material/Tabs";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 
-import { SideMenuMobile, MenuButton } from "../navigation";
+import { SideMenuMobile } from "../navigation";
 import { AppIcon } from "../general/CustomIcons";
 import { useAuthStore } from "@/state/auth/auth";
 import AccountMenu from "./AccountMenu";
+import { MenuButton } from "../actions/MenuButton";
 
 const Toolbar = styled(MuiToolbar)({
   width: "100%",

@@ -1,50 +1,62 @@
 import * as React from "react";
-import { List, ListItem, ListItemButton } from "@mui/material";
+import { Link, List, ListItem, ListItemButton } from "@mui/material";
 import { ListItemIcon, ListItemText, Stack } from "@mui/material";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import AnalyticsRoundedIcon from "@mui/icons-material/AnalyticsRounded";
-import PeopleRoundedIcon from "@mui/icons-material/PeopleRounded";
-import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
+import { useGroupStore } from "@/state/auth/group";
+import { useState } from "react";
+import { hasRole } from "@/types/roles";
+import { MenuItem, allRoles, mainMenuItems } from "@/utils/MenuItems";
 
-const mainListItems = [
-  { text: "Home", icon: <HomeRoundedIcon /> },
-  { text: "Analytics", icon: <AnalyticsRoundedIcon /> },
-  { text: "Clients", icon: <PeopleRoundedIcon /> },
-  { text: "Tasks", icon: <AssignmentRoundedIcon /> },
-];
-
-const secondaryListItems = [
-  { text: "Settings", icon: <SettingsRoundedIcon /> },
-  { text: "About", icon: <InfoRoundedIcon /> },
-  { text: "Feedback", icon: <HelpRoundedIcon /> },
+const secondaryListItems: MenuItem[] = [
+  { text: "Settings", icon: <SettingsRoundedIcon />, roles: allRoles },
+  { text: "About", icon: <InfoRoundedIcon />, roles: allRoles },
+  { text: "Feedback", icon: <HelpRoundedIcon />, roles: allRoles },
 ];
 
 export function MenuContent() {
+  const { currentRole } = useGroupStore();
+  const filteredMainMenuItems = mainMenuItems.filter((item) =>
+    hasRole(item.roles, currentRole)
+  );
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: "space-between" }}>
       <List dense>
-        {mainListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: "block" }}>
-            <ListItemButton selected={index === 0}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {filteredMainMenuItems.map((item, index) =>
+          MenuContentItem(item, index)
+        )}
       </List>
       <List dense>
-        {secondaryListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: "block" }}>
-            <ListItemButton>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {secondaryListItems.map((item, index) => MenuContentItem(item, index))}
       </List>
     </Stack>
+  );
+}
+
+export function MenuContentItem(item: MenuItem, index: number) {
+  const isActivePath = (path: string) => {
+    return (
+      location.pathname === path || location.pathname.startsWith(path + "/")
+    );
+  };
+
+  const handleClick = () => {
+    window.location.href = item.path!;
+  };
+
+  return (
+    <ListItem
+      key={index}
+      disablePadding
+      sx={{ p: .2, display: "block" }}
+      onClick={handleClick}
+    >
+      <ListItemButton selected={isActivePath(item.path!)}>
+        <ListItemIcon>{item.icon}</ListItemIcon>
+        <ListItemText primary={item.text} />
+      </ListItemButton>
+    </ListItem>
   );
 }

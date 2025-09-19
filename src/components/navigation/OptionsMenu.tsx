@@ -11,7 +11,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
 import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 import { useAuthStore } from "@/state/auth/auth";
-import { MenuButton } from "../navigation";
+import { MenuButton } from "../actions/MenuButton";
 
 const MenuItem = styled(MuiMenuItem)({ margin: "2px 0" });
 

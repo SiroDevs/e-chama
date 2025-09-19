@@ -46,6 +46,7 @@ export async function handleSigninAction(payload: {
         success: true,
         user: data.user,
         profile: data.profile,
+        member: data.member,
       };
     } else {
       toast.error("No data returned from sign in");
@@ -112,6 +113,7 @@ export async function handleSignupAction(payload: {
         success: true,
         user: data.user,
         profile: data.profile,
+        member: data.member,
       };
     } else {
       toast.error("Signup failed");

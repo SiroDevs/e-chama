@@ -43,12 +43,10 @@ export function SignInCard() {
     startTransition(async () => {
       const result = await handleSigninAction(data);
       if (result.success) {
-        await loginUser(result.user!, result.profile!);
+        await loginUser(result.user!, result.profile!, result.member!);
         const groupResult = await fetchGroups(result.user!.id);
         if (groupResult.length > 0) {
           await setUserGroups(groupResult, result.profile?.group || null);
-        } else {
-          await setUserGroups([], null);
         }
         window.location.reload();
       }

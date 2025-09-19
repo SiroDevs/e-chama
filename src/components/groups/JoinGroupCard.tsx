@@ -39,92 +39,90 @@ export function JoinGroupCard({ hasGroups = true }: JoinGroupCardProps) {
   };
 
   return (
-    <AppTheme>
-      <CssBaseline enableColorScheme />
-      <Container component="main" maxWidth="sm">
-        <Box
+    <Container component="main" maxWidth="sm">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        {!hasGroups && (
+          <Box sx={{ margin: 3 }}>
+            <AppIcon />
+          </Box>
+        )}
+        <Paper
+          elevation={3}
           sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            p: { xs: 3, sm: 5 },
+            width: "100%",
+            textAlign: "center",
           }}
         >
           {!hasGroups && (
-            <Box sx={{ margin: 3 }}>
-              <AppIcon />
-            </Box>
+            <>
+              <Typography variant="h5" component="h1" gutterBottom>
+                ⚠️ You aren&apos;t in any Chama
+              </Typography>
+              <Alert severity="error" sx={{ my: 2 }}>
+                Hey, {profile!.first_name} this screen will go away, as soon as
+                you become a member of a chama.
+              </Alert>
+              <Divider />
+            </>
           )}
-          <Paper
-            elevation={3}
+
+          <JoinGroupSection />
+          <Divider />
+          <Typography variant="body2" sx={{ mb: 3 }}>
+            Create a new one or request an official of your Chama to add you.
+          </Typography>
+          <Box
             sx={{
-              p: { xs: 3, sm: 5 },
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              gap: 2,
               width: "100%",
-              textAlign: "center",
             }}
           >
-            {!hasGroups && (
-              <>
-                <Typography variant="h5" component="h1" gutterBottom>
-                  ⚠️ You aren&apos;t in any Chama
-                </Typography>
-                <Alert severity="error" sx={{ my: 2 }}>
-                 Hey, {profile!.first_name} this screen will go away, as soon as you become a member of a chama.
-                </Alert>
-                <Divider />
-              </>
-            )}
-
-            <JoinGroupSection />
-            <Divider />
-            <Typography variant="body2" sx={{ mb: 3 }}>
-              Create a new one or request an official of your Chama to add you.
-            </Typography>
-            <Box
+            <Button
+              fullWidth
+              variant="contained"
+              size="large"
+              startIcon={<GroupAdd />}
+              onClick={handleOpenDialog}
               sx={{
-                display: "flex",
-                flexDirection: { xs: "column", sm: "row" },
-                gap: 2,
-                width: "100%",
+                py: 2,
+                order: { xs: 1, sm: 1 },
               }}
             >
+              Create a Chama
+            </Button>
+            {!hasGroups && (
               <Button
                 fullWidth
-                variant="contained"
+                variant="outlined"
                 size="large"
-                startIcon={<GroupAdd />}
-                onClick={handleOpenDialog}
+                startIcon={<ExitToApp />}
+                onClick={handleSignOut}
                 sx={{
                   py: 2,
-                  order: { xs: 1, sm: 1 },
+                  order: { xs: 2, sm: 2 },
                 }}
               >
-                Create a Chama
+                Sign Out
               </Button>
-              {!hasGroups && (
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  size="large"
-                  startIcon={<ExitToApp />}
-                  onClick={handleSignOut}
-                  sx={{
-                    py: 2,
-                    order: { xs: 2, sm: 2 },
-                  }}
-                >
-                  Sign Out
-                </Button>
-              )}
-            </Box>
-          </Paper>
-          <NewGroupDialog
-            open={openDialog}
-            onClose={handleCloseDialog}
-            onGroupCreated={handleGroupCreated}
-          />
-        </Box>
-      </Container>
-    </AppTheme>
+            )}
+          </Box>
+        </Paper>
+        <NewGroupDialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          onGroupCreated={handleGroupCreated}
+        />
+      </Box>
+    </Container>
   );
 }

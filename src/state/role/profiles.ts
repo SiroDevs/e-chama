@@ -80,17 +80,20 @@ export interface Profile {
   id: string;
   first_name: string | null;
   last_name: string | null;
-  id_number: string | null;
-  kra_pin: string | null;
   country: string | null;
   address: string | null;
   sex: string | null;
-  dob: Date | null;
-  passport: string | null;
-  group: string | null;
-  field2: string | null;
-  field3: string | null;
-  created_at: string;
-  updated_at: string | null;
+  dob: string | null;
+  avatar: string | null;
+  id_number: string | null;
+  kra_pin: string | null;
   is_admin?: boolean;
+}
+
+export interface Member {
+  id: string;
+  member_no: string | null;
+  role: string | null;
+  joined_at: string | null;
+  group_id: string;
 }
