@@ -6,7 +6,7 @@ import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import { Button, Alert, CssBaseline } from "@mui/material";
 
 import { useAuthStore } from "@/state/auth/auth";
-import AppTheme from "@/components/shared/AppTheme";
+import AppTheme from "@/theme/AppTheme";
 import { AppIcon } from "@/components/general/CustomIcons";
 import NewGroupDialog from "@/components/groups/NewGroupDialog";
 import { handleSignOutAction } from "../../app/(protected)/actions/AuthAction";

@@ -1,25 +1,76 @@
 "use client";
 
 import * as React from "react";
-
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
-import { AppIcon } from "@/components/general/CustomIcons";
-import Info from "./Info";
-import InfoMobile from "./InfoMobile";
-import Review from "./Review";
-import MemberProfile from "./MemberProfile";
-
-const steps = ["Shipping address", "Payment details", "Review your order"];
+import Contributions from "./Contributions";
+import MemberProfile from "./Profile";
+import { MemberProfileProps } from "@/types/profiles";
+import MemberProfileSmall from "./ProfileMobile";
 
 export default function Dashboard() {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user, profile, member } = useAuthStore();
 
   if (!isAuthenticated) {
     window.location.href = "/";
+    return null;
   }
+
+  const processMemberProfileData = (): MemberProfileProps => {
+    if (!profile || !member) {
+      return {
+        loading: false,
+        profile: null,
+        member: null,
+        user: null,
+      };
+    }
+
+    const fullName =
+      `${profile.first_name || ""} ${profile.last_name || ""}`.trim() ||
+      "Unknown Member";
+
+    const formatDate = (dateString: string | null) => {
+      if (!dateString) return "Not set";
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    };
+
+    const getInitials = (firstName: string | null, lastName: string | null) => {
+      const first = firstName?.[0] || "";
+      const last = lastName?.[0] || "";
+      return `${first}${last}`.toUpperCase();
+    };
+
+    return {
+      loading: false,
+      profile: {
+        ...profile,
+        fullName,
+        formattedDob: formatDate(profile.dob),
+        initials: getInitials(profile.first_name, profile.last_name),
+        location:
+          `${profile.country || ""} ${profile.address || ""}`.trim() ||
+          "Not specified",
+      },
+      member: {
+        ...member,
+        formattedJoinedAt: formatDate(member.joined_at),
+        memberNo: member.member_no || "Not assigned",
+        role: member.role || "Member",
+      },
+      user: {
+        phone: user?.phone || "Not specified",
+      },
+    };
+  };
+
+  const memberProfileData = processMemberProfileData();
 
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
@@ -27,7 +78,6 @@ export default function Dashboard() {
       <NavbarBreadcrumbs
         items={[{ label: "My Chama Profile", href: "/my-chama-profile" }]}
       />
-
       <Grid
         container
         sx={{
@@ -35,7 +85,7 @@ export default function Dashboard() {
             xs: "100%",
             sm: "calc(100dvh - var(--template-frame-height, 0px))",
           },
-          mt: { xs: 4, sm: 0},
+          mt: { xs: 4, sm: 0 },
         }}
       >
         <Grid
@@ -46,24 +96,12 @@ export default function Dashboard() {
             borderRight: { sm: "none", md: "1px solid" },
             borderColor: { sm: "none", md: "divider" },
             alignItems: "start",
-            pt: 16,
-            px: 10,
-            gap: 4,
+            pt: 2,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: 1,
-              width: "100%",
-              maxWidth: 500,
-            }}
-          >
-            <MemberProfile/>
-            {/* <Info totalPrice="$134.98" /> */}
-          </Box>
+          <MemberProfile {...memberProfileData} />
         </Grid>
+
         <Grid
           size={{ sm: 12, md: 7, lg: 8 }}
           sx={{
@@ -73,31 +111,19 @@ export default function Dashboard() {
             width: "100%",
             backgroundColor: { xs: "transparent", sm: "background.default" },
             alignItems: "start",
-            pt: { xs: 0, sm: 16 },
-            px: { xs: 2, sm: 10 },
+            pt: 2,
+            px: 2,
             gap: { xs: 4, md: 8 },
           }}
         >
-          <Card sx={{ display: { xs: "flex", md: "none" }, width: "100%" }}>
-            <CardContent
-              sx={{
-                display: "flex",
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <Typography variant="subtitle2" gutterBottom>
-                  Selected products
-                </Typography>
-                <Typography variant="body1">
-                  $134.98
-                </Typography>
-              </div>
-              <InfoMobile
-                totalPrice="$134.98"
-              />
+          <Card
+            sx={{
+              width: "100%",
+              display: { xs: "flex", md: "none" },
+            }}
+          >
+            <CardContent>
+              <MemberProfileSmall {...memberProfileData} />
             </CardContent>
           </Card>
           <Box
@@ -111,9 +137,10 @@ export default function Dashboard() {
               gap: { xs: 5, md: "none" },
             }}
           >
-            <React.Fragment>
-              <Review />
-            </React.Fragment>
+            <Typography variant="h4">
+              Your Recent Contributions
+            </Typography>
+            <Contributions memberId={member!.id}/>
           </Box>
         </Grid>
       </Grid>
