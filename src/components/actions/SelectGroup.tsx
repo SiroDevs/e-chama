@@ -19,7 +19,7 @@ export function SelectGroup() {
   const handleChange = (event: SelectChangeEvent) => {
     const groupId = event.target.value;
     if (groupId === "add-new") {
-      window.location.href = '/join-a-chama';
+      window.location.href = '/join';
       event.target.value = selectedGroup || "";
     } else {
       setSelectedGroup(groupId);

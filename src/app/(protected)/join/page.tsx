@@ -19,7 +19,7 @@ export default function Dashboard() {
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Header />
       <NavbarBreadcrumbs
-        items={[{ label: "Join a Chama", href: "/join-a-chama" }]}
+        items={[{ label: "Join a Chama", href: "/join" }]}
       />
       <JoinGroupCard />
       <Copyright sx={{ flex: 1, my: 4 }} />
