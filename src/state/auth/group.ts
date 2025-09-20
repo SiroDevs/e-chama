@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { useAuthStore } from "./auth";
 import { UserRole } from "../role/profiles";
 import { UserGroup } from "../../types/types";
-import { extractRolesFromGroup, validateRoles, getDefaultRole } from "@/types/roles";
+import { validateRoles, getDefaultRole, setUserRole } from "@/types/roles";
 import { getUserGroup } from "@/services/GroupService";
 
 interface GroupState {
@@ -37,8 +37,7 @@ export const useGroupStore = create<GroupState & GroupActions>()(
         if (!groupId) {
           groupId = groups[0].group_id;
         }
-        const selectedGroup = await getUserGroup(authState.userId!, groupId!);
-        const groupRoles = extractRolesFromGroup(selectedGroup);
+        const groupRoles = setUserRole(authState.member!);
         availableRoles = [...availableRoles, ...groupRoles];
 
         availableRoles.push('member');
@@ -56,7 +55,7 @@ export const useGroupStore = create<GroupState & GroupActions>()(
         let newUserRoles: UserRole[] = [];
 
         const selectedGroup = await getUserGroup(authState.userId!, groupId!);
-        const groupRoles = extractRolesFromGroup(selectedGroup);
+        const groupRoles = setUserRole(authState.member!);
         newUserRoles = [...newUserRoles, ...groupRoles];
         newUserRoles.push('member');
         const validRoles = validateRoles(newUserRoles);
@@ -95,7 +94,7 @@ export const useGroupStore = create<GroupState & GroupActions>()(
           newAvailableRoles.push('admin');
         }
 
-        const groupRoles = extractRolesFromGroup(group);
+        const groupRoles = setUserRole(authState.member!);
         newAvailableRoles = [...newAvailableRoles, ...groupRoles];
 
         const validRoles = validateRoles(newAvailableRoles);
