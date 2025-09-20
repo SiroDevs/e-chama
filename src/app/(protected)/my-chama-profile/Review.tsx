@@ -50,28 +50,7 @@ export default function Review() {
             {addresses.join(', ')}
           </Typography>
         </div>
-        <div>
-          <Typography variant="subtitle2" gutterBottom>
-            Payment details
-          </Typography>
-          <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  useFlexGap
-                  sx={{ width: '100%', mb: 1 }}
-                >
-                  <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                    {payment.name}
-                  </Typography>
-                  <Typography variant="body2">{payment.detail}</Typography>
-                </Stack>
-              </React.Fragment>
-            ))}
-          </Grid>
-        </div>
+        
       </Stack>
     </Stack>
   );

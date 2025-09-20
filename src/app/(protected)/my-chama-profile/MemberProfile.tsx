@@ -5,9 +5,7 @@ import {
   Person as PersonIcon,
   LocationOn as LocationIcon,
   CalendarToday as CalendarIcon,
-  Fingerprint as IdIcon,
   Badge as BadgeIcon,
-  Group as GroupIcon,
   Info as InfoIcon,
 } from "@mui/icons-material";
 import { useAuthStore } from "@/state/auth/auth";
@@ -15,7 +13,6 @@ import { ProfileSkeleton, DetailItem } from "./ProfileSkeleton";
 
 export default function MemberProfile() {
   const { user, profile, member } = useAuthStore();
-  const theme = useTheme();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

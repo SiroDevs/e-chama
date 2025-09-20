@@ -2,10 +2,10 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
 
-import AppTheme from "../shared/AppTheme";
+import AppTheme from "../../theme/AppTheme";
 import { AuthContent } from "../auth";
 import { Box } from "@mui/material";
-import ColorModeSelect from "../shared/ColorModeSelect";
+import ColorModeSelect from "../../theme/ColorModeSelect";
 
 interface AuthWrapperProps {
   children: React.ReactNode;

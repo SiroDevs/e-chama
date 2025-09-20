@@ -6,7 +6,7 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 import { useAuthStore } from "@/state/auth/auth";
-import ColorModeIconDropdown from "../shared/ColorModeSelect";
+import ColorModeIconDropdown from "../../theme/ColorModeSelect";
 import { MenuButton } from "../actions/MenuButton";
 import { SelectGroup } from "../general";
 import { MenuContent } from "./MenuContent";

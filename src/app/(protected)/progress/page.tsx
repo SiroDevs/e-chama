@@ -8,7 +8,7 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
-import ColorModeIconDropdown from "@/components/shared/ColorModeSelect";
+import ColorModeIconDropdown from "@/theme/ColorModeSelect";
 import { AppIcon } from "@/components/general/CustomIcons";
 import AddressForm from './AddressForm';
 import Info from './Info';
