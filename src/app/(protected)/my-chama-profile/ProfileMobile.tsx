@@ -1,16 +1,10 @@
 import React from "react";
 import { Avatar, Box, Container, Chip } from "@mui/material";
-import { Typography, Grid, Card, CardContent } from "@mui/material";
-import {
-  Person as PersonIcon,
-  LocationOn as LocationIcon,
-  CalendarToday as CalendarIcon,
-  Badge as BadgeIcon,
-  Info as InfoIcon,
-} from "@mui/icons-material";
-import { DetailItem, ProfileSkeleton } from "./ProfileSkeleton";
+import { Typography, Grid } from "@mui/material";
+import { Badge as BadgeIcon } from "@mui/icons-material";
+import { ProfileSkeleton } from "./ProfileSkeleton";
 import { MemberProfileProps } from "@/types/profiles";
-import ViewMore from "@/components/actions/ViewMore";
+import MemberProfileInfo from "./MemberProfileInfo";
 
 export default function MemberProfileSmall({
   loading,
@@ -31,6 +25,7 @@ export default function MemberProfileSmall({
       </Container>
     );
   }
+
   return (
     <Box sx={{ pr: 2 }}>
       <Grid container alignItems="center">
@@ -102,7 +97,14 @@ export default function MemberProfileSmall({
                 alignItems="flex-end"
                 sx={{ height: "100%" }}
               >
-                <ViewMore />
+                <MemberProfileInfo
+                  {...{
+                    loading: false,
+                    profile: profile,
+                    member: member,
+                    user: user,
+                  }}
+                />
               </Box>
             </Grid>
           </Box>

@@ -3,7 +3,11 @@ import { Box, Button, Drawer, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 
-export default function ViewMore() {
+export default function ViewMore({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -17,6 +21,7 @@ export default function ViewMore() {
         sx={{ position: "absolute", right: 8, top: 8 }}
       >
         <CloseIcon />
+        {children}
       </IconButton>
     </Box>
   );
