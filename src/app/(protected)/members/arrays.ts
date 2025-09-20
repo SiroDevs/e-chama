@@ -1,5 +1,14 @@
 import { GroupMember } from "@/types/profiles";
 import { GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridFilterModel,
+  GridPaginationModel,
+  GridSortModel,
+  GridEventListener,
+  gridClasses,
+} from '@mui/x-data-grid';
 
 export interface RowsState {
   rows: GroupMember[];
@@ -62,6 +71,14 @@ export const membersColms: GridColDef[] = [
     filterable: true,
     sortable: true,
     type: 'dateTime',
-    // valueFormatter: (params) => new Date(params.value).toLocaleString(),
+  },
+  {
+    field: 'actions',
+    type: 'actions',
+    flex: 1,
+    align: 'right',
+    getActions: ({ row }) => [
+
+    ],
   },
 ];

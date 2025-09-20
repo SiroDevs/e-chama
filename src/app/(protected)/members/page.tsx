@@ -1,18 +1,11 @@
 "use client";
 
 import * as React from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { Header, NavbarBreadcrumbs } from "@/components/navigation";
+import { Box, Button, IconButton, Stack, Tooltip } from "@mui/material";
+import { Header } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
-import GroupMembers from "./records";
+import GroupMembers, { GroupMembersRef } from "./records";
 import {
   GridPaginationModel,
   GridSortModel,
@@ -20,12 +13,10 @@ import {
   GridFilterItem,
 } from "@mui/x-data-grid";
 import { DatabaseFilters } from "@/types/types";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useRef } from "react"; // Added useRef
 import PageContainer from "@/components/actions/PageContainer";
-import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function MembersPage() {
   const { isAuthenticated, member } = useAuthStore();
@@ -37,6 +28,9 @@ export default function MembersPage() {
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [],
   });
+  
+  // Create a ref to access GroupMembers methods
+  const groupMembersRef = useRef<GroupMembersRef>(null);
 
   if (!isAuthenticated) {
     window.location.href = "/";
@@ -65,7 +59,15 @@ export default function MembersPage() {
     }));
   };
 
+  // Refresh function that calls the child component's refresh
+  const handleRefresh = () => {
+    if (groupMembersRef.current) {
+      groupMembersRef.current.refresh();
+    }
+  };
+
   const pageTitle = "Chama Members";
+  
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Header />
@@ -91,7 +93,7 @@ export default function MembersPage() {
                   <IconButton
                     size="small"
                     aria-label="refresh"
-                    // onClick={fetchGroupMembers}
+                    onClick={handleRefresh}
                   >
                     <RefreshIcon />
                   </IconButton>
@@ -102,12 +104,13 @@ export default function MembersPage() {
                 // onClick={handleCreateClick}
                 startIcon={<AddIcon />}
               >
-                Create
+                New Member
               </Button>
             </Stack>
           }
         />
         <GroupMembers
+          ref={groupMembersRef}
           groupId={member!.group_id}
           paginationModel={paginationModel}
           sortModel={sortModel}
