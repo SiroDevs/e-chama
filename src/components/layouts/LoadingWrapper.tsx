@@ -2,7 +2,7 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
 
-import AppTheme from "../shared/AppTheme";
+import AppTheme from "../../theme/AppTheme";
 
 export function LoadingWrapper() {
   return (

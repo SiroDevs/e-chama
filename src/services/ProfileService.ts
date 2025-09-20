@@ -3,22 +3,25 @@
 import { supabase } from "@/lib/supabase/client";
 
 export async function createProfile(userId: string, first_name: string, last_name: string) {
-  return await supabase.from("profiles").insert([
+  return await supabase.from("profiles")
+  .insert([
     {
       id: userId,
       first_name: first_name,
       last_name: last_name,
     },
-  ]);
+  ])
+    .select()
+    .single();
 }
 
 export async function updateSelectedGroup(userId: string, groupId: string) {
   try {
     const { error } = await supabase
       .from("profiles")
-      .update({ 
+      .update({
         group: groupId,
-        updated_at: new Date().toISOString() 
+        updated_at: new Date().toISOString()
       })
       .eq("id", userId);
 

@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 
 import { createMember, createMemberGroup } from "@/services/MemberService";
 import { getUserGroups, searchByCode } from "@/services/GroupService";
-import { GroupExt } from "@/state/auth/types";
+import { GroupExt, UserGroup } from "@/types/types";
 
 export async function createGroupAction(payload: {
   userId: string;
@@ -112,12 +112,7 @@ export async function searchGroupAction(joinCode: string): Promise<{
 
 export async function joinGroupAction(userId: string, group: GroupExt) {
   try {
-    const { error } = await createMember(
-      group.id,
-      userId,
-      "000",
-      "member"
-    );
+    const { error } = await createMember(group.id, userId, "000", "member");
 
     if (error) {
       console.error("Joining group error:", error.message);
@@ -138,4 +133,14 @@ export async function joinGroupAction(userId: string, group: GroupExt) {
       error: "Failed to join Chama. Please try again.",
     };
   }
+}
+
+export async function fetchGroups(userId: string) {
+  let groups: UserGroup[] = [];
+  try {
+    groups = await getUserGroups(userId);
+  } catch (groupError) {
+    console.warn("No groups found for this user:", groupError);
+  }
+  return groups;
 }

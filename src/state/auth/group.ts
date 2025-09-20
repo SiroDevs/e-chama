@@ -2,8 +2,9 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand";
 import { useAuthStore } from "./auth";
 import { UserRole } from "../role/profiles";
-import { UserGroup } from "./types";
+import { UserGroup } from "../../types/types";
 import { extractRolesFromGroup, validateRoles, getDefaultRole } from "@/types/roles";
+import { getUserGroup } from "@/services/GroupService";
 
 interface GroupState {
   userGroups: UserGroup[];
@@ -29,72 +30,40 @@ export const useGroupStore = create<GroupState & GroupActions>()(
       currentRole: 'member',
       availableRoles: ['member'],
 
-      setUserGroups: async (groups: UserGroup[], selectedGroupId?: string | null) => {
+
+      setUserGroups: async (groups: UserGroup[], groupId?: string | null) => {
         const authState = useAuthStore.getState();
-        let newSelectedGroup = selectedGroupId;
-        
-        if (!newSelectedGroup && groups.length > 0) {
-          newSelectedGroup = groups[0].group_id;
+        let availableRoles: UserRole[] = [];
+        if (!groupId) {
+          groupId = groups[0].group_id;
         }
-        
-        // Update roles based on the new groups
-        let newAvailableRoles: UserRole[] = ['member'];
-        if (authState.profile?.is_admin) {
-          newAvailableRoles.push('admin');
-        }
-        
-        // If we have a selected group, update roles from that group
-        if (newSelectedGroup) {
-          const selectedGroup = groups.find(g => g.group_id === newSelectedGroup);
-          if (selectedGroup) {
-            const groupRoles = extractRolesFromGroup(selectedGroup);
-            newAvailableRoles = [...newAvailableRoles, ...groupRoles];
-          }
-        }
-        
-        const validRoles = validateRoles(newAvailableRoles);
-        const state = get();
-        
-        set({ 
+        const selectedGroup = await getUserGroup(authState.userId!, groupId!);
+        const groupRoles = extractRolesFromGroup(selectedGroup);
+        availableRoles = [...availableRoles, ...groupRoles];
+
+        availableRoles.push('member');
+        const validRoles = validateRoles(availableRoles);
+        set({
           userGroups: groups,
-          selectedGroup: newSelectedGroup,
+          selectedGroup: groupId,
           availableRoles: validRoles,
-          // Reset to member role if current role is not available
-          currentRole: validRoles.includes(state.currentRole) 
-            ? state.currentRole 
-            : getDefaultRole(validRoles)
+          currentRole: groupRoles[0],
         });
       },
 
       setSelectedGroup: async (groupId: string | null) => {
         const authState = useAuthStore.getState();
-        const state = get();
-        
-        if (groupId === state.selectedGroup) return;
-        
-        let newAvailableRoles: UserRole[] = ['member'];
-        if (authState.profile?.is_admin) {
-          newAvailableRoles.push('admin');
-        }
-        
-        // Update roles based on the new selected group
-        if (groupId) {
-          const selectedGroup = state.userGroups.find(g => g.group_id === groupId);
-          if (selectedGroup) {
-            const groupRoles = extractRolesFromGroup(selectedGroup);
-            newAvailableRoles = [...newAvailableRoles, ...groupRoles];
-          }
-        }
-        
-        const validRoles = validateRoles(newAvailableRoles);
-        
-        set({ 
+        let newUserRoles: UserRole[] = [];
+
+        const selectedGroup = await getUserGroup(authState.userId!, groupId!);
+        const groupRoles = extractRolesFromGroup(selectedGroup);
+        newUserRoles = [...newUserRoles, ...groupRoles];
+        newUserRoles.push('member');
+        const validRoles = validateRoles(newUserRoles);
+        set({
           selectedGroup: groupId,
           availableRoles: validRoles,
-          // Reset to member role if current role is not available
-          currentRole: validRoles.includes(state.currentRole) 
-            ? state.currentRole 
-            : getDefaultRole(validRoles)
+          currentRole: groupRoles[0],
         });
       },
 
@@ -105,11 +74,11 @@ export const useGroupStore = create<GroupState & GroupActions>()(
       setAvailableRoles: async (roles: UserRole[]) => {
         const validRoles = validateRoles(roles);
         const state = get();
-        
-        set({ 
+
+        set({
           availableRoles: validRoles,
-          currentRole: validRoles.includes(state.currentRole) 
-            ? state.currentRole 
+          currentRole: validRoles.includes(state.currentRole)
+            ? state.currentRole
             : getDefaultRole(validRoles)
         });
       },
@@ -118,29 +87,29 @@ export const useGroupStore = create<GroupState & GroupActions>()(
         const authState = useAuthStore.getState();
         const state = get();
         const group = state.userGroups.find(g => g.group_id === groupId);
-        
+
         if (!group) return;
-        
+
         let newAvailableRoles: UserRole[] = ['member'];
         if (authState.profile?.is_admin) {
           newAvailableRoles.push('admin');
         }
-        
+
         const groupRoles = extractRolesFromGroup(group);
         newAvailableRoles = [...newAvailableRoles, ...groupRoles];
-        
+
         const validRoles = validateRoles(newAvailableRoles);
-        
-        set({ 
+
+        set({
           availableRoles: validRoles,
-          currentRole: validRoles.includes(state.currentRole) 
-            ? state.currentRole 
+          currentRole: validRoles.includes(state.currentRole)
+            ? state.currentRole
             : getDefaultRole(validRoles)
         });
       },
 
       clearGroupData: () => {
-        set({ 
+        set({
           userGroups: [],
           selectedGroup: null,
           currentRole: 'member',

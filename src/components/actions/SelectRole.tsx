@@ -4,56 +4,6 @@ import { ListItemText, ListItemIcon } from "@mui/material";
 import Select, { SelectChangeEvent, selectClasses } from "@mui/material/Select";
 import { getRoleInfo, isUserRole, UserRole } from "@/state/role/profiles";
 
-const getRoleColor = (role: string) => {
-  if (!isUserRole(role)) return "default";
-
-  switch (role) {
-    case "admin":
-      return "error";
-    case "treasurer":
-      return "warning";
-    case "accountant":
-      return "secondary";
-    case "secretary":
-      return "info";
-    case "chairperson":
-      return "success";
-    case "vicechairperson":
-      return "success";
-    case "official":
-      return "primary";
-    case "member":
-      return "default";
-    default:
-      return "default";
-  }
-};
-
-const getRoleIcon = (role: string) => {
-  if (!isUserRole(role)) return "👤";
-
-  switch (role) {
-    case "admin":
-      return "⚙️";
-    case "treasurer":
-      return "💰";
-    case "accountant":
-      return "📊";
-    case "secretary":
-      return "📝";
-    case "chairperson":
-      return "👑";
-    case "vicechairperson":
-      return "🎖️";
-    case "official":
-      return "⭐";
-    case "member":
-      return "👤";
-    default:
-      return "👤";
-  }
-};
-
 interface SelectRoleProps {
   currentRole: UserRole;
   availableRoles: UserRole[];
@@ -153,3 +103,53 @@ export function SelectRole({
     </Select>
   );
 }
+
+const getRoleColor = (role: string) => {
+  if (!isUserRole(role)) return "default";
+
+  switch (role) {
+    case "admin":
+      return "error";
+    case "treasurer":
+      return "warning";
+    case "accountant":
+      return "secondary";
+    case "secretary":
+      return "info";
+    case "chairperson":
+      return "success";
+    case "vicechairperson":
+      return "success";
+    case "official":
+      return "primary";
+    case "member":
+      return "default";
+    default:
+      return "default";
+  }
+};
+
+const getRoleIcon = (role: string) => {
+  if (!isUserRole(role)) return "👤";
+
+  switch (role) {
+    case "admin":
+      return "⚙️";
+    case "treasurer":
+      return "💰";
+    case "accountant":
+      return "📊";
+    case "secretary":
+      return "📝";
+    case "chairperson":
+      return "👑";
+    case "vicechairperson":
+      return "🎖️";
+    case "official":
+      return "⭐";
+    case "member":
+      return "👤";
+    default:
+      return "👤";
+  }
+};

@@ -3,7 +3,6 @@
 import { supabase } from "@/lib/supabase/client";
 import { createGroup } from "./GroupService";
 import { updateSelectedGroup } from "./ProfileService";
-import { GroupExt } from "@/state/auth/types";
 
 export async function createMember(
   group_id: string,

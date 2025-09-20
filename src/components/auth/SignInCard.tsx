@@ -15,6 +15,7 @@ import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
 import { useGroupStore } from "@/state/auth/group";
+import { fetchGroups } from "@/app/(protected)/actions/GroupAction";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -42,13 +43,11 @@ export function SignInCard() {
     startTransition(async () => {
       const result = await handleSigninAction(data);
       if (result.success) {
-        await loginUser(result.user!, result.profile!);
-        if (result.groups && result.groups.length > 0) {
-          await setUserGroups(result.groups, result.profile?.group || null);
-        } else {
-          await setUserGroups([], null);
+        await loginUser(result.user!, result.profile!, result.member!);
+        const groupResult = await fetchGroups(result.user!.id);
+        if (groupResult.length > 0) {
+          await setUserGroups(groupResult, result.profile?.group || null);
         }
-
         window.location.reload();
       }
     });

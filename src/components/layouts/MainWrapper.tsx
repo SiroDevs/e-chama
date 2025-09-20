@@ -8,13 +8,13 @@ import type {} from "@mui/x-tree-view/themeAugmentation";
 import { alpha, Box, CssBaseline, Stack } from "@mui/material";
 
 import { AppNavbar, SideMenu } from "@/components/navigation";
-import AppTheme from "@/components/shared/AppTheme";
+import AppTheme from "@/theme/AppTheme";
 import {
   chartsCustomizations,
   dataGridCustomizations,
   datePickersCustomizations,
   treeViewCustomizations,
-} from "@/components/shared/customizations";
+} from "@/theme/customizations";
 
 const xThemeComponents = {
   ...chartsCustomizations,
@@ -48,7 +48,6 @@ export function MainWrapper(props: MainWrapperProps) {
           <Stack
             spacing={2}
             sx={{
-              alignItems: "center",
               mx: 3,
               pb: 5,
               mt: { xs: 8, md: 0 },
