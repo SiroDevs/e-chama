@@ -10,6 +10,9 @@ import ColorModeIconDropdown from "../../theme/ColorModeSelect";
 import { MenuButton } from "../actions/MenuButton";
 import { SelectGroup } from "../general";
 import { MenuContent } from "./MenuContent";
+import { SelectRole } from "../actions/SelectRole";
+import { useGroupStore } from "@/state/auth/group";
+import { AppIcon } from "../general/CustomIcons";
 
 interface SideMenuMobileProps {
   open: boolean | undefined;
@@ -18,6 +21,7 @@ interface SideMenuMobileProps {
 
 export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
   const { profile, logoutUser } = useAuthStore();
+  const { currentRole, availableRoles, setCurrentRole } = useGroupStore();
 
   const handleSignOut = async () => {
     await handleSignOutAction();
@@ -45,35 +49,22 @@ export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
         }}
       >
         <Stack direction="row" sx={{ p: 2, pb: 0, gap: 1 }}>
-          <Stack
-            direction="row"
-            sx={{ gap: 1, alignItems: "center", flexGrow: 1, p: 1 }}
-          >
-            <Avatar
-              sizes="small"
-              alt={`${profile!.first_name} ${profile!.last_name}`}
-              src="/static/images/avatar/7.jpg"
-              sx={{ width: 24, height: 24 }}
-            />
-            <Typography component="p" variant="h6">
-              {profile!.first_name} {profile!.last_name}
-            </Typography>
-          </Stack>
+          <AppIcon />
           <MenuButton>
             <ColorModeIconDropdown />
           </MenuButton>
         </Stack>
         <Divider />
         <Stack sx={{ flexGrow: 1 }}>
-          <Box
-            sx={{
-              display: "flex",
-              mt: "calc(var(--template-frame-height, 0px) + 4px)",
-              p: 1.5,
-            }}
-          >
+          <Stack sx={{ p: 2 }} spacing={2}>
             <SelectGroup />
-          </Box>
+            <SelectRole
+              currentRole={currentRole}
+              availableRoles={availableRoles}
+              onRoleChange={setCurrentRole}
+            />
+          </Stack>
+          
           <Divider />
           <MenuContent />
           <Divider />

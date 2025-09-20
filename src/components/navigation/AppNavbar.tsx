@@ -8,7 +8,6 @@ import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 
 import { SideMenuMobile } from "../navigation";
 import { AppIcon } from "../general/CustomIcons";
-import { useAuthStore } from "@/state/auth/auth";
 import AccountMenu from "./AccountMenu";
 import { MenuButton } from "../actions/MenuButton";
 
@@ -29,7 +28,6 @@ const Toolbar = styled(MuiToolbar)({
 });
 
 export function AppNavbar() {
-  const { user, profile } = useAuthStore();
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {

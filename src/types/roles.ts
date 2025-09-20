@@ -1,4 +1,4 @@
-import { UserRole, isUserRole } from "@/state/role/profiles";
+import { Member, UserRole, isUserRole } from "@/state/role/profiles";
 
 // Safe function to filter and validate roles
 export function validateRoles(roles: string[]): UserRole[] {
@@ -16,17 +16,15 @@ export function hasRole(userRoles: string[], targetRole: UserRole): boolean {
   return validateRoles(userRoles).includes(targetRole);
 }
 
-// Extract roles from a group object
-export function extractRolesFromGroup(group: any): UserRole[] {
+export function setUserRole(member: Member): UserRole[] {
   const roles: string[] = [];
   
-  // Adjust these property names based on your actual UserGroup structure
-  if (group.is_treasurer || group.isTreasurer) roles.push('treasurer');
-  if (group.is_accountant || group.isAccountant) roles.push('accountant');
-  if (group.is_secretary || group.isSecretary) roles.push('secretary');
-  if (group.is_chairperson || group.isChairperson) roles.push('chairperson');
-  if (group.is_vice_chairperson || group.isViceChairperson) roles.push('vicechairperson');
-  if (group.is_official || group.isOfficial) roles.push('official');
+  if (member.role == 'treasurer') roles.push('treasurer');
+  if (member.role == 'accountant') roles.push('accountant');
+  if (member.role == 'secretary') roles.push('secretary');
+  if (member.role == 'chairperson') roles.push('chairperson');
+  if (member.role == 'vicechairperson') roles.push('vicechairperson');
+  if (member.role == 'official') roles.push('official');
   
   return validateRoles(roles);
 }
