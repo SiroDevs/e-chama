@@ -1,28 +1,77 @@
 "use client";
 
 import * as React from "react";
-
-import {
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { Box, Card, CardContent, Grid } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
-import InfoMobile from "./InfoMobile";
 import Contributions from "./Contributions";
-import MemberProfile from "./MemberProfile";
+import MemberProfile from "./Profile";
+import { MemberProfileProps } from "@/types/profiles";
+import MemberProfileSmall from "./ProfileMobile";
+import ViewMore from "../../../components/actions/ViewMore";
 
 export default function Dashboard() {
   const { isAuthenticated, user, profile, member } = useAuthStore();
 
   if (!isAuthenticated) {
     window.location.href = "/";
+    return null;
   }
+
+  const processMemberProfileData = (): MemberProfileProps => {
+    if (!profile || !member) {
+      return {
+        loading: false,
+        profile: null,
+        member: null,
+        user: null,
+      };
+    }
+
+    const fullName =
+      `${profile.first_name || ""} ${profile.last_name || ""}`.trim() ||
+      "Unknown Member";
+
+    const formatDate = (dateString: string | null) => {
+      if (!dateString) return "Not set";
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    };
+
+    const getInitials = (firstName: string | null, lastName: string | null) => {
+      const first = firstName?.[0] || "";
+      const last = lastName?.[0] || "";
+      return `${first}${last}`.toUpperCase();
+    };
+
+    return {
+      loading: false,
+      profile: {
+        ...profile,
+        fullName,
+        formattedDob: formatDate(profile.dob),
+        initials: getInitials(profile.first_name, profile.last_name),
+        location:
+          `${profile.country || ""} ${profile.address || ""}`.trim() ||
+          "Not specified",
+      },
+      member: {
+        ...member,
+        formattedJoinedAt: formatDate(member.joined_at),
+        memberNo: member.member_no || "Not assigned",
+        role: member.role || "Member",
+      },
+      user: {
+        phone: user?.phone || "Not specified",
+      },
+    };
+  };
+
+  const memberProfileData = processMemberProfileData();
 
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
@@ -51,7 +100,7 @@ export default function Dashboard() {
             pt: 2,
           }}
         >
-          <MemberProfile />
+          <MemberProfile {...memberProfileData} />
         </Grid>
 
         <Grid
@@ -68,22 +117,9 @@ export default function Dashboard() {
             gap: { xs: 4, md: 8 },
           }}
         >
-          <Card sx={{ display: { xs: "flex", md: "none" }, width: "100%" }}>
-            <CardContent
-              sx={{
-                display: "flex",
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <Typography variant="subtitle2" gutterBottom>
-                  Selected products
-                </Typography>
-                <Typography variant="body1">$134.98</Typography>
-              </div>
-              <InfoMobile totalPrice="$134.98" />
+          <Card sx={{ width: "100%" }}>
+            <CardContent>
+              <MemberProfileSmall {...memberProfileData} />
             </CardContent>
           </Card>
           <Box

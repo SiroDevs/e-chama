@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Avatar, Box, Container, Chip, useTheme } from "@mui/material";
+import React from "react";
+import { Avatar, Box, Container, Chip } from "@mui/material";
 import { Typography, Grid, Card, CardContent } from "@mui/material";
 import {
   Person as PersonIcon,
@@ -8,39 +8,20 @@ import {
   Badge as BadgeIcon,
   Info as InfoIcon,
 } from "@mui/icons-material";
-import { useAuthStore } from "@/state/auth/auth";
 import { ProfileSkeleton, DetailItem } from "./ProfileSkeleton";
+import { MemberProfileProps } from "@/types/profiles";
 
-export default function MemberProfile() {
-  const { user, profile, member } = useAuthStore();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (profile && member) {
-      setLoading(false);
-    }
-  }, [profile, member]);
-
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return "Not set";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const getInitials = (firstName: string | null, lastName: string | null) => {
-    const first = firstName?.[0] || "";
-    const last = lastName?.[0] || "";
-    return `${first}${last}`.toUpperCase();
-  };
-
+export default function MemberProfile({
+  loading,
+  profile,
+  member,
+  user
+}: MemberProfileProps) {
   if (loading) {
     return <ProfileSkeleton />;
   }
 
-  if (!profile || !member) {
+  if (!profile || !member || !user) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Typography variant="h6" color="error" align="center">
@@ -50,10 +31,6 @@ export default function MemberProfile() {
     );
   }
 
-  const fullName =
-    `${profile.first_name || ""} ${profile.last_name || ""}`.trim() ||
-    "Unknown Member";
-
   return (
     <Box sx={{ pr: 2 }}>
       <Grid container alignItems="center">
@@ -62,7 +39,7 @@ export default function MemberProfile() {
             {profile.avatar ? (
               <Avatar
                 src={profile.avatar}
-                alt={fullName}
+                alt={profile.fullName}
                 sx={{
                   width: 100,
                   height: 100,
@@ -77,7 +54,7 @@ export default function MemberProfile() {
                   fontSize: "2.5rem",
                 }}
               >
-                {getInitials(profile.first_name, profile.last_name)}
+                {profile.initials}
               </Avatar>
             )}
           </Box>
@@ -92,22 +69,22 @@ export default function MemberProfile() {
             textAlign="center"
           >
             <Typography variant="h4" component="h1">
-              {fullName}
+              {profile.fullName}
             </Typography>
             <Typography gutterBottom>
-              Member No.: {`${member.member_no || "Not assigned"}`}
+              Member No.: {member.memberNo}
             </Typography>
 
             <Chip
               icon={<BadgeIcon />}
-              label={`Chama ${member.role || "Member"}`}
+              label={`Chama ${member.role}`}
               variant="outlined"
               color="primary"
               size="small"
             />
 
             <Typography variant="body1" color="text.secondary">
-              Joined: {formatDate(member.joined_at)}
+              Joined: {member.formattedJoinedAt}
             </Typography>
           </Box>
         </Grid>
@@ -129,7 +106,7 @@ export default function MemberProfile() {
               <Box sx={{ mt: 2 }}>
                 <DetailItem
                   label="Date of Birth"
-                  value={formatDate(profile.dob)}
+                  value={profile.formattedDob}
                   icon={<CalendarIcon />}
                 />
                 <DetailItem
@@ -137,11 +114,6 @@ export default function MemberProfile() {
                   value={profile.sex || "Not specified"}
                   icon={<PersonIcon />}
                 />
-                {/* <DetailItem
-                  label="ID Number"
-                  value={profile.id_number || "Not provided"}
-                  icon={<IdIcon />}
-                /> */}
               </Box>
             </CardContent>
           </Card>
@@ -162,16 +134,12 @@ export default function MemberProfile() {
               <Box sx={{ mt: 2 }}>
                 <DetailItem
                   label="Phone"
-                  value={user?.phone || "Not specified"}
+                  value={user.phone!}
                   icon={<PersonIcon />}
                 />
                 <DetailItem
                   label="Location"
-                  value={
-                    `${profile.country || ""} ${
-                      profile.address || ""
-                    }`.trim() || "Not specified"
-                  }
+                  value={profile.location}
                   icon={<LocationIcon />}
                   multiline
                 />
