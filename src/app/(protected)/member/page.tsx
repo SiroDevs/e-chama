@@ -137,7 +137,7 @@ export default function Dashboard() {
               gap: { xs: 5, md: "none" },
             }}
           >
-            <Typography variant="h4">
+            <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
               Your Recent Contributions
             </Typography>
             <Contributions memberId={member!.id}/>

@@ -18,9 +18,7 @@ export default function Dashboard() {
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Header />
-      <NavbarBreadcrumbs
-        items={[{ label: "Members", href: "/members" }]}
-      />
+      <NavbarBreadcrumbs items={[{ label: "Members", href: "/members" }]} />
       <Grid
         container
         sx={{
@@ -31,7 +29,9 @@ export default function Dashboard() {
           mt: { xs: 4, sm: 0 },
         }}
       >
-        <Typography variant="h4">Chama Members</Typography>
+        <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
+          Chama Members
+        </Typography>
         <Contributions memberId={member!.id} />
       </Grid>
       <Copyright sx={{ flex: 1, my: 4 }} />
