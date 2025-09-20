@@ -108,7 +108,7 @@ export async function getMemberCount(group_id: string): Promise<number> {
   return count || 0;
 }
 
-export async function getMembers({
+export async function getGroupMembers({
   page,
   pageSize,
   sortField = 'created_at',
@@ -118,7 +118,7 @@ export async function getMembers({
 }: GroupMembersQueryParams): Promise<GroupMembersResponse> {
   try {
     let query = supabase
-      .from('contributions')
+      .from('user_profile_member')
       .select('*', { count: 'exact' })
       .eq('group_id', groupId);
 

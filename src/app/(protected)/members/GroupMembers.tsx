@@ -3,10 +3,10 @@ import { DataGrid, GridSortModel, GridFilterModel } from "@mui/x-data-grid";
 import { GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
 import { gridClasses, GridFilterItem } from "@mui/x-data-grid";
 import { Alert, Box, Typography, Paper } from "@mui/material";
-import { getContributions } from "@/services/ContributionService";
 import { GroupMember } from "@/types/profiles";
 import { contributionsColms } from "./arrays";
 import { DatabaseFilters } from "@/types/types";
+import { getGroupMembers } from "@/services/MemberService";
 
 interface RowsState {
   rows: GroupMember[];
@@ -14,12 +14,12 @@ interface RowsState {
 }
 
 interface GroupMembersProps {
-  memberId: string;
+  groupId: string;
 }
 
 const INITIAL_PAGE_SIZE = 10;
 
-export default function GroupMembers({memberId}: GroupMembersProps) {
+export default function GroupMembers({groupId}: GroupMembersProps) {
   const [rowsState, setRowsState] = useState<RowsState>({
     rows: [],
     rowCount: 0,
@@ -48,7 +48,7 @@ export default function GroupMembers({memberId}: GroupMembersProps) {
     }));
   };
 
-  const fetchContributions = useCallback(async () => {
+  const fetchGroupMembers = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     setHasSearched(true);
@@ -58,10 +58,10 @@ export default function GroupMembers({memberId}: GroupMembersProps) {
       const sortOrder = sortModel[0]?.sort || "desc";
       const filters = convertFilterModelToFilters(filterModel.items);
 
-      const response = await getContributions({
+      const response = await getGroupMembers({
         page: paginationModel.page,
         pageSize: paginationModel.pageSize,
-        memberId: memberId,
+        groupId: groupId,
         sortField: sortField,
         sortOrder: sortOrder,
         filters: filters,
@@ -77,15 +77,15 @@ export default function GroupMembers({memberId}: GroupMembersProps) {
       });
     } catch (err) {
       setError(err as Error);
-      console.error("Error fetching contributions:", err);
+      console.error("Error fetching group members:", err);
     } finally {
       setIsLoading(false);
     }
-  }, [paginationModel, sortModel, filterModel, memberId]);
+  }, [paginationModel, sortModel, filterModel, groupId]);
 
   useEffect(() => {
-    fetchContributions();
-  }, [fetchContributions]);
+    fetchGroupMembers();
+  }, [fetchGroupMembers]);
 
   const handlePaginationModelChange = (newModel: GridPaginationModel) => {
     setPaginationModel(newModel);

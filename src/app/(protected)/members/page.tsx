@@ -32,7 +32,7 @@ export default function Dashboard() {
         <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
           Chama Members
         </Typography>
-        <GroupMembers memberId={member!.id} />
+        <GroupMembers groupId={member!.group_id} />
       </Grid>
       <Copyright sx={{ flex: 1, my: 4 }} />
     </Box>
