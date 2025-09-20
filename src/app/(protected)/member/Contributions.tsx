@@ -4,8 +4,9 @@ import { GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
 import { gridClasses, GridFilterItem } from "@mui/x-data-grid";
 import { Alert, Box, Typography, Paper } from "@mui/material";
 import { getContributions } from "@/services/ContributionService";
-import { Contribution, ContributionsFilters } from "@/types/contribution";
+import { Contribution } from "@/types/contribution";
 import { contributionsColms } from "./arrays";
+import { DatabaseFilters } from "@/types/types";
 
 interface RowsState {
   rows: Contribution[];
@@ -39,7 +40,7 @@ export default function Contributions({memberId}: ContributionsProps) {
 
   const convertFilterModelToFilters = (
     filterItems: GridFilterItem[]
-  ): ContributionsFilters[] => {
+  ): DatabaseFilters[] => {
     return filterItems.map((item) => ({
       field: item.field,
       value: item.value?.toString() || "",

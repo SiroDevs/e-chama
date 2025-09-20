@@ -1,52 +1,84 @@
+import { GroupMember } from "@/types/profiles";
 import { GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridFilterModel,
+  GridPaginationModel,
+  GridSortModel,
+  GridEventListener,
+  gridClasses,
+} from '@mui/x-data-grid';
 
-export const contributionsColms: GridColDef[] = [
+export interface RowsState {
+  rows: GroupMember[];
+  rowCount: number;
+}
+
+export interface GroupMembersProps {
+  groupId: string;
+}
+
+export const PageSize = 10;
+
+export const membersColms: GridColDef[] = [
   {
-    field: 'title',
-    headerName: 'Title',
+    field: 'full_name',
+    headerName: 'Full Name',
     width: 200,
     filterable: true,
     sortable: true,
   },
   {
-    field: 'mode',
-    headerName: 'Mode',
+    field: 'phone',
+    headerName: 'Phone No',
     width: 120,
     filterable: true,
     sortable: true,
   },
   {
-    field: 'reference',
-    headerName: 'Reference',
-    width: 150,
+    field: 'email',
+    headerName: 'Email Address',
+    width: 200,
     filterable: true,
     sortable: true,
   },
   {
-    field: 'status',
-    headerName: 'Status',
+    field: 'id_number',
+    headerName: 'ID. Number',
     width: 120,
     filterable: true,
     sortable: true,
-    type: 'singleSelect',
-    valueOptions: ['pending', 'approved', 'rejected', 'completed'],
   },
   {
-    field: 'amount',
-    headerName: 'Amount',
+    field: 'member_no',
+    headerName: 'Member.No',
     width: 120,
     filterable: true,
     sortable: true,
-    type: 'number',
-    // valueFormatter: (params) => `$${params.value.toFixed(2)}`,
   },
   {
-    field: 'created_at',
-    headerName: 'Created At',
+    field: 'role',
+    headerName: 'Role',
+    width: 120,
+    filterable: true,
+    sortable: true,
+  },
+  {
+    field: 'joined_at',
+    headerName: 'Joined At',
     width: 180,
     filterable: true,
     sortable: true,
     type: 'dateTime',
-    // valueFormatter: (params) => new Date(params.value).toLocaleString(),
+  },
+  {
+    field: 'actions',
+    type: 'actions',
+    flex: 1,
+    align: 'right',
+    getActions: ({ row }) => [
+
+    ],
   },
 ];

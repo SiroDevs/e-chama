@@ -3,6 +3,7 @@
 import { supabase } from "@/lib/supabase/client";
 import { createGroup } from "./GroupService";
 import { updateSelectedGroup } from "./ProfileService";
+import { GroupMember, GroupMembersQueryParams, GroupMembersResponse } from "@/types/profiles";
 
 export async function createMember(
   group_id: string,
@@ -105,4 +106,92 @@ export async function getMemberCount(group_id: string): Promise<number> {
   }
 
   return count || 0;
+}
+
+export async function getGroupMembers({
+  page,
+  pageSize,
+  sortField = 'created_at',
+  sortOrder = 'desc',
+  filters = [],
+  groupId,
+}: GroupMembersQueryParams): Promise<GroupMembersResponse> {
+  try {
+    let query = supabase
+      .from('group_members')
+      .select('*', { count: 'exact' })
+      .eq('group_id', groupId);
+
+    query = query.order(sortField, { ascending: sortOrder === 'asc' });
+
+    filters.forEach((filter) => {
+      if (filter.value) {
+        switch (filter.operator) {
+          case 'eq':
+            query = query.eq(filter.field, filter.value);
+            break;
+          case 'gt':
+            query = query.gt(filter.field, filter.value);
+            break;
+          case 'lt':
+            query = query.lt(filter.field, filter.value);
+            break;
+          case 'gte':
+            query = query.gte(filter.field, filter.value);
+            break;
+          case 'lte':
+            query = query.lte(filter.field, filter.value);
+            break;
+          case 'ilike':
+          default:
+            query = query.ilike(filter.field, `%${filter.value}%`);
+        }
+      }
+    });
+
+    const from = page * pageSize;
+    const to = from + pageSize - 1;
+    query = query.range(from, to);
+
+    const { data, error, count } = await query;
+
+    if (error) {
+      throw error;
+    }
+
+    return {
+      data: data || [],
+      count: count || 0,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      data: [],
+      count: 0,
+      error: error as Error,
+    };
+  }
+}
+
+export async function getGroupMemberById(id: string): Promise<{
+  data: GroupMember | null;
+  error: Error | null;
+}> {
+  try {
+    const { data, error } = await supabase
+      .from('contributions')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    return {
+      data,
+      error,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error: error as Error,
+    };
+  }
 }
