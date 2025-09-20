@@ -9,20 +9,6 @@ export const contributionsColms: GridColDef[] = [
     sortable: true,
   },
   {
-    field: 'member_id',
-    headerName: 'Member ID',
-    width: 150,
-    filterable: true,
-    sortable: true,
-  },
-  {
-    field: 'description',
-    headerName: 'Description',
-    width: 250,
-    filterable: true,
-    sortable: false,
-  },
-  {
     field: 'mode',
     headerName: 'Mode',
     width: 120,
@@ -57,15 +43,6 @@ export const contributionsColms: GridColDef[] = [
   {
     field: 'created_at',
     headerName: 'Created At',
-    width: 180,
-    filterable: true,
-    sortable: true,
-    type: 'dateTime',
-    // valueFormatter: (params) => new Date(params.value).toLocaleString(),
-  },
-  {
-    field: 'updated_at',
-    headerName: 'Updated At',
     width: 180,
     filterable: true,
     sortable: true,

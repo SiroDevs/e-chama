@@ -9,11 +9,21 @@ export async function getContributions({
   sortField = 'created_at',
   sortOrder = 'desc',
   filters = [],
+  groupId,
+  memberId,
 }: ContributionsQueryParams): Promise<ContributionsResponse> {
   try {
     let query = supabase
       .from('contributions')
       .select('*', { count: 'exact' });
+
+    if (groupId) {
+      query = query.eq('group_id', groupId);
+    }
+
+    if (memberId) {
+      query = query.eq('member_id', memberId);
+    }
 
     query = query.order(sortField, { ascending: sortOrder === 'asc' });
 

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Box, Card, CardContent, Grid } from "@mui/material";
+import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
@@ -9,7 +9,6 @@ import Contributions from "./Contributions";
 import MemberProfile from "./Profile";
 import { MemberProfileProps } from "@/types/profiles";
 import MemberProfileSmall from "./ProfileMobile";
-import ViewMore from "../../../components/actions/ViewMore";
 
 export default function Dashboard() {
   const { isAuthenticated, user, profile, member } = useAuthStore();
@@ -117,7 +116,12 @@ export default function Dashboard() {
             gap: { xs: 4, md: 8 },
           }}
         >
-          <Card sx={{ width: "100%" }}>
+          <Card
+            sx={{
+              width: "100%",
+              display: { xs: "flex", md: "none" },
+            }}
+          >
             <CardContent>
               <MemberProfileSmall {...memberProfileData} />
             </CardContent>
@@ -133,7 +137,10 @@ export default function Dashboard() {
               gap: { xs: 5, md: "none" },
             }}
           >
-            <Contributions />
+            <Typography variant="h4">
+              Your Recent Contributions
+            </Typography>
+            <Contributions memberId={member!.id}/>
           </Box>
         </Grid>
       </Grid>
