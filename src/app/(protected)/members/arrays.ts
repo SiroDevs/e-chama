@@ -1,6 +1,18 @@
+import { GroupMember } from "@/types/profiles";
 import { GridColDef } from "@mui/x-data-grid";
 
-export const groupMembersColms: GridColDef[] = [
+export interface RowsState {
+  rows: GroupMember[];
+  rowCount: number;
+}
+
+export interface GroupMembersProps {
+  groupId: string;
+}
+
+export const PageSize = 10;
+
+export const membersColms: GridColDef[] = [
   {
     field: 'full_name',
     headerName: 'Full Name',

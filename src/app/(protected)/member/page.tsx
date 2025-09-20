@@ -127,6 +127,7 @@ export default function Dashboard() {
           <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
             Your Recent Contributions
           </Typography>
+
           <Contributions memberId={member!.id} />
         </Box>
       </Grid>

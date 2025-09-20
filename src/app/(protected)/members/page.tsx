@@ -1,24 +1,74 @@
 "use client";
 
 import * as React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
-import GroupMembers from "./GroupMembers";
+import GroupMembers from "./records";
+import {
+  GridPaginationModel,
+  GridSortModel,
+  GridFilterModel,
+  GridFilterItem,
+} from "@mui/x-data-grid";
+import { DatabaseFilters } from "@/types/types";
+import { useState, useCallback, useEffect } from "react";
+import PageContainer from "@/components/actions/PageContainer";
+import AddIcon from "@mui/icons-material/Add";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function Dashboard() {
+export default function MembersPage() {
   const { isAuthenticated, member } = useAuthStore();
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 10,
+  });
+  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const [filterModel, setFilterModel] = useState<GridFilterModel>({
+    items: [],
+  });
 
   if (!isAuthenticated) {
     window.location.href = "/";
     return null;
   }
 
+  const handlePaginationModelChange = (newModel: GridPaginationModel) => {
+    setPaginationModel(newModel);
+  };
+
+  const handleSortModelChange = (newModel: GridSortModel) => {
+    setSortModel(newModel);
+  };
+
+  const handleFilterModelChange = (newModel: GridFilterModel) => {
+    setFilterModel(newModel);
+  };
+
+  const convertFilterModelToFilters = (
+    filterItems: GridFilterItem[]
+  ): DatabaseFilters[] => {
+    return filterItems.map((item) => ({
+      field: item.field,
+      value: item.value?.toString() || "",
+      operator: "ilike",
+    }));
+  };
+
+  const pageTitle = "Chama Members";
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Header />
-      <NavbarBreadcrumbs items={[{ label: "Members", href: "/members" }]} />
       <Box
         sx={{
           height: {
@@ -31,10 +81,42 @@ export default function Dashboard() {
           gap: 1,
         }}
       >
-        <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
-          Chama Members
-        </Typography>
-        <GroupMembers groupId={member!.group_id} />
+        <PageContainer
+          title={pageTitle}
+          breadcrumbs={[{ title: "Members" }]}
+          actions={
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Tooltip title="Reload data" placement="right" enterDelay={1000}>
+                <div>
+                  <IconButton
+                    size="small"
+                    aria-label="refresh"
+                    // onClick={fetchGroupMembers}
+                  >
+                    <RefreshIcon />
+                  </IconButton>
+                </div>
+              </Tooltip>
+              <Button
+                variant="contained"
+                // onClick={handleCreateClick}
+                startIcon={<AddIcon />}
+              >
+                Create
+              </Button>
+            </Stack>
+          }
+        />
+        <GroupMembers
+          groupId={member!.group_id}
+          paginationModel={paginationModel}
+          sortModel={sortModel}
+          filterModel={filterModel}
+          onPaginationModelChange={handlePaginationModelChange}
+          onSortModelChange={handleSortModelChange}
+          onFilterModelChange={handleFilterModelChange}
+          convertFilterModelToFilters={convertFilterModelToFilters}
+        />
       </Box>
       <Copyright sx={{ flex: 1, my: 4 }} />
     </Box>
