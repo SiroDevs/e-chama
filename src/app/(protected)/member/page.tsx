@@ -102,47 +102,33 @@ export default function Dashboard() {
           <MemberProfile {...memberProfileData} />
         </Grid>
 
-        <Grid
-          size={{ sm: 12, md: 7, lg: 8 }}
+        <Card
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            maxWidth: "100%",
             width: "100%",
-            backgroundColor: { xs: "transparent", sm: "background.default" },
-            alignItems: "start",
-            pt: 2,
-            px: 2,
-            gap: { xs: 4, md: 8 },
+            display: { xs: "flex", md: "none" },
           }}
         >
-          <Card
-            sx={{
-              width: "100%",
-              display: { xs: "flex", md: "none" },
-            }}
-          >
-            <CardContent>
-              <MemberProfileSmall {...memberProfileData} />
-            </CardContent>
-          </Card>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: 1,
-              width: "100%",
-              maxWidth: { sm: "100%", md: 600 },
-              maxHeight: "720px",
-              gap: { xs: 5, md: "none" },
-            }}
-          >
-            <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
-              Your Recent Contributions
-            </Typography>
-            <Contributions memberId={member!.id}/>
-          </Box>
-        </Grid>
+          <CardContent>
+            <MemberProfileSmall {...memberProfileData} />
+          </CardContent>
+        </Card>
+        <Box
+          sx={{
+            height: {
+              xs: "100%",
+              sm: "calc(100dvh - var(--template-frame-height, 0px))",
+            },
+            mt: { xs: 4, sm: 0 },
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+          }}
+        >
+          <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
+            Your Recent Contributions
+          </Typography>
+          <Contributions memberId={member!.id} />
+        </Box>
       </Grid>
       <Copyright sx={{ flex: 1, my: 4 }} />
     </Box>

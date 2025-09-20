@@ -4,7 +4,7 @@ import { GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
 import { gridClasses, GridFilterItem } from "@mui/x-data-grid";
 import { Alert, Box, Typography, Paper } from "@mui/material";
 import { GroupMember } from "@/types/profiles";
-import { contributionsColms } from "./arrays";
+import { groupMembersColms } from "./arrays";
 import { DatabaseFilters } from "@/types/types";
 import { getGroupMembers } from "@/services/MemberService";
 
@@ -132,19 +132,19 @@ export default function GroupMembers({groupId}: GroupMembersProps) {
           }}
         >
           <Typography variant="h6" color="text.secondary" gutterBottom>
-            No contributions found
+            No members found
           </Typography>
           <Typography variant="body2" color="text.secondary" align="center">
             {filterModel.items.length > 0
               ? "Try adjusting your search filters to find what you're looking for."
-              : "You haven't made any contributions yet."}
+              : "This chama doesn't have any members yet."}
           </Typography>
         </Paper>
       ) : (
         <DataGrid
           rows={rowsState.rows}
           rowCount={rowsState.rowCount}
-          columns={contributionsColms}
+          columns={groupMembersColms}
           pagination
           sortingMode="server"
           filterMode="server"
@@ -183,7 +183,7 @@ export default function GroupMembers({groupId}: GroupMembersProps) {
             },
           }}
           localeText={{
-            noRowsLabel: "No contributions to display",
+            noRowsLabel: "No Group Members to display",
             noResultsOverlayLabel: "No results found",
           }}
         />

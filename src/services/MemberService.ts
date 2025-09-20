@@ -118,7 +118,7 @@ export async function getGroupMembers({
 }: GroupMembersQueryParams): Promise<GroupMembersResponse> {
   try {
     let query = supabase
-      .from('user_profile_member')
+      .from('group_members')
       .select('*', { count: 'exact' })
       .eq('group_id', groupId);
 

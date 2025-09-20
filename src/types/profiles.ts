@@ -1,9 +1,10 @@
 import { DatabaseFilters } from "./types";
 
 export interface GroupMember {
-  auth_user_id: string;
+  id: string;
   phone: string | null;
   email: string;
+  full_name: string | null;
   first_name: string | null;
   last_name: string | null;
   id_number: string | null;
@@ -17,8 +18,8 @@ export interface GroupMember {
   member_no: string | null;
   role: string | null;
   joined_at: string | null;
-  full_name: string | null;
-  is_member: boolean;
+  created_at: string | null;
+  updated_at: string | null;
 }
 
 export interface ProcessedProfile {
