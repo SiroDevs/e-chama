@@ -12,13 +12,13 @@ interface RowsState {
   rowCount: number;
 }
 
-interface MembersRecordsProps {
-  memberId: string;
+interface GroupContributionsProps {
+  groupId: string;
 }
 
 const INITIAL_PAGE_SIZE = 10;
 
-export default function MembersRecords({memberId}: MembersRecordsProps) {
+export default function GroupContributions({groupId}: GroupContributionsProps) {
   const [rowsState, setRowsState] = useState<RowsState>({
     rows: [],
     rowCount: 0,
@@ -60,7 +60,7 @@ export default function MembersRecords({memberId}: MembersRecordsProps) {
       const response = await getContributions({
         page: paginationModel.page,
         pageSize: paginationModel.pageSize,
-        memberId: memberId,
+        groupId: groupId,
         sortField: sortField,
         sortOrder: sortOrder,
         filters: filters,
@@ -80,7 +80,7 @@ export default function MembersRecords({memberId}: MembersRecordsProps) {
     } finally {
       setIsLoading(false);
     }
-  }, [paginationModel, sortModel, filterModel, memberId]);
+  }, [paginationModel, sortModel, filterModel, groupId]);
 
   useEffect(() => {
     fetchContributions();

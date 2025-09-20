@@ -4,21 +4,22 @@ import { GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
 import { gridClasses, GridFilterItem } from "@mui/x-data-grid";
 import { Alert, Box, Typography, Paper } from "@mui/material";
 import { getContributions } from "@/services/ContributionService";
-import { Contribution, ContributionsFilters } from "@/types/contribution";
+import { GroupMember } from "@/types/profiles";
 import { contributionsColms } from "./arrays";
+import { DatabaseFilters } from "@/types/types";
 
 interface RowsState {
-  rows: Contribution[];
+  rows: GroupMember[];
   rowCount: number;
 }
 
-interface ContributionsRecordsProps {
-  groupId: string;
+interface GroupMembersProps {
+  memberId: string;
 }
 
 const INITIAL_PAGE_SIZE = 10;
 
-export default function ContributionsRecords({groupId}: ContributionsRecordsProps) {
+export default function GroupMembers({memberId}: GroupMembersProps) {
   const [rowsState, setRowsState] = useState<RowsState>({
     rows: [],
     rowCount: 0,
@@ -39,7 +40,7 @@ export default function ContributionsRecords({groupId}: ContributionsRecordsProp
 
   const convertFilterModelToFilters = (
     filterItems: GridFilterItem[]
-  ): ContributionsFilters[] => {
+  ): DatabaseFilters[] => {
     return filterItems.map((item) => ({
       field: item.field,
       value: item.value?.toString() || "",
@@ -60,7 +61,7 @@ export default function ContributionsRecords({groupId}: ContributionsRecordsProp
       const response = await getContributions({
         page: paginationModel.page,
         pageSize: paginationModel.pageSize,
-        groupId: groupId,
+        memberId: memberId,
         sortField: sortField,
         sortOrder: sortOrder,
         filters: filters,
@@ -80,7 +81,7 @@ export default function ContributionsRecords({groupId}: ContributionsRecordsProp
     } finally {
       setIsLoading(false);
     }
-  }, [paginationModel, sortModel, filterModel, groupId]);
+  }, [paginationModel, sortModel, filterModel, memberId]);
 
   useEffect(() => {
     fetchContributions();

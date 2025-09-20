@@ -5,7 +5,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
-import ContributionsRecords from "./ContributionsRecords";
+import GroupContributions from "./GroupContributions";
 
 export default function Dashboard() {
   const { isAuthenticated, member } = useAuthStore();
@@ -34,7 +34,7 @@ export default function Dashboard() {
         <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
           Chama Contributions
         </Typography>
-        <ContributionsRecords groupId={member!.group_id} />
+        <GroupContributions groupId={member!.group_id} />
       </Grid>
       <Copyright sx={{ flex: 1, my: 4 }} />
     </Box>
