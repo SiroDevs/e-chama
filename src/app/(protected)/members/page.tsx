@@ -20,6 +20,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
 
 export default function MembersPage() {
+  const router = useRouter();
   const { isAuthenticated, member } = useAuthStore();
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
@@ -29,10 +30,10 @@ export default function MembersPage() {
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [],
   });
+  const notifications = useNotifications();
 
   // Create a ref to access GroupMembers methods
   const groupMembersRef = useRef<GroupMembersRef>(null);
-  const router = useRouter();
   if (!isAuthenticated) {
     window.location.href = "/";
     return null;
