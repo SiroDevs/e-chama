@@ -1,3 +1,4 @@
+import { DatabaseFilters } from "./types";
 
 export interface Contribution {
   id: string;
@@ -20,27 +21,13 @@ export interface ContributionsQueryParams {
   pageSize: number;
   sortField?: string;
   sortOrder?: 'asc' | 'desc';
-  filters?: ContributionsFilters[];
+  filters?: DatabaseFilters[];
   groupId?: string;
   memberId?: string;
 }
 
-export interface ContributionsResponse {
+export interface ContributionsResp {
   data: Contribution[];
   count: number;
   error: Error | null;
-}
-
-export interface ContributionsFilters {
-  field: string;
-  value: string;
-  operator?: 'ilike' | 'eq' | 'gt' | 'lt' | 'gte' | 'lte';
-}
-
-export interface ContributionsQueryParams {
-  page: number;
-  pageSize: number;
-  sortField?: string;
-  sortOrder?: 'asc' | 'desc';
-  filters?: ContributionsFilters[];
 }

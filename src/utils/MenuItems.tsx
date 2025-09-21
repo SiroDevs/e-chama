@@ -1,4 +1,5 @@
-import { DashboardRounded, Person } from "@mui/icons-material";
+import { DashboardRounded, Person, EditCalendar, People } from "@mui/icons-material";
+import { InfoTwoTone, GroupTwoTone, Newspaper, ListRounded } from "@mui/icons-material";
 
 export interface MenuItem {
   text: string;
@@ -6,44 +7,77 @@ export interface MenuItem {
   roles: string[];
   path?: string;
 }
+
 export const allRoles = [
-  "member",
+  "admin",
   "treasurer",
   "accountant",
   "secretary",
   "chairperson",
   "vicechairperson",
   "official",
+  "member",
+];
+
+export const adminRoles = [
   "admin",
+  "treasurer",
+  "secretary",
+  "chairperson",
+  "vicechairperson",
+  "official",
+];
+
+export const officialRoles = [
+  "treasurer",
+  "secretary",
+  "chairperson",
+  "vicechairperson",
+  "official",
 ];
 
 export const mainMenuItems: MenuItem[] = [
   { text: "Dashboard", icon: <DashboardRounded />, path: "/", roles: allRoles },
   {
-    text: "My Chama Profile",
+    text: "Events",
+    icon: <EditCalendar />,
+    path: "/events",
+    roles: allRoles,
+  },
+  {
+    text: "Members",
+    icon: <GroupTwoTone />,
+    path: "/members",
+    roles: officialRoles,
+  },
+  {
+    text: "Contributions",
+    icon: <ListRounded />,
+    path: "/contributions",
+    roles: officialRoles,
+  },
+  {
+    text: "Announcements",
+    icon: <Newspaper />,
+    path: "/announcements",
+    roles: allRoles,
+  },
+  {
+    text: "Meetings",
+    icon: <People />,
+    path: "/meetings",
+    roles: allRoles,
+  },
+  {
+    text: "My Profile",
     icon: <Person />,
-    path: "/my-chama-profile",
+    path: "/member",
     roles: ["member"],
   },
+  {
+    text: "Chama Profile",
+    icon: <InfoTwoTone />,
+    path: "/chama",
+    roles: adminRoles,
+  },
 ];
-
-// const mainMenuItems: MenuItem[] = [
-//   // Basic menu items for all roles
-//   { text: "Home", icon: <HomeRoundedIcon />, roles: ['member', 'treasurer', 'accountant', 'secretary', 'chairperson', 'vicechairperson', 'official', 'admin'] },
-//   { text: "Analytics", icon: <AnalyticsRoundedIcon />, roles: ['member', 'treasurer', 'accountant', 'secretary', 'chairperson', 'vicechairperson', 'official', 'admin'] },
-
-//   // Financial menu items for financial roles
-//   { text: "Financial Reports", icon: <AccountBalanceRoundedIcon />, roles: ['treasurer', 'accountant', 'chairperson', 'admin'] },
-//   { text: "Transactions", icon: <ReceiptRoundedIcon />, roles: ['treasurer', 'accountant', 'admin'] },
-
-//   // Member management for leadership roles
-//   { text: "Members", icon: <PeopleRoundedIcon />, roles: ['secretary', 'chairperson', 'vicechairperson', 'official', 'admin'] },
-//   { text: "Groups", icon: <GroupRoundedIcon />, roles: ['chairperson', 'admin'] },
-
-//   // Administrative items for admins
-//   { text: "Admin Panel", icon: <AdminPanelSettingsRoundedIcon />, roles: ['admin'] },
-
-//   // Tasks and assignments for various roles
-//   { text: "Tasks", icon: <AssignmentRoundedIcon />, roles: ['secretary', 'chairperson', 'vicechairperson', 'official', 'admin'] },
-//   { text: "Meetings", icon: <EventNoteRoundedIcon />, roles: ['secretary', 'chairperson', 'vicechairperson', 'official', 'admin'] },
-// ];

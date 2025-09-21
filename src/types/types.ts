@@ -67,3 +67,17 @@ export interface PaginatedResp<T> {
   pageSize: number;
   totalPages: number;
 }
+
+export interface DatabaseFilters {
+  field: string;
+  value: string;
+  operator?: 'ilike' | 'eq' | 'gt' | 'lt' | 'gte' | 'lte';
+}
+
+export interface DatabaseQueryParams {
+  page: number;
+  pageSize: number;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
+  filters?: DatabaseFilters[];
+}
