@@ -35,7 +35,7 @@ export function FormInput({
 
   return (
     <FormControl fullWidth error={!!error} required={required}>
-      <FormLabel htmlFor="email">{label}</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <TextField
         id={id}
         fullWidth

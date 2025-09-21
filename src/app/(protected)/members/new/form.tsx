@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Alert, CircularProgress, Typography, Grid } from "@mui/material";
+import { Box, Alert, CircularProgress } from "@mui/material";
+import { Typography, Stack, Button } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,7 +11,9 @@ import { useAuthStore } from "@/state/auth/auth";
 import { FormInput } from "@/components/inputs/FormInput";
 import { newMemberLabels, newMemberSchema } from "./arrays";
 import { newMemberFieldGroups } from "./arrays";
-import { FormDatePicker, FormSelect, FormTextarea } from "@/components/inputs";
+import { FormDatePicker, FormSelect, FormRadio } from "@/components/inputs";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SaveAltIcon from "@mui/icons-material/Person";
 
 type FormData = z.infer<typeof newMemberSchema>;
 
@@ -27,11 +30,7 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-    setError: setFormError,
-  } = useForm<FormData>({
-    // resolver: zodResolver(newMemberSchema),
-  });
+  } = useForm<FormData>({ resolver: zodResolver(newMemberSchema) });
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
@@ -65,7 +64,7 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
     <Box
       sx={{
         width: { xs: "100%", md: "80%" },
-        borderRadius: 3,
+        borderRadius: 2,
         border: "1px solid",
         borderColor: "divider",
         p: 2,
@@ -92,7 +91,7 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
             display: "flex",
             flexDirection: "column",
             width: "100%",
-            gap: 2,
+            gap: 3,
           }}
         >
           {errors.root && (
@@ -107,7 +106,7 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
                 sx={{
                   width: "100%",
                   display: "flex",
-                  gap: 2,
+                  gap: 1,
                   flexDirection: { xs: "column", sm: "row" },
                 }}
               >
@@ -117,6 +116,19 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
                   if (field.type === "select") {
                     return (
                       <FormSelect
+                        id={field.name}
+                        label={field.label}
+                        required={field.required}
+                        error={errors[field.name]}
+                        registration={register(field.name)}
+                        options={field.options || []}
+                      />
+                    );
+                  }
+
+                  if (field.type === "radio") {
+                    return (
+                      <FormRadio
                         id={field.name}
                         label={field.label}
                         required={field.required}
@@ -156,6 +168,24 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
               </Typography>
             </div>
           ))}
+          <Stack direction="row" spacing={2} justifyContent="space-between">
+            <Button
+              variant="contained"
+              startIcon={<ArrowBackIcon />}
+              // onClick={handleBack}
+            >
+              Back
+            </Button>
+            <Button
+              type="submit"
+              startIcon={<SaveAltIcon />}
+              variant="contained"
+              size="large"
+              loading={loading}
+            >
+              Register
+            </Button>
+          </Stack>
         </Box>
       )}
     </Box>

@@ -21,8 +21,9 @@ export const newMemberSchema = z.object({
     .or(z.literal("")),
   sex: z.string()
     .min(1, "Please select a gender")
-    .optional()
-    .or(z.literal("")),
+    .refine(val => val !== "", {
+      message: "Please select a gender",
+    }),
   member_no: z.string()
     .min(3, "Member number must be at least 3 characters")
     .max(20, "Member number is too long")
@@ -40,61 +41,58 @@ export const newMemberLabels = {
   first_name: {
     name: "first_name" as const,
     label: "First Name",
-    placeholder: "Enter first name",
+    placeholder: "Member's first name",
     required: true,
     type: "text" as const,
   },
   last_name: {
     name: "last_name" as const,
     label: "Last Name",
-    placeholder: "Enter last name",
+    placeholder: "Member's last name",
     required: true,
     type: "text" as const,
   },
   email: {
     name: "email" as const,
     label: "Email Address",
-    placeholder: "Enter email address",
+    placeholder: "Member's email address",
     required: true,
     type: "email" as const,
   },
   phone: {
     name: "phone" as const,
     label: "Phone Number",
-    placeholder: "Enter phone number",
+    placeholder: "Member's phone number",
     required: true,
     type: "tel" as const,
   },
   id_number: {
     name: "id_number" as const,
     label: "ID Number",
-    placeholder: "Enter national ID number",
+    placeholder: "Member's national ID number",
     required: false,
     type: "text" as const,
   },
   sex: {
     name: "sex" as const,
     label: "Gender",
-    placeholder: "Select gender",
     required: true,
-    type: "select" as const,
+    type: "radio" as const,
     options: [
-      { value: "", label: "Select Gender" },
       { value: "male", label: "Male" },
       { value: "female", label: "Female" },
-      { value: "other", label: "Other" },
     ],
   },
   member_no: {
     name: "member_no" as const,
     label: "Member Number",
-    placeholder: "Enter member number",
+    placeholder: "Member's number",
     required: false,
     type: "text" as const,
   },
   role: {
     name: "role" as const,
-    label: "Role",
+    label: "Member Role",
     placeholder: "Select role",
     required: true,
     type: "select" as const,
@@ -108,7 +106,7 @@ export const newMemberLabels = {
   },
   joined_at: {
     name: "joined_at" as const,
-    label: "Date Joined",
+    label: "Date Member Joined",
     placeholder: "Select join date",
     required: false,
     type: "date" as const,

@@ -21,7 +21,7 @@ export function FormDatePicker({
 }: FormDatePickerProps) {
   return (
     <FormControl fullWidth error={!!error} required={required}>
-      <FormLabel htmlFor="email">{label}</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
           value={registration.value || null}

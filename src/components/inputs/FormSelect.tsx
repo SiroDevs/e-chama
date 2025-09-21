@@ -1,6 +1,5 @@
 import {
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   FormHelperText,
@@ -27,7 +26,7 @@ export function FormSelect({
 }: FormSelectProps) {
   return (
     <FormControl fullWidth error={!!error} required={required}>
-      <FormLabel htmlFor="email">{label}</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <Select labelId={`${id}-label`} id={id} label={label} {...registration}>
         {options.map((option) => (
           <MenuItem key={option.value} value={option.value}>
