@@ -1,11 +1,11 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
-import { createGroup } from "./GroupService";
+import { newGroup } from "./GroupService";
 import { updateSelectedGroup } from "./ProfileService";
-import { GroupMember, GroupMembersQueryParams, GroupMembersResponse } from "@/types/profiles";
+import { GroupMember, GroupMembersQueryParams, GroupMembersResp } from "@/types/profiles";
 
-export async function createMember(
+export async function newMember(
   group_id: string,
   user_id: string,
   member_no: string,
@@ -35,7 +35,7 @@ export async function createMember(
     .select()
     .single();
 }
-export async function createMemberGroup(
+export async function newMemberGroup(
   userId: string,
   title: string,
   description: string,
@@ -44,7 +44,7 @@ export async function createMemberGroup(
   address: string,
 ) {
   try {
-    const groupResult = await createGroup({
+    const groupResult = await newGroup({
       user: userId,
       title: title,
       description: description,
@@ -61,7 +61,7 @@ export async function createMemberGroup(
       };
     }
 
-    const memberResult = await createMember(
+    const memberResult = await newMember(
       groupResult.data.id,
       userId,
       "001",
@@ -115,7 +115,7 @@ export async function getGroupMembers({
   sortOrder = 'desc',
   filters = [],
   groupId,
-}: GroupMembersQueryParams): Promise<GroupMembersResponse> {
+}: GroupMembersQueryParams): Promise<GroupMembersResp> {
   try {
     let query = supabase
       .from('group_members')

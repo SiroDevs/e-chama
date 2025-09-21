@@ -5,7 +5,7 @@ import { UserGroup, PaginatedResp, Group } from "@/types/types";
 import { supabase } from "@/lib/supabase/client";
 import { getMemberCount } from "./MemberService";
 
-export async function createGroup(data: {
+export async function newGroup(data: {
   user: string,
   title: string,
   description: string,

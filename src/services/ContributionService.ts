@@ -1,7 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
-import { ContributionsQueryParams, ContributionsResponse, Contribution } from "@/types/contribution";
+import { ContributionsQueryParams, ContributionsResp, Contribution } from "@/types/contribution";
 
 export async function getContributions({
   page,
@@ -11,7 +11,7 @@ export async function getContributions({
   filters = [],
   groupId,
   memberId,
-}: ContributionsQueryParams): Promise<ContributionsResponse> {
+}: ContributionsQueryParams): Promise<ContributionsResp> {
   try {
     let query = supabase
       .from('contributions')

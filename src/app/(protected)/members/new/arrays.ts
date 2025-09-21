@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const newGroupSchema = z.object({
+export const createGroupSchema = z.object({
   title: z.string()
     .min(5, "Chama name is required")
     .max(100, "Chama name is too long"),
@@ -12,7 +12,7 @@ export const newGroupSchema = z.object({
   address: z.string().optional(),
 });
 
-export const newGroupLabels = {
+export const createGroupLabels = {
   title: {
     name: "title" as const,
     label: "Chama Name *",
