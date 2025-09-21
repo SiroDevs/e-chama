@@ -15,7 +15,7 @@ import { newGroupAction } from "@/app/(protected)/actions/GroupAction";
 import { newGroupLabels, newGroupSchema } from "./arrays";
 import { useGroupStore } from "@/state/auth/group";
 
-type NewGroupFormData = z.infer<typeof newGroupSchema>;
+type FormData = z.infer<typeof newGroupSchema>;
 
 interface NewGroupDialogProps {
   open: boolean;
@@ -39,7 +39,7 @@ export default function NewGroupDialog({
     formState: { errors },
     reset,
     setError: setFormError,
-  } = useForm<NewGroupFormData>({
+  } = useForm<FormData>({
     resolver: zodResolver(newGroupSchema),
   });
 
@@ -49,7 +49,7 @@ export default function NewGroupDialog({
     onClose();
   };
 
-  const onSubmit = async (data: NewGroupFormData) => {
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
 
     try {

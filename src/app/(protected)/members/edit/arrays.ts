@@ -14,15 +14,31 @@ export const newMemberSchema = z.object({
     .max(15, "Phone number is too long")
     .optional()
     .or(z.literal("")),
+  
   id_number: z.string()
     .min(5, "ID number must be at least 5 characters")
     .max(20, "ID number is too long")
     .optional()
     .or(z.literal("")),
+  
   sex: z.string()
     .min(1, "Please select a gender")
     .optional()
     .or(z.literal("")),
+  dob: z.string()
+    .optional()
+    .or(z.literal("")),
+  
+  country: z.string()
+    .min(2, "Country must be at least 2 characters")
+    .max(50, "Country name is too long")
+    .optional()
+    .or(z.literal("")),
+  address: z.string()
+    .max(200, "Address is too long")
+    .optional()
+    .or(z.literal("")),
+  
   member_no: z.string()
     .min(3, "Member number must be at least 3 characters")
     .max(20, "Member number is too long")
@@ -39,21 +55,21 @@ export const newMemberSchema = z.object({
 export const newMemberLabels = {
   first_name: {
     name: "first_name" as const,
-    label: "First Name",
+    label: "First Name *",
     placeholder: "Enter first name",
     required: true,
     type: "text" as const,
   },
   last_name: {
     name: "last_name" as const,
-    label: "Last Name",
+    label: "Last Name *",
     placeholder: "Enter last name",
     required: true,
     type: "text" as const,
   },
   email: {
     name: "email" as const,
-    label: "Email Address",
+    label: "Email Address *",
     placeholder: "Enter email address",
     required: true,
     type: "email" as const,
@@ -65,6 +81,8 @@ export const newMemberLabels = {
     required: true,
     type: "tel" as const,
   },
+  
+  // Identification
   id_number: {
     name: "id_number" as const,
     label: "ID Number",
@@ -72,6 +90,15 @@ export const newMemberLabels = {
     required: false,
     type: "text" as const,
   },
+  kra_pin: {
+    name: "kra_pin" as const,
+    label: "KRA PIN",
+    placeholder: "Enter KRA PIN",
+    required: false,
+    type: "text" as const,
+  },
+  
+  // Personal Details
   sex: {
     name: "sex" as const,
     label: "Gender",
@@ -85,6 +112,29 @@ export const newMemberLabels = {
       { value: "other", label: "Other" },
     ],
   },
+  dob: {
+    name: "dob" as const,
+    label: "Date of Birth",
+    placeholder: "Select date of birth",
+    required: false,
+    type: "date" as const,
+  },
+  
+  country: {
+    name: "country" as const,
+    label: "Country",
+    placeholder: "Enter country",
+    required: false,
+    type: "text" as const,
+  },
+  address: {
+    name: "address" as const,
+    label: "Physical Address",
+    placeholder: "Enter full address",
+    required: false,
+    type: "text" as const,
+  },
+  
   member_no: {
     name: "member_no" as const,
     label: "Member Number",
@@ -94,13 +144,13 @@ export const newMemberLabels = {
   },
   role: {
     name: "role" as const,
-    label: "Role",
+    label: "Role *",
     placeholder: "Select role",
     required: true,
     type: "select" as const,
     options: [
       { value: "member", label: "Member" },
-      { value: "accountant", label: "Accountant" },
+      { value: "admin", label: "Admin" },
       { value: "treasurer", label: "Treasurer" },
       { value: "secretary", label: "Secretary" },
       { value: "chairperson", label: "Chairperson" },
@@ -120,18 +170,22 @@ export type NewMemberFormValues = z.infer<typeof newMemberSchema>;
 export const newMemberFieldGroups = [
   {
     id: 1,
-    fields: ["first_name", "last_name"] as const,
+    fields: ["first_name", "last_name", "id_number"] as const,
   },
   {
     id: 2,
-    fields: ["phone", "id_number", "sex"] as const,
+    fields: ["phone","email"] as const,
   },
   {
     id: 3,
-    fields: ["email"] as const,
+    fields: ["sex", "dob"] as const,
   },
   {
     id: 4,
+    fields: ["country", "address"] as const,
+  },
+  {
+    id: 5,
     fields: ["member_no", "role", "joined_at"] as const,
   },
 ];

@@ -5,9 +5,22 @@ import { Box, Typography } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import useNotifications from "@/hooks/notifications/useNotifications";
+import NewMemberForm from "./form";
+import { useAuthStore } from "@/state/auth/auth";
 
-export default function CreateMemberPage() {
+export default function NewMemberPage() {
+  const { isAuthenticated, member } = useAuthStore();
   const notifications = useNotifications();
+  if (!isAuthenticated) {
+    window.location.href = "/";
+    return null;
+  }
+  function handleMemberCreated(): void {
+    notifications.show("New Member registered successfully.", {
+      severity: "success",
+      autoHideDuration: 3000,
+    });
+  }
 
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
@@ -33,6 +46,7 @@ export default function CreateMemberPage() {
         <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
           Register a New Member
         </Typography>
+        <NewMemberForm onMemberCreated={handleMemberCreated} />
       </Box>
       <Copyright sx={{ flex: 1, my: 4 }} />
     </Box>
