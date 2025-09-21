@@ -13,11 +13,12 @@ import {
   GridFilterItem,
 } from "@mui/x-data-grid";
 import { DatabaseFilters } from "@/types/types";
-import { useState, useCallback, useRef } from "react"; // Added useRef
+import { useState, useRef } from "react";
 import PageContainer from "@/components/actions/PageContainer";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
+import useNotifications from "@/hooks/notifications/useNotifications";
 
 export default function MembersPage() {
   const router = useRouter();
