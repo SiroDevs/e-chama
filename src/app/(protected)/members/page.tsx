@@ -18,7 +18,6 @@ import PageContainer from "@/components/actions/PageContainer";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
-import useNotifications from "@/hooks/notifications/useNotifications";
 
 export default function MembersPage() {
   const router = useRouter();
@@ -31,9 +30,7 @@ export default function MembersPage() {
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [],
   });
-  const notifications = useNotifications();
 
-  // Create a ref to access GroupMembers methods
   const groupMembersRef = useRef<GroupMembersRef>(null);
   if (!isAuthenticated) {
     window.location.href = "/";
@@ -63,7 +60,7 @@ export default function MembersPage() {
   };
 
   const handleCreateMember = () => {
-    router.push("/members/create");
+    router.push("/members/new");
   };
 
   const handleEditMember = (memberId: string) => {

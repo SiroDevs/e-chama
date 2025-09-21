@@ -20,7 +20,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <GlobalStyles styles={GLOBAL_STYLES} />
-      <CssBaseline />
       <body className={inter.className}>
         <Provider>{children}</Provider>
       </body>

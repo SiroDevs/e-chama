@@ -4,8 +4,11 @@ import * as React from "react";
 import { Box, Typography } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
+import useNotifications from "@/hooks/notifications/useNotifications";
 
 export default function CreateMemberPage() {
+  const notifications = useNotifications();
+
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Header />
