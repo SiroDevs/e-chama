@@ -14,7 +14,7 @@ export async function newMemberAction(payload: {
   sex: string;
   memberNo: string;
   role: string;
-  joinedAt: string;
+  joinedAt: Date;
 }) {
   try {
     const { data, error } = await newMemberProfile(payload);

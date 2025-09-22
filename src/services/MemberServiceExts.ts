@@ -74,7 +74,7 @@ export async function newMemberProfile(payload: {
   sex: string;
   memberNo: string;
   role: string;
-  joinedAt: string;
+  joinedAt: Date;
 }) {
   try {
     const { data, error } = await signUpMeNow({

@@ -1,8 +1,8 @@
 import { EmailOutlined } from "@mui/icons-material";
-import toast from "react-hot-toast";
 
 import { signInMeNow, signUpMeNow } from "@/services/AuthService";
 import { NotificationCard } from "@/components/general";
+import toast from "react-hot-toast";
 
 export async function handleSigninAction(payload: {
   email: string;
@@ -19,28 +19,31 @@ export async function handleSigninAction(payload: {
 
       switch (status) {
         case 400:
-          toast.error(
-            "Invalid credentials. Please check your email and password."
-          );
-          break;
+          return {
+            success: false,
+            error: "Invalid credentials. Please check your email and password.",
+          };
+
         case 401:
-          toast.error("Unauthorized. Please try again.");
-          break;
+          return { success: false, error: "Unauthorized. Please try again." };
+
         case 403:
-          toast.error(
-            "Access forbidden. Contact support if this issue persists."
-          );
-          break;
+          return {
+            success: false,
+            error: "Access forbidden. Contact support if this issue persists.",
+          };
+
         case 404:
-          toast.error("User profile not found.");
-          break;
+          return { success: false, error: "User profile not found." };
+
         case 500:
-          toast.error("Internal server error. Please try again later.");
-          break;
+          return {
+            success: false,
+            error: "Internal server error. Please try again later.",
+          };
         default:
-          toast.error(errorMessage);
+          return { success: false, error: errorMessage };
       }
-      return { success: false };
     } else if (data) {
       return {
         success: true,
@@ -49,14 +52,13 @@ export async function handleSigninAction(payload: {
         member: data.member,
       };
     } else {
-      toast.error("No data returned from sign in");
-      return { success: false };
+      return { success: false, error: "No data returned from sign in" };
     }
   } catch (err) {
-    const message =
-      err instanceof Error ? err.message : "Something went wrong.";
-    toast.error(message);
-    return { success: false };
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Something went wrong.",
+    };
   }
 }
 
@@ -77,23 +79,27 @@ export async function handleSignupAction(payload: {
 
       switch (status) {
         case 400:
-          toast.error(
-            "Invalid credentials. Please check your email and password."
-          );
-          break;
+          return {
+            success: false,
+            error: "Invalid credentials. Please check your email and password.",
+          };
+
         case 401:
-          toast.error("Unauthorized. Please try again.");
-          break;
+          return { success: false, error: "Unauthorized. Please try again." };
+
         case 403:
-          toast.error(
-            "Access forbidden. Contact support if this issue persists."
-          );
-          break;
+          return {
+            success: false,
+            error: "Access forbidden. Contact support if this issue persists.",
+          };
+
         case 500:
-          toast.error(`Internal server error: ${errorMessage}`);
-          break;
+          return {
+            success: false,
+            error: `Internal server error: ${errorMessage}`,
+          };
         default:
-          toast.error(errorMessage);
+          return { success: false, error: errorMessage };
       }
 
       return { success: false };
@@ -116,15 +122,15 @@ export async function handleSignupAction(payload: {
         member: data.member,
       };
     } else {
-      toast.error("Signup failed");
-      return { success: false };
+      return { success: false, error: "Signup failed" };
     }
   } catch (err) {
-    toast.error(
-      err instanceof Error
-        ? err.message
-        : "An error occurred during signup. Please try again."
-    );
-    return { success: false };
+    return {
+      success: false,
+      error:
+        err instanceof Error
+          ? err.message
+          : "An error occurred during signup. Please try again.",
+    };
   }
 }

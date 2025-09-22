@@ -24,7 +24,7 @@ export const newMemberSchema = z.object({
     .min(3, "Member number must be at least 3 characters")
     .max(20, "Member number is too long"),
   role: z.string() .min(1, "Please select a role"),
-  joined_at: z.string(),
+  joined_at: z.date(),
 });
 
 export const newMemberLabels = {

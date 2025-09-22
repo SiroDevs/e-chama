@@ -7,6 +7,7 @@ interface LoaderProps {
   message?: string;
   showSpinner?: boolean;
   size?: number;
+  height?: string;
   thickness?: number;
 }
 
@@ -15,6 +16,7 @@ export function Loader({
   message = "",
   showSpinner = true,
   size = 60,
+  height = "50vh",
   thickness = 4
 }: LoaderProps) {
   return (
@@ -23,7 +25,7 @@ export function Loader({
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      height="100vh"
+      height={height}
       width="100%"
       gap={2}
     >
