@@ -6,8 +6,10 @@ import Dashboard from "./(protected)/dashboard";
 import { SignInCard } from "@/components/auth";
 import { AppIcon } from "@/components/general/CustomIcons";
 import { Box } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const { isAuthenticated, isLoading } = useAuthStore();
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
@@ -32,5 +34,17 @@ export default function Home() {
     );
   }
 
-  return <div>{isAuthenticated ? <Dashboard /> : <SignInCard />}</div>;
+  function handleOnAuthSuccess() {
+    router.push("/");
+  }
+  
+  return (
+    <div>
+      {isAuthenticated ? (
+        <Dashboard />
+      ) : (
+        <SignInCard onAuthSuccess={handleOnAuthSuccess} />
+      )}
+    </div>
+  );
 }

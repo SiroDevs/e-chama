@@ -12,10 +12,12 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 import { useAuthStore } from "@/state/auth/auth";
 import { MenuButton } from "../actions/MenuButton";
+import { useRouter } from "next/navigation";
 
 const MenuItem = styled(MuiMenuItem)({ margin: "2px 0" });
 
 export function OptionsMenu() {
+  const router = useRouter();
   const { logoutUser } = useAuthStore();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -29,7 +31,7 @@ export function OptionsMenu() {
   const handleSignOut = async () => {
     await handleSignOutAction();
     await logoutUser();
-    window.location.reload();
+    router.push("/");
   };
 
   return (

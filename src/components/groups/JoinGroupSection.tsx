@@ -10,8 +10,10 @@ import { GroupExt } from "@/types/types";
 import { useAuthStore } from "@/state/auth/auth";
 import { JoinGroupItem } from "@/components/actions/JoinGroupItem";
 import { useGroupStore } from "@/state/auth/group";
+import { useRouter } from "next/navigation";
 
 export function JoinGroupSection() {
+  const router = useRouter();
   const { user } = useAuthStore();
   const { setUserGroups } = useGroupStore();
   const [joinCode, setJoinCode] = useState("");
@@ -62,7 +64,7 @@ export function JoinGroupSection() {
       const result = await joinGroupAction(user!.id, foundGroup);
       if (result.success) {
         await setUserGroups(result.groups!, foundGroup.id || null);
-        window.location.reload();
+        router.push("/");
       } else {
         setError(
           result.error?.toString() || "Failed to join group. Please try again."

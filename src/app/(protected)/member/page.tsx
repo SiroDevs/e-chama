@@ -9,12 +9,14 @@ import Contributions from "./Contributions";
 import MemberProfile from "./Profile";
 import { MemberProfileProps } from "@/types/profiles";
 import MemberProfileSmall from "./ProfileMobile";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
+  const router = useRouter();
   const { isAuthenticated, user, profile, member } = useAuthStore();
 
   if (!isAuthenticated) {
-    window.location.href = "/";
+    router.push("/");
     return null;
   }
 

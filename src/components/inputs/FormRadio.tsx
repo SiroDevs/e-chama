@@ -26,7 +26,7 @@ export function FormRadio({
   error,
   registration,
   options,
-  row = true, // Default to horizontal layout
+  row = true,
 }: FormRadioProps) {
   return (
     <FormControl 
@@ -42,10 +42,10 @@ export function FormRadio({
       <RadioGroup
         id={id}
         {...registration}
-        row={row} // Horizontal layout by default
+        row={row}
         sx={{
           '& .MuiFormControlLabel-root': {
-            mr: 3, // Space between radio options
+            mr: 3,
           }
         }}
       >

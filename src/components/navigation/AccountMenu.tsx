@@ -15,8 +15,10 @@ import Logout from "@mui/icons-material/Logout";
 import { useAuthStore } from "@/state/auth/auth";
 import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
 import { email } from "zod";
+import { useRouter } from "next/navigation";
 
 export default function AccountMenu() {
+  const router = useRouter();
   const { user, profile, logoutUser } = useAuthStore();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -34,7 +36,7 @@ export default function AccountMenu() {
   const handleSignOut = async () => {
     await handleSignOutAction();
     await logoutUser();
-    window.location.reload();
+    router.push("/");
   };
 
   return (

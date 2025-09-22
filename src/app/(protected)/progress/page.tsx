@@ -15,6 +15,7 @@ import Info from './Info';
 import InfoMobile from './InfoMobile';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
+import { useRouter } from "next/navigation";
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 function getStepContent(step: number) {
@@ -30,10 +31,11 @@ function getStepContent(step: number) {
   }
 }
 export default function Dashboard() {
+  const router = useRouter();
   const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated) {
-    window.location.href = "/";
+    router.push("/");
   }
 
   const [activeStep, setActiveStep] = React.useState(0);

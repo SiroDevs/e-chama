@@ -1,8 +1,6 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
-import { newGroup } from "./GroupService";
-import { updateSelectedGroup } from "./ProfileService";
 import { GroupMember, GroupMembersQueryParams, GroupMembersResp } from "@/types/profiles";
 
 export async function newMember(
@@ -35,68 +33,9 @@ export async function newMember(
     .select()
     .single();
 }
-export async function newMemberGroup(
-  userId: string,
-  title: string,
-  description: string,
-  initials: string,
-  location: string,
-  address: string,
-) {
-  try {
-    const groupResult = await newGroup({
-      user: userId,
-      title: title,
-      description: description,
-      initials: initials,
-      location: location,
-      address: address,
-    });
-
-    if (groupResult.error) {
-      console.error("Group creation error:", groupResult.error);
-      return {
-        data: null,
-        error: groupResult.error,
-      };
-    }
-
-    const memberResult = await newMember(
-      groupResult.data.id,
-      userId,
-      "001",
-      'official'
-    );
-
-    if (memberResult.error) {
-      console.error("Member creation error:", memberResult.error.message);
-      return {
-        data: null,
-        error: memberResult.error,
-      };
-    }
-
-    await updateSelectedGroup(userId, groupResult.data.id);
-
-    return {
-      data: {
-        group: groupResult.data,
-        member: memberResult.data
-      },
-      error: null
-    };
-  } catch (error) {
-    console.error("Unexpected error in createMemberGroup:", error);
-    return {
-      data: null,
-      error: error instanceof Error ? error : new Error("Unknown error occurred")
-    };
-  }
-}
 
 export async function getMemberCount(group_id: string): Promise<number> {
-  const { count, error } = await supabase
-    .from("members")
+  const { count, error } = await supabase.from("members")
     .select("*", { count: "exact" })
     .eq("group_id", group_id);
 
@@ -179,10 +118,7 @@ export async function getGroupMemberById(id: string): Promise<{
 }> {
   try {
     const { data, error } = await supabase
-      .from('contributions')
-      .select('*')
-      .eq('id', id)
-      .single();
+      .from('contributions').select('*').eq('id', id).single();
 
     return {
       data,

@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 
-import { newMember, newMemberGroup } from "@/services/MemberService";
+import { newMember } from "@/services/MemberService";
+import { newMemberGroup } from "@/services/MemberServiceExts";
 import { getUserGroups, searchByCode } from "@/services/GroupService";
 import { GroupExt, UserGroup } from "@/types/types";
 
