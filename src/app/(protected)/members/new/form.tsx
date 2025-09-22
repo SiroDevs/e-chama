@@ -14,6 +14,8 @@ import { newMemberFieldGroups } from "./arrays";
 import { FormDatePicker, FormSelect, FormRadio } from "@/components/inputs";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveAltIcon from "@mui/icons-material/Person";
+import { useRouter } from "next/navigation";
+import { newMemberAction } from "../../actions/MemberAction";
 
 type FormData = z.infer<typeof newMemberSchema>;
 
@@ -22,9 +24,9 @@ interface NewMemberFormProps {
 }
 
 export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const { user } = useAuthStore();
+  const { member } = useAuthStore();
 
   const {
     register,
@@ -35,30 +37,33 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
   const onSubmit = async (data: FormData) => {
     setLoading(true);
 
-    // try {
-    //   const result = await newMemberAction({
-    //     userId: user!.id,
-    //     title: data.title.trim(),
-    //     description: data.description?.trim() || "",
-    //     initials: data.initials?.trim() || "",
-    //     location: data.location?.trim(),
-    //     address: data.address?.trim() || "",
-    //   });
-
-    //   if (result.groups && result.groups.length > 0) {
-    //     await setUserMembers(result.groups, result.groupId || null);
-    //   }
-    //   handleClose();
-    //   onMemberCreated();
-    // } catch (err: any) {
-    //   setFormError("root", {
-    //     type: "manual",
-    //     message: err.message || "Failed to create chama",
-    //   });
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const result = await newMemberAction({
+        groupId: member?.group_id!,
+        firstName: data.first_name.trim(),
+        lastName: data.last_name.trim(),
+        email: data.email.trim(),
+        phone: data.phone.trim(),
+        idNumber: data.id_number.trim(),
+        sex: data.sex.trim(),
+        memberNo: data.member_no.trim(),
+        role: data.role.trim(),
+        joinedAt: data.joined_at.trim(),
+      });
+      onMemberCreated();
+    } catch (err: any) {
+      // setFormError("root", {
+      //   type: "manual",
+      //   message: err.message || "Failed to create chama",
+      // });
+    } finally {
+      setLoading(false);
+    }
   };
+
+  function handleBack(): void {
+    router.push("/members");
+  }
 
   return (
     <Box
@@ -86,7 +91,7 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
         <Box
           component="form"
           id="new_group_form"
-          // onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -122,6 +127,7 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
                         error={errors[field.name]}
                         registration={register(field.name)}
                         options={field.options || []}
+                        defaultValue={field.options[0].value}
                       />
                     );
                   }
@@ -172,7 +178,7 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
             <Button
               variant="contained"
               startIcon={<ArrowBackIcon />}
-              // onClick={handleBack}
+              onClick={handleBack}
             >
               Back
             </Button>
@@ -183,7 +189,7 @@ export default function NewMemberForm({ onMemberCreated }: NewMemberFormProps) {
               size="large"
               loading={loading}
             >
-              Register
+              Proceed
             </Button>
           </Stack>
         </Box>

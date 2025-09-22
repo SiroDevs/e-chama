@@ -11,14 +11,10 @@ export const newMemberSchema = z.object({
     .email("Please enter a valid email address"),
   phone: z.string()
     .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number is too long")
-    .optional()
-    .or(z.literal("")),
+    .max(15, "Phone number is too long"),
   id_number: z.string()
     .min(5, "ID number must be at least 5 characters")
-    .max(20, "ID number is too long")
-    .optional()
-    .or(z.literal("")),
+    .max(20, "ID number is too long"),
   sex: z.string()
     .min(1, "Please select a gender")
     .refine(val => val !== "", {
@@ -26,15 +22,9 @@ export const newMemberSchema = z.object({
     }),
   member_no: z.string()
     .min(3, "Member number must be at least 3 characters")
-    .max(20, "Member number is too long")
-    .optional()
-    .or(z.literal("")),
-  role: z.string()
-    .min(1, "Please select a role")
-    .default("member"),
-  joined_at: z.string()
-    .optional()
-    .or(z.literal("")),
+    .max(20, "Member number is too long"),
+  role: z.string() .min(1, "Please select a role"),
+  joined_at: z.string(),
 });
 
 export const newMemberLabels = {
@@ -93,7 +83,6 @@ export const newMemberLabels = {
   role: {
     name: "role" as const,
     label: "Member Role",
-    placeholder: "Select role",
     required: true,
     type: "select" as const,
     options: [
