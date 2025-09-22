@@ -66,7 +66,7 @@ export interface GroupMembersQueryParams {
   groupId?: string;
 }
 
-export interface GroupMembersResponse {
+export interface GroupMembersResp {
   data: GroupMember[];
   count: number;
   error: Error | null;

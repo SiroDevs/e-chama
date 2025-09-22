@@ -72,13 +72,4 @@ export const membersColms: GridColDef[] = [
     sortable: true,
     type: 'dateTime',
   },
-  {
-    field: 'actions',
-    type: 'actions',
-    flex: 1,
-    align: 'right',
-    getActions: ({ row }) => [
-
-    ],
-  },
 ];

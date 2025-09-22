@@ -12,6 +12,7 @@ import { Box } from "@mui/material";
 import { membersColms, GroupMembersProps, PageSize, RowsState } from "./arrays";
 import { getGroupMembers } from "@/services/MemberService";
 import { EmptyView, ErrorView } from "@/components/general/EmptyView";
+import { useRouter } from "next/navigation";
 
 interface EnhancedGroupMembersProps extends GroupMembersProps {
   paginationModel: GridPaginationModel;
@@ -45,6 +46,7 @@ const GroupMembers = forwardRef<GroupMembersRef, EnhancedGroupMembersProps>(
       rows: [],
       rowCount: 0,
     });
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     const [hasSearched, setHasSearched] = useState(false);
@@ -90,7 +92,6 @@ const GroupMembers = forwardRef<GroupMembersRef, EnhancedGroupMembersProps>(
       convertFilterModelToFilters,
     ]);
 
-    // Expose refresh function to parent component
     useImperativeHandle(ref, () => ({
       refresh: () => {
         fetchGroupMembers();
@@ -102,7 +103,7 @@ const GroupMembers = forwardRef<GroupMembersRef, EnhancedGroupMembersProps>(
     }, [fetchGroupMembers]);
 
     const handleRowClick = (params: GridRowParams) => {
-      console.log("Row clicked:", params.row);
+      router.push(`/members/${params.row.id}`);
     };
 
     const initialState = {

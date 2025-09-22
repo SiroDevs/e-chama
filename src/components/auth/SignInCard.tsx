@@ -1,12 +1,12 @@
 "use client";
 
 import * as z from "zod";
-import { useState, useTransition } from "react";
-import { InputAdornment, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { Alert, InputAdornment, TextField, Typography } from "@mui/material";
 import { Button, Link, FormControlLabel, Checkbox } from "@mui/material";
 import { Box, IconButton, FormControl, FormLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { LockOutlined, Sync } from "@mui/icons-material";
+import { LockOutlined } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -16,6 +16,8 @@ import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
 import { useGroupStore } from "@/state/auth/group";
 import { fetchGroups } from "@/app/(protected)/actions/GroupAction";
+import { PageStatus } from "@/state/status";
+import { Loader } from "../general/Loader";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -25,32 +27,40 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
-export function SignInCard() {
+
+interface SignInCardProps {
+  onAuthSuccess: () => void;
+}
+
+export function SignInCard({ onAuthSuccess }: SignInCardProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [status, setStatus] = useState<PageStatus>("idle");
+  const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const [loading, startTransition] = useTransition();
 
   const { loginUser } = useAuthStore();
   const { setUserGroups } = useGroupStore();
   const handleClickOpen = () => setOpen(true);
 
-  function onSubmit(data: FormData) {
-    startTransition(async () => {
-      const result = await handleSigninAction(data);
-      if (result.success) {
-        await loginUser(result.user!, result.profile!, result.member!);
-        const groupResult = await fetchGroups(result.user!.id);
-        if (groupResult.length > 0) {
-          await setUserGroups(groupResult, result.profile?.group || null);
-        }
-        window.location.reload();
+  async function onSubmit(data: FormData) {
+    setStatus("loading");
+    const result = await handleSigninAction(data);
+    if (result.success) {
+      await loginUser(result.user!, result.profile!, result.member!);
+      const groupResult = await fetchGroups(result.user!.id);
+      if (groupResult.length > 0) {
+        await setUserGroups(groupResult, result.profile?.group || null);
       }
-    });
+      onAuthSuccess();
+    } else {
+      setStatus("error");
+      setMessage(result.error);
+    }
   }
 
   return (
@@ -65,82 +75,89 @@ export function SignInCard() {
       >
         <LockOutlined /> Sign In
       </Typography>
-
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-        sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}
-      >
-        <FormInput
-          id="email"
-          label="Email Address"
-          placeholder="you@mail.com"
-          required
-          autoComplete="email"
-          error={errors.email}
-          registration={register("email")}
+      {status === "loading" ? (
+        <Loader
+          height="30vh"
+          title="Signing you in ..."
+          message="Please wait while we check your credentials."
         />
-
-        <FormControl>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <Link
-              component="button"
-              type="button"
-              onClick={handleClickOpen}
-              variant="body2"
-              sx={{ alignSelf: "baseline" }}
-            >
-              Forgot your password?
-            </Link>
-          </Box>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            placeholder="******"
-            type={showPassword ? "text" : "password"}
-            id="password"
-            autoComplete="current-password"
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            {...register("password")}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
+      ) : (
+        <>
+          {status === "error" && <Alert severity="error"> {message}</Alert>}
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              gap: 2,
             }}
-          />
-        </FormControl>
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-        />
-        {/* <ForgotPassword open={open} handleClose={handleClose} /> */}
+          >
+            <FormInput
+              id="email"
+              label="Email Address"
+              placeholder="you@mail.com"
+              required
+              autoComplete="email"
+              error={errors.email}
+              registration={register("email")}
+            />
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          endIcon={loading && <Sync className="animate-spin" />}
-          disabled={loading}
-        >
-          Sign In
-        </Button>
-        <Typography sx={{ textAlign: "center" }}>
-          <Link href="/signup">Don&apos;t have an account? Sign Up</Link>
-        </Typography>
-      </Box>
-      {/* <Divider>or</Divider>
+            <FormControl>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <Link
+                  component="button"
+                  type="button"
+                  onClick={handleClickOpen}
+                  variant="body2"
+                  sx={{ alignSelf: "baseline" }}
+                >
+                  Forgot your password?
+                </Link>
+              </Box>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                placeholder="******"
+                type={showPassword ? "text" : "password"}
+                id="password"
+                autoComplete="current-password"
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                {...register("password")}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            {/* <ForgotPassword open={open} handleClose={handleClose} /> */}
+
+            <Button type="submit" fullWidth variant="contained">
+              Sign In
+            </Button>
+            <Typography sx={{ textAlign: "center" }}>
+              <Link href="/signup">Don&apos;t have an account? Sign Up</Link>
+            </Typography>
+          </Box>
+          {/* <Divider>or</Divider>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <Button
           fullWidth
@@ -159,6 +176,8 @@ export function SignInCard() {
           Sign in with Facebook
         </Button>
       </Box> */}
+        </>
+      )}
     </MuiCard>
   );
 }

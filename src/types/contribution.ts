@@ -26,7 +26,7 @@ export interface ContributionsQueryParams {
   memberId?: string;
 }
 
-export interface ContributionsResponse {
+export interface ContributionsResp {
   data: Contribution[];
   count: number;
   error: Error | null;

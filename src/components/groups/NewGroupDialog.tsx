@@ -11,23 +11,23 @@ import { z } from "zod";
 
 import { useAuthStore } from "@/state/auth/auth";
 import { FormInput } from "@/components/inputs/FormInput";
-import { createGroupAction } from "@/app/(protected)/actions/GroupAction";
-import { createGroupLabels, createGroupSchema } from "./arrays";
+import { newGroupAction } from "@/app/(protected)/actions/GroupAction";
+import { newGroupLabels, newGroupSchema } from "./arrays";
 import { useGroupStore } from "@/state/auth/group";
 
-type CreateGroupFormData = z.infer<typeof createGroupSchema>;
+type FormData = z.infer<typeof newGroupSchema>;
 
-interface CreateGroupDialogProps {
+interface NewGroupDialogProps {
   open: boolean;
   onClose: () => void;
   onGroupCreated: () => void;
 }
 
-export default function CreateGroupDialog({
+export default function NewGroupDialog({
   open,
   onClose,
   onGroupCreated,
-}: CreateGroupDialogProps) {
+}: NewGroupDialogProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const { user } = useAuthStore();
@@ -39,8 +39,8 @@ export default function CreateGroupDialog({
     formState: { errors },
     reset,
     setError: setFormError,
-  } = useForm<CreateGroupFormData>({
-    resolver: zodResolver(createGroupSchema),
+  } = useForm<FormData>({
+    resolver: zodResolver(newGroupSchema),
   });
 
   const handleClose = () => {
@@ -49,11 +49,11 @@ export default function CreateGroupDialog({
     onClose();
   };
 
-  const onSubmit = async (data: CreateGroupFormData) => {
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
 
     try {
-      const result = await createGroupAction({
+      const result = await newGroupAction({
         userId: user!.id,
         title: data.title.trim(),
         description: data.description?.trim() || "",
@@ -114,7 +114,7 @@ export default function CreateGroupDialog({
               </Alert>
             )}
 
-            {Object.values(createGroupLabels)
+            {Object.values(newGroupLabels)
               .filter((field) => field.name !== "description")
               .map((field) => (
                 <FormInput

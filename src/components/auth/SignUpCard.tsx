@@ -1,8 +1,8 @@
 "use client";
 
 import * as z from "zod";
-import { useTransition } from "react";
-import { Box, Button, Typography, Grid, Link } from "@mui/material";
+import { useState } from "react";
+import { Box, Button, Typography, Grid, Link, Alert } from "@mui/material";
 import { FormControlLabel, Checkbox } from "@mui/material";
 import { LockOutlined, Sync } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,8 @@ import { handleSignupAction } from "@/app/(auth)/actions/AuthAction";
 import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
+import { PageStatus } from "@/state/status";
+import { Loader } from "../general/Loader";
 
 const schema = z.object({
   first_name: z
@@ -30,24 +32,31 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
-export function SignUpCard() {
+
+interface SignUpCardProps {
+  onAuthSuccess: () => void;
+}
+
+export function SignUpCard({ onAuthSuccess }: SignUpCardProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const [loading, startTransition] = useTransition();
-
+  const [status, setStatus] = useState<PageStatus>("idle");
+  const [message, setMessage] = useState("");
   const { loginUser } = useAuthStore();
 
-  function onSubmit(data: FormData) {
-    startTransition(async () => {
-      const result = await handleSignupAction(data);
-      if (result.success) {
-        await loginUser(result.user!, result.profile!, result.member!);
-        window.location.reload();
-      }
-    });
+  async function onSubmit(data: FormData) {
+    setStatus("loading");
+    const result = await handleSignupAction(data);
+    if (result.success) {
+      await loginUser(result.user!, result.profile!, result.member!);
+      onAuthSuccess();
+    } else {
+      setStatus("error");
+      setMessage(result.error!);
+    }
   }
 
   return (
@@ -62,88 +71,95 @@ export function SignUpCard() {
       >
         <LockOutlined /> Sign Up
       </Typography>
-
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-        sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}
-      >
-        <Typography
-          component="div"
+      {status === "loading" ? (
+        <Loader
+          height="30vh"
+          title="Signing you up ..."
+          message="Please wait while we create your profile."
+        />
+      ) : (
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
           sx={{
-            width: "100%",
             display: "flex",
+            flexDirection: "column",
+            width: "100%",
             gap: 2,
-            flexDirection: { xs: "column", sm: "row" },
           }}
         >
+          <Typography
+            component="div"
+            sx={{
+              width: "100%",
+              display: "flex",
+              gap: 2,
+              flexDirection: { xs: "column", sm: "row" },
+            }}
+          >
+            {status === "error" && <Alert severity="error"> {message}</Alert>}
+            <FormInput
+              id="first_name"
+              label="First Name"
+              placeholder="Kamau"
+              required
+              autoComplete="given-name"
+              error={errors.first_name}
+              registration={register("first_name")}
+            />
+            <FormInput
+              id="last_name"
+              label="Last Name"
+              placeholder="Onyango"
+              required
+              autoComplete="family-name"
+              error={errors.last_name}
+              registration={register("last_name")}
+            />
+          </Typography>
+
           <FormInput
-            id="first_name"
-            label="First Name"
-            placeholder="Kamau"
+            id="email"
+            label="Email Address"
+            placeholder="you@mail.com"
             required
-            autoComplete="given-name"
-            error={errors.first_name}
-            registration={register("first_name")}
+            autoComplete="email"
+            error={errors.email}
+            registration={register("email")}
           />
+
           <FormInput
-            id="last_name"
-            label="Last Name"
-            placeholder="Onyango"
+            id="password"
+            label="Password"
             required
-            autoComplete="family-name"
-            error={errors.last_name}
-            registration={register("last_name")}
+            autoComplete="new-password"
+            placeholder="******"
+            error={errors.password}
+            registration={register("password")}
+            withPasswordToggle
           />
-        </Typography>
 
-        <FormInput
-          id="email"
-          label="Email Address"
-          placeholder="you@mail.com"
-          required
-          autoComplete="email"
-          error={errors.email}
-          registration={register("email")}
-        />
+          <Grid size={12}>
+            <FormControlLabel
+              control={<Checkbox color="primary" {...register("terms")} />}
+              label="I agree to the terms and conditions."
+            />
+            {errors.terms && (
+              <Typography color="error" variant="body2">
+                You must agree to the terms and conditions
+              </Typography>
+            )}
+          </Grid>
 
-        <FormInput
-          id="password"
-          label="Password"
-          required
-          autoComplete="new-password"
-          placeholder="******"
-          error={errors.password}
-          registration={register("password")}
-          withPasswordToggle
-        />
-
-        <Grid size={12}>
-          <FormControlLabel
-            control={<Checkbox color="primary" {...register("terms")} />}
-            label="I agree to the terms and conditions."
-          />
-          {errors.terms && (
-            <Typography color="error" variant="body2">
-              You must agree to the terms and conditions
-            </Typography>
-          )}
-        </Grid>
-
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          endIcon={loading && <Sync className="animate-spin" />}
-          disabled={loading}
-        >
-          Sign Up
-        </Button>
-        <Typography sx={{ textAlign: "center" }}>
-          <Link href="/">Already have an Account? Sign In</Link>
-        </Typography>
-      </Box>
+          <Button type="submit" fullWidth variant="contained">
+            Sign Up
+          </Button>
+          <Typography sx={{ textAlign: "center" }}>
+            <Link href="/">Already have an Account? Sign In</Link>
+          </Typography>
+        </Box>
+      )}
     </MuiCard>
   );
 }

@@ -9,6 +9,7 @@ import AppTheme from "@/theme/AppTheme";
 import { AppIcon } from "@/components/general/CustomIcons";
 import { Loader } from "@/components/general/Loader";
 import { verifyToken } from "@/services/AuthService";
+import { PageStatus } from "@/state/status";
 
 interface VerifyEmailProps {
   searchParams: {
@@ -20,9 +21,7 @@ interface VerifyEmailProps {
 export default function VerifyEmail({ searchParams }: VerifyEmailProps) {
   const token = searchParams.token;
   const type = searchParams.type;
-  const [status, setStatus] = useState<"loading" | "success" | "error">(
-    "loading"
-  );
+  const [status, setStatus] = useState<PageStatus>("loading");
   const [message, setMessage] = useState("");
 
   useEffect(() => {
