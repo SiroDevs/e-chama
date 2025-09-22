@@ -87,7 +87,6 @@ export interface Profile {
   avatar: string | null;
   id_number: string | null;
   kra_pin: string | null;
-  is_admin?: boolean;
 }
 
 export interface Member {

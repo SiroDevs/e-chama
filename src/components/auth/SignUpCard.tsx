@@ -47,9 +47,14 @@ export function SignUpCard({ onAuthSuccess }: SignUpCardProps) {
   const [message, setMessage] = useState("");
   const { loginUser } = useAuthStore();
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(formData: FormData) {
     setStatus("loading");
-    const result = await handleSignupAction(data);
+    const result = await handleSignupAction({
+      first_name: formData.first_name.trim(),
+      last_name: formData.last_name.trim(),
+      email: formData.email.trim(),
+      password: formData.password.trim(),
+    });
     if (result.success) {
       await loginUser(result.user!, result.profile!, result.member!);
       onAuthSuccess();

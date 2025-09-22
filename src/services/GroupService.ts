@@ -1,28 +1,21 @@
 "use server";
 
 import { getServerClient } from "@/lib/supabase/server";
-import { UserGroup, PaginatedResp, Group } from "@/types/types";
+import { UserGroup, PaginatedResp, Group, GroupExt } from "@/types/types";
 import { supabase } from "@/lib/supabase/client";
 import { getMemberCount } from "./MemberService";
 
-export async function newGroup(data: {
-  user: string,
-  title: string,
-  description: string,
-  initials: string,
-  location: string,
-  address: string,
-}) {
+export async function newGroup(group: Group) {
   return await supabase
     .from("groups")
     .insert([
       {
-        owner: data.user,
-        title: data.title,
-        description: data.description,
-        initials: data.initials,
-        location: data.location,
-        address: data.address,
+        owner: group.owner,
+        title: group.title,
+        description: group.description,
+        initials: group.initials,
+        location: group.location,
+        address: group.address,
       },
     ])
     .select()
@@ -192,7 +185,7 @@ export async function searchByCode(code: string): Promise<(Group & { member_coun
 
   const memberCount = await getMemberCount(data.id);
   return {
-    ...data as Group,
+    ...data as GroupExt,
     member_count: memberCount
   };
 }

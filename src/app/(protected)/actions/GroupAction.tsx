@@ -3,25 +3,11 @@ import toast from "react-hot-toast";
 import { newMember } from "@/services/MemberService";
 import { newMemberGroup } from "@/services/MemberServiceExts";
 import { getUserGroups, searchByCode } from "@/services/GroupService";
-import { GroupExt, UserGroup } from "@/types/types";
+import { Group, GroupExt, UserGroup } from "@/types/types";
 
-export async function newGroupAction(payload: {
-  userId: string;
-  title: string;
-  description: string;
-  initials: string;
-  location: string;
-  address: string;
-}) {
+export async function newGroupAction(group: Group) {
   try {
-    const { data, error } = await newMemberGroup(
-      payload.userId,
-      payload.title,
-      payload.description,
-      payload.initials,
-      payload.location,
-      payload.address
-    );
+    const { data, error } = await newMemberGroup(group);
 
     if (error) {
       console.error("Group creation error:", error.message);
@@ -63,7 +49,7 @@ export async function newGroupAction(payload: {
     }
 
     if (data && data.group) {
-      const groups = await getUserGroups(payload.userId);
+      const groups = await getUserGroups(group.owner!);
       return {
         success: true,
         groups: groups,
@@ -86,19 +72,15 @@ export async function newGroupAction(payload: {
   }
 }
 
-export async function searchGroupAction(joinCode: string): Promise<{
-  success: boolean;
-  group?: GroupExt;
-  error?: any;
-}> {
+export async function searchGroupAction(joinCode: string){
   try {
     if (!joinCode.trim()) {
       return { success: false, error: "Please enter a Chama code" };
     }
 
-    const group = await searchByCode(joinCode);
-    if (group) {
-      return { success: true, group };
+    const groupResult = await searchByCode(joinCode);
+    if (groupResult) {
+      return { success: true, group: groupResult };
     } else {
       return { success: false, error: "No Chama found with this code" };
     }
@@ -113,7 +95,12 @@ export async function searchGroupAction(joinCode: string): Promise<{
 
 export async function joinGroupAction(userId: string, group: GroupExt) {
   try {
-    const { error } = await newMember(group.id, userId, "000", "member");
+    const { error } = await newMember({
+      group_id: group.id,
+      user_id: userId,
+      member_no: "000",
+      role: "member",
+    });
 
     if (error) {
       console.error("Joining group error:", error.message);

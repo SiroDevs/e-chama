@@ -54,7 +54,7 @@ export default function NewGroupDialog({
 
     try {
       const result = await newGroupAction({
-        userId: user!.id,
+        owner: user!.id,
         title: data.title.trim(),
         description: data.description?.trim() || "",
         initials: data.initials?.trim() || "",

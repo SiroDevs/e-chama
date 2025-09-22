@@ -4,24 +4,12 @@ import { newGroup } from "./GroupService";
 import { updateSelectedGroup } from "./ProfileService";
 import { newMember } from "./MemberService";
 import { signUpMeNow } from "./AuthService";
+import { Profile } from "@/state/role/profiles";
+import { Group, Member } from "@/types/types";
 
-export async function newMemberGroup(
-  userId: string,
-  title: string,
-  description: string,
-  initials: string,
-  location: string,
-  address: string,
-) {
+export async function newMemberGroup(group: Group) {
   try {
-    const groupResult = await newGroup({
-      user: userId,
-      title: title,
-      description: description,
-      initials: initials,
-      location: location,
-      address: address,
-    });
+    const groupResult = await newGroup(group);
 
     if (groupResult.error) {
       console.error("Group creation error:", groupResult.error);
@@ -30,13 +18,13 @@ export async function newMemberGroup(
         error: groupResult.error,
       };
     }
-
     const memberResult = await newMember(
-      groupResult.data.id,
-      userId,
-      "001",
-      'official'
-    );
+      {
+        group_id: groupResult.data.id,
+        user_id: group.owner,
+        member_no: "001",
+        role: "official",
+      });
 
     if (memberResult.error) {
       console.error("Member creation error:", memberResult.error.message);
@@ -46,7 +34,7 @@ export async function newMemberGroup(
       };
     }
 
-    await updateSelectedGroup(userId, groupResult.data.id);
+    await updateSelectedGroup(group.owner!, groupResult.data.id);
 
     return {
       data: {
@@ -65,36 +53,32 @@ export async function newMemberGroup(
 }
 
 export async function newMemberProfile(payload: {
-  groupId: string;
-  firstName: string;
-  lastName: string;
   email: string;
   phone: string;
-  idNumber: string;
-  sex: string;
-  memberNo: string;
-  role: string;
-  joinedAt: Date;
+  password: string;
+  profile: Profile;
+  member: Member;
 }) {
   try {
     const { data, error } = await signUpMeNow({
-      first_name: payload.firstName,
-      last_name: payload.lastName,
       email: payload.email,
-      password: "password1"
+      phone: payload.phone,
+      password: payload.password,
+      profile: payload.profile
     });
     if (error) {
       console.error("Signup error:", error);
       return { data: null, error: error };
     }
 
-    const memberResult = await newMember(
-      payload.groupId,
-      data.user.id,
-      payload.memberNo,
-      payload.role,
-    );
-    return memberResult;
+    // const memberResult = await newMember(member:
+    //   {
+    //     group_id: payload.group_id,
+    //     user_id: data.user.id,
+    //     member_no: payload.member_no,
+    //     role: payload.role,
+    //   });
+    // return memberResult;
   } catch (error) {
     console.error("Unexpected error in newMemberProfile:", error);
     return {
