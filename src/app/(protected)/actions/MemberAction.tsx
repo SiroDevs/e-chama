@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 
-import { newMember, newMemberGroup } from "@/services/MemberService";
+import { newMember } from "@/services/MemberService";
+import { newMemberProfile } from "@/services/MemberServiceExts";
 import { getUserGroups, searchByCode } from "@/services/GroupService";
 import { GroupExt, UserGroup } from "@/types/types";
 
@@ -17,14 +18,7 @@ export async function newMemberAction(payload: {
   joinedAt: string;
 }) {
   try {
-    const { data, error } = await newMemberGroup(
-      payload.userId,
-      payload.title,
-      payload.description,
-      payload.initials,
-      payload.location,
-      payload.address
-    );
+    const { data, error } = await newMemberProfile(payload);
 
     if (error) {
       console.error("Group creation error:", error.message);

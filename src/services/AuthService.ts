@@ -2,7 +2,8 @@
 
 import { supabase } from "@/lib/supabase/client";
 import { createProfile } from "./ProfileService";
-import { handleAuthResponse, fetchUserMember } from "./UserService";
+import { handleAuthResponse } from "./UserService";
+import { newMember } from "./MemberService";
 
 export async function signInMeNow(data: { email: string; password: string }) {
   try {
@@ -73,18 +74,9 @@ export async function signUpMeNow(data: {
       };
     }
 
-    const { data: member, error: memberError } = await fetchUserMember(
-      user.id,
-      profile?.group_id || null
-    );
-
     return {
-      data: {
-        user,
-        profile,
-        member: memberError ? null : member,
-      },
-      error: memberError,
+      data: { user, profile },
+      error: null,
     };
 
   } catch (err) {
