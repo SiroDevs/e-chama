@@ -1,9 +1,8 @@
 import toast from "react-hot-toast";
 
-import { newMember } from "@/services/MemberService";
 import { newMemberProfile } from "@/services/MemberServiceExts";
-import { getUserGroups, searchByCode } from "@/services/GroupService";
-import { GroupExt, UserGroup } from "@/types/types";
+import { searchByCode } from "@/services/GroupService";
+import { GroupExt } from "@/types/types";
 
 export async function newMemberAction(payload: {
   groupId: string;
@@ -27,13 +26,11 @@ export async function newMemberAction(payload: {
 
       if (status) {
         switch (status) {
-          case "23505":
-          case "23505":
-            toast.error("A group with similar details already exists.");
+          case 23505:
+            toast.error("A member with similar details already exists.");
             break;
-          case "42501":
-          case "42501":
-            toast.error("You don't have permission to create a group.");
+          case 42501:
+            toast.error("You don't have permission to do this action.");
             break;
           case 400:
             toast.error("Invalid data. Please check your text fields.");
@@ -57,27 +54,17 @@ export async function newMemberAction(payload: {
       }
 
       return { success: false, error: errorMessage };
-    }
-
-    if (data && data.group) {
-      const groups = await getUserGroups(payload.userId);
-      return {
-        success: true,
-        groups: groups,
-        groupId: data.group.id,
-      };
     } else {
-      toast.error("Chama creation failed - no data returned");
-      return { success: false, error: "No data returned from group creation" };
+      return { success: true, member: data };
     }
   } catch (err) {
     const errorMessage =
       err instanceof Error
         ? err.message
-        : "An error occurred during group creation. Please try again.";
+        : "An error occurred during member registration. Please try again.";
 
     toast.error(errorMessage);
-    console.error("Unexpected error in createGroupAction:", err);
+    console.error("Unexpected error in newMemberAction:", err);
 
     return { success: false, error: errorMessage };
   }
