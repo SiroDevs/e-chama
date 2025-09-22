@@ -35,16 +35,19 @@ export default function NewMemberPage() {
 
     try {
       const result = await newMemberAction({
-        groupId: member?.group_id!,
-        firstName: formData.first_name.trim(),
-        lastName: formData.last_name.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim(),
-        idNumber: formData.id_number.trim(),
-        sex: formData.sex.trim(),
-        memberNo: formData.member_no.trim(),
-        role: formData.role.trim(),
-        joinedAt: formData.joined_at,
+        profile: {
+          first_name: formData.first_name.trim(),
+          last_name: formData.last_name.trim(),
+          sex: formData.sex.trim(),
+          id_number: formData.id_number.trim(),
+        },
+        member: {
+          group_id: member?.group_id!,
+          member_no: formData.member_no.trim(),
+          role: formData.role.trim(),
+        },
       });
 
       if (result.success) {

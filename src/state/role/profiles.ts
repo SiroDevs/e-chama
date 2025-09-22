@@ -77,22 +77,22 @@ const RoleInfo: Record<UserRole, UserRoleInfo> = {
 };
 
 export interface Profile {
-  id: string;
-  first_name: string | null;
-  last_name: string | null;
-  country: string | null;
-  address: string | null;
-  sex: string | null;
-  dob: string | null;
-  avatar: string | null;
-  id_number: string | null;
-  kra_pin: string | null;
+  id?: string;
+  first_name?: string;
+  last_name?: string;
+  country?: string;
+  address?: string;
+  sex?: string;
+  dob?: string;
+  avatar?: string;
+  id_number?: string;
+  kra_pin?: string;
 }
 
 export interface Member {
-  id: string;
-  member_no: string | null;
-  role: string | null;
-  joined_at: string | null;
-  group_id: string;
+  id?: string;
+  group_id?: string;
+  member_no?: string;
+  role?: string;
+  joined_at?: string;
 }

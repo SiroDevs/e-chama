@@ -55,7 +55,6 @@ export async function newMemberGroup(group: Group) {
 export async function newMemberProfile(payload: {
   email: string;
   phone: string;
-  password: string;
   profile: Profile;
   member: Member;
 }) {
@@ -63,7 +62,7 @@ export async function newMemberProfile(payload: {
     const { data, error } = await signUpMeNow({
       email: payload.email,
       phone: payload.phone,
-      password: payload.password,
+      password: "",
       profile: payload.profile
     });
     if (error) {
@@ -71,14 +70,14 @@ export async function newMemberProfile(payload: {
       return { data: null, error: error };
     }
 
-    // const memberResult = await newMember(member:
-    //   {
-    //     group_id: payload.group_id,
-    //     user_id: data.user.id,
-    //     member_no: payload.member_no,
-    //     role: payload.role,
-    //   });
-    // return memberResult;
+    const memberResult = await newMember(
+      {
+        group_id: payload.member.group_id,
+        user_id: data.user.id,
+        member_no: payload.member.member_no,
+        role: payload.member.role,
+      });
+    return memberResult;
   } catch (error) {
     console.error("Unexpected error in newMemberProfile:", error);
     return {

@@ -168,7 +168,7 @@ export async function isUserMemberOfGroup(userId: string, groupId: string): Prom
   return !!data;
 }
 
-export async function searchByCode(code: string): Promise<(Group & { member_count: number }) | null> {
+export async function searchByCode(code: string): Promise<(GroupExt & { member_count: number }) | null> {
   const supabase = await getServerClient();
   const { data, error } = await supabase
     .from("groups")
