@@ -30,7 +30,12 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
-export function SignUpCard() {
+
+interface SignUpCardProps {
+  onAuthSuccess: () => void;
+}
+
+export function SignUpCard({ onAuthSuccess }: SignUpCardProps) {
   const {
     register,
     handleSubmit,
@@ -45,7 +50,7 @@ export function SignUpCard() {
       const result = await handleSignupAction(data);
       if (result.success) {
         await loginUser(result.user!, result.profile!, result.member!);
-        window.location.reload();
+        onAuthSuccess();
       }
     });
   }

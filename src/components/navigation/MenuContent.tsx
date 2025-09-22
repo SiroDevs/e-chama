@@ -7,6 +7,7 @@ import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import { useGroupStore } from "@/state/auth/group";
 import { hasRole } from "@/types/roles";
 import { MenuItem, allRoles, mainMenuItems } from "@/utils/MenuItems";
+import { useRouter } from "next/navigation";
 
 const secondaryListItems: MenuItem[] = [
   { text: "Settings", icon: <SettingsRoundedIcon />, roles: allRoles },
@@ -35,6 +36,7 @@ export function MenuContent() {
 }
 
 export function MenuContentItem(item: MenuItem, index: number) {
+  const router = useRouter();
   const isActivePath = (path: string) => {
     return (
       location.pathname === path || location.pathname.startsWith(path + "/")
@@ -42,7 +44,7 @@ export function MenuContentItem(item: MenuItem, index: number) {
   };
 
   const handleClick = () => {
-    window.location.href = item.path!;
+    router.push(item.path!);
   };
 
   return (

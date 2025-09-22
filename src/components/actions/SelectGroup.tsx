@@ -8,6 +8,7 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 import { GroupAdd } from "@mui/icons-material";
 import { useGroupStore } from "@/state/auth/group";
+import { useRouter } from "next/navigation";
 
 const ListItemAvatar = styled(MuiListItemAvatar)({
   minWidth: 0,
@@ -15,11 +16,12 @@ const ListItemAvatar = styled(MuiListItemAvatar)({
 });
 
 export function SelectGroup() {
+  const router = useRouter();
   const { userGroups, selectedGroup, setSelectedGroup } = useGroupStore();
   const handleChange = (event: SelectChangeEvent) => {
     const groupId = event.target.value;
     if (groupId === "add-new") {
-      window.location.href = '/join';
+      router.push("/join");
       event.target.value = selectedGroup || "";
     } else {
       setSelectedGroup(groupId);

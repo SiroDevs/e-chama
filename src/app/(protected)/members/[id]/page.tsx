@@ -21,7 +21,7 @@ export default function ViewMemberPage() {
   const [loading, setLoading] = useState(true);
 
   if (!isAuthenticated) {
-    window.location.href = "/";
+    router.push("/");
     return null;
   }
 

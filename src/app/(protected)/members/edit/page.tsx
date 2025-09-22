@@ -28,7 +28,7 @@ export default function EditMemberPage() {
   const [loading, setLoading] = useState(false);
 
   if (!isAuthenticated) {
-    window.location.href = "/";
+    router.push("/");
     return null;
   }
 

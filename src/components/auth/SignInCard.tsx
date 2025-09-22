@@ -25,7 +25,12 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
-export function SignInCard() {
+
+interface SignInCardProps {
+  onAuthSuccess: () => void;
+}
+
+export function SignInCard({ onAuthSuccess }: SignInCardProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
   const {
@@ -48,7 +53,7 @@ export function SignInCard() {
         if (groupResult.length > 0) {
           await setUserGroups(groupResult, result.profile?.group || null);
         }
-        window.location.reload();
+        onAuthSuccess();
       }
     });
   }

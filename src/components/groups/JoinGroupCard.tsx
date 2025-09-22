@@ -11,12 +11,14 @@ import { AppIcon } from "@/components/general/CustomIcons";
 import NewGroupDialog from "@/components/groups/NewGroupDialog";
 import { handleSignOutAction } from "../../app/(protected)/actions/AuthAction";
 import { JoinGroupSection } from "./JoinGroupSection";
+import { useRouter } from "next/navigation";
 
 interface JoinGroupCardProps {
   hasGroups?: boolean;
 }
 
 export function JoinGroupCard({ hasGroups = true }: JoinGroupCardProps) {
+  const router = useRouter();
   const { profile, logoutUser } = useAuthStore();
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -29,13 +31,13 @@ export function JoinGroupCard({ hasGroups = true }: JoinGroupCardProps) {
   };
 
   const handleGroupCreated = () => {
-    window.location.reload();
+    router.push("/");
   };
 
   const handleSignOut = async () => {
     await handleSignOutAction();
     await logoutUser();
-    window.location.reload();
+    router.push("/");
   };
 
   return (

@@ -7,12 +7,14 @@ import { Copyright } from "@/components/general";
 import useNotifications from "@/hooks/notifications/useNotifications";
 import NewMemberForm from "./form";
 import { useAuthStore } from "@/state/auth/auth";
+import { useRouter } from "next/navigation";
 
 export default function NewMemberPage() {
+  const router = useRouter();
   const { isAuthenticated, member } = useAuthStore();
   const notifications = useNotifications();
   if (!isAuthenticated) {
-    window.location.href = "/";
+    router.push("/");
     return null;
   }
   function handleMemberCreated(): void {

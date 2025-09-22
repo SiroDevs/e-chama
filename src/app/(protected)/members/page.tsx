@@ -33,7 +33,7 @@ export default function MembersPage() {
 
   const groupMembersRef = useRef<GroupMembersRef>(null);
   if (!isAuthenticated) {
-    window.location.href = "/";
+    router.push("/");
     return null;
   }
 

@@ -54,7 +54,7 @@ export default function CreateMemberPage() {
   const [success, setSuccess] = useState(false);
 
   if (!isAuthenticated) {
-    window.location.href = "/";
+    router.push("/");
     return null;
   }
 

@@ -13,6 +13,7 @@ import { MenuContent } from "./MenuContent";
 import { SelectRole } from "../actions/SelectRole";
 import { useGroupStore } from "@/state/auth/group";
 import { AppIcon } from "../general/CustomIcons";
+import { useRouter } from "next/navigation";
 
 interface SideMenuMobileProps {
   open: boolean | undefined;
@@ -20,13 +21,14 @@ interface SideMenuMobileProps {
 }
 
 export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
-  const { profile, logoutUser } = useAuthStore();
+  const router = useRouter();
+  const { logoutUser } = useAuthStore();
   const { currentRole, availableRoles, setCurrentRole } = useGroupStore();
 
   const handleSignOut = async () => {
     await handleSignOutAction();
     await logoutUser();
-    window.location.reload();
+    router.push("/");
   };
 
   return (
@@ -64,7 +66,7 @@ export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
               onRoleChange={setCurrentRole}
             />
           </Stack>
-          
+
           <Divider />
           <MenuContent />
           <Divider />
