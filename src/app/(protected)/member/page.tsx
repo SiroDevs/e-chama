@@ -7,9 +7,9 @@ import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
 import Contributions from "./Contributions";
 import MemberProfile from "./Profile";
-import { MemberProfileProps } from "@/types/profiles";
 import MemberProfileSmall from "./ProfileMobile";
 import { useRouter } from "next/navigation";
+import { processMemberProfileData } from "../members/arrays";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -20,59 +20,7 @@ export default function Dashboard() {
     return null;
   }
 
-  const processMemberProfileData = (): MemberProfileProps => {
-    if (!profile || !member) {
-      return {
-        loading: false,
-        profile: null,
-        member: null,
-        user: null,
-      };
-    }
-
-    const fullName =
-      `${profile.first_name || ""} ${profile.last_name || ""}`.trim() ||
-      "Unknown Member";
-
-    const formatDate = (dateString: string | null) => {
-      if (!dateString) return "Not set";
-      return new Date(dateString).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-    };
-
-    const getInitials = (firstName: string | null, lastName: string | null) => {
-      const first = firstName?.[0] || "";
-      const last = lastName?.[0] || "";
-      return `${first}${last}`.toUpperCase();
-    };
-
-    return {
-      loading: false,
-      profile: {
-        ...profile,
-        fullName,
-        formattedDob: formatDate(profile.dob),
-        initials: getInitials(profile.first_name, profile.last_name),
-        location:
-          `${profile.country || ""} ${profile.address || ""}`.trim() ||
-          "Not specified",
-      },
-      member: {
-        ...member,
-        formattedJoinedAt: formatDate(member.joined_at),
-        memberNo: member.member_no || "Not assigned",
-        role: member.role || "Member",
-      },
-      user: {
-        phone: user?.phone || "Not specified",
-      },
-    };
-  };
-
-  const memberProfileData = processMemberProfileData();
+  const memberProfileData = processMemberProfileData(profile, member, user);
 
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
@@ -101,7 +49,7 @@ export default function Dashboard() {
             pt: 2,
           }}
         >
-          <MemberProfile {...memberProfileData} />
+          <MemberProfile loading={false} profile={null} member={null} user={null} {...memberProfileData} />
         </Grid>
 
         <Card
@@ -111,7 +59,7 @@ export default function Dashboard() {
           }}
         >
           <CardContent>
-            <MemberProfileSmall {...memberProfileData} />
+            <MemberProfileSmall loading={false} profile={null} member={null} user={null} {...memberProfileData} />
           </CardContent>
         </Card>
         <Box
@@ -130,7 +78,7 @@ export default function Dashboard() {
             Your Recent Contributions
           </Typography>
 
-          <Contributions memberId={member!.id} />
+          <Contributions memberId={member!.id!} />
         </Box>
       </Grid>
       <Copyright sx={{ flex: 1, my: 4 }} />

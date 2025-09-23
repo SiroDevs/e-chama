@@ -44,7 +44,7 @@ export default function NewMemberPage() {
           id_number: formData.id_number.trim(),
         },
         member: {
-          group_id: member?.group_id!,
+          group_id: member?.group_id,
           member_no: formData.member_no.trim(),
           role: formData.role.trim(),
         },

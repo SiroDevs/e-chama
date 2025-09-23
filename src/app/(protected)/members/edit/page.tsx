@@ -6,7 +6,7 @@ import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
 import { useRouter, useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PageContainer from "@/components/actions/PageContainer";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
@@ -33,24 +33,24 @@ export default function EditMemberPage() {
   }
 
   // Fetch member data
-  useEffect(() => {
-    const fetchMemberData = async () => {
-      try {
-        setLoading(true);
+  // useEffect(() => {
+  //   const fetchMemberData = async () => {
+  //     try {
+  //       setLoading(true);
         // Replace with your actual API call
         // const response = await getMemberById(memberId);
         // setMemberData(response.data);
-      } catch (error) {
-        console.error("Error fetching member data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //     } catch (error) {
+  //       console.error("Error fetching member data:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if (memberId) {
-      fetchMemberData();
-    }
-  }, [memberId]);
+  //   if (memberId) {
+  //     fetchMemberData();
+  //   }
+  // }, [memberId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

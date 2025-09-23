@@ -63,14 +63,6 @@ export default function MembersPage() {
     router.push("/members/new");
   };
 
-  const handleEditMember = (memberId: string) => {
-    router.push(`/members/edit/${memberId}`);
-  };
-
-  const handleViewMember = (memberId: string) => {
-    router.push(`/members/${memberId}`);
-  };
-
   const handleRefresh = () => {
     if (groupMembersRef.current) {
       groupMembersRef.current.refresh();
@@ -122,7 +114,7 @@ export default function MembersPage() {
         />
         <GroupMembers
           ref={groupMembersRef}
-          groupId={member!.group_id}
+          groupId={member!.group_id!}
           paginationModel={paginationModel}
           sortModel={sortModel}
           filterModel={filterModel}

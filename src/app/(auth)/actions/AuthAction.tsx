@@ -78,13 +78,6 @@ export async function handleSignupAction(payload: {
         id: "",
         first_name: payload.first_name,
         last_name: payload.last_name,
-        country: null,
-        address: null,
-        sex: null,
-        dob: null,
-        avatar: null,
-        id_number: null,
-        kra_pin: null,
       },
     });
 
