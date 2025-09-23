@@ -4,10 +4,10 @@ import * as React from "react";
 
 import { Box } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
-import { JoinGroupCard } from "@/components/groups/JoinGroupCard";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
 import { useRouter } from "next/navigation";
+import { JoinGroupCard } from "./JoinGroupCard";
 
 export default function Dashboard() {
   const router = useRouter();

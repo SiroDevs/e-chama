@@ -137,7 +137,7 @@ export default function Contributions({memberId}: ContributionsProps) {
           <Typography variant="body2" color="text.secondary" align="center">
             {filterModel.items.length > 0
               ? "Try adjusting your search filters to find what you're looking for."
-              : "You haven't made any contributions yet."}
+              : "No contributions made here yet."}
           </Typography>
         </Paper>
       ) : (
