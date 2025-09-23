@@ -8,7 +8,7 @@ import { MainWrapper } from "@/components/layouts/MainWrapper";
 import { useAuthStore } from "@/state/auth/auth";
 import { LoadingWrapper } from "./LoadingWrapper";
 import { useGroupStore } from "@/state/auth/group";
-import { JoinGroupCard } from "@/app/(protected)/join/card";
+import { JoinGroupCard } from "../groups/JoinGroupCard";
 
 export default function RootLayout({
   children,

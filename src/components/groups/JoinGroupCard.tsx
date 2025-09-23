@@ -3,15 +3,14 @@
 import { useState } from "react";
 import { ExitToApp, GroupAdd } from "@mui/icons-material";
 import { Box, Container, Divider, Paper, Typography } from "@mui/material";
-import { Button, Alert, CssBaseline } from "@mui/material";
+import { Button, Alert } from "@mui/material";
 
 import { useAuthStore } from "@/state/auth/auth";
-import AppTheme from "@/theme/AppTheme";
 import { AppIcon } from "@/components/general/CustomIcons";
-import { JoinGroupSection } from "./section";
+import { JoinGroupSection } from "./JoinGroupSection";
 import { useRouter } from "next/navigation";
-import { handleSignOutAction } from "../actions/auth";
-import NewGroupDialog from "./dialog";
+import NewGroupDialog from "./NewGroupDialog";
+import { handleSignOutAction } from "@/app/(protected)/actions/auth";
 
 interface JoinGroupCardProps {
   hasGroups?: boolean;

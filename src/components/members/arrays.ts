@@ -1,5 +1,4 @@
 import { GridColDef } from "@mui/x-data-grid";
-import { MemberProfileProps } from "@/types/profiles";
 
 export const contributionsColms: GridColDef[] = [
   {
