@@ -1,41 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Button, Alert, Dialog, DialogTitle } from "@mui/material";
-import { DialogContent, DialogActions } from "@mui/material";
-import { CircularProgress, Typography } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddCard";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { useAuthStore } from "@/state/auth/auth";
-import { FormInput } from "@/components/inputs/FormInput";
-import { newContributionFieldGroups } from "./arrays";
-import { newContributionLabels, newContributionSchema } from "./arrays";
+import { newContributionSchema } from "./arrays";
 import { newContributionAction } from "@/app/(protected)/actions/contribution";
-import { FormSelect } from "../inputs/FormSelect";
-import { Member } from "@/state/role/profiles";
+import { Loader } from "../general/Loader";
+import { GroupMember } from "@/types/profiles";
+import { ContributionForm } from "./ContributionForm";
+import { DialogButton } from "../actions/MenuButton";
 
 type FormData = z.infer<typeof newContributionSchema>;
 
 interface NewContributionDialogProps {
   open: boolean;
-  name: string;
-  member: Member;
+  members: GroupMember[];
   onClose: () => void;
   onContributionAdded: () => void;
 }
 
 export default function NewContributionDialog({
   open,
-  name,
-  member,
+  members,
   onClose,
   onContributionAdded,
 }: NewContributionDialogProps) {
   const [loading, setLoading] = useState(false);
-  const { user } = useAuthStore();
+  const [selectedMember, setSelectedMember] = useState<GroupMember>();
+  const { member: currentMember, profile } = useAuthStore();
 
   const {
     register,
@@ -52,13 +50,32 @@ export default function NewContributionDialog({
     onClose();
   };
 
+  const handleMemberSelect = (event: any, value: string | null) => {
+    if (!value) {
+      return;
+    }
+
+    const member = members.find((m) => m.full_name === value);
+    setSelectedMember(member);
+  };
+
   const onSubmit = async (data: FormData) => {
     setLoading(true);
 
     try {
+      const targetMember = selectedMember || currentMember;
+
+      if (!targetMember) {
+        setFormError("root", {
+          type: "manual",
+          message: "No member selected",
+        });
+        return;
+      }
+
       const result = await newContributionAction({
-        group_id: member!.group_id,
-        member_id: member!.id,
+        group_id: targetMember.joined_at!,
+        member_id: targetMember.id,
         reason: data.reason.trim(),
         mode: data.mode.trim(),
         amount: data.amount,
@@ -81,6 +98,8 @@ export default function NewContributionDialog({
     }
   };
 
+  const displayMember = selectedMember || currentMember;
+
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
@@ -90,105 +109,46 @@ export default function NewContributionDialog({
             <Typography variant="h6" component="span">
               Add a New Contribution
             </Typography>
-            <Typography variant="body1" component="span">
-              For Member: <b>{name}</b>; <b>{member.member_no}</b>
-            </Typography>
+            {members.length == 0 && (
+              <Typography variant="body1" component="span">
+                For Member:{" "}
+                <b>
+                  {profile?.first_name} {profile?.last_name}
+                </b>
+                ; <b>{displayMember!.member_no}</b>
+              </Typography>
+            )}
           </Box>
         </Box>
       </DialogTitle>
 
       <DialogContent>
         {loading ? (
-          <Box sx={{ textAlign: "center", py: 2 }}>
-            <CircularProgress size={60} thickness={5} />
-            <Typography variant="h5" component="h1" gutterBottom>
-              Adding the new contribution ...
-            </Typography>
-          </Box>
+          <Loader
+            size={60}
+            thickness={5}
+            title="Adding the new contribution ..."
+          />
         ) : (
-          <Box
-            component="form"
-            id="new_group_form"
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              gap: 2,
-            }}
-          >
-            {errors.root && (
-              <Alert severity="error" sx={{ mb: 2 }}>
-                {errors.root.message}
-              </Alert>
-            )}
-
-            {newContributionFieldGroups.map((group) => (
-              <div key={group.id}>
-                <Typography
-                  component="div"
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    gap: 1,
-                    flexDirection: { xs: "column", sm: "row" },
-                  }}
-                >
-                  {group.fields.map((fieldName) => {
-                    const field = newContributionLabels[fieldName];
-
-                    if (field.type === "select") {
-                      return (
-                        <FormSelect
-                          key={field.name}
-                          id={field.name}
-                          label={field.label}
-                          required={field.required}
-                          error={errors[field.name]}
-                          registration={register(field.name)}
-                          options={field.options || []}
-                        />
-                      );
-                    }
-
-                    return (
-                      <FormInput
-                        key={field.name}
-                        id={field.name}
-                        label={field.label}
-                        placeholder={field.placeholder}
-                        type={field.type}
-                        autoComplete="off"
-                        autoFocus={field.name === "amount"}
-                        required={field.required}
-                        error={errors[field.name]}
-                        registration={register(field.name, {
-                          valueAsNumber: field.name === "amount",
-                        })}
-                      />
-                    );
-                  })}
-                </Typography>
-              </div>
-            ))}
-          </Box>
+          <ContributionForm
+            members={members}
+            selectedMember={selectedMember}
+            currentMember={currentMember}
+            onMemberSelect={handleMemberSelect}
+            errors={errors}
+            register={register}
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+          />
         )}
       </DialogContent>
 
       {!loading && (
-        <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={handleClose} disabled={loading}>
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            form="new_group_form"
-            variant="contained"
-            disabled={loading}
-          >
-            Add Contribution
-          </Button>
-        </DialogActions>
+        <DialogButton
+          label="Add Contribution"
+          form_id="new_contribution_form"
+          handleClose={handleClose}
+        />
       )}
     </Dialog>
   );

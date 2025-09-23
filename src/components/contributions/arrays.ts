@@ -22,7 +22,7 @@ export const newContributionLabels = {
   },
   mode: {
     name: "mode" as const,
-    label: "Contribution Role",
+    label: "Mode of Contribution",
     required: true,
     type: "select" as const,
     options: [

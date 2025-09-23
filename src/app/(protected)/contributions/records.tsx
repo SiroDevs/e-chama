@@ -13,13 +13,13 @@ interface RowsState {
   rowCount: number;
 }
 
-interface ContributionsProps {
+interface ContributionListProps {
   groupId: string;
 }
 
 const INITIAL_PAGE_SIZE = 10;
 
-export default function Contributions({groupId}: ContributionsProps) {
+export default function ContributionList({groupId}: ContributionListProps) {
   const [rowsState, setRowsState] = useState<RowsState>({
     rows: [],
     rowCount: 0,
