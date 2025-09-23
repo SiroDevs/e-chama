@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Box, Button, Alert, Dialog, DialogTitle } from "@mui/material";
 import { DialogContent, DialogActions } from "@mui/material";
 import { CircularProgress, Typography } from "@mui/material";
-import { zodResolver } from "@hookform/resolvers/zod";
 import AddIcon from "@mui/icons-material/AddCard";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { useAuthStore } from "@/state/auth/auth";
@@ -20,17 +20,20 @@ type FormData = z.infer<typeof newContributionSchema>;
 
 interface NewContributionDialogProps {
   open: boolean;
+  m_name: string;
+  m_number: string;
   onClose: () => void;
-  onContributionCreated: () => void;
+  onContributionAdded: () => void;
 }
 
 export default function NewContributionDialog({
   open,
+  m_name,
+  m_number,
   onClose,
-  onContributionCreated,
+  onContributionAdded,
 }: NewContributionDialogProps) {
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const { user } = useAuthStore();
 
   const {
@@ -45,7 +48,6 @@ export default function NewContributionDialog({
 
   const handleClose = () => {
     reset();
-    setSuccess(false);
     onClose();
   };
 
@@ -56,7 +58,7 @@ export default function NewContributionDialog({
       const result = await newContributionAction({
         group_id: user!.id,
         member_id: user!.id,
-        title: data.title.trim(),
+        reason: data.reason.trim(),
         mode: data.mode.trim(),
         amount: data.amount,
         reference: data.reference.trim(),
@@ -64,12 +66,9 @@ export default function NewContributionDialog({
 
       if (result.success) {
         handleClose();
-        onContributionCreated();
+        onContributionAdded();
       } else {
-        setFormError("root", {
-          type: "manual",
-          message: result.error!,
-        });
+        setFormError("root", { type: "manual", message: result.error! });
       }
     } catch (err: any) {
       setFormError("root", {
@@ -85,10 +84,15 @@ export default function NewContributionDialog({
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <AddIcon sx={{ mr: 1, color: "primary.main" }} />
-          <Typography variant="h6" component="span">
-            {success ? "Contribution Added!" : "Add a New Contribution"}
-          </Typography>
+          <AddIcon sx={{ mr: 1, color: "primary.main" }} fontSize="large" />
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography variant="h6" component="span">
+              Add a New Contribution
+            </Typography>
+            <Typography variant="body1" component="span">
+              For Member: <b>{m_name}</b>; <b>{m_number}</b>
+            </Typography>
+          </Box>
         </Box>
       </DialogTitle>
 
@@ -154,10 +158,12 @@ export default function NewContributionDialog({
                         placeholder={field.placeholder}
                         type={field.type}
                         autoComplete="off"
-                        autoFocus={field.name === "title"}
+                        autoFocus={field.name === "amount"}
                         required={field.required}
                         error={errors[field.name]}
-                        registration={register(field.name)}
+                        registration={register(field.name, {
+                          valueAsNumber: field.name === "amount",
+                        })}
                       />
                     );
                   })}
@@ -179,7 +185,7 @@ export default function NewContributionDialog({
             variant="contained"
             disabled={loading}
           >
-            Create Contribution
+            Add Contribution
           </Button>
         </DialogActions>
       )}

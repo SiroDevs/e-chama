@@ -11,10 +11,17 @@ import PageContainer from "@/components/actions/PageContainer";
 import EditIcon from "@mui/icons-material/Edit";
 import { MemberView } from "@/components/members/MemberView";
 import { PageAction } from "@/components/actions/MenuButton";
+import { useState } from "react";
+import NewContributionDialog from "@/components/contributions/NewContributionDialog";
 
 export default function MemberPage() {
   const router = useRouter();
+  const [openDialog, setOpenDialog] = useState(false);
   const { isAuthenticated, user, profile, member } = useAuthStore();
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   if (!isAuthenticated) {
     router.push("/");
@@ -30,8 +37,12 @@ export default function MemberPage() {
     router.push("/member/edit");
   }
   function handleAddNew(): void {
-    router.push("/member/edit");
+    setOpenDialog(true);
   }
+
+  const handleContributionAddedd = () => {
+    router.push("/");
+  };
 
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
@@ -49,13 +60,20 @@ export default function MemberPage() {
           </Stack>
         }
       />
-      <MemberView 
-        {...memberProfileData} 
-        memberId={member?.id!} 
-        onRefresh={handleRefresh} 
-        onAddNew={handleAddNew} 
+      <MemberView
+        {...memberProfileData}
+        memberId={member?.id!}
+        onRefresh={handleRefresh}
+        onAddNew={handleAddNew}
       />
       <Copyright sx={{ flex: 1, my: 4 }} />
+      <NewContributionDialog
+        open={openDialog}
+        m_name={memberProfileData?.profile?.fullName!}
+        m_number={member?.member_no!}
+        onClose={handleCloseDialog}
+        onContributionAdded={handleContributionAddedd}
+      />
     </Box>
   );
 }

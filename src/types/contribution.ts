@@ -2,10 +2,10 @@ import { DatabaseFilters } from "./types";
 
 export interface Contribution {
   id?: string;
-  title?: string;
+  reason?: string;
   group_id?: string;
   member_id?: string;
-  description?: string | null;
+  details?: string | null;
   mode?: string | null;
   reference?: string | null;
   status?: string;
