@@ -8,7 +8,7 @@ import { LockOutlined, Sync } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { handleSignupAction } from "@/app/(auth)/actions/AuthAction";
+import { handleSignupAction } from "@/app/(auth)/actions/auth";
 import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";

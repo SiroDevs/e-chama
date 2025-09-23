@@ -13,7 +13,7 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useAuthStore } from "@/state/auth/auth";
-import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
+import { handleSignOutAction } from "@/app/(protected)/actions/auth";
 import { email } from "zod";
 import { useRouter } from "next/navigation";
 

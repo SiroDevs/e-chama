@@ -5,7 +5,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
-import Contributions from "./Contributions";
+import Contributions from "./records";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {

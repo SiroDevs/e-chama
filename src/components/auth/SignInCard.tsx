@@ -10,12 +10,12 @@ import { LockOutlined } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { handleSigninAction } from "@/app/(auth)/actions/AuthAction";
+import { handleSigninAction } from "@/app/(auth)/actions/auth";
 import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
 import { useGroupStore } from "@/state/auth/group";
-import { fetchGroups } from "@/app/(protected)/actions/GroupAction";
+import { fetchGroups } from "@/app/(protected)/actions/group";
 import { PageStatus } from "@/state/status";
 import { Loader } from "../general/Loader";
 

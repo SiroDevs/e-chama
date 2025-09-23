@@ -8,10 +8,10 @@ import { Button, Alert, CssBaseline } from "@mui/material";
 import { useAuthStore } from "@/state/auth/auth";
 import AppTheme from "@/theme/AppTheme";
 import { AppIcon } from "@/components/general/CustomIcons";
-import { JoinGroupSection } from "./JoinGroupSection";
+import { JoinGroupSection } from "./section";
 import { useRouter } from "next/navigation";
-import { handleSignOutAction } from "../actions/AuthAction";
-import NewGroupDialog from "./NewGroupDialog";
+import { handleSignOutAction } from "../actions/auth";
+import NewGroupDialog from "./dialog";
 
 interface JoinGroupCardProps {
   hasGroups?: boolean;

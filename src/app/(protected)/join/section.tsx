@@ -5,7 +5,7 @@ import { Search } from "@mui/icons-material";
 import { Box, Typography, TextField, CircularProgress } from "@mui/material";
 import { Alert as MuiAlert, InputAdornment, IconButton } from "@mui/material";
 
-import { joinGroupAction, searchGroupAction } from "@/app/(protected)/actions/GroupAction";
+import { joinGroupAction, searchGroupAction } from "@/app/(protected)/actions/group";
 import { GroupExt } from "@/types/types";
 import { useAuthStore } from "@/state/auth/auth";
 import { JoinGroupItem } from "@/components/actions/JoinGroupItem";

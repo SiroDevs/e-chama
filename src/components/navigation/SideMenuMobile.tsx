@@ -4,7 +4,7 @@ import { Stack, Typography } from "@mui/material";
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
-import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
+import { handleSignOutAction } from "@/app/(protected)/actions/auth";
 import { useAuthStore } from "@/state/auth/auth";
 import ColorModeIconDropdown from "../../theme/ColorModeSelect";
 import { MenuButton } from "../actions/MenuButton";

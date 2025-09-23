@@ -10,7 +10,7 @@ import { useAuthStore } from "@/state/auth/auth";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { newMemberSchema } from "./arrays";
-import { newMemberAction } from "../../actions/MemberAction";
+import { newMemberAction } from "../../actions/member";
 import { PageStatus } from "@/state/status";
 import { useState } from "react";
 

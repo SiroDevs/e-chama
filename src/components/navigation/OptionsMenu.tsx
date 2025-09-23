@@ -9,7 +9,7 @@ import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import ListItemText from '@mui/material/ListItemText';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
-import { handleSignOutAction } from "@/app/(protected)/actions/AuthAction";
+import { handleSignOutAction } from "@/app/(protected)/actions/auth";
 import { useAuthStore } from "@/state/auth/auth";
 import { MenuButton } from "../actions/MenuButton";
 import { useRouter } from "next/navigation";

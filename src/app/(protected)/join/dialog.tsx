@@ -11,7 +11,7 @@ import { z } from "zod";
 
 import { useAuthStore } from "@/state/auth/auth";
 import { FormInput } from "@/components/inputs/FormInput";
-import { newGroupAction } from "@/app/(protected)/actions/GroupAction";
+import { newGroupAction } from "@/app/(protected)/actions/group";
 import { newGroupLabels, newGroupSchema } from "./arrays";
 import { useGroupStore } from "@/state/auth/group";
 
