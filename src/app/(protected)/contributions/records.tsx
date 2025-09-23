@@ -3,23 +3,23 @@ import { DataGrid, GridSortModel, GridFilterModel } from "@mui/x-data-grid";
 import { GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
 import { gridClasses, GridFilterItem } from "@mui/x-data-grid";
 import { Alert, Box, Typography, Paper } from "@mui/material";
-import { getContributions } from "@/services/ContributionService";
-import { Contribution } from "@/types/contribution";
+import { GrpContribution } from "@/types/contribution";
 import { DatabaseFilters } from "@/types/types";
 import { contributionsColms } from "./arrays";
+import { getGroupContributions } from "@/services/ContributionServiceExts";
 
 interface RowsState {
-  rows: Contribution[];
+  rows: GrpContribution[];
   rowCount: number;
 }
 
-interface ContributionsProps {
+interface ContributionListProps {
   groupId: string;
 }
 
 const INITIAL_PAGE_SIZE = 10;
 
-export default function Contributions({groupId}: ContributionsProps) {
+export default function ContributionList({groupId}: ContributionListProps) {
   const [rowsState, setRowsState] = useState<RowsState>({
     rows: [],
     rowCount: 0,
@@ -58,7 +58,7 @@ export default function Contributions({groupId}: ContributionsProps) {
       const sortOrder = sortModel[0]?.sort || "desc";
       const filters = convertFilterModelToFilters(filterModel.items);
 
-      const response = await getContributions({
+      const response = await getGroupContributions({
         page: paginationModel.page,
         pageSize: paginationModel.pageSize,
         groupId: groupId,

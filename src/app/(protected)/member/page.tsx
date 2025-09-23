@@ -35,10 +35,11 @@ export default function MemberPage() {
   function handleEditMember(): void {
     router.push("/member/edit");
   }
+  
   function handleRefresh(): void {
     router.push("/member");
   }
-  
+
   function handleAddNew(): void {
     setOpenDialog(true);
   }
@@ -75,7 +76,8 @@ export default function MemberPage() {
       />
       <NewContributionDialog
         open={openDialog}
-        name={memberProfileData?.profile?.fullName!}
+        members={[]}
+        profile={profile!}
         member={member!}
         onClose={handleCloseDialog}
         onContributionAdded={handleContributionAdded}

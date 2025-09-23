@@ -1,7 +1,7 @@
 import * as React from "react";
 import Badge, { badgeClasses } from "@mui/material/Badge";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import { Button, Tooltip } from "@mui/material";
+import { Button, DialogActions, Tooltip } from "@mui/material";
 import { ReactNode } from "react";
 
 export interface MenuButtonProps extends IconButtonProps {
@@ -25,17 +25,17 @@ interface PageActionProps {
   title: string;
   icon: ReactNode;
   onClick?: () => void;
-  size?: 'small' | 'medium' | 'large';
+  size?: "small" | "medium" | "large";
 }
 
-export function PageAction({ title, icon, size = 'medium', onClick }: PageActionProps) {
+export function PageAction({
+  title,
+  icon,
+  size = "medium",
+  onClick,
+}: PageActionProps) {
   return (
-    <Button 
-      variant="contained" 
-      onClick={onClick} 
-      startIcon={icon}
-      size={size}
-    >
+    <Button variant="contained" onClick={onClick} startIcon={icon} size={size}>
       {title}
     </Button>
   );
@@ -56,5 +56,22 @@ export function PageIconButton({ title, icon, onClick }: PageIconButtonProps) {
         </IconButton>
       </div>
     </Tooltip>
+  );
+}
+
+interface DialogButtonProps {
+  label: string;
+  form_id: string;
+  handleClose?: () => void;
+}
+
+export function DialogButton({ label, form_id, handleClose }: DialogButtonProps) {
+  return (
+    <DialogActions sx={{ px: 3, pb: 2 }}>
+      <Button onClick={handleClose}>Cancel</Button>
+      <Button type="submit" form={form_id} variant="contained">
+        {label}
+      </Button>
+    </DialogActions>
   );
 }
