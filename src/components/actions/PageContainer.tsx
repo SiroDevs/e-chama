@@ -48,7 +48,13 @@ export default function PageContainer(props: PageContainerProps) {
 
   return (
     <Stack spacing={2}>
-      <Stack>
+      <Stack
+        sx={{
+          borderBottom: { sm: "none", md: "1px solid" },
+          borderColor: { sm: "none", md: "divider" },
+          pb: 1,
+        }}
+      >
         <PageHeaderBreadcrumbs
           aria-label="breadcrumb"
           separator={<NavigateNextRoundedIcon fontSize="small" />}

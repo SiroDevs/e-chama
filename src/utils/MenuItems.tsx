@@ -69,15 +69,15 @@ export const mainMenuItems: MenuItem[] = [
     roles: allRoles,
   },
   {
-    text: "My Profile",
-    icon: <Person />,
-    path: "/member",
-    roles: ["member"],
-  },
-  {
     text: "Chama Profile",
     icon: <InfoTwoTone />,
     path: "/chama",
     roles: adminRoles,
+  },
+  {
+    text: "My Profile",
+    icon: <Person />,
+    path: "/member",
+    roles: allRoles,
   },
 ];

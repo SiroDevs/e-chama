@@ -3,6 +3,7 @@ import { EmailOutlined } from "@mui/icons-material";
 import { signInMeNow, signUpMeNow } from "@/services/AuthService";
 import { NotificationCard } from "@/components/general";
 import toast from "react-hot-toast";
+import { Profile } from "@/state/role/profiles";
 
 export async function handleSigninAction(payload: {
   email: string;
@@ -69,7 +70,16 @@ export async function handleSignupAction(payload: {
   password: string;
 }) {
   try {
-    const { data, error } = await signUpMeNow(payload);
+    const { data, error } = await signUpMeNow({
+      email: payload.email,
+      phone: "",
+      password: payload.password,
+      profile: {
+        id: "",
+        first_name: payload.first_name,
+        last_name: payload.last_name,
+      },
+    });
 
     if (error) {
       console.error("Signup error:", error);

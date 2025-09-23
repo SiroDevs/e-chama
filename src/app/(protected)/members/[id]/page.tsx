@@ -6,7 +6,7 @@ import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
 import { useRouter, useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PageContainer from "@/components/actions/PageContainer";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditIcon from "@mui/icons-material/Edit";
@@ -24,10 +24,6 @@ export default function ViewMemberPage() {
     router.push("/");
     return null;
   }
-
-  useEffect(() => {
-    // Fetch member data here
-  }, [memberId]);
 
   const handleEdit = () => {
     router.push(`/members/edit/${memberId}`);

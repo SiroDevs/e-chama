@@ -9,12 +9,13 @@ import { DataGrid, GridSortModel, GridFilterModel } from "@mui/x-data-grid";
 import { GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
 import { gridClasses } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
-import { membersColms, GroupMembersProps, PageSize, RowsState } from "./arrays";
+import { membersColms, PageSize, RowsState } from "./arrays";
 import { getGroupMembers } from "@/services/MemberService";
 import { EmptyView, ErrorView } from "@/components/general/EmptyView";
 import { useRouter } from "next/navigation";
 
-interface EnhancedGroupMembersProps extends GroupMembersProps {
+interface GroupMembersProps {
+  groupId: string;
   paginationModel: GridPaginationModel;
   sortModel: GridSortModel;
   filterModel: GridFilterModel;
@@ -28,7 +29,7 @@ export interface GroupMembersRef {
   refresh: () => void;
 }
 
-const GroupMembers = forwardRef<GroupMembersRef, EnhancedGroupMembersProps>(
+const GroupMembers = forwardRef<GroupMembersRef, GroupMembersProps>(
   (
     {
       groupId,

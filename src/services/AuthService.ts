@@ -3,7 +3,7 @@
 import { supabase } from "@/lib/supabase/client";
 import { createProfile } from "./ProfileService";
 import { handleAuthResponse } from "./UserService";
-import { newMember } from "./MemberService";
+import { Profile } from "@/state/role/profiles";
 
 export async function signInMeNow(data: { email: string; password: string }) {
   try {
@@ -22,10 +22,10 @@ export async function signInMeNow(data: { email: string; password: string }) {
 }
 
 export async function signUpMeNow(data: {
-  first_name: string;
-  last_name: string;
   email: string;
+  phone: string;
   password: string;
+  profile: Profile;
 }) {
   try {
     const isProduction = process.env.NODE_ENV === "production";
@@ -35,10 +35,11 @@ export async function signUpMeNow(data: {
 
     const authResult = await supabase.auth.signUp({
       email: data.email,
+      phone: data.phone,
       password: data.password,
       options: {
         data: {
-          full_name: data.first_name + " " + data.last_name,
+          full_name: data.profile.first_name + " " + data.profile.last_name,
         },
         emailRedirectTo: redirectTo,
       },
@@ -60,22 +61,18 @@ export async function signUpMeNow(data: {
 
     const user = authResult.data.user;
 
-    const { data: profile, error: profileError } = await createProfile(
-      user.id,
-      data.first_name,
-      data.last_name
-    );
+    const profileResult = await createProfile(data.profile);
 
-    if (profileError) {
-      console.error("Profile creation error:", profileError);
+    if (profileResult.error) {
+      console.error("Profile creation error:", profileResult.error);
       return {
         data: { user, profile: null, member: null },
-        error: profileError,
+        error: profileResult.error,
       };
     }
 
     return {
-      data: { user, profile },
+      data: { user, profileResult },
       error: null,
     };
 

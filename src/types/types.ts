@@ -1,15 +1,15 @@
 export interface Group {
-  id: string;
-  owner: string;
-  title: string;
-  description: string | null;
-  avatar: string | null;
-  initials: string | null;
-  location: string | null;
-  address: string | null;
-  code: string | null;
-  created_at: string;
-  updated_at: string | null;
+  id?: string;
+  owner?: string;
+  title?: string;
+  description?: string | null;
+  avatar?: string | null;
+  initials?: string | null;
+  location?: string | null;
+  address?: string | null;
+  code?: string | null;
+  created_at?: string;
+  updated_at?: string | null;
 }
 
 export interface GroupExt {
@@ -28,19 +28,14 @@ export interface GroupExt {
 }
 
 export interface Member {
-  id: string;
-  group_id: string;
-  user_id: string;
-  member_no: string | null;
-  role: string;
-  joined_at: string | null;
-  field1: string | null;
-  field2: string | null;
-  field3: string | null;
-  field4: string | null;
-  field5: string | null;
-  created_at: string;
-  updated_at: string | null;
+  id?: string;
+  group_id?: string;
+  user_id?: string;
+  member_no?: string | null;
+  role?: string;
+  joined_at?: string | null;
+  created_at?: string;
+  updated_at?: string | null;
 }
 
 export interface UserGroup {

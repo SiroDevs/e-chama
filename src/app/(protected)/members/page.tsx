@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Box, Button, IconButton, Stack, Tooltip } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { Header } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
@@ -18,6 +18,7 @@ import PageContainer from "@/components/actions/PageContainer";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
+import { PageAction, PageIconButton } from "@/components/actions/MenuButton";
 
 export default function MembersPage() {
   const router = useRouter();
@@ -63,14 +64,6 @@ export default function MembersPage() {
     router.push("/members/new");
   };
 
-  const handleEditMember = (memberId: string) => {
-    router.push(`/members/edit/${memberId}`);
-  };
-
-  const handleViewMember = (memberId: string) => {
-    router.push(`/members/${memberId}`);
-  };
-
   const handleRefresh = () => {
     if (groupMembersRef.current) {
       groupMembersRef.current.refresh();
@@ -99,30 +92,22 @@ export default function MembersPage() {
           breadcrumbs={[{ title: "Members" }]}
           actions={
             <Stack direction="row" alignItems="center" spacing={1}>
-              <Tooltip title="Reload data" placement="right" enterDelay={1000}>
-                <div>
-                  <IconButton
-                    size="small"
-                    aria-label="refresh"
-                    onClick={handleRefresh}
-                  >
-                    <RefreshIcon />
-                  </IconButton>
-                </div>
-              </Tooltip>
-              <Button
-                variant="contained"
+              <PageIconButton
+                title="Reload data"
+                onClick={handleRefresh}
+                icon={<RefreshIcon />}
+              />
+              <PageAction
+                title="New Member"
                 onClick={handleCreateMember}
-                startIcon={<AddIcon />}
-              >
-                New Member
-              </Button>
+                icon={<AddIcon />}
+              />
             </Stack>
           }
         />
         <GroupMembers
           ref={groupMembersRef}
-          groupId={member!.group_id}
+          groupId={member!.group_id!}
           paginationModel={paginationModel}
           sortModel={sortModel}
           filterModel={filterModel}
