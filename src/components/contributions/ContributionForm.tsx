@@ -1,8 +1,8 @@
 "use client";
 
-import { Alert, Box } from "@mui/material";
+import { Alert, Autocomplete, Box, Stack, TextField } from "@mui/material";
 import { UseFormRegister, UseFormHandleSubmit } from "react-hook-form";
-import { FormInput, FormSelect, MemberSearch } from "@/components/inputs";
+import { FormInput, FormSelect } from "@/components/inputs";
 import { newContributionFieldGroups } from "./arrays";
 import { newContributionLabels, newContributionSchema } from "./arrays";
 import { GroupMember } from "@/types/profiles";
@@ -12,8 +12,6 @@ type FormData = z.infer<typeof newContributionSchema>;
 
 interface ContributionFormProps {
   members: GroupMember[];
-  selectedMember: any;
-  currentMember: any;
   onMemberSelect: (event: any, value: string | null) => void;
   errors: any;
   register: UseFormRegister<FormData>;
@@ -23,15 +21,12 @@ interface ContributionFormProps {
 
 export function ContributionForm({
   members,
-  selectedMember,
-  currentMember,
   onMemberSelect,
   errors,
   register,
   handleSubmit,
   onSubmit,
 }: ContributionFormProps) {
-  const displayMember = selectedMember || currentMember;
 
   return (
     <Box
@@ -53,11 +48,27 @@ export function ContributionForm({
       )}
 
       {members.length > 0 && (
-        <MemberSearch
-          members={members}
-          selectedMember={selectedMember}
-          onMemberSelect={onMemberSelect}
-        />
+        <Stack spacing={2}>
+          <Autocomplete
+            freeSolo
+            id="member-search"
+            options={members.map((member) => member.full_name)}
+            onChange={onMemberSelect}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Member"
+                placeholder="Type to search members..."
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    type: "search",
+                  },
+                }}
+              />
+            )}
+          />
+        </Stack>
       )}
 
       {newContributionFieldGroups.map((group) => (

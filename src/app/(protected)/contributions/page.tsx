@@ -22,7 +22,7 @@ export default function ContributionsPage() {
   const notifications = useNotifications();
   const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const { isAuthenticated, member } = useAuthStore();
+  const { isAuthenticated, profile, member } = useAuthStore();
 
   if (!isAuthenticated) {
     router.push("/");
@@ -100,6 +100,8 @@ export default function ContributionsPage() {
       <NewContributionDialog
         open={openDialog}
         members={groupMembers}
+        profile={profile!}
+        member={member!}
         onClose={handleCloseDialog}
         onContributionAdded={handleContributionAdded}
       />

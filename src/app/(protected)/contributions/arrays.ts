@@ -2,6 +2,13 @@ import { GridColDef } from "@mui/x-data-grid";
 
 export const contributionsColms: GridColDef[] = [
   {
+    field: 'full_name',
+    headerName: 'Full Name',
+    width: 200,
+    filterable: true,
+    sortable: true,
+  },
+  {
     field: 'reason',
     headerName: 'Reason',
     width: 250,
@@ -11,7 +18,7 @@ export const contributionsColms: GridColDef[] = [
   {
     field: 'mode',
     headerName: 'Mode',
-    width: 150,
+    width: 120,
     filterable: true,
     sortable: true,
   },

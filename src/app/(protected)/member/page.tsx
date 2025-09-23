@@ -77,6 +77,8 @@ export default function MemberPage() {
       <NewContributionDialog
         open={openDialog}
         members={[]}
+        profile={profile!}
+        member={member!}
         onClose={handleCloseDialog}
         onContributionAdded={handleContributionAdded}
       />

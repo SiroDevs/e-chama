@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import { Box, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddCard";
@@ -8,19 +8,22 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { useAuthStore } from "@/state/auth/auth";
 import { newContributionSchema } from "./arrays";
 import { newContributionAction } from "@/app/(protected)/actions/contribution";
 import { Loader } from "../general/Loader";
 import { GroupMember } from "@/types/profiles";
 import { ContributionForm } from "./ContributionForm";
 import { DialogButton } from "../actions/MenuButton";
+import { Profile } from "@/state/role/profiles";
+import { Member } from "@/types/types";
 
 type FormData = z.infer<typeof newContributionSchema>;
 
 interface NewContributionDialogProps {
   open: boolean;
   members: GroupMember[];
+  profile: Profile;
+  member: Member;
   onClose: () => void;
   onContributionAdded: () => void;
 }
@@ -28,12 +31,13 @@ interface NewContributionDialogProps {
 export default function NewContributionDialog({
   open,
   members,
+  profile,
+  member,
   onClose,
   onContributionAdded,
 }: NewContributionDialogProps) {
   const [loading, setLoading] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<GroupMember>();
-  const { member: currentMember, profile } = useAuthStore();
+  const [selectedMemberId, setSelectedMemberId] = useState<string>(member?.id!);
 
   const {
     register,
@@ -45,37 +49,35 @@ export default function NewContributionDialog({
     resolver: zodResolver(newContributionSchema),
   });
 
+  useEffect(() => {
+    setSelectedMemberId(member?.id!);
+  }, [open, member.id]);
+
   const handleClose = () => {
     reset();
+    setSelectedMemberId(member?.id!);
     onClose();
   };
 
   const handleMemberSelect = (event: any, value: string | null) => {
     if (!value) {
+      setSelectedMemberId(member?.id!);
       return;
     }
 
-    const member = members.find((m) => m.full_name === value);
-    setSelectedMember(member);
+    const selectedMember = members.find((m) => m.full_name === value);
+    if (selectedMember) {
+      setSelectedMemberId(selectedMember?.member_id!);
+    }
   };
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
 
     try {
-      const targetMember = selectedMember || currentMember;
-
-      if (!targetMember) {
-        setFormError("root", {
-          type: "manual",
-          message: "No member selected",
-        });
-        return;
-      }
-
       const result = await newContributionAction({
-        group_id: targetMember.joined_at!,
-        member_id: targetMember.id,
+        group_id: member.group_id,
+        member_id: selectedMemberId,
         reason: data.reason.trim(),
         mode: data.mode.trim(),
         amount: data.amount,
@@ -98,7 +100,8 @@ export default function NewContributionDialog({
     }
   };
 
-  const displayMember = selectedMember || currentMember;
+  const selectedMember =
+    members.find((m) => m.member_id === selectedMemberId) || member;
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
@@ -109,15 +112,13 @@ export default function NewContributionDialog({
             <Typography variant="h6" component="span">
               Add a New Contribution
             </Typography>
-            {members.length == 0 && (
-              <Typography variant="body1" component="span">
-                For Member:{" "}
-                <b>
-                  {profile?.first_name} {profile?.last_name}
-                </b>
-                ; <b>{displayMember!.member_no}</b>
-              </Typography>
-            )}
+            <Typography variant="body1" component="span">
+              For Member:{" "}
+              <b>
+                {profile.first_name} ${profile.last_name}
+              </b>
+              ; <b>{member.member_no!}</b>
+            </Typography>
           </Box>
         </Box>
       </DialogTitle>
@@ -132,8 +133,6 @@ export default function NewContributionDialog({
         ) : (
           <ContributionForm
             members={members}
-            selectedMember={selectedMember}
-            currentMember={currentMember}
             onMemberSelect={handleMemberSelect}
             errors={errors}
             register={register}
