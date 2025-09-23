@@ -1,21 +1,23 @@
 "use client";
 
 import * as React from "react";
-import { Box, Button, Stack } from "@mui/material";
+import { useState } from "react";
+import { Box, Stack } from "@mui/material";
 import { Header } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
 import { useRouter } from "next/navigation";
-import { processMemberProfileData } from "../members/arrays";
-import PageContainer from "@/components/actions/PageContainer";
 import EditIcon from "@mui/icons-material/Edit";
 import { MemberView } from "@/components/members/MemberView";
 import { PageAction } from "@/components/actions/MenuButton";
-import { useState } from "react";
+import { processMemberProfileData } from "../members/arrays";
+import PageContainer from "@/components/actions/PageContainer";
 import NewContributionDialog from "@/components/contributions/NewContributionDialog";
+import useNotifications from "@/hooks/notifications/useNotifications";
 
 export default function MemberPage() {
   const router = useRouter();
+  const notifications = useNotifications();
   const [openDialog, setOpenDialog] = useState(false);
   const { isAuthenticated, user, profile, member } = useAuthStore();
 
@@ -34,14 +36,19 @@ export default function MemberPage() {
     router.push("/member/edit");
   }
   function handleRefresh(): void {
-    router.push("/member/edit");
+    router.push("/member");
   }
+  
   function handleAddNew(): void {
     setOpenDialog(true);
   }
 
-  const handleContributionAddedd = () => {
-    router.push("/");
+  const handleContributionAdded = () => {
+    notifications.show("New contribution added successfully.", {
+      severity: "success",
+      autoHideDuration: 3000,
+    });
+    router.push("/member");
   };
 
   return (
@@ -66,14 +73,14 @@ export default function MemberPage() {
         onRefresh={handleRefresh}
         onAddNew={handleAddNew}
       />
-      <Copyright sx={{ flex: 1, my: 4 }} />
       <NewContributionDialog
         open={openDialog}
-        m_name={memberProfileData?.profile?.fullName!}
-        m_number={member?.member_no!}
+        name={memberProfileData?.profile?.fullName!}
+        member={member!}
         onClose={handleCloseDialog}
-        onContributionAdded={handleContributionAddedd}
+        onContributionAdded={handleContributionAdded}
       />
+      <Copyright sx={{ flex: 1, my: 4 }} />
     </Box>
   );
 }

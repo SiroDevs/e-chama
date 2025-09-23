@@ -1,15 +1,23 @@
 "use client";
 
 import * as React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
 import Contributions from "./records";
 import { useRouter } from "next/navigation";
+import AddIcon from "@mui/icons-material/Add";
+import { PageAction } from "@/components/actions/MenuButton";
+import PageContainer from "@/components/actions/PageContainer";
+import useNotifications from "@/hooks/notifications/useNotifications";
+import { useState } from "react";
+import NewContributionDialog from "@/components/contributions/NewContributionDialog";
 
 export default function Dashboard() {
   const router = useRouter();
+  const notifications = useNotifications();
+  const [openDialog, setOpenDialog] = useState(false);
   const { isAuthenticated, member } = useAuthStore();
 
   if (!isAuthenticated) {
@@ -17,27 +25,46 @@ export default function Dashboard() {
     return null;
   }
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  function handleAddNew(): void {
+    setOpenDialog(true);
+  }
+
+  const handleContributionAdded = () => {
+    notifications.show("New contribution added successfully.", {
+      severity: "success",
+      autoHideDuration: 3000,
+    });
+    router.push("/member");
+  };
+
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Header />
-      <NavbarBreadcrumbs
-        items={[{ label: "Contributions", href: "/members" }]}
+      <PageContainer
+        title="Contributions"
+        breadcrumbs={[{ title: "Contributions" }]}
+        actions={
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <PageAction
+              title="Add a Contribution"
+              onClick={handleAddNew}
+              icon={<AddIcon />}
+            />
+          </Stack>
+        }
       />
-      <Grid
-        container
-        sx={{
-          height: {
-            xs: "100%",
-            sm: "calc(100dvh - var(--template-frame-height, 0px))",
-          },
-          mt: { xs: 4, sm: 0 },
-        }}
-      >
-        <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
-          Chama Contributions
-        </Typography>
-        <Contributions groupId={member!.group_id!} />
-      </Grid>
+      <Contributions groupId={member!.group_id!} />
+      <NewContributionDialog
+        open={openDialog}
+        name=""
+        member={member!}
+        onClose={handleCloseDialog}
+        onContributionAdded={handleContributionAdded}
+      />
       <Copyright sx={{ flex: 1, my: 4 }} />
     </Box>
   );

@@ -15,21 +15,22 @@ import { newContributionFieldGroups } from "./arrays";
 import { newContributionLabels, newContributionSchema } from "./arrays";
 import { newContributionAction } from "@/app/(protected)/actions/contribution";
 import { FormSelect } from "../inputs/FormSelect";
+import { Member } from "@/state/role/profiles";
 
 type FormData = z.infer<typeof newContributionSchema>;
 
 interface NewContributionDialogProps {
   open: boolean;
-  m_name: string;
-  m_number: string;
+  name: string;
+  member: Member;
   onClose: () => void;
   onContributionAdded: () => void;
 }
 
 export default function NewContributionDialog({
   open,
-  m_name,
-  m_number,
+  name,
+  member,
   onClose,
   onContributionAdded,
 }: NewContributionDialogProps) {
@@ -56,8 +57,8 @@ export default function NewContributionDialog({
 
     try {
       const result = await newContributionAction({
-        group_id: user!.id,
-        member_id: user!.id,
+        group_id: member!.group_id,
+        member_id: member!.id,
         reason: data.reason.trim(),
         mode: data.mode.trim(),
         amount: data.amount,
@@ -90,7 +91,7 @@ export default function NewContributionDialog({
               Add a New Contribution
             </Typography>
             <Typography variant="body1" component="span">
-              For Member: <b>{m_name}</b>; <b>{m_number}</b>
+              For Member: <b>{name}</b>; <b>{member.member_no}</b>
             </Typography>
           </Box>
         </Box>

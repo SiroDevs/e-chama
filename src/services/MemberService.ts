@@ -94,6 +94,7 @@ export async function getGroupMembers({
       throw error;
     }
 
+    console.log(`Data found: ${count}`);
     return {
       data: data || [],
       count: count || 0,

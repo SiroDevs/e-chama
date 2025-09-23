@@ -5,8 +5,8 @@ import { gridClasses, GridFilterItem } from "@mui/x-data-grid";
 import { Alert, Box, Typography, Paper } from "@mui/material";
 import { getContributions } from "@/services/ContributionService";
 import { Contribution } from "@/types/contribution";
-import { contributionsColms } from "./arrays";
 import { DatabaseFilters } from "@/types/types";
+import { contributionsColms } from "./arrays";
 
 interface RowsState {
   rows: Contribution[];
