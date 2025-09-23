@@ -90,9 +90,6 @@ export const useGroupStore = create<GroupState & GroupActions>()(
         if (!group) return;
 
         let newAvailableRoles: UserRole[] = ['member'];
-        if (authState.profile?.is_admin) {
-          newAvailableRoles.push('admin');
-        }
 
         const groupRoles = setUserRole(authState.member!);
         newAvailableRoles = [...newAvailableRoles, ...groupRoles];

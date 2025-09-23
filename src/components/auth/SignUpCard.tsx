@@ -8,7 +8,7 @@ import { LockOutlined, Sync } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { handleSignupAction } from "@/app/(auth)/actions/AuthAction";
+import { handleSignupAction } from "@/app/(auth)/actions/auth";
 import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "../general/CustomIcons";
 import { FormInput, MuiCard } from "../inputs/FormInput";
@@ -47,9 +47,14 @@ export function SignUpCard({ onAuthSuccess }: SignUpCardProps) {
   const [message, setMessage] = useState("");
   const { loginUser } = useAuthStore();
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(formData: FormData) {
     setStatus("loading");
-    const result = await handleSignupAction(data);
+    const result = await handleSignupAction({
+      first_name: formData.first_name.trim(),
+      last_name: formData.last_name.trim(),
+      email: formData.email.trim(),
+      password: formData.password.trim(),
+    });
     if (result.success) {
       await loginUser(result.user!, result.profile!, result.member!);
       onAuthSuccess();

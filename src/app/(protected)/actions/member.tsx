@@ -2,19 +2,14 @@ import toast from "react-hot-toast";
 
 import { newMemberProfile } from "@/services/MemberServiceExts";
 import { searchByCode } from "@/services/GroupService";
-import { GroupExt } from "@/types/types";
+import { GroupExt, Member } from "@/types/types";
+import { Profile } from "@/state/role/profiles";
 
 export async function newMemberAction(payload: {
-  groupId: string;
-  firstName: string;
-  lastName: string;
   email: string;
   phone: string;
-  idNumber: string;
-  sex: string;
-  memberNo: string;
-  role: string;
-  joinedAt: Date;
+  profile: Profile;
+  member: Member;
 }) {
   try {
     const { data, error } = await newMemberProfile(payload);

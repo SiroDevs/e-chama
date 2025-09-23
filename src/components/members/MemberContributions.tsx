@@ -13,13 +13,13 @@ interface RowsState {
   rowCount: number;
 }
 
-interface ContributionsProps {
+interface MemberContributionsProps {
   memberId: string;
 }
 
 const INITIAL_PAGE_SIZE = 10;
 
-export default function Contributions({memberId}: ContributionsProps) {
+export default function MemberContributions({memberId}: MemberContributionsProps) {
   const [rowsState, setRowsState] = useState<RowsState>({
     rows: [],
     rowCount: 0,
@@ -137,7 +137,7 @@ export default function Contributions({memberId}: ContributionsProps) {
           <Typography variant="body2" color="text.secondary" align="center">
             {filterModel.items.length > 0
               ? "Try adjusting your search filters to find what you're looking for."
-              : "You haven't made any contributions yet."}
+              : "No contributions made here yet."}
           </Typography>
         </Paper>
       ) : (

@@ -2,18 +2,14 @@
 
 import { supabase } from "@/lib/supabase/client";
 import { GroupMember, GroupMembersQueryParams, GroupMembersResp } from "@/types/profiles";
+import { Member } from "@/types/types";
 
-export async function newMember(
-  group_id: string,
-  user_id: string,
-  member_no: string,
-  role: string
-) {
+export async function newMember(member: Member) {
   const { error: checkError } = await supabase
     .from("members")
     .select("id")
-    .eq("user_id", user_id)
-    .eq("group_id", group_id)
+    .eq("user_id", member.user_id)
+    .eq("group_id", member.group_id)
     .single();
 
   if (!checkError || checkError.code !== "PGRST116") {
@@ -24,10 +20,10 @@ export async function newMember(
     .from("members")
     .insert([
       {
-        group_id: group_id,
-        user_id: user_id,
-        member_no: member_no,
-        role: role,
+        group_id: member.group_id,
+        user_id: member.user_id,
+        member_no: member.member_no,
+        role: member.role,
       },
     ])
     .select()
@@ -98,6 +94,7 @@ export async function getGroupMembers({
       throw error;
     }
 
+    console.log(`Data found: ${count}`);
     return {
       data: data || [],
       count: count || 0,

@@ -6,8 +6,8 @@ import { Header, NavbarBreadcrumbs } from "@/components/navigation";
 import { Box, Typography } from "@mui/material";
 import { Copyright, MainGrid } from "@/components/general";
 import { useGroupStore } from "@/state/auth/group";
-import { AdminDashboard } from "./AdminDashboard";
-import { MemberDashboard } from "./MemberDashboard";
+import { AdminDashboard } from "./admin";
+import { MemberDashboard } from "./member";
 
 export default function Dashboard() {
   const { currentRole } = useGroupStore();

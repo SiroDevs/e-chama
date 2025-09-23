@@ -1,13 +1,14 @@
 "use client";
 
-import { AuthWrapper } from "@/components/layouts/AuthWrapper";
-import { MainWrapper } from "@/components/layouts/MainWrapper";
-import { JoinGroupCard } from "@/components/groups/JoinGroupCard";
-import { useAuthStore } from "@/state/auth/auth";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
+
+import { AuthWrapper } from "@/components/layouts/AuthWrapper";
+import { MainWrapper } from "@/components/layouts/MainWrapper";
+import { useAuthStore } from "@/state/auth/auth";
 import { LoadingWrapper } from "./LoadingWrapper";
 import { useGroupStore } from "@/state/auth/group";
+import { JoinGroupCard } from "../groups/JoinGroupCard";
 
 export default function RootLayout({
   children,

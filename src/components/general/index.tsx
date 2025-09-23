@@ -7,7 +7,7 @@ export * from "./CustomizedTreeView";
 export * from "./HighlightedCard";
 export * from "./Loader";
 export * from "./MainGrid";
-export * from "./NotificationCard";
+export * from "../actions/NotificationCard";
 export * from "./PageViewsBarChart";
 export * from "../inputs/Search";
 export * from "../actions/SelectGroup";

@@ -61,7 +61,6 @@ export async function getContributions({
     if (error) {
       throw error;
     }
-
     return {
       data: data || [],
       count: count || 0,

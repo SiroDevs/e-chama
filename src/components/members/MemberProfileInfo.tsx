@@ -3,7 +3,7 @@ import { Box, Button, Drawer, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import { MemberProfileProps } from "@/types/profiles";
-import MemberProfile from "./Profile";
+import MemberProfile from "./MemberProfile";
 
 export default function MemberProfileInfo({
   profile,

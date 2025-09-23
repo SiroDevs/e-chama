@@ -2,16 +2,16 @@ import { GridColDef } from "@mui/x-data-grid";
 
 export const contributionsColms: GridColDef[] = [
   {
-    field: 'title',
-    headerName: 'Title',
-    width: 200,
+    field: 'reason',
+    headerName: 'Reason',
+    width: 250,
     filterable: true,
     sortable: true,
   },
   {
     field: 'mode',
     headerName: 'Mode',
-    width: 120,
+    width: 150,
     filterable: true,
     sortable: true,
   },
@@ -25,7 +25,7 @@ export const contributionsColms: GridColDef[] = [
   {
     field: 'status',
     headerName: 'Status',
-    width: 120,
+    width: 75,
     filterable: true,
     sortable: true,
     type: 'singleSelect',
@@ -38,15 +38,14 @@ export const contributionsColms: GridColDef[] = [
     filterable: true,
     sortable: true,
     type: 'number',
-    // valueFormatter: (params) => `$${params.value.toFixed(2)}`,
   },
   {
     field: 'created_at',
     headerName: 'Created At',
-    width: 180,
+    width: 200,
     filterable: true,
     sortable: true,
-    type: 'dateTime',
-    // valueFormatter: (params) => new Date(params.value).toLocaleString(),
   },
 ];
+
+

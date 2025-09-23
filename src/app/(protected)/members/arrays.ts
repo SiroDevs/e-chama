@@ -1,22 +1,11 @@
-import { GroupMember } from "@/types/profiles";
+import { Profile } from "@/state/role/profiles";
+import { GroupMember, MemberProfileProps } from "@/types/profiles";
+import { Member } from "@/types/types";
 import { GridColDef } from "@mui/x-data-grid";
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridFilterModel,
-  GridPaginationModel,
-  GridSortModel,
-  GridEventListener,
-  gridClasses,
-} from '@mui/x-data-grid';
 
 export interface RowsState {
   rows: GroupMember[];
   rowCount: number;
-}
-
-export interface GroupMembersProps {
-  groupId: string;
 }
 
 export const PageSize = 10;
@@ -73,3 +62,68 @@ export const membersColms: GridColDef[] = [
     type: 'dateTime',
   },
 ];
+
+export function processMemberProfileData(
+  profile: Profile | null,
+  member: Member | null,
+  user: any
+) {
+  return (): MemberProfileProps => {
+    if (!profile || !member) {
+      return {
+        loading: false,
+        profile: null,
+        member: null,
+        user: null,
+      };
+    }
+
+    const fullName =
+      `${profile.first_name || ""} ${profile.last_name || ""}`.trim() ||
+      "Unknown Member";
+
+    const formatDate = (dateString: string | null) => {
+      if (!dateString) return "Not set";
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    };
+
+    const getInitials = (firstName: string | null, lastName: string | null) => {
+      const first = firstName?.[0] || "";
+      const last = lastName?.[0] || "";
+      return `${first}${last}`.toUpperCase();
+    };
+
+    return {
+      loading: false,
+      profile: {
+        first_name: profile.first_name!,
+        last_name: profile.last_name!,
+        dob: profile.dob!,
+        sex: profile.sex!,
+        country: profile.country!,
+        address: profile.address!,
+        avatar: profile.avatar!,
+        fullName: fullName,
+        formattedDob: formatDate(profile.dob!),
+        initials: getInitials(profile.first_name!, profile.last_name!),
+        location:
+          `${profile.country || ""} ${profile.address || ""}`.trim() ||
+          "Not specified",
+      },
+      member: {
+        member_no: member.member_no!,
+        joined_at: member.joined_at!,
+        formattedJoinedAt: formatDate(member.joined_at!),
+        memberNo: member.member_no || "Not assigned",
+        role: member.role || "Member",
+      },
+      user: {
+        phone: user?.phone || "Not specified",
+      },
+    };
+  };
+}

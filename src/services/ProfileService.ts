@@ -1,16 +1,24 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
+import { Profile } from "@/state/role/profiles";
 
-export async function createProfile(userId: string, first_name: string, last_name: string) {
+export async function createProfile(profile: Profile) {
   return await supabase.from("profiles")
-  .insert([
-    {
-      id: userId,
-      first_name: first_name,
-      last_name: last_name,
-    },
-  ])
+    .insert([
+      {
+        id: profile.id,
+        first_name: profile.first_name,
+        last_name: profile.last_name,
+        country: profile.country,
+        address: profile.address,
+        sex: profile.sex,
+        dob: profile.dob,
+        avatar: profile.avatar,
+        idNumber: profile.id_number,
+        kraPin: profile.kra_pin,
+      },
+    ])
     .select()
     .single();
 }
