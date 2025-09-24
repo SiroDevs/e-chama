@@ -37,7 +37,7 @@ export default function NewContributionDialog({
   onContributionAdded,
 }: NewContributionDialogProps) {
   const [loading, setLoading] = useState(false);
-  const [selectedMemberId, setSelectedMemberId] = useState<string>(member?.id!);
+  const [selectedMemberId, setSelectedMemberId] = useState<string>();
 
   const {
     register,
@@ -50,24 +50,25 @@ export default function NewContributionDialog({
   });
 
   useEffect(() => {
-    setSelectedMemberId(member?.id!);
+    if (member?.id) setSelectedMemberId(member?.id);
   }, [open, member.id]);
 
   const handleClose = () => {
     reset();
-    setSelectedMemberId(member?.id!);
     onClose();
   };
 
   const handleMemberSelect = (event: any, value: string | null) => {
     if (!value) {
-      setSelectedMemberId(member?.id!);
+      setSelectedMemberId(member?.id);
       return;
     }
 
     const selectedMember = members.find((m) => m.full_name === value);
     if (selectedMember) {
-      setSelectedMemberId(selectedMember?.member_id!);
+      if (selectedMember?.member_id) {
+        setSelectedMemberId(selectedMember?.member_id);
+      }
     }
   };
 
