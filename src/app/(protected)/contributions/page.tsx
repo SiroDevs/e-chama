@@ -24,23 +24,6 @@ export default function ContributionsPage() {
   const [openDialog, setOpenDialog] = useState(false);
   const { isAuthenticated, profile, member } = useAuthStore();
 
-  if (!isAuthenticated) {
-    router.push("/");
-    return null;
-  }
-
-  function handleRefresh(): void {
-    router.push("/contributions");
-  }
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  function handleAddNew(): void {
-    setOpenDialog(true);
-  }
-
   useEffect(() => {
     const fetchGroupMembers = async () => {
       if (!member?.group_id) return;
@@ -66,6 +49,23 @@ export default function ContributionsPage() {
 
     fetchGroupMembers();
   }, [member?.group_id]);
+
+  if (!isAuthenticated) {
+    router.push("/");
+    return null;
+  }
+
+  function handleRefresh(): void {
+    router.push("/contributions");
+  }
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  function handleAddNew(): void {
+    setOpenDialog(true);
+  }
 
   const handleContributionAdded = () => {
     notifications.show("New contribution added successfully.", {

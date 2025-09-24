@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useState } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, CircularProgress, Typography } from "@mui/material";
 import { Header } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
@@ -30,12 +30,29 @@ export default function MemberPage() {
     return null;
   }
 
+  // Check if required data is available
+  if (!profile || !member || !user) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+        <Typography sx={{ ml: 2 }}>Loading profile data...</Typography>
+      </Box>
+    );
+  }
+
   const memberProfileData = processMemberProfileData(profile, member, user)();
 
   function handleEditMember(): void {
     router.push("/member/edit");
   }
-  
+
   function handleRefresh(): void {
     router.push("/member");
   }
@@ -68,17 +85,21 @@ export default function MemberPage() {
           </Stack>
         }
       />
-      <MemberView
-        {...memberProfileData}
-        memberId={member?.id!}
-        onRefresh={handleRefresh}
-        onAddNew={handleAddNew}
-      />
+
+      {member.id && (
+        <MemberView
+          {...memberProfileData}
+          memberId={member.id}
+          onRefresh={handleRefresh}
+          onAddNew={handleAddNew}
+        />
+      )}
+
       <NewContributionDialog
         open={openDialog}
         members={[]}
-        profile={profile!}
-        member={member!}
+        profile={profile}
+        member={member}
         onClose={handleCloseDialog}
         onContributionAdded={handleContributionAdded}
       />
