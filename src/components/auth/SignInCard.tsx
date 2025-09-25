@@ -71,7 +71,7 @@ export function SignInCard({ onAuthSuccess }: SignInCardProps) {
         onAuthSuccess();
       } else {
         setStatus("error");
-        setMessage(result.error);
+        setMessage(result.error!);
       }
     } catch (error) {
       console.error("Signin submission error:", error);

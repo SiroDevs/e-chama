@@ -9,10 +9,11 @@ export async function handleSigninAction(payload: {
   password: string;
 }) {
   try {
+    console.info("Signing the user");
     const { data, error } = await signInMeNow(payload);
 
     if (error) {
-      console.error("Signin error:", error);
+      console.error("An error in signin", error);
 
       const errorMessage = error.message || "An unknown error occurred";
       const status = "status" in error ? error.status : undefined;

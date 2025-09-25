@@ -37,31 +37,25 @@ export async function fetchUserMember(userId: string, groupId: string | null) {
   return { data: member, error: null };
 }
 
-export async function handleAuthResponse(authResult: any) {
-  if (authResult.error || !authResult.data.user) {
-    return { data: null, error: authResult.error };
-  }
-
-  const user = authResult.data.user;
-
-  const { data: profile, error: profileError } = await fetchUserProfile(user.id);
-  if (profileError) {
-    console.error("Profile fetching error:", profileError);
+export async function handleAuthResponse(user: any) {
+  const profileResult = await fetchUserProfile(user.id);
+  if (profileResult.error) {
+    console.error("Profile fetching error:", profileResult.error);
     return {
       data: { user, profile: null, member: null },
-      error: profileError,
+      error: profileResult.error,
     };
   }
 
   const { data: member, error: memberError } = await fetchUserMember(
     user.id,
-    profile?.group_id || null
+    profileResult.data?.group_id || null
   );
 
   return {
     data: {
       user,
-      profile: profile,
+      profile: profileResult.data,
       member: memberError ? null : member,
     },
     error: memberError,
