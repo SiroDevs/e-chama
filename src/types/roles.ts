@@ -18,13 +18,14 @@ export function hasRole(userRoles: string[], targetRole: UserRole): boolean {
 
 export function setUserRole(member: Member): UserRole[] {
   const roles: string[] = [];
-  
+
   if (member.role == 'treasurer') roles.push('treasurer');
-  if (member.role == 'accountant') roles.push('accountant');
-  if (member.role == 'secretary') roles.push('secretary');
-  if (member.role == 'chairperson') roles.push('chairperson');
-  if (member.role == 'vicechairperson') roles.push('vicechairperson');
-  if (member.role == 'official') roles.push('official');
-  
+  else if (member.role == 'accountant') roles.push('accountant');
+  else if (member.role == 'secretary') roles.push('secretary');
+  else if (member.role == 'chairperson') roles.push('chairperson');
+  else if (member.role == 'vicechairperson') roles.push('vicechairperson');
+  else if (member.role == 'official') roles.push('official');
+  else roles.push('member');
+
   return validateRoles(roles);
 }

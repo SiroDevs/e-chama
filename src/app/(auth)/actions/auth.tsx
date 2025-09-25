@@ -3,7 +3,6 @@ import { EmailOutlined } from "@mui/icons-material";
 import { signInMeNow, signUpMeNow } from "@/services/AuthService";
 import { NotificationCard } from "@/components/general";
 import toast from "react-hot-toast";
-import { Profile } from "@/state/role/profiles";
 
 export async function handleSigninAction(payload: {
   email: string;
