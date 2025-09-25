@@ -46,7 +46,7 @@ export async function handleAuthResponse(authResult: any) {
 
   const { data: profile, error: profileError } = await fetchUserProfile(user.id);
   if (profileError) {
-    console.error("Auth handling error:", profileError);
+    console.error("Profile fetching error:", profileError);
     return {
       data: { user, profile: null, member: null },
       error: profileError,

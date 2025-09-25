@@ -10,7 +10,7 @@ export async function signInMeNow(data: { email: string; password: string }) {
     const authResult = await supabase.auth.signInWithPassword(data);
     return await handleAuthResponse(authResult);
   } catch (err) {
-    console.error("Sign in error:", err);
+    console.error("Authethication error:", err);
     return {
       data: null,
       error: {
