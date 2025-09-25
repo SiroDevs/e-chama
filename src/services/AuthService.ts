@@ -60,7 +60,7 @@ export async function signUpMeNow(data: {
     }
 
     const user = authResult.data.user;
-
+    data.profile.id = user.id;
     const profileResult = await createProfile(data.profile);
 
     if (profileResult.error) {
