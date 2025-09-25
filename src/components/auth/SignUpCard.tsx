@@ -94,6 +94,7 @@ export function SignUpCard({ onAuthSuccess }: SignUpCardProps) {
             gap: 2,
           }}
         >
+          {status === "error" && <Alert severity="error"> {message}</Alert>}
           <Typography
             component="div"
             sx={{
@@ -103,7 +104,6 @@ export function SignUpCard({ onAuthSuccess }: SignUpCardProps) {
               flexDirection: { xs: "column", sm: "row" },
             }}
           >
-            {status === "error" && <Alert severity="error"> {message}</Alert>}
             <FormInput
               id="first_name"
               label="First Name"

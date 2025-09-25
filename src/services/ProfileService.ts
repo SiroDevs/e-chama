@@ -15,8 +15,8 @@ export async function createProfile(profile: Profile) {
         sex: profile.sex,
         dob: profile.dob,
         avatar: profile.avatar,
-        idNumber: profile.id_number,
-        kraPin: profile.kra_pin,
+        id_number: profile.id_number,
+        kra_pin: profile.kra_pin,
       },
     ])
     .select()
