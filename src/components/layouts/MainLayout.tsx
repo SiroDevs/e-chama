@@ -1,14 +1,13 @@
 "use client";
 
-import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
-
+import { Toaster } from "react-hot-toast";
 import { AuthWrapper } from "@/components/layouts/AuthWrapper";
 import { MainWrapper } from "@/components/layouts/MainWrapper";
 import { useAuthStore } from "@/state/auth/auth";
-import { LoadingWrapper } from "./LoadingWrapper";
-import { useGroupStore } from "@/state/auth/group";
 import { JoinGroupCard } from "../groups/JoinGroupCard";
+import { GenericWrapper } from "./GenericWrapper";
+import { useGroupStore } from "@/state/auth/group";
 
 export default function RootLayout({
   children,
@@ -17,20 +16,21 @@ export default function RootLayout({
 }) {
   const { isAuthenticated, isLoading } = useAuthStore();
   const { userGroups } = useGroupStore();
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const hasGroups = Array.isArray(userGroups) && userGroups.length > 0;
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsCheckingAuth(false);
-    }, 100);
-
-    return () => clearTimeout(timer);
+    setMounted(true);
   }, []);
 
-  if (isLoading || isCheckingAuth) {
-    return <LoadingWrapper />;
+  if (!mounted || isLoading) {
+    return (
+      <GenericWrapper>
+        <div></div>
+      </GenericWrapper>
+    );
   }
+
+  const hasGroups = Array.isArray(userGroups) && userGroups.length > 0;
 
   return (
     <>
@@ -38,7 +38,9 @@ export default function RootLayout({
         hasGroups ? (
           <MainWrapper>{children}</MainWrapper>
         ) : (
-          <JoinGroupCard hasGroups={hasGroups} />
+          <GenericWrapper>
+            <JoinGroupCard hasGroups={hasGroups} />
+          </GenericWrapper>
         )
       ) : (
         <AuthWrapper>{children}</AuthWrapper>

@@ -11,7 +11,6 @@ export async function handleSigninAction(payload: {
   try {
     console.info("Signing the user");
     const { data, error } = await signInMeNow(payload);
-
     if (error) {
       console.error("An error in signin", error);
 
@@ -86,6 +85,7 @@ export async function handleSignupAction(payload: {
 
       const errorMessage = error.message || "An unknown error occurred";
       const status = "status" in error ? error.status : undefined;
+      console.error("Success rate:", status);
 
       switch (status) {
         case 400:
@@ -111,8 +111,6 @@ export async function handleSignupAction(payload: {
         default:
           return { success: false, error: errorMessage };
       }
-
-      return { success: false };
     } else if (data) {
       toast.custom((t) => (
         <NotificationCard

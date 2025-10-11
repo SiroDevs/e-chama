@@ -56,19 +56,19 @@ export function SignInCard({ onAuthSuccess }: SignInCardProps) {
         if (!result.user) {
           setStatus("error");
           setMessage("User data not available");
-        }
+        } else {
+          await setLoginState(
+            result.user,
+            result.profile || null,
+            result.member || null
+          );
 
-        await setLoginState(
-          result.user,
-          result.profile || null,
-          result.member || null
-        );
-
-        const groupResult = await fetchGroups(result.user.id);
-        if (groupResult.length > 0) {
-          await setUserGroups(groupResult, result.profile?.group || null);
+          const groupResult = await fetchGroups(result.user.id);
+          if (groupResult.length > 0) {
+            await setUserGroups(groupResult, result.profile?.group || null);
+          }
+          onAuthSuccess();
         }
-        onAuthSuccess();
       } else {
         setStatus("error");
         setMessage(result.error!);

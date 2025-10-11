@@ -7,10 +7,10 @@ import { Profile } from "@/state/role/profiles";
 
 export async function signInMeNow(data: { email: string; password: string }) {
   try {
-    console.info("Signin the user");
     const authResult = await supabase.auth.signInWithPassword(data);
     console.info("Did we signin the user?");
     if (authResult.error || !authResult.data.user) {
+      console.info("We failed to signin the user");
       return { data: null, error: authResult.error };
     }
     return await handleAuthResponse(authResult.data.user);
