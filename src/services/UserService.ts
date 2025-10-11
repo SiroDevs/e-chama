@@ -18,10 +18,6 @@ export async function fetchUserProfile(userId: string) {
 }
 
 export async function fetchUserMember(userId: string, groupId: string | null) {
-  if (!groupId) {
-    return { data: null, error: new Error("No group assigned to profile") };
-  }
-
   const { data: member, error: memberError } = await supabase
     .from("members")
     .select("*")
@@ -37,30 +33,39 @@ export async function fetchUserMember(userId: string, groupId: string | null) {
   return { data: member, error: null };
 }
 
-export async function handleAuthResponse(authResult: any) {
-  if (authResult.error || !authResult.data.user) {
-    return { data: null, error: authResult.error };
-  }
-
-  const user = authResult.data.user;
-
-  const { data: profile, error: profileError } = await fetchUserProfile(user.id);
-  if (profileError) {
+export async function handleAuthResponse(user: any) {
+  console.info("Fetching the user profile");
+  const profileResult = await fetchUserProfile(user.id);
+  
+  if (profileResult.error) {
+    console.error("Profile fetching error:", profileResult.error);
     return {
       data: { user, profile: null, member: null },
-      error: profileError,
+      error: profileResult.error,
+    };
+  }
+
+  if (!profileResult.data?.group_id) {
+    console.error("No group assigned to profile");
+    return {
+      data: {
+        user,
+        profile: profileResult.data,
+        member: null,
+      },
+      error: null,
     };
   }
 
   const { data: member, error: memberError } = await fetchUserMember(
     user.id,
-    profile?.group_id || null
+    profileResult.data.group_id
   );
 
   return {
     data: {
       user,
-      profile: profile,
+      profile: profileResult.data,
       member: memberError ? null : member,
     },
     error: memberError,

@@ -8,9 +8,14 @@ import { Profile } from "@/state/role/profiles";
 export async function signInMeNow(data: { email: string; password: string }) {
   try {
     const authResult = await supabase.auth.signInWithPassword(data);
-    return await handleAuthResponse(authResult);
+    console.info("Did we signin the user?");
+    if (authResult.error || !authResult.data.user) {
+      console.info("We failed to signin the user");
+      return { data: null, error: authResult.error };
+    }
+    return await handleAuthResponse(authResult.data.user);
   } catch (err) {
-    console.error("Sign in error:", err);
+    console.error("Authethication error:", err);
     return {
       data: null,
       error: {

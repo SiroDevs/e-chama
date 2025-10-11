@@ -45,7 +45,7 @@ export function SignUpCard({ onAuthSuccess }: SignUpCardProps) {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
   const [status, setStatus] = useState<PageStatus>("idle");
   const [message, setMessage] = useState("");
-  const { loginUser } = useAuthStore();
+  const { setLoginState } = useAuthStore();
 
   async function onSubmit(formData: FormData) {
     setStatus("loading");
@@ -56,7 +56,11 @@ export function SignUpCard({ onAuthSuccess }: SignUpCardProps) {
       password: formData.password.trim(),
     });
     if (result.success) {
-      await loginUser(result.user!, result.profile!, result.member!);
+      if (!result.user) {
+        setStatus("error");
+        setMessage("User data not available");
+      }
+      await setLoginState(result.user!, result.profile!, result.member!);
       onAuthSuccess();
     } else {
       setStatus("error");

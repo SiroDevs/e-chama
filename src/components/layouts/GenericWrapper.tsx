@@ -1,10 +1,15 @@
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
-
 import AppTheme from "../../theme/AppTheme";
+import { Box } from "@mui/material";
 
-export function LoadingWrapper() {
+interface GenericWrapperProps {
+  children: React.ReactNode;
+}
+
+export function GenericWrapper(props: GenericWrapperProps) {
+  const { children } = props;
   return (
     <AppTheme>
       <CssBaseline enableColorScheme />
@@ -14,7 +19,6 @@ export function LoadingWrapper() {
         sx={[
           {
             justifyContent: "center",
-            minHeight: "100vh",
           },
           (theme) => ({
             "&::before": {
@@ -34,27 +38,9 @@ export function LoadingWrapper() {
           }),
         ]}
       >
-        <Stack
-          direction={{ xs: "column-reverse", md: "row" }}
-          sx={{
-            justifyContent: "center",
-            gap: { xs: 6, sm: 12 },
-            p: 2,
-            mx: "auto",
-          }}
-        >
-          <Stack
-            direction={{ xs: "column-reverse", md: "row" }}
-            sx={{
-              justifyContent: "center",
-              gap: { xs: 6, sm: 12 },
-              p: { xs: 2, sm: 4 },
-              m: "auto",
-            }}
-          >
-            
-          </Stack>
-        </Stack>
+        <Box>
+            {children}
+        </Box>
       </Stack>
     </AppTheme>
   );

@@ -68,9 +68,10 @@ export function JoinGroupCard({ hasGroups = true }: JoinGroupCardProps) {
                 ⚠️ You aren&apos;t in any Chama
               </Typography>
               <Alert severity="error" sx={{ my: 2 }}>
-                Hey, {profile!.first_name} this screen will go away, as soon as
-                you become a member of a chama.
+                Hey {profile?.first_name || "there"}, this screen will go away,
+                as soon as you become a member of a chama.
               </Alert>
+
               <Divider />
             </>
           )}
