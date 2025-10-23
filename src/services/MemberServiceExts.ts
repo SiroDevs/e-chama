@@ -18,6 +18,7 @@ export async function newMemberGroup(group: Group) {
         error: groupResult.error,
       };
     }
+    console.info("Group has been created");
     const memberResult = await newMember(
       {
         group_id: groupResult.data.id,
@@ -33,9 +34,11 @@ export async function newMemberGroup(group: Group) {
         error: memberResult.error,
       };
     }
+    console.info("Group member has been created");
 
     await updateSelectedGroup(group.owner!, groupResult.data.id);
 
+    console.info("Group owner has been updated");
     return {
       data: {
         group: groupResult.data,

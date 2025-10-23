@@ -2,7 +2,7 @@
 
 import { supabase } from "@/lib/supabase/client";
 import { createProfile } from "./ProfileService";
-import { handleAuthResponse } from "./UserService";
+import { refreshUserProfile } from "./UserService";
 import { Profile } from "@/state/role/profiles";
 
 export async function signInMeNow(data: { email: string; password: string }) {
@@ -13,7 +13,7 @@ export async function signInMeNow(data: { email: string; password: string }) {
       console.info("We failed to signin the user");
       return { data: null, error: authResult.error };
     }
-    return await handleAuthResponse(authResult.data.user);
+    return await refreshUserProfile(authResult.data.user);
   } catch (err) {
     console.error("Authethication error:", err);
     return {

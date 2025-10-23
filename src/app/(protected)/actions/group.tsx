@@ -49,6 +49,7 @@ export async function newGroupAction(group: Group) {
     }
 
     if (data && data.group) {
+      console.info("Let's get user groups");
       const groups = await getUserGroups(group.owner!);
       return {
         success: true,
@@ -56,6 +57,7 @@ export async function newGroupAction(group: Group) {
         groupId: data.group.id,
       };
     } else {
+      console.info("No get user groups detected");
       toast.error("Chama creation failed - no data returned");
       return { success: false, error: "No data returned from group creation" };
     }

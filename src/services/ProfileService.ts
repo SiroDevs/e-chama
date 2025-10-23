@@ -28,7 +28,7 @@ export async function updateSelectedGroup(userId: string, groupId: string) {
     const { error } = await supabase
       .from("profiles")
       .update({
-        group: groupId,
+        group_id: groupId,
         updated_at: new Date().toISOString()
       })
       .eq("id", userId);

@@ -2,6 +2,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand";
 import { User } from "@supabase/supabase-js";
 import { Profile, Member } from "../role/profiles";
+import { useGroupStore } from "./group";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -51,7 +52,9 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         });
       },
 
-      logoutUser: () => {
+      logoutUser: async () => {
+        const groupState = useGroupStore.getState();
+        await groupState.clearGroupData();
         set({
           isAuthenticated: false,
           user: null,
