@@ -3,17 +3,16 @@ import { EmailOutlined } from "@mui/icons-material";
 import { signInMeNow, signUpMeNow } from "@/services/AuthService";
 import { NotificationCard } from "@/components/general";
 import toast from "react-hot-toast";
-import { Profile } from "@/state/role/profiles";
 
 export async function handleSigninAction(payload: {
   email: string;
   password: string;
 }) {
   try {
+    console.info("Signing the user");
     const { data, error } = await signInMeNow(payload);
-
     if (error) {
-      console.error("Signin error:", error);
+      console.error("An error in signin", error);
 
       const errorMessage = error.message || "An unknown error occurred";
       const status = "status" in error ? error.status : undefined;
@@ -86,6 +85,7 @@ export async function handleSignupAction(payload: {
 
       const errorMessage = error.message || "An unknown error occurred";
       const status = "status" in error ? error.status : undefined;
+      console.error("Success rate:", status);
 
       switch (status) {
         case 400:
@@ -111,8 +111,6 @@ export async function handleSignupAction(payload: {
         default:
           return { success: false, error: errorMessage };
       }
-
-      return { success: false };
     } else if (data) {
       toast.custom((t) => (
         <NotificationCard

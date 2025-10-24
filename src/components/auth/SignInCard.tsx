@@ -43,23 +43,40 @@ export function SignInCard({ onAuthSuccess }: SignInCardProps) {
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const { loginUser } = useAuthStore();
+  const { setLoginState } = useAuthStore();
   const { setUserGroups } = useGroupStore();
   const handleClickOpen = () => setOpen(true);
 
   async function onSubmit(data: FormData) {
     setStatus("loading");
-    const result = await handleSigninAction(data);
-    if (result.success) {
-      await loginUser(result.user!, result.profile!, result.member!);
-      const groupResult = await fetchGroups(result.user!.id);
-      if (groupResult.length > 0) {
-        await setUserGroups(groupResult, result.profile?.group || null);
+    try {
+      const result = await handleSigninAction(data);
+
+      if (result.success) {
+        if (!result.user) {
+          setStatus("error");
+          setMessage("User data not available");
+        } else {
+          await setLoginState(
+            result.user,
+            result.profile || null,
+            result.member || null
+          );
+
+          const groupResult = await fetchGroups(result.user.id);
+          if (groupResult.length > 0) {
+            await setUserGroups(groupResult, result.profile?.group || null);
+          }
+          onAuthSuccess();
+        }
+      } else {
+        setStatus("error");
+        setMessage(result.error!);
       }
-      onAuthSuccess();
-    } else {
+    } catch (error) {
+      console.error("Signin submission error:", error);
       setStatus("error");
-      setMessage(result.error);
+      setMessage("An unexpected error occurred during sign in");
     }
   }
 

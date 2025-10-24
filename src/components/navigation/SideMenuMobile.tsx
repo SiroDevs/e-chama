@@ -22,11 +22,13 @@ interface SideMenuMobileProps {
 
 export function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
   const router = useRouter();
+  const { clearGroupData } = useGroupStore();
   const { logoutUser } = useAuthStore();
   const { currentRole, availableRoles, setCurrentRole } = useGroupStore();
 
   const handleSignOut = async () => {
     await handleSignOutAction();
+    await clearGroupData();
     await logoutUser();
     router.push("/");
   };

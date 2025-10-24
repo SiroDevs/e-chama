@@ -1,6 +1,6 @@
 "use server";
 
-import { newGroup } from "./GroupService";
+import { getUserGroups, newGroup } from "./GroupService";
 import { updateSelectedGroup } from "./ProfileService";
 import { newMember } from "./MemberService";
 import { signUpMeNow } from "./AuthService";
@@ -9,49 +9,81 @@ import { Group, Member } from "@/types/types";
 
 export async function newMemberGroup(group: Group) {
   try {
+    if (!group.owner) {
+      throw new Error("Group owner is required");
+    }
+
     const groupResult = await newGroup(group);
-
     if (groupResult.error) {
-      console.error("Group creation error:", groupResult.error);
-      return {
-        data: null,
-        error: groupResult.error,
-      };
+      console.error("Group creation failed:", groupResult.error);
+      throw groupResult.error;
     }
-    const memberResult = await newMember(
-      {
-        group_id: groupResult.data.id,
-        user_id: group.owner,
-        member_no: "001",
-        role: "official",
-      });
 
+    if (!groupResult.data?.id) {
+      throw new Error("Group created but no ID returned");
+    }
+
+    const groupId = groupResult.data.id;
+    console.info("Group created successfully with ID:", groupId);
+
+    const memberPayload = {
+      group_id: groupId,
+      user_id: group.owner,
+      member_no: "001",
+      role: "official" as const,
+    };
+
+    const memberResult = await newMember(memberPayload);
     if (memberResult.error) {
-      console.error("Member creation error:", memberResult.error.message);
-      return {
-        data: null,
-        error: memberResult.error,
-      };
+      console.error("Member creation failed:", memberResult.error.message);
+      
+      try {
+        console.warn("Cleaned up group after member creation failure");
+      } catch (cleanupError) {
+        console.error("Failed to clean up group after member creation failure:", cleanupError);
+      }
+      
+      throw new Error(`Failed to add owner as member: ${memberResult.error.message}`);
     }
 
-    await updateSelectedGroup(group.owner!, groupResult.data.id);
+    console.info("Group member created successfully");
+
+    try {
+      await updateSelectedGroup(group.owner, groupId);
+      console.info("User's selected group updated");
+    } catch (updateError) {
+      console.warn("Failed to update selected group, but continuing:", updateError);
+    }
+
+    const userGroups = await getUserGroups(group.owner);
+    if (!userGroups || userGroups.length === 0) {
+      console.warn("No groups found for user after creation - this might be expected for first group");
+    } else {
+      console.info(`Found ${userGroups.length} groups for user`);
+    }
 
     return {
       data: {
         group: groupResult.data,
-        member: memberResult.data
+        member: memberResult.data,
+        groups: userGroups || [],
+        groupId: groupId,
       },
-      error: null
+      error: null,
     };
+
   } catch (error) {
-    console.error("Unexpected error in createMemberGroup:", error);
+    console.error("Unexpected error in newMemberGroup:", error);
+    const normalizedError = error instanceof Error 
+      ? error 
+      : new Error("Unknown error occurred during group creation");
+    
     return {
       data: null,
-      error: error instanceof Error ? error : new Error("Unknown error occurred")
+      error: normalizedError,
     };
   }
 }
-
 export async function newMemberProfile(payload: {
   email: string;
   phone: string;

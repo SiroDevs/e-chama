@@ -24,6 +24,7 @@ export async function newGroup(group: Group) {
 
 export async function getUserGroups(userId: string): Promise<UserGroup[]> {
   const supabase = await getServerClient();
+  console.info("Fetching user's groups");
   const { data, error } = await supabase
     .from("user_groups")
     .select("*")

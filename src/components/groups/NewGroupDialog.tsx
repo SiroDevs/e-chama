@@ -14,6 +14,7 @@ import { FormInput } from "@/components/inputs/FormInput";
 import { newGroupAction } from "@/app/(protected)/actions/group";
 import { newGroupLabels, newGroupSchema } from "./arrays";
 import { useGroupStore } from "@/state/auth/group";
+import { usePreventMultipleSubmit } from "@/hooks/usePreventMultipleSubmit";
 
 type FormData = z.infer<typeof newGroupSchema>;
 
@@ -28,10 +29,11 @@ export default function NewGroupDialog({
   onClose,
   onGroupCreated,
 }: NewGroupDialogProps) {
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { user } = useAuthStore();
+  const { user, setMemberState } = useAuthStore();
   const { setUserGroups } = useGroupStore();
+  const { execute: submitWithProtection, isSubmitting: loading } =
+    usePreventMultipleSubmit();
 
   const {
     register,
@@ -50,35 +52,47 @@ export default function NewGroupDialog({
   };
 
   const onSubmit = async (data: FormData) => {
-    setLoading(true);
+    await submitWithProtection(async () => {
+      setFormError("root", { message: "" });
 
-    try {
-      const result = await newGroupAction({
-        owner: user!.id,
-        title: data.title.trim(),
-        description: data.description?.trim() || "",
-        initials: data.initials?.trim() || "",
-        location: data.location?.trim(),
-        address: data.address?.trim() || "",
-      });
+      try {
+        const result = await newGroupAction({
+          owner: user!.id,
+          title: data.title.trim(),
+          description: data.description?.trim() || "",
+          initials: data.initials?.trim() || "",
+          location: data.location?.trim(),
+          address: data.address?.trim() || "",
+        });
 
-      if (result.groups && result.groups.length > 0) {
-        await setUserGroups(result.groups, result.groupId || null);
+        if (result.success && result.groups) {
+          await setMemberState(result.member);
+          await setUserGroups(result.groups, result.groupId);
+          setSuccess(true);
+
+          setTimeout(() => {
+            handleClose();
+            onGroupCreated();
+          }, 1000);
+        } else {
+          throw new Error("Failed to create chama");
+        }
+      } catch (err: any) {
+        setFormError("root", {
+          type: "manual",
+          message: err.message || "Failed to create chama",
+        });
       }
-      handleClose();
-      onGroupCreated();
-    } catch (err: any) {
-      setFormError("root", {
-        type: "manual",
-        message: err.message || "Failed to create chama",
-      });
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={!loading ? handleClose : undefined}
+      maxWidth="sm"
+      fullWidth
+    >
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <GroupAdd sx={{ mr: 1, color: "primary.main" }} />
@@ -93,7 +107,9 @@ export default function NewGroupDialog({
           <Box sx={{ textAlign: "center", py: 2 }}>
             <CircularProgress size={60} thickness={5} />
             <Typography variant="h5" component="h1" gutterBottom>
-              Creating your new chama ...
+              {success
+                ? "Chama Created Successfully!"
+                : "Creating your new chama..."}
             </Typography>
           </Box>
         ) : (
@@ -128,13 +144,14 @@ export default function NewGroupDialog({
                   required={field.required}
                   error={errors[field.name]}
                   registration={register(field.name)}
+                  disabled={loading}
                 />
               ))}
           </Box>
         )}
       </DialogContent>
 
-      {!loading && (
+      {!loading && !success && (
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={handleClose} disabled={loading}>
             Cancel
@@ -146,6 +163,14 @@ export default function NewGroupDialog({
             disabled={loading}
           >
             Create Chama
+          </Button>
+        </DialogActions>
+      )}
+
+      {success && (
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={handleClose} variant="contained">
+            OK
           </Button>
         </DialogActions>
       )}

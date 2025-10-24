@@ -2,6 +2,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand";
 import { User } from "@supabase/supabase-js";
 import { Profile, Member } from "../role/profiles";
+import { useGroupStore } from "./group";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -13,7 +14,8 @@ interface AuthState {
 }
 
 interface AuthActions {
-  loginUser: (user: User, profile: Profile, member: Member) => void;
+  setLoginState: (user: User, profile: Profile, member: Member) => void;
+  setMemberState: (member: Member) => void;
   resetPassword: () => void;
   logoutUser: () => void;
   setLoading: (loading: boolean) => void;
@@ -29,7 +31,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       profile: null,
       member: null,
 
-      loginUser: async (user: User, profile: Profile, member: Member) => {
+      setLoginState: async (user: User, profile: Profile, member: Member) => {
         set({
           isAuthenticated: true,
           user: user,
@@ -38,6 +40,10 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           member: member,
           isLoading: false
         });
+      },
+
+      setMemberState: async (member: Member) => {
+        set({ member: member });
       },
 
       resetPassword: () => {
@@ -51,7 +57,9 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         });
       },
 
-      logoutUser: () => {
+      logoutUser: async () => {
+        const groupState = useGroupStore.getState();
+        await groupState.clearGroupData();
         set({
           isAuthenticated: false,
           user: null,
