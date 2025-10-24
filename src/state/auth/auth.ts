@@ -15,6 +15,7 @@ interface AuthState {
 
 interface AuthActions {
   setLoginState: (user: User, profile: Profile, member: Member) => void;
+  setMemberState: (member: Member) => void;
   resetPassword: () => void;
   logoutUser: () => void;
   setLoading: (loading: boolean) => void;
@@ -39,6 +40,10 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           member: member,
           isLoading: false
         });
+      },
+
+      setMemberState: async (member: Member) => {
+        set({ member: member });
       },
 
       resetPassword: () => {

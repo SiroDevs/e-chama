@@ -17,10 +17,8 @@ export async function newGroupAction(group: Group) {
       if (status) {
         switch (status) {
           case "23505":
-          case "23505":
             toast.error("A group with similar details already exists.");
             break;
-          case "42501":
           case "42501":
             toast.error("You don't have permission to create a group.");
             break;
@@ -45,36 +43,28 @@ export async function newGroupAction(group: Group) {
         toast.error(errorMessage);
       }
 
-      return { success: false, error: errorMessage };
+      throw new Error(errorMessage);
     }
 
-    if (data && data.group) {
-      console.info("Let's get user groups");
-      const groups = await getUserGroups(group.owner!);
-      return {
-        success: true,
-        groups: groups,
-        groupId: data.group.id,
-      };
-    } else {
-      console.info("No get user groups detected");
-      toast.error("Chama creation failed - no data returned");
-      return { success: false, error: "No data returned from group creation" };
-    }
+    toast.success("Chama created successfully!");
+    return {
+      success: true,
+      member: data.member,
+      groups: data.groups,
+      groupId: data.groupId,
+    };
   } catch (err) {
     const errorMessage =
       err instanceof Error
         ? err.message
         : "An error occurred during group creation. Please try again.";
 
-    toast.error(errorMessage);
     console.error("Unexpected error in createGroupAction:", err);
-
-    return { success: false, error: errorMessage };
+    throw err;
   }
 }
 
-export async function searchGroupAction(joinCode: string){
+export async function searchGroupAction(joinCode: string) {
   try {
     if (!joinCode.trim()) {
       return { success: false, error: "Please enter a Chama code" };
