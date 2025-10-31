@@ -1,6 +1,6 @@
-"use client";
+"use server";
 
-import { signInMeNow } from "@/services/AuthService";
+import { signInUser } from "@/services/AuthService";
 import { refreshUserProfile } from "@/services/UserService";
 import { AUTH_ERROR_CODES, AuthResult } from "@/types/auth";
 import { mapAuthError } from "@/utils/mapAuthError";
@@ -10,12 +10,12 @@ export async function onSigninAction(payload: {
   password: string;
 }): Promise<AuthResult<{ user: any; profile: any; member: any }>> {
   try {
-    console.info("🔐 Signin attempt for:", payload.email);
+    console.info("Signin attempt for:", payload.email);
     
-    const authResult = await signInMeNow(payload);
+    const authResult = await signInUser(payload);
     
     if (authResult.error) {
-      console.warn("🔐 Authentication failed:", authResult.error.message);
+      console.warn("Authentication failed:", authResult.error.message);
       return {
         success: false,
         error: mapAuthError(authResult.error)
@@ -48,22 +48,22 @@ export async function onSigninAction(payload: {
       };
     }
 
-    console.info("🔐 Refreshing user profile for:", authResult.data.user.id);
+    console.info("Refreshing user profile for:", authResult.data.user.id);
     const profileResult = await refreshUserProfile(authResult.data.user);
 
     if (profileResult.error || !profileResult.data) {
-      console.error("🔐 Profile refresh failed:", profileResult.error);
+      console.error("Profile refresh failed:", profileResult.error);
       return {
         success: false,
         error: {
-          message: "Failed to load user profile. Please try again.",
+          message: "Failed to load user profile. Please give it a try later.",
           code: AUTH_ERROR_CODES.UNKNOWN_ERROR,
           status: 500
         }
       };
     }
 
-    console.info("🔐 Signin successful for:", payload.email);
+    console.info("Signin successful for:", payload.email);
     return {
       success: true,
       data: {
@@ -74,7 +74,7 @@ export async function onSigninAction(payload: {
     };
 
   } catch (err) {
-    console.error('🔐 Unexpected signin error:', err);
+    console.error('Unexpected signin error:', err);
     return {
       success: false,
       error: {
@@ -85,4 +85,3 @@ export async function onSigninAction(payload: {
     };
   }
 }
-

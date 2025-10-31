@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase/client";
 import { createProfile } from "./ProfileService";
 import { Profile } from "@/state/role/profiles";
 
-export async function signInMeNow(data: { email: string; password: string }) {
+export async function signInUser(data: { email: string; password: string }) {
   try {
     return await supabase.auth.signInWithPassword(data);
   } catch (err) {
@@ -19,7 +19,7 @@ export async function signInMeNow(data: { email: string; password: string }) {
   }
 }
 
-export async function signUpMeNow(data: {
+export async function signUpUser(data: {
   email: string;
   phone: string;
   password: string;

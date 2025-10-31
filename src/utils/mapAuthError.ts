@@ -4,6 +4,32 @@ export function mapAuthError(error: any): AuthError {
   const message = error.message || '';
   const status = error.status || 500;
 
+  if (message.includes('User already registered') || 
+      message.includes('email already exists') ||
+      message.includes('already exists')) {
+    return {
+      message: 'An account with this email already exists. Please sign in instead.',
+      code: AUTH_ERROR_CODES.EMAIL_ALREADY_EXISTS,
+      status: 409
+    };
+  }
+
+  if (message.includes('Password should be at least')) {
+    return {
+      message: 'Password is too weak. Please use a stronger password.',
+      code: AUTH_ERROR_CODES.WEAK_PASSWORD,
+      status: 400
+    };
+  }
+
+  if (message.includes('Invalid email')) {
+    return {
+      message: 'Please enter a valid email address.',
+      code: AUTH_ERROR_CODES.INVALID_EMAIL,
+      status: 400
+    };
+  }
+
   if (message.includes('email_not_confirmed') || message.includes('Email not confirmed')) {
     return {
       message: 'Please verify your email address before signing in.',
@@ -23,7 +49,7 @@ export function mapAuthError(error: any): AuthError {
   
   if (message.includes('rate limit') || message.includes('too many requests') || status === 429) {
     return {
-      message: 'Too many sign in attempts. Please try again in a few minutes.',
+      message: 'Too many attempts. Please try again in a few minutes.',
       code: AUTH_ERROR_CODES.RATE_LIMITED,
       status: 429
     };
