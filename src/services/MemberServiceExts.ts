@@ -1,7 +1,7 @@
 "use server";
 
 import { getUserGroups, newGroup } from "./GroupService";
-import { updateSelectedGroup } from "./ProfileService";
+import { createProfile, updateSelectedGroup } from "./ProfileService";
 import { newMember } from "./MemberService";
 import { signUpUser } from "./AuthService";
 import { Profile } from "@/state/role/profiles";
@@ -36,13 +36,13 @@ export async function newMemberGroup(group: Group) {
     const memberResult = await newMember(memberPayload);
     if (memberResult.error) {
       console.error("Member creation failed:", memberResult.error.message);
-      
+
       try {
         console.warn("Cleaned up group after member creation failure");
       } catch (cleanupError) {
         console.error("Failed to clean up group after member creation failure:", cleanupError);
       }
-      
+
       throw new Error(`Failed to add owner as member: ${memberResult.error.message}`);
     }
 
@@ -74,10 +74,10 @@ export async function newMemberGroup(group: Group) {
 
   } catch (error) {
     console.error("Unexpected error in newMemberGroup:", error);
-    const normalizedError = error instanceof Error 
-      ? error 
+    const normalizedError = error instanceof Error
+      ? error
       : new Error("Unknown error occurred during group creation");
-    
+
     return {
       data: null,
       error: normalizedError,
@@ -94,7 +94,7 @@ export async function newMemberProfile(payload: {
     const { data, error } = await signUpUser({
       email: payload.email,
       phone: payload.phone,
-      password: "",
+      password: "pass1235",
       profile: payload.profile
     });
     if (error) {
@@ -102,10 +102,21 @@ export async function newMemberProfile(payload: {
       return { data: null, error: error };
     }
 
+    const profileResult = await createProfile({
+      id: data.user?.id,
+      first_name: payload.profile.first_name,
+      last_name: payload.profile.last_name,
+    });
+
+    if (profileResult.error) {
+      console.error("Profile creation error:", error);
+      return { data: null, error: error };
+    }
+    
     const memberResult = await newMember(
       {
         group_id: payload.member.group_id,
-        user_id: data.user.id,
+        user_id: data.user?.id,
         member_no: payload.member.member_no,
         role: payload.member.role,
       });
