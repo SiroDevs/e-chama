@@ -12,7 +12,7 @@ import { SelectGroup } from "../general";
 import { MenuContent } from "./MenuContent";
 import { SelectRole } from "../actions/SelectRole";
 import { useGroupStore } from "@/state/auth/group";
-import { AppIcon } from "../general/CustomIcons";
+import { AppIcon } from "../general/AppIcon";
 import { useRouter } from "next/navigation";
 
 interface SideMenuMobileProps {

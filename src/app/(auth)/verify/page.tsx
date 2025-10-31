@@ -6,10 +6,10 @@ import { Container, Paper, Typography, Box } from "@mui/material";
 import { Button, Alert, CssBaseline } from "@mui/material";
 import { CheckCircle, Error, ArrowForward } from "@mui/icons-material";
 import AppTheme from "@/theme/AppTheme";
-import { AppIcon } from "@/components/general/CustomIcons";
+import { AppIcon } from "@/components/general/AppIcon";
 import { Loader } from "@/components/general/Loader";
-import { verifyToken } from "@/services/AuthService";
-import { PageStatus } from "@/state/status";
+import { verifyToken } from "@/services/VerifyService";
+import { PageStatus } from "@/state/PageStatus";
 
 interface VerifyEmailProps {
   searchParams: {

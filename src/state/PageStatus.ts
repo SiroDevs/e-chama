@@ -1,0 +1,1 @@
+export type PageStatus = "idle" | "loading" | "success" | "error";

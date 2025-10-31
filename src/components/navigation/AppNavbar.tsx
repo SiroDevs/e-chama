@@ -7,7 +7,7 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 
 import { SideMenuMobile } from "../navigation";
-import { AppIcon } from "../general/CustomIcons";
+import { AppIcon } from "../general/AppIcon";
 import AccountMenu from "./AccountMenu";
 import { MenuButton } from "../actions/MenuButton";
 
