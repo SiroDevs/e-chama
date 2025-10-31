@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "@/state/auth/auth";
 import Dashboard from "./(protected)/dashboard";
 import { SignInCard } from "@/components/auth";
-import { AppIcon } from "@/components/general/CustomIcons";
+import { AppIcon } from "@/components/general/AppIcon";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 

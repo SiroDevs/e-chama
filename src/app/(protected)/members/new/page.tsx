@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { newMemberSchema } from "./arrays";
 import { newMemberAction } from "../../actions/member";
-import { PageStatus } from "@/state/status";
+import { PageStatus } from "@/state/PageStatus";
 import { useState } from "react";
 
 type FormData = z.infer<typeof newMemberSchema>;

@@ -6,7 +6,7 @@ import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import { Button, Alert } from "@mui/material";
 
 import { useAuthStore } from "@/state/auth/auth";
-import { AppIcon } from "@/components/general/CustomIcons";
+import { AppIcon } from "@/components/general/AppIcon";
 import { JoinGroupSection } from "./JoinGroupSection";
 import { useRouter } from "next/navigation";
 import NewGroupDialog from "./NewGroupDialog";
