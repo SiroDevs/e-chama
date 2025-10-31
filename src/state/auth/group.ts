@@ -42,12 +42,17 @@ export const useGroupStore = create<GroupState & GroupActions>()(
 
         availableRoles.push('member');
         const validRoles = validateRoles(availableRoles);
-        set({
-          userGroups: groups,
-          selectedGroup: groupId,
-          availableRoles: validRoles,
-          currentRole: groupRoles[0],
-        });
+        try {
+          set({
+            userGroups: groups,
+            selectedGroup: groupId || (groups.length > 0 ? groups[0].group_id : null),
+            availableRoles: validRoles,
+            currentRole: groupRoles[0],
+          });
+        } catch (error) {
+          console.error("Failed to update groups in store:", error);
+          throw error;
+        }
       },
 
       setSelectedGroup: async (groupId: string | null) => {

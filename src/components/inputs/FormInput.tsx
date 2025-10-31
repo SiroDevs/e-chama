@@ -17,6 +17,7 @@ type FormInputProps = {
   registration: UseFormRegisterReturn;
   withPasswordToggle?: boolean;
   size?: number;
+  disabled?: boolean; // Add this line
 };
 
 export function FormInput({
@@ -30,6 +31,7 @@ export function FormInput({
   error,
   registration,
   withPasswordToggle = false,
+  disabled = false, // Add this line with default value
 }: FormInputProps) {
   const [show, setShow] = React.useState(false);
 
@@ -46,6 +48,7 @@ export function FormInput({
         error={!!error}
         helperText={error?.message}
         type={withPasswordToggle ? (show ? "text" : "password") : type}
+        disabled={disabled} // Add this line
         {...registration}
         InputProps={
           withPasswordToggle
@@ -56,6 +59,7 @@ export function FormInput({
                       aria-label={`toggle ${label.toLowerCase()} visibility`}
                       onClick={() => setShow((prev) => !prev)}
                       edge="end"
+                      disabled={disabled} // Also disable the icon button when form is disabled
                     >
                       {show ? <VisibilityOff /> : <Visibility />}
                     </IconButton>

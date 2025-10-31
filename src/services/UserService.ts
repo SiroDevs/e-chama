@@ -33,7 +33,7 @@ export async function fetchUserMember(userId: string, groupId: string | null) {
   return { data: member, error: null };
 }
 
-export async function handleAuthResponse(user: any) {
+export async function refreshUserProfile(user: any) {
   console.info("Fetching the user profile");
   const profileResult = await fetchUserProfile(user.id);
   
