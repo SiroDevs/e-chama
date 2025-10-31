@@ -4,15 +4,15 @@ import * as z from "zod";
 import { useState } from "react";
 import { Box, Button, Typography, Grid, Link, Alert } from "@mui/material";
 import { FormControlLabel, Checkbox } from "@mui/material";
-import { LockOutlined, Sync } from "@mui/icons-material";
+import { LockOutlined } from "@mui/icons-material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { handleSignupAction } from "@/app/(auth)/actions/auth";
+import { onSignupAction } from "@/app/(auth)/actions/SignupAction";
 import { useAuthStore } from "@/state/auth/auth";
-import { AppIcon } from "../general/CustomIcons";
+import { AppIcon } from "../general/AppIcon";
 import { FormInput, MuiCard } from "../inputs/FormInput";
-import { PageStatus } from "@/state/status";
+import { PageStatus } from "@/state/PageStatus";
 import { Loader } from "../general/Loader";
 
 const schema = z.object({
@@ -49,7 +49,7 @@ export function SignUpCard({ onAuthSuccess }: SignUpCardProps) {
 
   async function onSubmit(formData: FormData) {
     setStatus("loading");
-    const result = await handleSignupAction({
+    const result = await onSignupAction({
       first_name: formData.first_name.trim(),
       last_name: formData.last_name.trim(),
       email: formData.email.trim(),
