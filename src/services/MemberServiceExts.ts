@@ -3,7 +3,7 @@
 import { getUserGroups, newGroup } from "./GroupService";
 import { updateSelectedGroup } from "./ProfileService";
 import { newMember } from "./MemberService";
-import { signUpMeNow } from "./AuthService";
+import { signUpUser } from "./AuthService";
 import { Profile } from "@/state/role/profiles";
 import { Group, Member } from "@/types/types";
 
@@ -91,7 +91,7 @@ export async function newMemberProfile(payload: {
   member: Member;
 }) {
   try {
-    const { data, error } = await signUpMeNow({
+    const { data, error } = await signUpUser({
       email: payload.email,
       phone: payload.phone,
       password: "",

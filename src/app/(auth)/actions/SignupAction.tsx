@@ -1,17 +1,18 @@
-import { EmailOutlined } from "@mui/icons-material";
+"use server";
 
-import { signUpMeNow } from "@/services/AuthService";
-import { NotificationCard } from "@/components/general";
-import toast from "react-hot-toast";
+import { signUpUser } from "@/services/AuthService";
+import { createProfile } from "@/services/ProfileService";
+import { AUTH_ERROR_CODES, AuthResult } from "@/types/auth";
+import { mapAuthError } from "@/utils/mapAuthError";
 
 export async function onSignupAction(payload: {
   first_name: string;
   last_name: string;
   email: string;
   password: string;
-}) {
+}): Promise<AuthResult<{ user: any; profile: any; member: any }>> {
   try {
-    const { data, error } = await signUpMeNow({
+    const authResult = await signUpUser({
       email: payload.email,
       phone: "",
       password: payload.password,
@@ -22,65 +23,65 @@ export async function onSignupAction(payload: {
       },
     });
 
-    if (error) {
-      console.error("Signup error:", error);
-
-      const errorMessage = error.message || "An unknown error occurred";
-      const status = "status" in error ? error.status : undefined;
-      console.error("Success rate:", status);
-
-      switch (status) {
-        case 400:
-          return {
-            success: false,
-            error: "Invalid credentials. Please check your email and password.",
-          };
-
-        case 401:
-          return { success: false, error: "Unauthorized. Please try again." };
-
-        case 403:
-          return {
-            success: false,
-            error: "Access forbidden. Contact support if this issue persists.",
-          };
-
-        case 500:
-          return {
-            success: false,
-            error: `Internal server error: ${errorMessage}`,
-          };
-        default:
-          return { success: false, error: errorMessage };
-      }
-    } else if (data) {
-      toast.custom((t) => (
-        <NotificationCard
-          title="Signup successful"
-          message="Please check your email for a verification link!"
-          icon={<EmailOutlined />}
-          iconBgColor="success.main"
-          actionLabel="Close"
-          onAction={() => toast.dismiss(t.id)}
-        />
-      ));
-
+    if (authResult.error) {
+      console.warn("Signup failed:", authResult.error.message);
       return {
-        success: true,
-        user: data.user,
-        profile: data.profile,
-        member: data.member,
+        success: false,
+        error: mapAuthError(authResult.error)
       };
-    } else {
-      return { success: false, error: "Signup failed" };
     }
+
+    if (!authResult.data?.user) {
+      return {
+        success: false,
+        error: {
+          message: "Signup failed - no user data returned",
+          code: AUTH_ERROR_CODES.USER_NOT_FOUND,
+          status: 404
+        }
+      };
+    }
+
+    const user = authResult.data.user;
+    console.info("Creating profile for user:", user.id);
+    
+    const profileResult = await createProfile({
+      id: user.id,
+      first_name: payload.first_name,
+      last_name: payload.last_name,
+    });
+
+    if (profileResult.error) {
+      console.error("Profile creation failed:", profileResult.error);
+      return {
+        success: false,
+        error: {
+          message: "Account created but profile setup failed. Please contact support.",
+          code: AUTH_ERROR_CODES.PROFILE_CREATION_FAILED,
+          status: 500
+        }
+      };
+    }
+
+    console.info("Signup successful for:", payload.email);
+    return {
+      success: true,
+      data: {
+        user: user,
+        profile: profileResult.data,
+        member: null
+      }
+    };
+
   } catch (err) {
+    console.error('Unexpected signup error:', err);
     return {
       success: false,
-      error:
-        err instanceof Error
-          ? err.message
-          : "An error occurred during signup. Please try again.",
+      error: {
+        message: "An unexpected error occurred during sign up",
+        code: AUTH_ERROR_CODES.UNKNOWN_ERROR,
+        status: 500
+      }
     };
   }
 }

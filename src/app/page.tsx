@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/state/auth/auth";
 import Dashboard from "./(protected)/dashboard";
-import { SignInCard } from "@/components/auth";
-import { AppIcon } from "@/components/general/AppIcon";
+import { AppIcon } from "@/components/general";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { SignInCard } from "@/components/auth/signin";
 
 export default function Home() {
   const router = useRouter();

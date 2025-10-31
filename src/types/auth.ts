@@ -5,7 +5,7 @@ export type AuthError = {
   details?: any;
 };
 
-export type AuthResult<T = any> = 
+export type AuthResult<T = any> =
   | { success: true; data: T }
   | { success: false; error: AuthError };
 
@@ -16,4 +16,9 @@ export const AUTH_ERROR_CODES = {
   NETWORK_ERROR: 'network_error',
   UNKNOWN_ERROR: 'unknown_error',
   USER_NOT_FOUND: 'user_not_found',
+  EMAIL_ALREADY_EXISTS: 'email_already_exists',
+  WEAK_PASSWORD: 'weak_password',
+  INVALID_EMAIL: 'invalid_email',
+  SIGNUP_SUCCESS: 'signup_success',
+  PROFILE_CREATION_FAILED: 'profile_creation_failed'
 } as const;

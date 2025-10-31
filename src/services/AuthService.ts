@@ -1,10 +1,9 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
-import { createProfile } from "./ProfileService";
 import { Profile } from "@/state/role/profiles";
 
-export async function signInMeNow(data: { email: string; password: string }) {
+export async function signInUser(data: { email: string; password: string }) {
   try {
     return await supabase.auth.signInWithPassword(data);
   } catch (err) {
@@ -19,7 +18,7 @@ export async function signInMeNow(data: { email: string; password: string }) {
   }
 }
 
-export async function signUpMeNow(data: {
+export async function signUpUser(data: {
   email: string;
   phone: string;
   password: string;
@@ -31,7 +30,7 @@ export async function signUpMeNow(data: {
       ? "https://echama.vercel.app/verify"
       : "http://localhost:3000/verify";
 
-    const authResult = await supabase.auth.signUp({
+    return await supabase.auth.signUp({
       email: data.email,
       phone: data.phone,
       password: data.password,
@@ -42,40 +41,8 @@ export async function signUpMeNow(data: {
         emailRedirectTo: redirectTo,
       },
     });
-
-    if (authResult.error) {
-      return { data: null, error: authResult.error };
-    }
-
-    if (!authResult.data.user) {
-      return {
-        data: null,
-        error: {
-          message: "User creation failed",
-          status: 500,
-        },
-      };
-    }
-
-    const user = authResult.data.user;
-    data.profile.id = user.id;
-    const profileResult = await createProfile(data.profile);
-
-    if (profileResult.error) {
-      console.error("Profile creation error:", profileResult.error);
-      return {
-        data: { user, profile: null, member: null },
-        error: profileResult.error,
-      };
-    }
-
-    return {
-      data: { user, profileResult },
-      error: null,
-    };
-
   } catch (err) {
-    console.error("Signup error:", err);
+    console.error("Authethication error:", err);
     return {
       data: null,
       error: {

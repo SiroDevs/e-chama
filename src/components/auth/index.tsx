@@ -2,4 +2,4 @@ export * from "./AuthContent";
 export * from "../layouts/AuthWrapper";
 export * from "./ForgotPassword";
 export * from "./signin/SignInCard";
-export * from "./SignUpCard";
+export * from "./signup/SignUpCard";

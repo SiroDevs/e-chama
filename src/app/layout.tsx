@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { CssBaseline, GlobalStyles } from "@mui/material";
+import { GlobalStyles } from "@mui/material";
 
 import { GLOBAL_STYLES } from "@/styles";
 import Provider from "./provider";
@@ -12,6 +12,15 @@ export const metadata: Metadata = {
   description: "The digital sacco management",
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  minimumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,6 +28,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="eChama" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="format-detection" content="telephone=no, email=no, address=no" />
+      </head>
       <GlobalStyles styles={GLOBAL_STYLES} />
       <body className={inter.className}>
         <Provider>{children}</Provider>
