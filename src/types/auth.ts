@@ -19,5 +19,6 @@ export const AUTH_ERROR_CODES = {
   EMAIL_ALREADY_EXISTS: 'email_already_exists',
   WEAK_PASSWORD: 'weak_password',
   INVALID_EMAIL: 'invalid_email',
-  SIGNUP_SUCCESS: 'signup_success'
+  SIGNUP_SUCCESS: 'signup_success',
+  PROFILE_CREATION_FAILED: 'profile_creation_failed'
 } as const;

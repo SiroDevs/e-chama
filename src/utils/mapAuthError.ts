@@ -4,9 +4,9 @@ export function mapAuthError(error: any): AuthError {
   const message = error.message || '';
   const status = error.status || 500;
 
-  if (message.includes('User already registered') || 
-      message.includes('email already exists') ||
-      message.includes('already exists')) {
+  if (message.includes('User already registered') ||
+    message.includes('email already exists') ||
+    message.includes('already exists')) {
     return {
       message: 'An account with this email already exists. Please sign in instead.',
       code: AUTH_ERROR_CODES.EMAIL_ALREADY_EXISTS,
@@ -38,7 +38,7 @@ export function mapAuthError(error: any): AuthError {
       details: { canResend: true }
     };
   }
-  
+
   if (message.includes('Invalid login credentials') || status === 400) {
     return {
       message: 'Invalid email or password. Please try again.',
@@ -46,7 +46,7 @@ export function mapAuthError(error: any): AuthError {
       status: 400
     };
   }
-  
+
   if (message.includes('rate limit') || message.includes('too many requests') || status === 429) {
     return {
       message: 'Too many attempts. Please try again in a few minutes.',
@@ -54,12 +54,20 @@ export function mapAuthError(error: any): AuthError {
       status: 429
     };
   }
-  
+
   if (message.includes('User not found')) {
     return {
       message: 'No account found with this email address.',
       code: AUTH_ERROR_CODES.USER_NOT_FOUND,
       status: 404
+    };
+  }
+  
+  if (message.includes('profile') || message.includes('Profile')) {
+    return {
+      message: 'There was an issue creating your profile. Please try again.',
+      code: AUTH_ERROR_CODES.PROFILE_CREATION_FAILED,
+      status: status
     };
   }
 

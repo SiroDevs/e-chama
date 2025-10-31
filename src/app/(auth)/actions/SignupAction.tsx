@@ -1,6 +1,7 @@
 "use server";
 
 import { signUpUser } from "@/services/AuthService";
+import { createProfile } from "@/services/ProfileService";
 import { AUTH_ERROR_CODES, AuthResult } from "@/types/auth";
 import { mapAuthError } from "@/utils/mapAuthError";
 
@@ -11,9 +12,7 @@ export async function onSignupAction(payload: {
   password: string;
 }): Promise<AuthResult<{ user: any; profile: any; member: any }>> {
   try {
-    console.info("Signup attempt for:", payload.email);
-    
-    const { data, error } = await signUpUser({
+    const authResult = await signUpUser({
       email: payload.email,
       phone: "",
       password: payload.password,
@@ -24,15 +23,15 @@ export async function onSignupAction(payload: {
       },
     });
 
-    if (error) {
-      console.warn("Signup failed:", error.message);
+    if (authResult.error) {
+      console.warn("Signup failed:", authResult.error.message);
       return {
         success: false,
-        error: mapAuthError(error)
+        error: mapAuthError(authResult.error)
       };
     }
 
-    if (!data?.user) {
+    if (!authResult.data?.user) {
       return {
         success: false,
         error: {
@@ -43,13 +42,34 @@ export async function onSignupAction(payload: {
       };
     }
 
+    const user = authResult.data.user;
+    console.info("Creating profile for user:", user.id);
+    
+    const profileResult = await createProfile({
+      id: user.id,
+      first_name: payload.first_name,
+      last_name: payload.last_name,
+    });
+
+    if (profileResult.error) {
+      console.error("Profile creation failed:", profileResult.error);
+      return {
+        success: false,
+        error: {
+          message: "Account created but profile setup failed. Please contact support.",
+          code: AUTH_ERROR_CODES.PROFILE_CREATION_FAILED,
+          status: 500
+        }
+      };
+    }
+
     console.info("Signup successful for:", payload.email);
     return {
       success: true,
       data: {
-        user: data.user,
-        profile: data.profile,
-        member: data.member
+        user: user,
+        profile: profileResult.data,
+        member: null
       }
     };
 

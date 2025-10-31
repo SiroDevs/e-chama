@@ -17,7 +17,6 @@ import { Loader, StateBtn } from "@/components/general";
 import { AuthError } from "@/types/auth";
 
 type FormData = z.infer<typeof signupSchema>;
-
 interface SignUpCardProps {
   onAuthSuccess: () => void;
 }
