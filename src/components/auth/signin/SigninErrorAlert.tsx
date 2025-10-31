@@ -1,4 +1,4 @@
-import { Alert, Button, Typography, AlertProps } from '@mui/material';
+import { Alert, Button, Typography, AlertProps, Box } from '@mui/material';
 import { useState } from 'react';
 import { AuthError } from '@/types/auth';
 import { resendVerificationEmail } from '@/services/VerifyService';
@@ -31,7 +31,6 @@ export function SigninErrorAlert({
       if (result.success) {
         onVerificationSent?.();
       } else {
-        // You could show a toast or handle the error here
         console.error('Failed to resend verification email:', result.error);
       }
     } catch (err) {
@@ -41,23 +40,29 @@ export function SigninErrorAlert({
     }
   };
 
-  const getActions = () => {
+  const getActionButton = () => {
     if (error.code === 'email_not_confirmed') {
       return (
         <Button
-          color="inherit"
+          variant="outlined"
           size="small"
           onClick={handleResendVerification}
           disabled={isResending || !userEmail}
+          sx={{ mt: 1 }}
         >
-          {isResending ? 'Sending...' : 'Resend Email'}
+          {isResending ? 'Sending...' : 'Resend Verification Email'}
         </Button>
       );
     }
     
     if (error.code !== 'VERIFICATION_SENT' && onRetry) {
       return (
-        <Button color="inherit" size="small" onClick={onRetry}>
+        <Button 
+          variant="outlined" 
+          size="small" 
+          onClick={onRetry}
+          sx={{ mt: 1 }}
+        >
           Try Again
         </Button>
       );
@@ -70,15 +75,12 @@ export function SigninErrorAlert({
     <Alert
       severity={error.code === 'VERIFICATION_SENT' ? 'success' : 'error'}
       sx={{ mb: 2 }}
-      action={getActions()}
       {...alertProps}
     >
-      <Typography variant="body2">{error.message}</Typography>
-      {showDebugInfo && error.code && (
-        <Typography variant="caption" display="block" sx={{ mt: 0.5 }}>
-          Code: {error.code} {error.status && `| Status: ${error.status}`}
-        </Typography>
-      )}
+      <Box>
+        <Typography variant="body2">{error.message}</Typography>
+        {getActionButton()}
+      </Box>
     </Alert>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { signInMeNow } from "@/services/AuthService";
 import { refreshUserProfile } from "@/services/UserService";
 import { AUTH_ERROR_CODES, AuthResult } from "@/types/auth";
