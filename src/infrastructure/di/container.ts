@@ -2,10 +2,10 @@ import { ContributionSupabaseRepo } from '@/domain/repositories/supabase/contrib
 import { GroupSupabaseRepo } from '@/domain/repositories/supabase/group.supabase.repo';
 import { MemberSupabaseRepo } from '@/domain/repositories/supabase/member.supabase.repo';
 import { ProfileSupabaseRepo } from '@/domain/repositories/supabase/profile.supabase.repo';
-import { ContributionUseCase } from '@/application/use-cases/contribution.usecase';
-import { GroupUseCase } from '@/application/use-cases/group.usecase';
-import { MemberUseCase } from '@/application/use-cases/member.usecase';
-import { ProfileUseCase } from '@/application/use-cases/profile.usecase';
+import { ContributionUseCase } from '@/application/use-cases/supabase/contribution.usecase';
+import { GroupUseCase } from '@/application/use-cases/supabase/group.usecase';
+import { MemberUseCase } from '@/application/use-cases/supabase/member.usecase';
+import { ProfileUseCase } from '@/application/use-cases/supabase/profile.usecase';
 
 const contributionRepo = new ContributionSupabaseRepo();
 const groupRepo = new GroupSupabaseRepo();

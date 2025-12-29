@@ -7,7 +7,7 @@ import PageContent from "@/presentation/components/common/page-content";
 import { Users } from "lucide-react";
 import { usePaginatedEntity } from "@/presentation/hooks/use-paginated-entity";
 import { container } from "@/infrastructure/di/container";
-import { MemberTable } from "@/presentation/components/tables/members-table";
+import { MemberTable } from "@/presentation/layout/tables/members";
 import { Member } from "@/domain/entities";
 
 const page = () => {

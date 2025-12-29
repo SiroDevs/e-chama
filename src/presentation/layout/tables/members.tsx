@@ -1,13 +1,13 @@
 "use client";
 
-import { TableHeader, TableRow } from "./table-parts";
-import { TableCell, TableContainer } from "./table-parts";
-import { Pagination } from "./pagination";
+import { TableHeader, TableRow } from "../../components/tables/table-parts";
+import { TableCell, TableContainer } from "../../components/tables/table-parts";
+import { Pagination } from "../../components/tables/pagination";
 import { Member } from "@/domain/entities";
-import LoadingSpinner from "../ui/states/loading-spinner";
+import LoadingSpinner from "../../components/ui/states/loading-spinner";
 import { formatDateTime } from "@/application/helpers/utils";
-import { TableActions } from "./table-actions";
-import { EmptyState } from "../ui/states/empty-state";
+import { TableActions } from "../../components/tables/table-actions";
+import { EmptyState } from "../../components/ui/states/empty-state";
 
 interface MemberTableProps {
   members: Member[];

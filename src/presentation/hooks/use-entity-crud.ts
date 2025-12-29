@@ -1,4 +1,4 @@
-import { CrudUseCase } from '@/application/use-cases/crud.usecase';
+import { CrudUseCase } from '@/application/use-cases/supabase/crud.usecase';
 import { EntityType } from '@/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
