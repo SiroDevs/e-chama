@@ -2,7 +2,7 @@ import { ContributionSupabaseRepo } from '@/domain/repositories/supabase/contrib
 import { GroupSupabaseRepo } from '@/domain/repositories/supabase/group.supabase.repo';
 import { MemberSupabaseRepo } from '@/domain/repositories/supabase/member.supabase.repo';
 import { ProfileSupabaseRepo } from '@/domain/repositories/supabase/profile.supabase.repo';
-import { ContributionUseCase } from '@/application/use-cases/supabase/contribution.usecase';
+import { ContributionUseCase } from '@/application/use-cases/supabase/sb.usecase';
 import { GroupUseCase } from '@/application/use-cases/supabase/group.usecase';
 import { MemberUseCase } from '@/application/use-cases/supabase/member.usecase';
 import { ProfileUseCase } from '@/application/use-cases/supabase/profile.usecase';
