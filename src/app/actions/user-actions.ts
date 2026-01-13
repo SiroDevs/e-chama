@@ -1,6 +1,6 @@
 "use server";
 
-import { dataToMember, dataToProfile, Member, Profile, UserGroup } from "@/domain/entities";
+import { Member, Profile, UserGroup } from "@/domain/entities";
 import { groupService } from "@/infrastructure/services/groupService";
 import { memberService } from "@/infrastructure/services/memberService";
 import { profileService } from "@/infrastructure/services/profileService";
@@ -28,25 +28,7 @@ export async function fetchUserProfile(
     if (error) throw error;
     if (!data) throw new Error("No profile data returned");
 
-    const profile = dataToProfile({
-      id: data.id,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      country: data.country,
-      address: data.address,
-      sex: data.sex,
-      dob: data.dob,
-      avatar: data.avatar,
-      group_id: data.group_id,
-      created_at: data.created_at,
-      updated_at: data.updated_at,
-    });
-
-    if (!profile) {
-      throw new Error("Failed to convert data to profile");
-    }
-
-    return profile;
+    return data;
 
   } catch (error: unknown) {
     console.error("Error fetching profile:", error);
@@ -68,7 +50,7 @@ export async function fetchGroupMember(
 
     if (error) throw error;
     if (!data) throw new Error("No member data returned");
-    
+
     return data;
   } catch (error: unknown) {
     console.error("Error fetching member:", error);
