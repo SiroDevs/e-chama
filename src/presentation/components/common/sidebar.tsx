@@ -7,10 +7,8 @@ import { usePathname } from "next/navigation";
 import { HandCoins, LayoutDashboard, Users } from "lucide-react";
 import { ArrowRight2, Headphone, Setting2, Star } from "iconsax-react";
 
-import { AppIcon } from ".";
+import { AppIcon, GroupNav } from ".";
 import ProfileImage from "../../../../public/profile.png";
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { DropdownMenuContent, DropdownMenuItem } from "../ui/dropdown-menu";
 
 interface SidebarProps {
   onClose?: () => void;
@@ -50,17 +48,7 @@ function Sidebar({ onClose }: SidebarProps) {
 
         <div className="flex flex-col h-full justify-between">
           <div className="pt-6 text-gray-500 font-medium space-y-1 md:px-2 text-sm overflow-y-auto">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="border px-4 py-2 rounded">Open Menu</button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent>
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <GroupNav/>
 
             <Link
               href={"/"}

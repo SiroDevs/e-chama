@@ -1,4 +1,4 @@
-import { ProcessedMember, ProcessedProfile, ProcessedUser } from "./profiles";
+import { ProcessedMember, ProcessedProfile, ProcessedUser } from "@/domain/entities/profiles";
 
 export interface Member {
   id?: string;
