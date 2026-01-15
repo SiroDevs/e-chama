@@ -140,7 +140,6 @@ export const groupService = {
 
     if (error) {
       if (error.code === "PGRST116") {
-        // No rows found
         return null;
       }
       throw new Error(`Failed to fetch user role: ${error.message}`);
