@@ -1,6 +1,6 @@
 "use server";
 
-import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";
+import { AppUser, supabaseUserToAppUser } from "@/domain/entities";
 import { authService } from "@/infrastructure/services/authService";
 import { profileService } from "@/infrastructure/services/profileService";
 
@@ -63,9 +63,9 @@ export async function signupUserAction(
     let profileData = null;
     try {
       const { data: profile } = await profileService.createProfile({
-        id: data.user.id,
-        first_name: first_name,
-        last_name: last_name,
+        id: data.user.id!,
+        first_name: first_name!,
+        last_name: last_name!,
       });
       profileData = profile;
     } catch (profileError) {

@@ -1,37 +1,38 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { AppUser } from "../../domain/entities/app.user.entity";
-import { Group, Member, Profile } from "@/domain/entities";
+import { Group, Member, UserGroup } from "@/domain/entities";
 
-interface SaccoState {
+interface GroupState {
   member: Member | null;
   group: Group | null;
-  isAuthenticated: boolean;
+  groups: UserGroup[] | null;
+  hasGroups: boolean;
   isLoading: boolean;
   error: string | null;
 }
 
-const initialState: SaccoState = {
+const initialState: GroupState = {
   member: null,
   group: null,
-  isAuthenticated: false,
+  groups: [],
+  hasGroups: false,
   isLoading: true,
   error: null,
 };
 
-export const saccoSlice = createSlice({
-  name: "auth",
+export const groupSlice = createSlice({
+  name: "group",
   initialState,
   reducers: {
     setMember: (state, action: PayloadAction<Member | null>) => {
       state.member = action.payload;
-      state.isAuthenticated = !!action.payload;
+      state.hasGroups = !!action.payload;
       state.isLoading = false;
       state.error = null;
     },
     setGroup: (state, action: PayloadAction<Group | null>) => {
       state.group = action.payload;
-      state.isAuthenticated = !!action.payload;
+      state.hasGroups = !!action.payload;
       state.isLoading = false;
       state.error = null;
     },
@@ -48,13 +49,13 @@ export const saccoSlice = createSlice({
     resetState: (state) => {
       state.member = null;
       state.group = null;
-      state.isAuthenticated = false;
+      state.hasGroups = false;
       state.error = null;
     },
   },
 });
 
 export const { setMember, setGroup, setLoading, setError, clearError, resetState } =
-  saccoSlice.actions;
+  groupSlice.actions;
 
-export default saccoSlice.reducer;
+export default groupSlice.reducer;

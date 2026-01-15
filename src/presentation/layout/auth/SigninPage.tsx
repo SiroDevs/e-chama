@@ -49,7 +49,8 @@ export default function SigninPage() {
       setIsLoading(true);
       setError(null);
 
-      await dispatch(signinUser(values.email, values.password));
+      const signedUser = signinUser(values.email, values.password);
+      await dispatch(signedUser);
 
       router.push("/");
     } catch (err: unknown) {
@@ -63,7 +64,6 @@ export default function SigninPage() {
     }
   };
 
-  // Don't render form during SSR/prerendering
   if (!isClient) {
     return (
       <div className="flex items-center justify-center p-4 pt-8 pb-20">
@@ -74,7 +74,7 @@ export default function SigninPage() {
           </CardHeader>
           <CardContent>
             <div className="flex justify-center py-8">
-              <div className="animate-pulse">Loading...</div>
+              <div className="animate-pulse">Loading ...</div>
             </div>
           </CardContent>
         </Card>
