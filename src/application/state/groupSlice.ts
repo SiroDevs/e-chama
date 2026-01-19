@@ -6,7 +6,6 @@ interface GroupState {
   member: Member | null;
   group: Group | null;
   groups: UserGroup[] | null;
-  hasGroups: boolean;
   isLoading: boolean;
   error: string | null;
 }
@@ -15,7 +14,6 @@ const initialState: GroupState = {
   member: null,
   group: null,
   groups: [],
-  hasGroups: false,
   isLoading: true,
   error: null,
 };
@@ -26,13 +24,11 @@ export const groupSlice = createSlice({
   reducers: {
     setMember: (state, action: PayloadAction<Member | null>) => {
       state.member = action.payload;
-      state.hasGroups = !!action.payload;
       state.isLoading = false;
       state.error = null;
     },
     setGroup: (state, action: PayloadAction<Group | null>) => {
       state.group = action.payload;
-      state.hasGroups = !!action.payload;
       state.isLoading = false;
       state.error = null;
     },
@@ -49,7 +45,6 @@ export const groupSlice = createSlice({
     resetState: (state) => {
       state.member = null;
       state.group = null;
-      state.hasGroups = false;
       state.error = null;
     },
   },

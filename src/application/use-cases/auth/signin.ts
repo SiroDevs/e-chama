@@ -28,6 +28,7 @@ export const signinUser = (email: string, password: string) => {
       if (!member) {
         throw new Error("Member not found after signin");
       }
+      dispatch(setMember(member));
 
       const groups = await fetchUserGroups(data.user.uid);
       if (groups.length > 0) {

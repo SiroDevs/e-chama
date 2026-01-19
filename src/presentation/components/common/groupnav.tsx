@@ -15,7 +15,7 @@ export function GroupNav() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { group, member, groups, hasGroups } = useSelector(
+  const { group, member, groups } = useSelector(
     (state: RootState) => state.group,
   );
   const { toast } = useToast();
