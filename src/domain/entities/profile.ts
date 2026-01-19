@@ -7,8 +7,9 @@ export interface Profile {
   sex?: string;
   dob?: string;
   avatar?: string;
-  id_number?: string;
-  kra_pin?: string;
+  group_id?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export const dataToProfile = ({
@@ -20,8 +21,9 @@ export const dataToProfile = ({
   sex,
   dob,
   avatar,
-  id_number,
-  kra_pin,
+  group_id,
+  created_at,
+  updated_at,
 }: {
   id: string;
   first_name?: string | null;
@@ -31,8 +33,9 @@ export const dataToProfile = ({
   sex?: string | null;
   dob?: string | null;
   avatar?: string | null;
-  id_number?: string | null;
-  kra_pin?: string | null;
+  group_id?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
 }): Profile => {
   return {
     id,
@@ -43,7 +46,8 @@ export const dataToProfile = ({
     sex: sex ?? undefined,
     dob: dob ?? undefined,
     avatar: avatar ?? undefined,
-    id_number: id_number ?? undefined,
-    kra_pin: kra_pin ?? undefined,
+    group_id: group_id ?? undefined,
+    created_at: created_at ?? undefined,
+    updated_at: updated_at ?? undefined,
   };
 };

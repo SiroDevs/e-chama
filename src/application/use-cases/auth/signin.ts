@@ -1,7 +1,9 @@
 import { Dispatch } from "@reduxjs/toolkit";
 
-import { setUser, setLoading, setError, setProfile } from "../../state/authSlice";
 import { signinUserAction } from "@/app/actions/auth-actions";
+import { fetchUserGroups, fetchUserMember } from "@/app/actions/user-actions";
+import { setUser, setLoading, setError, setProfile } from "../../state/authSlice";
+import { setMember, setGroup } from "@/application/state/groupSlice";
 
 export const signinUser = (email: string, password: string) => {
   return async (dispatch: Dispatch) => {
@@ -21,6 +23,16 @@ export const signinUser = (email: string, password: string) => {
       }
 
       dispatch(setProfile(data.profile));
+
+      const member = await fetchUserMember(data.user.uid, data.profile.group_id);
+      if (!member) {
+        throw new Error("Member not found after signin");
+      }
+
+      const groups = await fetchUserGroups(data.user.uid);
+      if (groups.length > 0) {
+        dispatch(setGroup(groups[0] || null));
+      }
     } catch (error: unknown) {
       dispatch(
         setError(error instanceof Error ? error.message : "Failed to signin")
