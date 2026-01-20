@@ -1,9 +1,8 @@
 "use server";
 
-import { dataToProfile, Profile } from "@/domain/entities";
+import { dataToProfile, Profile, UserGroup } from "@/domain/entities";
 import { groupService } from "@/infrastructure/services/groupService";
 import { profileService } from "@/infrastructure/services/profileService";
-import { UserGroup } from "@/types";
 
 export async function fetchUserGroups(userId: string): Promise<UserGroup[]> {
   let groups: UserGroup[] = [];
