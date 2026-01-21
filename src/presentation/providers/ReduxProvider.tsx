@@ -3,7 +3,7 @@
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { store, persistor } from "@/application/state/store";
-import LoadingSpinner from "../components/ui/loading-spinner";
+import LoadingSpinner from "../components/ui/states/loading-spinner";
 import { AppThemeProvider } from "./AppThemeProvider";
 
 function PersistLoader() {

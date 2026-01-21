@@ -18,7 +18,7 @@ import { CardHeader, CardDescription } from "@/presentation/components/ui";
 import { signinUser } from "@/application/use-cases/auth/signin";
 import { AppDispatch } from "@/application/state/store";
 import { useToast } from "@/presentation/components/ui/use-toast";
-import LoadingSpinner from "@/presentation/components/ui/loading-spinner";
+import LoadingSpinner from "@/presentation/components/ui/states/loading-spinner";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
