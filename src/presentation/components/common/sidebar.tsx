@@ -61,7 +61,7 @@ function Sidebar({ onClose }: SidebarProps) {
             </Link>
 
             <Link
-              href={"/app/teams"}
+              href={"/members"}
               onClick={handleNavClick}
               className={`flex ${isActive("/app/teams") ? "text-primary bg-primary/10" : "hover:bg-gray-50 dark:hover:bg-gray-800"} 
                                 duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2 transition-all`}
@@ -71,7 +71,7 @@ function Sidebar({ onClose }: SidebarProps) {
             </Link>
 
             <Link
-              href={"/app/integrations"}
+              href={"/contributions"}
               onClick={handleNavClick}
               className={`flex ${isActive("/app/integrations") ? "text-primary bg-primary/10" : "hover:bg-gray-50 dark:hover:bg-gray-800"} 
                                 duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2 transition-all`}
