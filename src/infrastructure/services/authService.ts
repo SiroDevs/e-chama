@@ -1,3 +1,5 @@
+"use server";
+
 import { supabase } from "@/lib/supabase/client";
 import { AuthResponse } from "@supabase/supabase-js";
 import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";

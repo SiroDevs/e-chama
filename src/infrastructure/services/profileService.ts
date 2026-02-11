@@ -1,3 +1,5 @@
+"use server";
+
 import { Profile } from "@/domain/entities/profile.entity";
 import { supabase } from "@/lib/supabase/client";
 
