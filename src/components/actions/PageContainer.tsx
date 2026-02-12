@@ -1,18 +1,20 @@
 "use client";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, Button, IconButton } from "@mui/material";
 import Breadcrumbs, { breadcrumbsClasses } from "@mui/material/Breadcrumbs";
 import { ContainerProps } from "@mui/material/Container";
 import MuiLink from "@mui/material/Link";
-import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
+import { ArrowBack, NavigateNextRounded } from "@mui/icons-material";
 import { Link } from "react-router";
+import { useRouter } from "next/navigation";
 
 const PageContentHeader = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
   gap: theme.spacing(2),
+  alignItems: "center",
 }));
 
 const PageHeaderBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
@@ -33,18 +35,32 @@ const PageHeaderToolbar = styled("div")(({ theme }) => ({
   marginLeft: "auto",
 }));
 
+const TitleContainer = styled("div")({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 2,
+});
+
 export interface Breadcrumb {
   title: string;
   path?: string;
 }
 export interface PageContainerProps extends ContainerProps {
   title?: string;
+  titleExtra?: React.ReactNode;
   breadcrumbs?: Breadcrumb[];
   actions?: React.ReactNode;
 }
 
 export default function PageContainer(props: PageContainerProps) {
-  const { breadcrumbs, title, actions = null } = props;
+  const { title, titleExtra, breadcrumbs, actions = null } = props;
+
+  const router = useRouter();
+  const handleBack = () => {
+    router.back();
+  };
+  const showBackButton = breadcrumbs && breadcrumbs.length > 0;
 
   return (
     <Stack spacing={2}>
@@ -57,7 +73,7 @@ export default function PageContainer(props: PageContainerProps) {
       >
         <PageHeaderBreadcrumbs
           aria-label="breadcrumb"
-          separator={<NavigateNextRoundedIcon fontSize="small" />}
+          separator={<NavigateNextRounded fontSize="small" />}
         >
           <Typography variant="body1">Dashboard</Typography>
           {breadcrumbs
@@ -84,7 +100,19 @@ export default function PageContainer(props: PageContainerProps) {
             : null}
         </PageHeaderBreadcrumbs>
         <PageContentHeader>
-          {title ? <Typography variant="h4">{title}</Typography> : null}
+          <TitleContainer>
+            {showBackButton && (
+              <IconButton 
+                onClick={handleBack}
+                size="small"
+                sx={{ mr: 1 }}
+              >
+                <ArrowBack />
+              </IconButton>
+            )}
+            {title ? <Typography variant="h4">{title}</Typography> : null}
+            {titleExtra}
+          </TitleContainer>
           <PageHeaderToolbar>{actions}</PageHeaderToolbar>
         </PageContentHeader>
       </Stack>

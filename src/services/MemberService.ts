@@ -115,7 +115,27 @@ export async function getGroupMemberById(id: string): Promise<{
 }> {
   try {
     const { data, error } = await supabase
-      .from('contributions').select('*').eq('id', id).single();
+      .from('group_members').select('*').eq('id', id).single();
+
+    return {
+      data,
+      error,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error: error as Error,
+    };
+  }
+}
+
+export async function getGroupMemberByNo(memberNo: string, groupId: string): Promise<{
+  data: GroupMember | null;
+  error: Error | null;
+}> {
+  try {
+    const { data, error } = await supabase
+      .from('group_members').select('*').eq('member_no', memberNo).eq("group_id", groupId).single();
 
     return {
       data,

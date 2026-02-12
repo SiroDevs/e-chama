@@ -5,13 +5,9 @@ import { Box, Stack } from "@mui/material";
 import { Header } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
-import GroupMembers, { GroupMembersRef } from "./records";
-import {
-  GridPaginationModel,
-  GridSortModel,
-  GridFilterModel,
-  GridFilterItem,
-} from "@mui/x-data-grid";
+import GroupMembers, { GroupMembersRef } from "./group-members";
+import { GridPaginationModel, GridSortModel } from "@mui/x-data-grid";
+import { GridFilterModel, GridFilterItem } from "@mui/x-data-grid";
 import { DatabaseFilters } from "@/types/types";
 import { useState, useRef } from "react";
 import PageContainer from "@/components/actions/PageContainer";

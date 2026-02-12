@@ -104,7 +104,7 @@ const GroupMembers = forwardRef<GroupMembersRef, GroupMembersProps>(
     }, [fetchGroupMembers]);
 
     const handleRowClick = (params: GridRowParams) => {
-      router.push(`/members/${params.row.id}`);
+      router.push(`/members/${params.row.member_no}`);
     };
 
     const initialState = {

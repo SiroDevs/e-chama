@@ -56,7 +56,7 @@ export default function NewMemberForm({
         <Loader
           height="30vh"
           title="Registering the new member ..."
-          message="Please wait while we create a new profile."
+          message="Creating a new profile."
         />
       ) : (
         <Box
