@@ -1,13 +1,7 @@
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-  useCallback,
-} from "react";
-import { DataGrid, GridSortModel, GridFilterModel } from "@mui/x-data-grid";
-import { GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
-import { gridClasses } from "@mui/x-data-grid";
+import React, { useState, useEffect } from "react";
+import { forwardRef, useImperativeHandle, useCallback } from "react";
+import { GridSortModel, GridFilterModel, gridClasses } from "@mui/x-data-grid";
+import { DataGrid, GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { membersColms, PageSize, RowsState } from "./arrays";
 import { getGroupMembers } from "@/services/MemberService";
@@ -41,7 +35,7 @@ const GroupMembers = forwardRef<GroupMembersRef, GroupMembersProps>(
       onFilterModelChange,
       convertFilterModelToFilters,
     },
-    ref
+    ref,
   ) => {
     const [rowsState, setRowsState] = useState<RowsState>({
       rows: [],
@@ -172,7 +166,7 @@ const GroupMembers = forwardRef<GroupMembersRef, GroupMembersProps>(
         )}
       </Box>
     );
-  }
+  },
 );
 
 GroupMembers.displayName = "GroupMembers";

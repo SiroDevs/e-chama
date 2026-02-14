@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { ExitToApp, GroupAdd } from "@mui/icons-material";
-import { Box, Container, Divider, Paper, Typography } from "@mui/material";
-import { Button, Alert } from "@mui/material";
+import { Box, Container, Divider, Paper } from "@mui/material";
+import { Button, Alert, Typography } from "@mui/material";
 
 import { useAuthStore } from "@/state/auth/auth";
 import { AppIcon } from "@/components/general/AppIcon";

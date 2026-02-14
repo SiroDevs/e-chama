@@ -1,39 +1,74 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import { Box, Grid } from "@mui/material";
-import { StatCardProps, StatCard } from "@/components/general";
 
-const data: StatCardProps[] = [
-  {
-    title: "Members",
-    value: "1",
-    interval: "Last 30 days",
-    trend: "neutral",
-    data: [],
-  },
-  {
-    title: "Contributions",
-    value: "0",
-    interval: "Last 30 days",
-    trend: "neutral",
-    data: [],
-  },
-  {
-    title: "Loans",
-    value: "0",
-    interval: "Last 3 months",
-    trend: "neutral",
-    data: [],
-  },
-  {
-    title: "Table Banking",
-    value: "0",
-    interval: "Last 3 months",
-    trend: "neutral",
-    data: [],
-  },
-];
+import { getMemberCount } from "@/services/MemberService";
+import { StatCardProps, StatCard } from "@/components/general";
+import { useAuthStore } from "@/state/auth/auth";
 
 export function AdminDashboard() {
+  const { isAuthenticated, member } = useAuthStore();
+  const [memberCount, setMemberCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [previousMemberCount, setPreviousMemberCount] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchMemberCount = async () => {
+      if (!member?.group_id) return;
+      
+      try {
+        setLoading(true);
+        const count = await getMemberCount(member.group_id);
+        
+        setMemberCount(count);
+        
+      } catch (error) {
+        console.error("Error fetching member count:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMemberCount();
+  }, [member?.group_id]);
+
+  const getTrend = (current: number, previous: number): 'up' | 'down' | 'neutral' => {
+    if (current > previous) return 'up';
+    if (current < previous) return 'down';
+    return 'neutral';
+  };
+
+  const data: StatCardProps[] = [
+    {
+      title: "Members",
+      value: loading ? "..." : memberCount.toString(),
+      interval: "Total members",
+      trend: getTrend(memberCount, previousMemberCount),
+      data: [],
+    },
+    {
+      title: "Contributions",
+      value: "0",
+      interval: "Last 30 days",
+      trend: "neutral",
+      data: [],
+    },
+    {
+      title: "Loans",
+      value: "0",
+      interval: "Last 3 months",
+      trend: "neutral",
+      data: [],
+    },
+    {
+      title: "Table Banking",
+      value: "0",
+      interval: "Last 3 months",
+      trend: "neutral",
+      data: [],
+    },
+  ];
+
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Grid

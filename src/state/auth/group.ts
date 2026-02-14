@@ -7,6 +7,7 @@ import { validateRoles, getDefaultRole, setUserRole } from "@/types/roles";
 import { getUserGroup } from "@/services/GroupService";
 
 interface GroupState {
+  isLoading: boolean;
   userGroups: UserGroup[];
   selectedGroup: string | null;
   currentRole: UserRole;
@@ -25,6 +26,7 @@ interface GroupActions {
 export const useGroupStore = create<GroupState & GroupActions>()(
   persist(
     (set, get) => ({
+      isLoading: true,
       userGroups: [],
       selectedGroup: null,
       currentRole: 'member',
@@ -44,6 +46,7 @@ export const useGroupStore = create<GroupState & GroupActions>()(
         const validRoles = validateRoles(availableRoles);
         try {
           set({
+            isLoading: false,
             userGroups: groups,
             selectedGroup: groupId || (groups.length > 0 ? groups[0].group_id : null),
             availableRoles: validRoles,
@@ -65,6 +68,7 @@ export const useGroupStore = create<GroupState & GroupActions>()(
         newUserRoles.push('member');
         const validRoles = validateRoles(newUserRoles);
         set({
+          isLoading: false,
           selectedGroup: groupId,
           availableRoles: validRoles,
           currentRole: groupRoles[0],
@@ -80,6 +84,7 @@ export const useGroupStore = create<GroupState & GroupActions>()(
         const state = get();
 
         set({
+          isLoading: false,
           availableRoles: validRoles,
           currentRole: validRoles.includes(state.currentRole)
             ? state.currentRole
@@ -102,6 +107,7 @@ export const useGroupStore = create<GroupState & GroupActions>()(
         const validRoles = validateRoles(newAvailableRoles);
 
         set({
+          isLoading: false,
           availableRoles: validRoles,
           currentRole: validRoles.includes(state.currentRole)
             ? state.currentRole
@@ -111,6 +117,7 @@ export const useGroupStore = create<GroupState & GroupActions>()(
 
       clearGroupData: () => {
         set({
+          isLoading: false,
           userGroups: [],
           selectedGroup: null,
           currentRole: 'member',

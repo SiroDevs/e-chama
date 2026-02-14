@@ -1,19 +1,20 @@
 "use client";
 
 import * as React from "react";
+import { useState, useRef } from "react";
+import { GridPaginationModel, GridSortModel } from "@mui/x-data-grid";
+import { GridFilterModel, GridFilterItem } from "@mui/x-data-grid";
 import { Box, Stack } from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import AddIcon from "@mui/icons-material/Add";
+import { useRouter } from "next/navigation";
+
 import { Header } from "@/components/navigation";
 import { Copyright } from "@/components/general";
 import { useAuthStore } from "@/state/auth/auth";
 import GroupMembers, { GroupMembersRef } from "./group-members";
-import { GridPaginationModel, GridSortModel } from "@mui/x-data-grid";
-import { GridFilterModel, GridFilterItem } from "@mui/x-data-grid";
 import { DatabaseFilters } from "@/types/types";
-import { useState, useRef } from "react";
 import PageContainer from "@/components/actions/PageContainer";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import AddIcon from "@mui/icons-material/Add";
-import { useRouter } from "next/navigation";
 import { PageAction, PageIconButton } from "@/components/actions/MenuButton";
 
 export default function MembersPage() {
