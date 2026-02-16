@@ -1,7 +1,14 @@
 "use client";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import { Stack, Typography, Button, IconButton } from "@mui/material";
+import {
+  Stack,
+  Typography,
+  Button,
+  IconButton,
+  Divider,
+  Box,
+} from "@mui/material";
 import Breadcrumbs, { breadcrumbsClasses } from "@mui/material/Breadcrumbs";
 import { ContainerProps } from "@mui/material/Container";
 import MuiLink from "@mui/material/Link";
@@ -71,6 +78,57 @@ export default function PageContainer(props: PageContainerProps) {
           pb: 1,
         }}
       >
+        <Stack sx={{ justifyContent: "space-between" }}>
+          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+            {showBackButton && (
+              <IconButton
+                onClick={handleBack}
+                size="small"
+                sx={{
+                  flexShrink: 0,
+                  mr: 1,
+                  p: { xs: 0.3, sm: 0.5 },
+                }}
+              >
+                <ArrowBack fontSize="small" />
+              </IconButton>
+            )}
+            <Box
+              sx={{
+                display: "flex",
+                overflow: "hidden",
+                flexDirection: { xs: "column", sm: "row" },
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+              }}
+            >
+              {title ? (
+                <Typography
+                  variant="h4"
+                  sx={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    flex: "1 1 auto",
+                    minWidth: 0,
+                    mr: 1,
+                    maxWidth: "100%",
+                    fontSize: { xs: "1.25rem", sm: "2rem" },
+                    lineHeight: { xs: 1.4, sm: 1.2 },
+                  }}
+                >
+                  {title}
+                </Typography>
+              ) : null}
+              {titleExtra}
+            </Box>
+
+            <PageHeaderToolbar>{actions}</PageHeaderToolbar>
+          </Stack>
+        </Stack>
+
+        <Divider sx={{ flex: 1, mt: 1 }} />
+
         <PageHeaderBreadcrumbs
           aria-label="breadcrumb"
           separator={<NavigateNextRounded fontSize="small" />}
@@ -99,22 +157,6 @@ export default function PageContainer(props: PageContainerProps) {
               })
             : null}
         </PageHeaderBreadcrumbs>
-        <PageContentHeader>
-          <TitleContainer>
-            {showBackButton && (
-              <IconButton 
-                onClick={handleBack}
-                size="small"
-                sx={{ mr: 1 }}
-              >
-                <ArrowBack />
-              </IconButton>
-            )}
-            {title ? <Typography variant="h4">{title}</Typography> : null}
-            {titleExtra}
-          </TitleContainer>
-          <PageHeaderToolbar>{actions}</PageHeaderToolbar>
-        </PageContentHeader>
       </Stack>
     </Stack>
   );
