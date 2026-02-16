@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { AuthWrapper } from "@/components/layouts/AuthWrapper";
 import { MainWrapper } from "@/components/layouts/MainWrapper";
@@ -8,8 +7,8 @@ import { useAuthStore } from "@/state/auth/auth";
 import { JoinGroupCard } from "../groups/JoinGroupCard";
 import { GenericWrapper } from "./GenericWrapper";
 import { useGroupStore } from "@/state/auth/group";
-import { Box } from "@mui/material";
-import { AppIcon } from "../general";
+import { Box, Typography } from "@mui/material";
+import { AppIcon, Copyright, Loader } from "../general";
 
 type AppState =
   | "LOADING"
@@ -24,19 +23,12 @@ export default function RootLayout({
 }) {
   const { isAuthenticated, isLoading: authLoading } = useAuthStore();
   const { userGroups, isLoading: groupsLoading } = useGroupStore();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const getAppState = (): AppState => {
-    if (!mounted || authLoading || groupsLoading) {
-      return "LOADING";
-    }
-
     if (!isAuthenticated) {
       return "UNAUTHENTICATED";
+    } else if (authLoading || groupsLoading) {
+      return "LOADING";
     }
 
     const hasGroups = Array.isArray(userGroups) && userGroups.length > 0;
@@ -46,35 +38,37 @@ export default function RootLayout({
   const appState = getAppState();
 
   const renderContent = () => {
-    switch (appState) {
-      case "LOADING":
-        return (
-          <GenericWrapper>
-            <Box sx={{ margin: 3 }}>
-              <AppIcon />
-            </Box>
-          </GenericWrapper>
-        );
-
-      case "UNAUTHENTICATED":
-        return <AuthWrapper>{children}</AuthWrapper>;
-
-      case "AUTHENTICATED_NO_GROUPS":
+    if (!isAuthenticated) {
+      return <AuthWrapper>{children}</AuthWrapper>;
+    } else if (isAuthenticated) {
+      if (userGroups) {
+        return <MainWrapper>{children}</MainWrapper>;
+      } else
         return (
           <GenericWrapper>
             <JoinGroupCard />
           </GenericWrapper>
         );
-
-      case "AUTHENTICATED_HAS_GROUPS":
-        return <MainWrapper>{children}</MainWrapper>;
-
-      default:
-        return (
-          <GenericWrapper>
-            <div></div>
-          </GenericWrapper>
-        );
+    } else {
+      return (
+        <GenericWrapper>
+          <Box sx={{ margin: 3 }}>
+            <Typography
+              variant="body2"
+              align="center"
+              sx={[
+                {
+                  color: "text.secondary",
+                },
+              ]}
+            >
+              <AppIcon />
+            </Typography>
+            <Loader />
+            <Copyright sx={{ flex: 1, my: 4 }} />
+          </Box>
+        </GenericWrapper>
+      );
     }
   };
 

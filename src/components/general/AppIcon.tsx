@@ -1,8 +1,9 @@
-import * as React from 'react';
+import * as React from "react";
 import Image from "next/image";
 
 import appSvg from "../../../public/appicon.svg";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
+import Link from "next/link";
 
 interface AppIconProps {
   width?: number;
@@ -11,21 +12,13 @@ interface AppIconProps {
   sx?: any;
 }
 
-export function AppIcon({ 
-  width = 150, 
-  alt = "App Icon", 
+export function AppIcon({
+  width = 150,
+  alt = "App Icon",
   centered = false,
-  sx = {} 
+  sx = {},
 }: AppIconProps) {
-  
-  const iconContent = (
-    <Image 
-      src={appSvg} 
-      alt={alt} 
-      width={width}
-      priority
-    />
-  );
+  const iconContent = <Image src={appSvg} alt={alt} width={width} priority />;
 
   if (centered) {
     return (
@@ -34,7 +27,7 @@ export function AppIcon({
           display: { xs: "flex", md: "none" },
           justifyContent: "center",
           mb: 2,
-          ...sx
+          ...sx,
         }}
       >
         {iconContent}
@@ -43,8 +36,8 @@ export function AppIcon({
   }
 
   return (
-    <Box sx={sx}>
-      {iconContent}
-    </Box>
+    <Link color="inherit" href="/">
+      <Box sx={sx}>{iconContent}</Box>
+    </Link>
   );
 }

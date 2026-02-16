@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/state/auth/auth";
 import Dashboard from "./(protected)/dashboard";
-import { AppIcon } from "@/components/general";
+import { AppIcon, Copyright } from "@/components/general";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { SignInCard } from "@/components/auth/signin";
@@ -30,6 +30,8 @@ export default function Home() {
         minHeight="100vh"
       >
         <AppIcon width={200} />
+
+        <Copyright sx={{ flex: 1, my: 4 }} />
       </Box>
     );
   }
@@ -37,7 +39,7 @@ export default function Home() {
   function handleOnAuthSuccess() {
     router.push("/");
   }
-  
+
   return (
     <div>
       {isAuthenticated ? (

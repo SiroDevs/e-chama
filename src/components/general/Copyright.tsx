@@ -15,7 +15,7 @@ export function Copyright(props: any) {
       ]}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://echama.vercel.app">
+      <Link color="inherit" href="/">
         eChama
       </Link>{" "}
       {new Date().getFullYear()}

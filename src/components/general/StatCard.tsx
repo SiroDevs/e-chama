@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Box, Card, CardContent } from "@mui/material";
+import { Box, Button, Card, CardContent } from "@mui/material";
 import { Chip, Stack, Typography, useTheme } from "@mui/material";
 import { SparkLineChart, areaElementClasses } from "@mui/x-charts";
+import Link from "next/link";
 
 export type StatCardProps = {
   title: string;
+  link: string;
   value: string;
   interval: string;
   trend: "up" | "down" | "neutral";
@@ -39,6 +41,7 @@ function AreaGradient({ color, id }: { color: string; id: string }) {
 
 export function StatCard({
   title,
+  link,
   value,
   interval,
   trend,
@@ -75,9 +78,19 @@ export function StatCard({
   return (
     <Card variant="outlined" sx={{ height: "100%", flexGrow: 1 }}>
       <CardContent>
-        <Typography component="h2" variant="subtitle2" gutterBottom>
-          {title}
-        </Typography>
+        <Stack sx={{ justifyContent: "space-between" }}>
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "space-between", alignItems: "center" }}
+          >
+            <Typography component="h2" variant="subtitle2" gutterBottom>
+              {title}
+            </Typography>
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+              {interval}
+            </Typography>
+          </Stack>
+        </Stack>
         <Stack
           direction="column"
           sx={{ justifyContent: "space-between", flexGrow: "1", gap: 1 }}
@@ -92,9 +105,6 @@ export function StatCard({
               </Typography>
               <Chip size="small" color={color} label={trendValues[trend]} />
             </Stack>
-            <Typography variant="caption" sx={{ color: "text.secondary" }}>
-              {interval}
-            </Typography>
           </Stack>
           <Box sx={{ width: "100%", height: 50 }}>
             <SparkLineChart
@@ -105,7 +115,7 @@ export function StatCard({
               showTooltip
               xAxis={{
                 scaleType: "band",
-                data: daysInWeek, // Use the correct property 'data' for xAxis
+                data: daysInWeek,
               }}
               sx={{
                 [`& .${areaElementClasses.root}`]: {
@@ -116,6 +126,13 @@ export function StatCard({
               <AreaGradient color={chartColor} id={`area-gradient-${value}`} />
             </SparkLineChart>
           </Box>
+          {link && (
+            <Box sx={{ width: "100%", height: 50 }}>
+              <Link color="inherit" href={link}>
+                <Button variant="outlined">See More</Button>
+              </Link>
+            </Box>
+          )}
         </Stack>
       </CardContent>
     </Card>

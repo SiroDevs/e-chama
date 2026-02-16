@@ -41,6 +41,7 @@ export function AdminDashboard() {
   const data: StatCardProps[] = [
     {
       title: "Members",
+      link: "members",
       value: loading ? "..." : memberCount.toString(),
       interval: "Total members",
       trend: getTrend(memberCount, previousMemberCount),
@@ -48,6 +49,7 @@ export function AdminDashboard() {
     },
     {
       title: "Contributions",
+      link: "contributions",
       value: "0",
       interval: "Last 30 days",
       trend: "neutral",
@@ -55,6 +57,7 @@ export function AdminDashboard() {
     },
     {
       title: "Loans",
+      link: "",
       value: "0",
       interval: "Last 3 months",
       trend: "neutral",
@@ -62,6 +65,7 @@ export function AdminDashboard() {
     },
     {
       title: "Table Banking",
+      link: "",
       value: "0",
       interval: "Last 3 months",
       trend: "neutral",
