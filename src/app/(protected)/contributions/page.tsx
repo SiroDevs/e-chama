@@ -89,7 +89,7 @@ export default function ContributionsPage() {
               icon={<RefreshIcon />}
             />
             <PageAction
-              title="Add a Contribution"
+              title="New Contribution"
               onClick={handleAddNew}
               icon={<AddIcon />}
             />

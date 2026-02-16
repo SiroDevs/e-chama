@@ -6,6 +6,7 @@ import { Copyright } from "@mui/icons-material";
 const data: StatCardProps[] = [
   {
     title: "Users",
+    link: "",
     value: "14k",
     interval: "Last 30 days",
     trend: "up",
@@ -16,6 +17,7 @@ const data: StatCardProps[] = [
   },
   {
     title: "Conversions",
+    link: "",
     value: "325",
     interval: "Last 30 days",
     trend: "down",
@@ -27,6 +29,7 @@ const data: StatCardProps[] = [
   },
   {
     title: "Event count",
+    link: "",
     value: "200k",
     interval: "Last 30 days",
     trend: "neutral",

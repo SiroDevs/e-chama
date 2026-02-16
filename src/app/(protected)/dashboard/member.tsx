@@ -5,6 +5,7 @@ import { StatCardProps, StatCard } from "@/components/general";
 const data: StatCardProps[] = [
   {
     title: "My Contributions",
+    link: "",
     value: "0",
     interval: "Last 30 days",
     trend: "neutral",
@@ -12,6 +13,7 @@ const data: StatCardProps[] = [
   },
   {
     title: "My Loans",
+    link: "",
     value: "0",
     interval: "Last 3 months",
     trend: "neutral",
@@ -19,6 +21,7 @@ const data: StatCardProps[] = [
   },
   {
     title: "My Table Banking",
+    link: "",
     value: "0",
     interval: "Last 3 months",
     trend: "neutral",

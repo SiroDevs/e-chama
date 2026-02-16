@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Tab, Box, Button, Typography, Paper, Chip, Tabs } from "@mui/material";
+import { Tab, Box, Typography, Paper, Chip, Tabs, Stack } from "@mui/material";
 import { Badge } from "@mui/icons-material";
 import { Header } from "@/components/navigation";
 import { Copyright, Loader } from "@/components/general";
@@ -9,12 +9,13 @@ import { useAuthStore } from "@/state/auth/auth";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import PageContainer from "@/components/actions/PageContainer";
-import EditIcon from "@mui/icons-material/Edit";
+import { Add, Edit } from "@mui/icons-material";
 import { getGroupMemberByNo } from "@/services/MemberService";
 import { GroupMember } from "@/types/profiles";
 import { MemberDetails } from "./details";
 import { tabProps, CustomTabPanel } from "@/components/general/CustomTabPanel";
 import ContributionList from "../../contributions/records";
+import { PageAction } from "@/components/actions/MenuButton";
 
 export default function MemberPage() {
   const { isAuthenticated, member } = useAuthStore();
@@ -72,6 +73,11 @@ export default function MemberPage() {
     router.push(`/members/${memberNo}/edit`);
   };
 
+  const handleNewContribution = () => {
+    router.push(`/members/${memberNo}/contributions/new`);
+    // Or open a modal, depending on your implementation
+  };
+
   const pageTitle = loading
     ? "Fetching details"
     : memberData?.full_name || "Unknown Member";
@@ -103,6 +109,33 @@ export default function MemberPage() {
     />
   );
 
+  // Define actions based on selected tab
+  const getActions = () => {
+    if (value === 0) {
+      // Profile tab - show Edit button
+      return (
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <PageAction
+            title="Edit"
+            onClick={handleEdit}
+            icon={<Edit />}
+          />
+        </Stack>
+      );
+    } else {
+      // Contributions tab - show New Contribution button
+      return (
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <PageAction
+            title="New Contribution"
+            onClick={handleNewContribution}
+            icon={<Add />}
+          />
+        </Stack>
+      );
+    }
+  };
+
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Header />
@@ -120,17 +153,7 @@ export default function MemberPage() {
             </Box>
           }
           breadcrumbs={[{ title: "Members" }, { title: "Member" }]}
-          actions={
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <Button
-                variant="contained"
-                startIcon={<EditIcon />}
-                onClick={handleEdit}
-              >
-                Edit
-              </Button>
-            </Box>
-          }
+          actions={getActions()}
         />
         {loading ? (
           <Loader />
