@@ -1,5 +1,5 @@
-import { createContribution } from "@/services/ContributionService";
-import { Contribution } from "@/types/contribution";
+import { createContribution } from "@/infrastucture/services/ContributionService";
+import { Contribution } from "@/data/types/contribution";
 
 export async function newContributionAction(contribution: Contribution) {
   try {

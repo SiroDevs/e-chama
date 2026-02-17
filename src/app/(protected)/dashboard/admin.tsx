@@ -2,9 +2,9 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 
-import { getMemberCount } from "@/services/MemberService";
-import { StatCardProps, StatCard } from "@/components/general";
-import { useAuthStore } from "@/state/auth/auth";
+import { getMemberCount } from "@/infrastucture/services/MemberService";
+import { StatCardProps, StatCard } from "@/presentation/components/general";
+import { useAuthStore } from "@/infrastucture/state/auth/auth";
 
 export function AdminDashboard() {
   const { isAuthenticated, member } = useAuthStore();

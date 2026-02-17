@@ -1,4 +1,4 @@
-import { signMeOut } from "@/services/AuthService";
+import { signMeOut } from "@/infrastucture/services/AuthService";
 
 export async function handleSignOutAction() {
   await signMeOut();

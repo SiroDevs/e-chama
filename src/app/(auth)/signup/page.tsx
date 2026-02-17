@@ -1,7 +1,7 @@
 "use client";
 
-import { SignUpCard } from "@/components/auth";
-import { useAuthStore } from "@/state/auth/auth";
+import { SignUpCard } from "@/presentation/components/auth";
+import { useAuthStore } from "@/infrastucture/state/auth/auth";
 import { useRouter } from "next/navigation";
 
 export default function SignUp() {

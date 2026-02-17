@@ -3,17 +3,17 @@
 import * as React from "react";
 import { useState } from "react";
 import { Box, Stack, CircularProgress, Typography } from "@mui/material";
-import { Header } from "@/components/navigation";
-import { Copyright } from "@/components/general";
-import { useAuthStore } from "@/state/auth/auth";
+import { Header } from "@/presentation/components/navigation";
+import { Copyright } from "@/presentation/components/general";
+import { useAuthStore } from "@/infrastucture/state/auth/auth";
 import { useRouter } from "next/navigation";
 import EditIcon from "@mui/icons-material/Edit";
-import { MemberView } from "@/components/members/MemberView";
-import { PageAction } from "@/components/actions/MenuButton";
+import { MemberView } from "@/presentation/components/members/MemberView";
+import { PageAction } from "@/presentation/components/actions/MenuButton";
 import { processMemberProfileData } from "../members/arrays";
-import PageContainer from "@/components/actions/PageContainer";
-import NewContributionDialog from "@/components/contributions/NewContributionDialog";
-import useNotifications from "@/hooks/notifications/useNotifications";
+import PageContainer from "@/presentation/components/actions/PageContainer";
+import NewContributionDialog from "@/presentation/components/contributions/NewContributionDialog";
+import useNotifications from "@/presentation/hooks/notifications/useNotifications";
 
 export default function MemberPage() {
   const router = useRouter();

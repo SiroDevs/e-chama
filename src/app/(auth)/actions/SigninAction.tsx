@@ -1,9 +1,9 @@
 "use server";
 
-import { signInUser } from "@/services/AuthService";
-import { refreshUserProfile } from "@/services/UserService";
-import { AUTH_ERROR_CODES, AuthResult } from "@/types/auth";
-import { mapAuthError } from "@/utils/mapAuthError";
+import { signInUser } from "@/infrastucture/services/AuthService";
+import { refreshUserProfile } from "@/infrastucture/services/UserService";
+import { AUTH_ERROR_CODES, AuthResult } from "@/data/types/auth";
+import { mapAuthError } from "@/core/utils/mapAuthError";
 
 export async function onSigninAction(payload: {
   email: string;

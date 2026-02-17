@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import { StatCardProps, StatCard, HighlightedCard, SessionsChart, PageViewsBarChart, CustomizedDataGrid, CustomizedTreeView, ChartUserByCountry } from "@/components/general";
+import { StatCardProps, StatCard, HighlightedCard, SessionsChart, PageViewsBarChart, CustomizedDataGrid, CustomizedTreeView, ChartUserByCountry } from "@/presentation/components/general";
 import { Copyright } from "@mui/icons-material";
 
 const data: StatCardProps[] = [

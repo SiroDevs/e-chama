@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { Container, Paper, Typography, Box } from "@mui/material";
 import { Button, Alert, CssBaseline } from "@mui/material";
 import { CheckCircle, Error, ArrowForward } from "@mui/icons-material";
-import AppTheme from "@/theme/AppTheme";
-import { AppIcon } from "@/components/general/AppIcon";
-import { Loader } from "@/components/general/Loader";
-import { verifyToken } from "@/services/VerifyService";
-import { PageStatus } from "@/state/PageStatus";
+import AppTheme from "@/presentation/theme/AppTheme";
+import { AppIcon } from "@/presentation/components/general/AppIcon";
+import { Loader } from "@/presentation/components/general/Loader";
+import { verifyToken } from "@/infrastucture/services/VerifyService";
+import { PageStatus } from "@/infrastucture/state/PageStatus";
 
 interface VerifyEmailProps {
   searchParams: {

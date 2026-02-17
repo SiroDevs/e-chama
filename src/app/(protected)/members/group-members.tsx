@@ -4,8 +4,8 @@ import { GridSortModel, GridFilterModel, gridClasses } from "@mui/x-data-grid";
 import { DataGrid, GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { membersColms, PageSize, RowsState } from "./arrays";
-import { getGroupMembers } from "@/services/MemberService";
-import { EmptyView, ErrorView } from "@/components/general/EmptyView";
+import { getGroupMembers } from "@/infrastucture/services/MemberService";
+import { EmptyView, ErrorView } from "@/presentation/components/general/EmptyView";
 import { useRouter } from "next/navigation";
 
 interface GroupMembersProps {

@@ -5,10 +5,10 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-import { Copyright } from "@/components/general";
-import { useAuthStore } from "@/state/auth/auth";
-import { Header, NavbarBreadcrumbs } from "@/components/navigation";
-import { JoinGroupCard } from "@/components/groups/JoinGroupCard";
+import { Copyright } from "@/presentation/components/general";
+import { useAuthStore } from "@/infrastucture/state/auth/auth";
+import { Header, NavbarBreadcrumbs } from "@/presentation/components/navigation";
+import { JoinGroupCard } from "@/presentation/components/groups/JoinGroupCard";
 
 export default function Dashboard() {
   const router = useRouter();

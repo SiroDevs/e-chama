@@ -3,19 +3,19 @@
 import * as React from "react";
 import { Tab, Box, Typography, Paper, Chip, Tabs, Stack } from "@mui/material";
 import { Badge } from "@mui/icons-material";
-import { Header } from "@/components/navigation";
-import { Copyright, Loader } from "@/components/general";
-import { useAuthStore } from "@/state/auth/auth";
+import { Header } from "@/presentation/components/navigation";
+import { Copyright, Loader } from "@/presentation/components/general";
+import { useAuthStore } from "@/infrastucture/state/auth/auth";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import PageContainer from "@/components/actions/PageContainer";
+import PageContainer from "@/presentation/components/actions/PageContainer";
 import { Add, Edit } from "@mui/icons-material";
-import { getGroupMemberByNo } from "@/services/MemberService";
-import { GroupMember } from "@/types/profiles";
+import { getGroupMemberByNo } from "@/infrastucture/services/MemberService";
+import { GroupMember } from "@/data/types/profiles";
 import { MemberDetails } from "./details";
-import { tabProps, CustomTabPanel } from "@/components/general/CustomTabPanel";
+import { tabProps, CustomTabPanel } from "@/presentation/components/general/CustomTabPanel";
 import ContributionList from "../../contributions/records";
-import { PageAction } from "@/components/actions/MenuButton";
+import { PageAction } from "@/presentation/components/actions/MenuButton";
 
 export default function MemberPage() {
   const { isAuthenticated, member } = useAuthStore();
@@ -75,7 +75,6 @@ export default function MemberPage() {
 
   const handleNewContribution = () => {
     router.push(`/members/${memberNo}/contributions/new`);
-    // Or open a modal, depending on your implementation
   };
 
   const pageTitle = loading
@@ -109,10 +108,8 @@ export default function MemberPage() {
     />
   );
 
-  // Define actions based on selected tab
   const getActions = () => {
     if (value === 0) {
-      // Profile tab - show Edit button
       return (
         <Stack direction="row" alignItems="center" spacing={1}>
           <PageAction
@@ -123,7 +120,6 @@ export default function MemberPage() {
         </Stack>
       );
     } else {
-      // Contributions tab - show New Contribution button
       return (
         <Stack direction="row" alignItems="center" spacing={1}>
           <PageAction

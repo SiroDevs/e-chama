@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, PaletteMode } from "@mui/material";
-import MainLayout from "@/components/layouts/MainLayout";
-import DialogsProvider from "@/hooks/dialogs/DialogsProvider";
-import NotificationsProvider from "@/hooks/notifications/NotificationsProvider";
+import MainLayout from "@/presentation/components/layouts/MainLayout";
+import DialogsProvider from "@/presentation/hooks/dialogs/DialogsProvider";
+import NotificationsProvider from "@/presentation/hooks/notifications/NotificationsProvider";
 
 export default function RootLayout({
   children,

@@ -5,12 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { FormInput } from "@/components/inputs/FormInput";
+import { FormInput } from "@/presentation/components/inputs/FormInput";
 import { newMemberLabels, newMemberSchema } from "./arrays";
 import { newMemberFieldGroups } from "./arrays";
-import { FormDatePicker, FormSelect, FormRadio } from "@/components/inputs";
+import { FormDatePicker, FormSelect, FormRadio } from "@/presentation/components/inputs";
 import { ArrowBack, Person } from "@mui/icons-material";
-import { Loader } from "@/components/general";
+import { Loader } from "@/presentation/components/general";
 
 type FormData = z.infer<typeof newMemberSchema>;
 

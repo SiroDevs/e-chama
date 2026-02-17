@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Box, Typography, Paper, Grid, Divider } from "@mui/material";
-import { GroupMember } from "@/types/profiles";
+import { GroupMember } from "@/data/types/profiles";
 import { Email, Phone, Badge } from "@mui/icons-material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import LocationOnIcon from "@mui/icons-material/LocationOn";

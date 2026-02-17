@@ -1,9 +1,9 @@
 import toast from "react-hot-toast";
 
-import { newMember } from "@/services/MemberService";
-import { newMemberGroup } from "@/services/MemberServiceExts";
-import { getUserGroups, searchByCode } from "@/services/GroupService";
-import { Group, GroupExt, UserGroup } from "@/types/types";
+import { newMember } from "@/infrastucture/services/MemberService";
+import { newMemberGroup } from "@/infrastucture/services/MemberServiceExts";
+import { getUserGroups, searchByCode } from "@/infrastucture/services/GroupService";
+import { Group, GroupExt, UserGroup } from "@/data/types/types";
 
 export async function newGroupAction(group: Group) {
   try {

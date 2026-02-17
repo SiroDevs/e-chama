@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuthStore } from "@/state/auth/auth";
+import { useAuthStore } from "@/infrastucture/state/auth/auth";
 import Dashboard from "./(protected)/dashboard";
-import { AppIcon, Copyright } from "@/components/general";
+import { AppIcon, Copyright } from "@/presentation/components/general";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { SignInCard } from "@/components/auth/signin";
+import { SignInCard } from "@/presentation/components/auth/signin";
 
 export default function Home() {
   const router = useRouter();

@@ -1,9 +1,9 @@
 "use server";
 
-import { signUpUser } from "@/services/AuthService";
-import { createProfile } from "@/services/ProfileService";
-import { AUTH_ERROR_CODES, AuthResult } from "@/types/auth";
-import { mapAuthError } from "@/utils/mapAuthError";
+import { signUpUser } from "@/infrastucture/services/AuthService";
+import { createProfile } from "@/infrastucture/services/ProfileService";
+import { AUTH_ERROR_CODES, AuthResult } from "@/data/types/auth";
+import { mapAuthError } from "@/core/utils/mapAuthError";
 
 export async function onSignupAction(payload: {
   first_name: string;

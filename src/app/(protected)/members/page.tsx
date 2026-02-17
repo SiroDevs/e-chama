@@ -9,13 +9,13 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
 
-import { Header } from "@/components/navigation";
-import { Copyright } from "@/components/general";
-import { useAuthStore } from "@/state/auth/auth";
+import { Header } from "@/presentation/components/navigation";
+import { Copyright } from "@/presentation/components/general";
+import { useAuthStore } from "@/infrastucture/state/auth/auth";
 import GroupMembers, { GroupMembersRef } from "./group-members";
-import { DatabaseFilters } from "@/types/types";
-import PageContainer from "@/components/actions/PageContainer";
-import { PageAction, PageIconButton } from "@/components/actions/MenuButton";
+import { DatabaseFilters } from "@/data/types/types";
+import PageContainer from "@/presentation/components/actions/PageContainer";
+import { PageAction, PageIconButton } from "@/presentation/components/actions/MenuButton";
 
 export default function MembersPage() {
   const router = useRouter();

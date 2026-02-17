@@ -1,18 +1,19 @@
 "use client";
 
 import * as React from "react";
-import { Alert, Box, Typography } from "@mui/material";
-import { Header, NavbarBreadcrumbs } from "@/components/navigation";
-import { Copyright } from "@/components/general";
-import useNotifications from "@/hooks/notifications/useNotifications";
+import { Alert, Box } from "@mui/material";
+import { Header } from "@/presentation/components/navigation";
+import { Copyright } from "@/presentation/components/general";
+import useNotifications from "@/presentation/hooks/notifications/useNotifications";
 import NewMemberForm from "./form";
-import { useAuthStore } from "@/state/auth/auth";
+import { useAuthStore } from "@/infrastucture/state/auth/auth";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
 import { newMemberSchema } from "./arrays";
 import { newMemberAction } from "../../actions/member";
-import { PageStatus } from "@/state/PageStatus";
+import { PageStatus } from "@/infrastucture/state/PageStatus";
 import { useState } from "react";
+import PageContainer from "@/presentation/components/actions/PageContainer";
+import { z } from "zod";
 
 type FormData = z.infer<typeof newMemberSchema>;
 
@@ -82,12 +83,6 @@ export default function NewMemberPage() {
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Header />
-      <NavbarBreadcrumbs
-        items={[
-          { label: "Members", href: "/members" },
-          { label: "New Member" },
-        ]}
-      />
       <Box
         sx={{
           height: {
@@ -100,9 +95,13 @@ export default function NewMemberPage() {
           gap: 1,
         }}
       >
-        <Typography component="h2" variant="h4" sx={{ mb: 1 }}>
-          Register a New Member
-        </Typography>
+        <PageContainer
+          title="Register a New Member"
+          breadcrumbs={[
+            { title: "Members" },
+            { title: "New Member" },
+          ]}
+        />
 
         {status === "error" && <Alert severity="error"> {message}</Alert>}
 

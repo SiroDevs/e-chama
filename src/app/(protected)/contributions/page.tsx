@@ -2,20 +2,20 @@
 
 import * as React from "react";
 import { Box, Stack } from "@mui/material";
-import { Header } from "@/components/navigation";
-import { Copyright } from "@/components/general";
-import { useAuthStore } from "@/state/auth/auth";
+import { Header } from "@/presentation/components/navigation";
+import { Copyright } from "@/presentation/components/general";
+import { useAuthStore } from "@/infrastucture/state/auth/auth";
 import ContributionList from "./records";
 import { useRouter } from "next/navigation";
 import AddIcon from "@mui/icons-material/Add";
-import { PageAction, PageIconButton } from "@/components/actions/MenuButton";
-import PageContainer from "@/components/actions/PageContainer";
-import useNotifications from "@/hooks/notifications/useNotifications";
+import { PageAction, PageIconButton } from "@/presentation/components/actions/MenuButton";
+import PageContainer from "@/presentation/components/actions/PageContainer";
+import useNotifications from "@/presentation/hooks/notifications/useNotifications";
 import { useEffect, useState } from "react";
-import NewContributionDialog from "@/components/contributions/NewContributionDialog";
-import { GroupMember } from "@/types/profiles";
+import NewContributionDialog from "@/presentation/components/contributions/NewContributionDialog";
+import { GroupMember } from "@/data/types/profiles";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { getGroupMembers } from "@/services/MemberService";
+import { getGroupMembers } from "@/infrastucture/services/MemberService";
 
 export default function ContributionsPage() {
   const router = useRouter();

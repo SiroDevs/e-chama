@@ -3,10 +3,10 @@ import { DataGrid, GridSortModel, GridFilterModel } from "@mui/x-data-grid";
 import { GridPaginationModel, GridRowParams } from "@mui/x-data-grid";
 import { gridClasses, GridFilterItem } from "@mui/x-data-grid";
 import { Alert, Box, Typography, Paper } from "@mui/material";
-import { GrpContribution } from "@/types/contribution";
-import { DatabaseFilters } from "@/types/types";
+import { GrpContribution } from "@/data/types/contribution";
+import { DatabaseFilters } from "@/data/types/types";
 import { contributionsColms } from "./arrays";
-import { getGroupContributions } from "@/services/ContributionServiceExts";
+import { getGroupContributions } from "@/infrastucture/services/ContributionServiceExts";
 
 interface RowsState {
   rows: GrpContribution[];

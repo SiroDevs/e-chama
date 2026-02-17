@@ -1,6 +1,6 @@
-import { Profile } from "@/state/role/profiles";
-import { GroupMember, MemberProfileProps } from "@/types/profiles";
-import { Member } from "@/types/types";
+import { Profile } from "@/infrastucture/state/role/profiles";
+import { GroupMember, MemberProfileProps } from "@/data/types/profiles";
+import { Member } from "@/data/types/types";
 import { GridColDef } from "@mui/x-data-grid";
 
 export interface RowsState {

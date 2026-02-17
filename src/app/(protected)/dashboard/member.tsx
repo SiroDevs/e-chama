@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Grid } from "@mui/material";
-import { StatCardProps, StatCard } from "@/components/general";
+import { StatCardProps, StatCard } from "@/presentation/components/general";
 
 const data: StatCardProps[] = [
   {

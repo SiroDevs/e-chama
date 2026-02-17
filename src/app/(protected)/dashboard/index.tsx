@@ -2,10 +2,10 @@
 
 import * as React from "react";
 
-import { Header, NavbarBreadcrumbs } from "@/components/navigation";
+import { Header, NavbarBreadcrumbs } from "@/presentation/components/navigation";
 import { Box, Typography } from "@mui/material";
-import { Copyright, MainGrid } from "@/components/general";
-import { useGroupStore } from "@/state/auth/group";
+import { Copyright, MainGrid } from "@/presentation/components/general";
+import { useGroupStore } from "@/infrastucture/state/auth/group";
 import { AdminDashboard } from "./admin";
 import { MemberDashboard } from "./member";
 

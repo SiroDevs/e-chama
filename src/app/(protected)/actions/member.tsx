@@ -1,9 +1,9 @@
 import toast from "react-hot-toast";
 
-import { newMemberProfile } from "@/services/MemberServiceExts";
-import { searchByCode } from "@/services/GroupService";
-import { GroupExt, Member } from "@/types/types";
-import { Profile } from "@/state/role/profiles";
+import { newMemberProfile } from "@/infrastucture/services/MemberServiceExts";
+import { searchByCode } from "@/infrastucture/services/GroupService";
+import { GroupExt, Member } from "@/data/types/types";
+import { Profile } from "@/infrastucture/state/role/profiles";
 
 export async function newMemberAction(payload: {
   email: string;
