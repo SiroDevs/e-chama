@@ -1,9 +1,3 @@
-/**
- * Formats a date into a human-readable string
- * @param date The date to format
- * @param options Optional formatting options
- * @returns A formatted date string
- */
 export const formatDate = (
   date: Date | string | number,
   options: {
