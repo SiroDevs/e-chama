@@ -15,11 +15,6 @@ export default function MainNavBar() {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // const menuItems = [
-  //   { name: "Pricing", href: "#pricing" },
-  //   { name: "Testimonials", href: "#testimonials" },
-  // ];
-
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
