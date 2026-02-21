@@ -1,52 +1,7 @@
-"use client";
+import HomePage from "@/presentation/layout/HomePage";
 
-import { useEffect, useState } from "react";
-import { useAuthStore } from "@/infrastucture/state/auth/auth";
-import Dashboard from "./(protected)/dashboard";
-import { AppIcon, Copyright } from "@/presentation/components/general";
-import { Box } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { SignInCard } from "@/presentation/components/auth/signin";
+const page = () => {
+  return <HomePage />;
+};
 
-export default function Home() {
-  const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuthStore();
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsCheckingAuth(false);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading || isCheckingAuth) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
-      >
-        <AppIcon width={200} />
-
-        <Copyright sx={{ flex: 1, my: 4 }} />
-      </Box>
-    );
-  }
-
-  function handleOnAuthSuccess() {
-    router.push("/");
-  }
-
-  return (
-    <div>
-      {isAuthenticated ? (
-        <Dashboard />
-      ) : (
-        <SignInCard onAuthSuccess={handleOnAuthSuccess} />
-      )}
-    </div>
-  );
-}
+export default page;
