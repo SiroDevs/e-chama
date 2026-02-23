@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { User } from "../../domain/entities/User";
+import { AppUser } from "../../domain/entities/User";
 
 // Define the state type for authentication
 interface AuthState {
-  user: User | null;
+  user: AppUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
@@ -24,7 +24,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     // Set the current user
-    setUser: (state, action: PayloadAction<User | null>) => {
+    setUser: (state, action: PayloadAction<AppUser | null>) => {
       state.user = action.payload;
       state.isAuthenticated = !!action.payload;
       state.isLoading = false;

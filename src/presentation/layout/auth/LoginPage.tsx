@@ -1,37 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { Button } from "@/presentation/components/ui/button";
-import { Input } from "@/presentation/components/ui/input";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/presentation/components/ui/form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/presentation/components/ui/card";
-import { loginUser } from "@/application/use-cases/auth/loginUser";
-import { AppDispatch } from "@/application/state/store";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { AlertCircle } from "lucide-react";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/presentation/components/ui/alert";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button, Input, Form, FormField } from "@/presentation/components/ui";
+import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui";
+import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
+import { CardHeader, CardFooter } from "@/presentation/components/ui";
+import { CardDescription, Alert } from "@/presentation/components/ui";
+import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
+import { loginUser } from "@/application/use-cases/auth/loginUser";
+import { AppDispatch } from "@/application/state/store";
 
 // Form schema with validation
 const formSchema = z.object({
@@ -68,7 +53,7 @@ export default function LoginPage() {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to login. Please check your credentials and try again."
+          : "Failed to login. Please check your credentials and try again.",
       );
     } finally {
       setIsLoading(false);

@@ -1,5 +1,5 @@
 // Domain entity for User
-export interface User {
+export interface AppUser {
   uid: string;
   email: string | null;
   displayName: string | null;
@@ -13,7 +13,7 @@ export const createUser = (
   email: string | null,
   displayName: string | null = null,
   photoURL: string | null = null
-): User => {
+): AppUser => {
   return {
     uid,
     email,

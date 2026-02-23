@@ -1,6 +1,6 @@
 "use server";
 
-import { User, createUser } from "@/domain/entities/User";
+import { AppUser, createUser } from "@/domain/entities/User";
 import { auth } from "@/infrastructure/firebase/config";
 import {
   createUserWithEmailAndPassword,
@@ -14,7 +14,7 @@ import {
 // Helper function to convert Firebase User to our domain User
 const firebaseUserToDomainUser = (
   firebaseUser: UserInfo | null
-): User | null => {
+): AppUser | null => {
   if (!firebaseUser) return null;
 
   return createUser(
@@ -29,7 +29,7 @@ const firebaseUserToDomainUser = (
 export async function registerUserAction(
   email: string,
   password: string
-): Promise<User> {
+): Promise<AppUser> {
   try {
     // Set persistence to LOCAL on client side actions
     if (typeof window !== "undefined") {
@@ -42,7 +42,7 @@ export async function registerUserAction(
       password
     );
 
-    return firebaseUserToDomainUser(userCredential.user) as User;
+    return firebaseUserToDomainUser(userCredential.user) as AppUser;
   } catch (error: unknown) {
     console.error("Error registering user:", error);
     throw new Error(
@@ -57,7 +57,7 @@ export async function registerUserAction(
 export async function loginUserAction(
   email: string,
   password: string
-): Promise<User> {
+): Promise<AppUser> {
   try {
     // Set persistence to LOCAL on client side actions
     if (typeof window !== "undefined") {
@@ -70,7 +70,7 @@ export async function loginUserAction(
       password
     );
 
-    return firebaseUserToDomainUser(userCredential.user) as User;
+    return firebaseUserToDomainUser(userCredential.user) as AppUser;
   } catch (error: unknown) {
     console.error("Error logging in user:", error);
     throw new Error(
