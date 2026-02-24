@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AuthRepoImpl } from "@/infrastructure/repos/AuthRepoImpl";
 import { setUser, setLoading } from "@/application/state/authSlice";
-import { clearTodos } from "@/application/state/todoSlice";
+// import { clearTodos } from "@/application/state/todoSlice";
 import { AppDispatch } from "@/application/state/store";
 
 // Create an instance of the auth repository
@@ -24,7 +24,7 @@ export const useAuthStateListener = () => {
         dispatch(setUser(user));
       } else {
         dispatch(setUser(null));
-        dispatch(clearTodos());
+        // dispatch(clearTodos());
       }
       setIsInitialized(true);
       dispatch(setLoading(false));
@@ -38,7 +38,7 @@ export const useAuthStateListener = () => {
       } else {
         // User is signed out
         dispatch(setUser(null));
-        dispatch(clearTodos());
+        // dispatch(clearTodos());
       }
 
       // Set loading to false after auth state is determined

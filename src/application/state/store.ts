@@ -1,12 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
-import todoReducer from "./todoSlice";
 
 // Configure the Redux store
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    todos: todoReducer,
+    // todos: todoReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -15,8 +14,8 @@ export const store = configureStore({
         ignoredActions: ["auth/setUser"],
         ignoredPaths: [
           "auth.user.createdAt",
-          "todos.items.createdAt",
-          "todos.items.updatedAt",
+          // "todos.items.createdAt",
+          // "todos.items.updatedAt",
         ],
       },
     }),
