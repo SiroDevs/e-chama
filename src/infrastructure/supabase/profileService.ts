@@ -1,4 +1,4 @@
-import { Profile } from "@/domain/entities/Profiles";
+import { Profile } from "@/domain/entities/user.role.entity";
 import { supabase } from "@/lib/supabase/client";
 
 export const profileService = {

@@ -1,6 +1,5 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { resetState, setLoading, setError } from "../../state/authSlice";
-import { clearTodos } from "../../state/todoSlice";
 import { signoutUserAction } from "@/app/actions/auth-actions";
 
 // Logout use case - now using the API route
@@ -14,7 +13,6 @@ export const signoutUser = () => {
 
       // Reset the auth and todo states
       dispatch(resetState());
-      dispatch(clearTodos());
     } catch (error: unknown) {
       dispatch(
         setError(error instanceof Error ? error.message : "Failed to logout")

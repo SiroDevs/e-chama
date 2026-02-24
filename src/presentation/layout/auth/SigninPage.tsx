@@ -15,7 +15,7 @@ import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
 import { CardHeader, CardFooter } from "@/presentation/components/ui";
 import { CardDescription, Alert } from "@/presentation/components/ui";
 import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
-import { signinUser } from "@/application/use-cases/auth/signinUser";
+import { signinUser } from "@/application/use-cases/auth/signin";
 import { AppDispatch } from "@/application/state/store";
 
 const formSchema = z.object({

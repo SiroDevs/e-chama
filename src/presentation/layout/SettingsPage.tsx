@@ -6,7 +6,7 @@ import { Button, Card, CardTitle } from "@/presentation/components/ui";
 import { CardContent, CardHeader } from "@/presentation/components/ui";
 import { CardDescription } from "@/presentation/components/ui";
 import { ArrowLeft, LogOut } from "lucide-react";
-import { signoutUser } from "@/application/use-cases/auth/signoutUser";
+import { signoutUser } from "@/application/use-cases/auth/signout";
 import Link from "next/link";
 import { useToast } from "@/presentation/components/ui/use-toast";
 

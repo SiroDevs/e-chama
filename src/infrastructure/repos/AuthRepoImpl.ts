@@ -1,5 +1,5 @@
-import { AppUser, supabaseUserToAppUser } from "@/domain/entities/User";
-import { AuthRepo } from "../../domain/repos/AuthRepo";
+import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";
+import { AuthRepo } from "../../domain/repos/auth.repo";
 import { authService } from "../supabase/authService";
 import { AuthResponse } from "@supabase/supabase-js";
 import { profileService } from "../supabase/profileService";

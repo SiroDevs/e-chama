@@ -75,24 +75,3 @@ const RoleInfo: Record<UserRole, UserRoleInfo> = {
     description: 'Member with standard privileges'
   }
 };
-
-export interface Profile {
-  id?: string;
-  first_name?: string;
-  last_name?: string;
-  country?: string;
-  address?: string;
-  sex?: string;
-  dob?: string;
-  avatar?: string;
-  id_number?: string;
-  kra_pin?: string;
-}
-
-export interface Member {
-  id?: string;
-  group_id?: string;
-  member_no?: string;
-  role?: string;
-  joined_at?: string;
-}

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/application/state/store";
-import { signoutUser } from "@/application/use-cases/auth/signoutUser";
+import { signoutUser } from "@/application/use-cases/auth/signout";
 import { Button, DropdownMenu, DropdownMenuItem } from "../ui";
 import { DropdownMenuContent, DropdownMenuLabel } from "../ui";
 import { DropdownMenuSeparator, DropdownMenuTrigger } from "../ui";

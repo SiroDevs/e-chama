@@ -1,5 +1,5 @@
 import { AuthResponse } from "@supabase/supabase-js";
-import { AppUser } from "../entities/User";
+import { AppUser } from "../entities/app.user.entity";
 
 // Abstract repository interface for authentication operations
 export interface AuthRepo {

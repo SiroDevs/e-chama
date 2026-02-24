@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase/client";
 import { AuthResponse, UserResponse } from "@supabase/supabase-js";
-import { AppUser, supabaseUserToAppUser } from "@/domain/entities/User";
+import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";
 
 export const authService = {
   async signupUser(

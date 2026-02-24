@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { AppUser } from "../../domain/entities/User";
+import { AppUser } from "../../domain/entities/app.user.entity";
 
 // Define the state type for authentication
 interface AuthState {

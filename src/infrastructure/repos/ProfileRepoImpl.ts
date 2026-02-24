@@ -1,6 +1,6 @@
-import { Profile } from "@/domain/entities/Profiles";
-import { ProfileRepo } from "@/domain/repos/ProfileRepo";
+import { ProfileRepo } from "@/domain/repos/profile.repo";
 import { profileService } from "../supabase/profileService";
+import { Profile } from "@/domain/entities";
 
 export class ProfileRepoImpl implements ProfileRepo {
   async fetchUserProfile(userId: string): Promise<{ data: Profile | null; error: Error | null }> {

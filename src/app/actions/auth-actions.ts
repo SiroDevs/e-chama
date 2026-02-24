@@ -1,6 +1,6 @@
 "use server";
 
-import { AppUser, supabaseUserToAppUser } from "@/domain/entities/User";
+import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";
 import { authService } from "@/infrastructure/supabase/authService";
 import { profileService } from "@/infrastructure/supabase/profileService";
 

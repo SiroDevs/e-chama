@@ -1,4 +1,4 @@
-import { Profile } from "@/domain/entities/Profiles";
+import { Profile } from "@/domain/entities";
 
 export interface ProfileRepo {
   fetchUserProfile(userId: string): Promise<{ data: Profile | null; error: Error | null }>;

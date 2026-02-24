@@ -9,7 +9,7 @@ import { DropdownMenuItem, DropdownMenuLabel } from "../ui";
 import { DropdownMenuSeparator, DropdownMenuTrigger } from "../ui";
 import { AppDispatch, RootState } from "@/application/state/store";
 import { useToast } from "../ui/use-toast";
-import { signoutUser } from "@/application/use-cases/auth/signoutUser";
+import { signoutUser } from "@/application/use-cases/auth/signout";
 import Link from "next/link";
 
 export default function UserNav() {
