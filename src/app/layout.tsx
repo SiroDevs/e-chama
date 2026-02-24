@@ -1,26 +1,18 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-import ThemeProvider from "@/presentation/providers/ThemeProvider";
 import { AppProvider } from "@/presentation/providers/AppProvider";
 import { Toaster } from "@/presentation/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/presentation/components/ui/sonner";
-import Navbar from "@/presentation/components/common/Navbar";
+import { Providers } from "@/presentation/providers/ThemeProvider";
+import { Geist } from "next/font/google";
+import Navbar from "@/presentation/components/common/navbar";
+import Footer from "@/presentation/components/common/footer";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Toodles - Todo App",
-  description: "A clean architecture todo app built with Next.js and Firebase",
+  title: "eChama",
+  description: "The digital sacco management",
 };
 
 export default function RootLayout({
@@ -31,16 +23,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geist.className} antialiased`}
         suppressHydrationWarning
       >
         <AppProvider>
-          <ThemeProvider>
+          <Providers>
             <Navbar />
             {children}
             <Toaster />
             <SonnerToaster />
-          </ThemeProvider>
+            <Footer />
+          </Providers>
         </AppProvider>
       </body>
     </html>

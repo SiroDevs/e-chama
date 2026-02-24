@@ -15,7 +15,7 @@ import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
 import { CardHeader, CardFooter } from "@/presentation/components/ui";
 import { CardDescription, Alert } from "@/presentation/components/ui";
 import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
-import { loginUser } from "@/application/use-cases/auth/loginUser";
+import { signinUser } from "@/application/use-cases/auth/signinUser";
 import { AppDispatch } from "@/application/state/store";
 
 // Form schema with validation
@@ -26,7 +26,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function LoginPage() {
+export default function SigninPage() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -45,9 +45,8 @@ export default function LoginPage() {
       setIsLoading(true);
       setError(null);
 
-      await dispatch(loginUser(values.email, values.password));
+      await dispatch(signinUser(values.email, values.password));
 
-      // Redirect to dashboard on successful login
       router.push("/");
     } catch (err: unknown) {
       setError(
@@ -61,7 +60,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+    <div className="flex items-center justify-center p-4 pt-8 pb-20">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Welcome back</CardTitle>
@@ -112,10 +111,10 @@ export default function LoginPage() {
           <div className="text-sm text-gray-500 dark:text-gray-400">
             Don&apos;t have an account?{" "}
             <Link
-              href="/register"
+              href="/signup"
               className="text-blue-600 hover:underline dark:text-blue-400"
             >
-              Sign up
+              Create your account
             </Link>
           </div>
         </CardFooter>

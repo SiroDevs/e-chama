@@ -30,7 +30,7 @@ export * from "./slider";
 export * from "./switch";
 export * from "./table";
 export * from "./tabs";
-export * from "./theme-toggle";
+export * from "./theme-switcher";
 export * from "./toaster";
 export * from "./toggle-group";
 export * from "./tooltip";

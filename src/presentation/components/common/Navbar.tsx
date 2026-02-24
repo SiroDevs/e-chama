@@ -1,118 +1,57 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
+import { Cross1Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/application/state/store";
-import { logoutUser } from "@/application/use-cases/auth/logoutUser";
-import { Button } from "@/presentation/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/presentation/components/ui/dropdown-menu";
-import { ChevronDown,  LogOut, Settings, User } from "lucide-react";
-import { useToast } from "@/presentation/components/ui/use-toast";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "../ui";
+import ThemeSwitcher from "../ui/theme-switcher";
+import { AppIcon } from "./app-icon";
+import UserNav from "./usernav";
 
-export const Navbar = () => {
-  const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.auth);
-  const { toast } = useToast();
+export default function NavBar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      await dispatch(logoutUser());
-      router.push("/login");
-      toast({
-        title: "Success",
-        description: "You have been logged out successfully",
-      });
-    } catch (error: unknown) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to log out",
-      });
-    }
-  };
-
+  const menuItems = [
+    { name: "Pricing", href: "#pricing" },
+    { name: "Testimonials", href: "#testimonials" },
+  ];
+  
   return (
-    <nav className="sticky top-0 z-50 bg-background border-b border-border backdrop-blur-lg">
-      <div className="max-w-7xl mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
-          {/* Logo & App Name */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="font-bold text-xl">Toodles</span>
-          </Link>
-
-          {/* Navigation Items */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Link
-              href="/"
-              className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-1"
+    <nav className="sticky top-0 z-50 w-full backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex sm:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="relative"
             >
-              <span>Home</span>
-            </Link>
-            {user && (
-              <Link
-                href={`/user/${user.uid}/todos`}
-                className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-1"
+              <motion.div
+                animate={{ rotate: isMenuOpen ? 90 : 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
               >
-                <span>Todos</span>
-              </Link>
-            )}
+                {isMenuOpen ? <Cross1Icon /> : <HamburgerMenuIcon />}
+              </motion.div>
+            </Button>
           </div>
+          <div className="flex sm:hidden">
+            <AppIcon />
+          </div>
+          <div className="hidden sm:flex items-center space-x-8">
+            <AppIcon />
 
-          {/* Auth Buttons */}
-          <div className="flex items-center space-x-2">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="flex items-center space-x-1"
-                  >
-                    <User className="h-4 w-4" />
-                    <span className="max-w-[100px] truncate">{user.email}</span>
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => router.push(`/user/${user.uid}/settings`)}
-                  >
-                    <Settings className="h-4 w-4 mr-2" />
-                    <span>Settings</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="h-4 w-4 mr-2" />
-                    <span>Logout</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <>
-                <Button variant="ghost" onClick={() => router.push("/login")}>
-                  Login
-                </Button>
-                <Button onClick={() => router.push("/register")}>
-                  Register
-                </Button>
-              </>
-            )}
+            <Button asChild variant="ghost" size="sm">
+              <Link href="#faqs">Faqs</Link>
+            </Button>
+          </div>
+          <div className="flex items-center space-x-4">
+            <UserNav/>
+            <ThemeSwitcher />
           </div>
         </div>
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

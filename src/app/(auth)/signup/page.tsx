@@ -1,4 +1,4 @@
-import RegisterPage from "@/presentation/layout/auth/RegisterPage";
+import RegisterPage from "@/presentation/layout/auth/SignupPage";
 import React from "react";
 
 const page = () => {

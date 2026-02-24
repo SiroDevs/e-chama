@@ -1,39 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { Button } from "@/presentation/components/ui/button";
-import { Input } from "@/presentation/components/ui/input";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/presentation/components/ui/form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/presentation/components/ui/card";
-import { registerUser } from "@/application/use-cases/auth/registerUser";
-import { AppDispatch } from "@/application/state/store";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { AlertCircle } from "lucide-react";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/presentation/components/ui/alert";
 
-// Form schema with validation
+import { Button, Input, Form, FormField } from "@/presentation/components/ui";
+import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui";
+import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
+import { CardHeader, CardFooter } from "@/presentation/components/ui";
+import { CardDescription, Alert } from "@/presentation/components/ui";
+import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
+import { signupUser } from "@/application/use-cases/auth/signupUser";
+import { AppDispatch } from "@/application/state/store";
+
 const formSchema = z
   .object({
     email: z.string().email({ message: "Please enter a valid email address" }),
@@ -49,7 +33,7 @@ const formSchema = z
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function RegisterPage() {
+export default function SignupPage() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -69,15 +53,14 @@ export default function RegisterPage() {
       setIsLoading(true);
       setError(null);
 
-      await dispatch(registerUser(values.email, values.password));
+      await dispatch(signupUser(values.email, values.password));
 
-      // Redirect to dashboard on successful registration
       router.push("/");
     } catch (err: unknown) {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to register. Please try again."
+          : "Failed to register. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -85,7 +68,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+    <div className="flex items-center justify-center p-4 pt-8 pb-20">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Create an account</CardTitle>

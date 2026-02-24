@@ -1,16 +1,16 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { resetState, setLoading, setError } from "../../state/authSlice";
 import { clearTodos } from "../../state/todoSlice";
-import { logoutUserAction } from "@/app/actions/authActions";
+import { signoutUserAction } from "@/app/actions/auth-actions";
 
 // Logout use case - now using the API route
-export const logoutUser = () => {
+export const signoutUser = () => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(setLoading(true));
 
-      // Call the logout action
-      await logoutUserAction();
+      // Call the sign out action
+      await signoutUserAction();
 
       // Reset the auth and todo states
       dispatch(resetState());

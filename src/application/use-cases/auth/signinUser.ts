@@ -1,26 +1,27 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { setUser, setLoading, setError } from "../../state/authSlice";
-import { registerUserAction } from "@/app/actions/authActions";
 
-// Register use case 
-export const registerUser = (email: string, password: string) => {
+import { setUser, setLoading, setError } from "../../state/authSlice";
+import { signinUserAction } from "@/app/actions/auth-actions";
+
+export const signinUser = (email: string, password: string) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(setLoading(true));
 
-      // Call the register user action
-      const user = await registerUserAction(email, password);
+      // Call signin action
+      const user = await signinUserAction(email, password);
 
       if (!user) {
-        throw new Error("User registration failed");
+        throw new Error("User not found after signin");
       }
+
       // Update the auth state
       dispatch(setUser(user));
 
       return user;
     } catch (error: unknown) {
       dispatch(
-        setError(error instanceof Error ? error.message : "Failed to register")
+        setError(error instanceof Error ? error.message : "Failed to signin")
       );
       throw error;
     } finally {

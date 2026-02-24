@@ -1,18 +1,12 @@
 "use client";
 
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/application/state/store";
-import { Button } from "@/presentation/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/presentation/components/ui/card";
+import { Button, Card, CardTitle } from "@/presentation/components/ui";
+import { CardContent, CardHeader } from "@/presentation/components/ui";
+import { CardDescription } from "@/presentation/components/ui";
 import { ArrowLeft, LogOut } from "lucide-react";
-import { logoutUser } from "@/application/use-cases/auth/logoutUser";
+import { signoutUser } from "@/application/use-cases/auth/signoutUser";
 import Link from "next/link";
 import { useToast } from "@/presentation/components/ui/use-toast";
 
@@ -21,9 +15,9 @@ export default function SettingsPage() {
   const { user } = useSelector((state: RootState) => state.auth);
   const { toast } = useToast();
 
-  // Logout the user
-  const handleLogout = () => {
-    dispatch(logoutUser())
+  // Signout the user
+  const handleSignout = () => {
+    dispatch(signoutUser())
       .then(() => {
         toast({
           title: "Logged out",
@@ -50,7 +44,7 @@ export default function SettingsPage() {
           </Link>
           <h1 className="text-3xl font-bold">Settings</h1>
         </div>
-        <Button variant="outline" onClick={handleLogout}>
+        <Button variant="outline" onClick={handleSignout}>
           <LogOut className="h-4 w-4 mr-2" />
           Logout
         </Button>

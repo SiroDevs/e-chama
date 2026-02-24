@@ -29,7 +29,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       {mounted ? (
         <AuthStateListener>{children}</AuthStateListener>
       ) : (
-        // Return placeholder with the same structure to avoid layout shift
         <div className="contents">{children}</div>
       )}
     </Provider>
