@@ -1,5 +1,3 @@
-"use server";
-
 import { Profile } from "@/domain/entities/Profiles";
 import { supabase } from "@/lib/supabase/client";
 

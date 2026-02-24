@@ -45,8 +45,8 @@ export async function signinUserAction(
 export async function signupUserAction(
   first_name: string,
   last_name: string,
-  email: string,
   phone: string,
+  email: string,
   password: string
 ): Promise<AppUser> {
   try {
@@ -81,7 +81,6 @@ export async function signupUserAction(
     if (!domainUser) {
       throw new Error("Failed to convert user to app user");
     }
-
     return domainUser;
   } catch (error: unknown) {
     console.error("Error registering user:", error);

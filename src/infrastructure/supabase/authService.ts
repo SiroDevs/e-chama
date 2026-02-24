@@ -1,7 +1,5 @@
-"use server";
-
 import { supabase } from "@/lib/supabase/client";
-import { AuthResponse, User, UserResponse } from "@supabase/supabase-js";
+import { AuthResponse, UserResponse } from "@supabase/supabase-js";
 import { AppUser, supabaseUserToAppUser } from "@/domain/entities/User";
 
 export const authService = {

@@ -3,13 +3,13 @@ import { setUser, setLoading, setError } from "../../state/authSlice";
 import { signupUserAction } from "@/app/actions/auth-actions";
 
 // Register use case 
-export const signupUser = (first_name: string, last_name: string, email: string, password: string) => {
+export const signupUser = (first_name: string, last_name: string, phone: string, email: string, password: string) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(setLoading(true));
 
       // Call the register user action
-      const user = await signupUserAction("", "", "", email, password);
+      const user = await signupUserAction(first_name, last_name, phone, email, password);
 
       if (!user) {
         throw new Error("Account creation failed");

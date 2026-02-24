@@ -18,10 +18,9 @@ import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
 import { signinUser } from "@/application/use-cases/auth/signinUser";
 import { AppDispatch } from "@/application/state/store";
 
-// Form schema with validation
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(1, { message: "Password is required" }),
+  password: z.string().min(8, { message: "Password is required" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;

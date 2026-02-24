@@ -60,6 +60,7 @@ export default function SignupPage() {
         signupUser(
           values.first_name,
           values.last_name,
+          '',
           values.email,
           values.password,
         ),
@@ -116,7 +117,7 @@ export default function SignupPage() {
                 control={form.control}
                 name="email"
                 label="Email Address"
-                placeholder="email@example.com"
+                placeholder="oyonde@obande.com"
                 type="email"
               />
 
