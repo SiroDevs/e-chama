@@ -1,3 +1,38 @@
+import { User } from "@supabase/supabase-js";
+
+interface AuthData {
+  user: User;
+  session: any;
+  profile?: any;
+}
+
+export const supabaseUserToAppUser = (data: AuthData | null): AppUser | null => {
+  if (!data || !data.user) return null;
+
+  let fullName = data.user.email?.split('@')[0] || 'User';
+
+  if (data.profile) {
+    if (data.profile.first_name || data.profile.last_name) {
+      fullName = `${data.profile.first_name || ''} ${data.profile.last_name || ''}`.trim();
+    }
+  } else if (data.user.user_metadata) {
+    const firstName = data.user.user_metadata.first_name || '';
+    const lastName = data.user.user_metadata.last_name || '';
+    if (firstName || lastName) {
+      fullName = `${firstName} ${lastName}`.trim();
+    }
+  }
+
+  const avatar = data.profile?.avatar || data.user.user_metadata?.avatar;
+
+  return createUser(
+    data.user.id,
+    data.user.email || '',
+    fullName,
+    avatar
+  );
+};
+
 // Domain entity for User
 export interface AppUser {
   uid: string;

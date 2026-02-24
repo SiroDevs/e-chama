@@ -9,8 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { AlertCircle } from "lucide-react";
 
-import { Button, Input, Form, FormField } from "@/presentation/components/ui";
-import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui";
+import { Button, Form, FormInput } from "@/presentation/components/ui";
 import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
 import { CardHeader, CardFooter } from "@/presentation/components/ui";
 import { CardDescription, Alert } from "@/presentation/components/ui";
@@ -20,10 +19,12 @@ import { AppDispatch } from "@/application/state/store";
 
 const formSchema = z
   .object({
+    first_name: z.string().min(4, { message: "Your first name is too short" }),
+    last_name: z.string().min(4, { message: "Your last name is too short" }),
     email: z.string().email({ message: "Please enter a valid email address" }),
     password: z
       .string()
-      .min(6, { message: "Password must be at least 6 characters long" }),
+      .min(8, { message: "Password must be at least 8 characters long" }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -42,6 +43,8 @@ export default function SignupPage() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -53,7 +56,14 @@ export default function SignupPage() {
       setIsLoading(true);
       setError(null);
 
-      await dispatch(signupUser(values.email, values.password));
+      await dispatch(
+        signupUser(
+          values.first_name,
+          values.last_name,
+          values.email,
+          values.password,
+        ),
+      );
 
       router.push("/");
     } catch (err: unknown) {
@@ -87,45 +97,56 @@ export default function SignupPage() {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-4">
+                <FormInput
+                  control={form.control}
+                  name="first_name"
+                  label="First Name"
+                  placeholder="Oyonde"
+                />
+                <FormInput
+                  control={form.control}
+                  name="last_name"
+                  label="Last Name"
+                  placeholder="Obande"
+                />
+              </div>
+
+              <FormInput
                 control={form.control}
                 name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <Input placeholder="email@example.com" {...field} />
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="Email Address"
+                placeholder="email@example.com"
+                type="email"
               />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <Input type="password" placeholder="••••••••" {...field} />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-4">
+                <FormInput
+                  control={form.control}
+                  name="password"
+                  label="Password"
+                  placeholder="••••••••"
+                  type="password"
+                />
+                <FormInput
+                  control={form.control}
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  placeholder="••••••••"
+                  type="password"
+                />
+              </div>
 
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <Input type="password" placeholder="••••••••" {...field} />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Creating account..." : "Register"}
-              </Button>
+              <div className="pt-5">
+                <Button
+                  type="submit"
+                  className="w-full"
+                  size="lg"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Creating account ..." : "Create Your Account"}
+                </Button>
+              </div>
             </form>
           </Form>
         </CardContent>
@@ -133,10 +154,10 @@ export default function SignupPage() {
           <div className="text-sm text-gray-500 dark:text-gray-400">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href="/signin"
               className="text-blue-600 hover:underline dark:text-blue-400"
             >
-              Sign in
+              Just Sign in
             </Link>
           </div>
         </CardFooter>

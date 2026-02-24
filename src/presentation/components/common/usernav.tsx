@@ -50,7 +50,7 @@ export default function UserNav() {
         </DropdownMenuTrigger>
         {user ? (
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>Manage My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => router.push(`/user/settings`)}>
               <Settings className="h-4 w-4 mr-2" />

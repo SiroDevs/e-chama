@@ -1,13 +1,13 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { FirebaseAuthRepo } from "@/infrastructure/repositories/FirebaseAuthRepo";
+import { AuthRepoImpl } from "@/infrastructure/repos/AuthRepoImpl";
 import { setUser, setLoading } from "@/application/state/authSlice";
 import { clearTodos } from "@/application/state/todoSlice";
 import { AppDispatch } from "@/application/state/store";
 
 // Create an instance of the auth repository
-const authRepository = new FirebaseAuthRepo();
+const authRepo = new AuthRepoImpl();
 
 // Auth provider hook for Firebase authentication state
 export const useAuthStateListener = () => {
@@ -19,7 +19,7 @@ export const useAuthStateListener = () => {
     dispatch(setLoading(true));
 
     // First, check if there's a current user
-    authRepository.getCurrentUser().then((user) => {
+    authRepo.getCurrentUser().then((user) => {
       if (user) {
         dispatch(setUser(user));
       } else {
@@ -30,8 +30,8 @@ export const useAuthStateListener = () => {
       dispatch(setLoading(false));
     });
 
-    // Subscribe to Firebase auth state changes
-    return authRepository.onAuthStateChanged((user) => {
+    // Subscribe to auth state changes
+    return authRepo.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in
         dispatch(setUser(user));

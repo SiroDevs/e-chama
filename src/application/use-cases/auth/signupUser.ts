@@ -3,7 +3,7 @@ import { setUser, setLoading, setError } from "../../state/authSlice";
 import { signupUserAction } from "@/app/actions/auth-actions";
 
 // Register use case 
-export const signupUser = (email: string, password: string) => {
+export const signupUser = (first_name: string, last_name: string, email: string, password: string) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(setLoading(true));
