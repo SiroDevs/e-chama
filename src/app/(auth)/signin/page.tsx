@@ -1,8 +1,7 @@
-import LoginPage from "@/presentation/layout/auth/SigninPage";
-import React from "react";
+import SigninPage from "@/presentation/layout/auth/SigninPage";
 
 const page = () => {
-  return <LoginPage />;
+  return <SigninPage />;
 };
 
 export default page;

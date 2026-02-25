@@ -19,17 +19,7 @@ export class AuthRepoImpl implements AuthRepo {
   }
 
   async getCurrentUser(): Promise<AppUser | null> {
-    const { data, error } = await authService.getCurrentUser();
-    if (error) throw error;
-    if (!data.user) throw new Error("No user data returned");
-
-    try {
-      const { data: profile } = await profileService.fetchUserProfile(data.user.id)
-      return supabaseUserToAppUser({ user: data.user, session: null, profile: profile });
-    } catch (profileError) {
-      console.log("No profile found for user:", profileError);
-      return null;
-    }
+    return await authService.getCurrentUser();
   }
 
   onAuthStateChanged(callback: (user: AppUser | null) => void): () => void {

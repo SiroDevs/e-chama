@@ -8,6 +8,10 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  _persist?: {
+    rehydrated: boolean;
+    version: number;
+  };
 }
 
 // Initial state

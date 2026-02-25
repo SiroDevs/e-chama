@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SigninPage() {
+  const [isClient, setIsClient] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -39,6 +40,10 @@ export default function SigninPage() {
     },
   });
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const onSubmit = async (values: FormValues) => {
     try {
       setIsLoading(true);
@@ -51,12 +56,31 @@ export default function SigninPage() {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to login. Please check your credentials and try again.",
+          : "Failed to signin. Please check your credentials and try again.",
       );
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Don't render form during SSR/prerendering
+  if (!isClient) {
+    return (
+      <div className="flex items-center justify-center p-4 pt-8 pb-20">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-2xl">Welcome back</CardTitle>
+            <CardDescription>Sign in to your account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-center py-8">
+              <div className="animate-pulse">Loading...</div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center p-4 pt-8 pb-20">

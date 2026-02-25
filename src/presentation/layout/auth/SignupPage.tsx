@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Add useEffect here
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,7 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignupPage() {
+  const [isClient, setIsClient] = useState(false); // Add this
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +51,11 @@ export default function SignupPage() {
       confirmPassword: "",
     },
   });
+
+  // Add this useEffect
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const onSubmit = async (values: FormValues) => {
     try {
@@ -77,6 +83,27 @@ export default function SignupPage() {
       setIsLoading(false);
     }
   };
+
+  // Don't render form during SSR/prerendering
+  if (!isClient) {
+    return (
+      <div className="flex items-center justify-center p-4 pt-8 pb-20">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-2xl">Create an account</CardTitle>
+            <CardDescription>
+              Enter your details to create a new account
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-center py-8">
+              <div className="animate-pulse">Loading...</div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center p-4 pt-8 pb-20">

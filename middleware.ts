@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 // Define protected routes that require authentication
 const protectedRoutes = ["/todos", "/settings", "/profile"];
 // Define auth routes (accessible only when not logged in)
-const authRoutes = ["/login", "/register"];
+const authRoutes = ["/signin", "/signout"];
 
 // This middleware shouldn't interfere with Firebase authentication
 // Firebase handles auth client-side, so we'll just let the pages handle auth checks

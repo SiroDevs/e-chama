@@ -1,8 +1,7 @@
-import RegisterPage from "@/presentation/layout/auth/SignupPage";
-import React from "react";
+import SignupPage from "@/presentation/layout/auth/SignupPage";
 
 const page = () => {
-  return <RegisterPage />;
+  return <SignupPage />;
 };
 
 export default page;

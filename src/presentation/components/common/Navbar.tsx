@@ -8,8 +8,13 @@ import { Button } from "../ui";
 import ThemeSwitcher from "../ui/theme-switcher";
 import { AppIcon } from "./app-icon";
 import UserNav from "./usernav";
+import { useSelector } from "react-redux";
+import { RootState } from "@/application/state/store";
 
 export default function NavBar() {
+  const { isAuthenticated, user } = useSelector(
+    (state: RootState) => state.auth,
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [

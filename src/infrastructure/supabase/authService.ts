@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase/client";
-import { AuthResponse, UserResponse } from "@supabase/supabase-js";
+import { AuthResponse, Session, UserResponse } from "@supabase/supabase-js";
 import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";
 
 export const authService = {
@@ -37,8 +37,24 @@ export const authService = {
     await supabase.auth.signOut();
   },
 
-  async getCurrentUser(): Promise<UserResponse> {
-    return await supabase.auth.getUser();
+  async getCurrentUser(): Promise<AppUser | null> {
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error("Error getting session:", error);
+        return null;
+      }
+
+      if (!session?.user) {
+        return null;
+      }
+
+      return supabaseUserToAppUser({ user: session?.user, session: session, profile: null });
+    } catch (error) {
+      console.error("Unexpected error in getCurrentUser:", error);
+      return null;
+    }
   },
   
   onAuthStateChanged(callback: (user: AppUser | null) => void): () => void {
