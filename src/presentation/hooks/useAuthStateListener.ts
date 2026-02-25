@@ -4,96 +4,66 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthRepoImpl } from "@/infrastructure/repos/AuthRepoImpl";
 import { setUser, setLoading } from "@/application/state/authSlice";
-import { AppDispatch, RootState } from "@/application/state/store";
+import { AppDispatch, RootState, rehydrationComplete } from "@/application/state/store";
 
-// Create an instance of the auth repository
 const authRepo = new AuthRepoImpl();
 
-// Auth provider hook for Supabase authentication state
 export const useAuthStateListener = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [isInitialized, setIsInitialized] = useState(false);
   
-  // Get the rehydration status from Redux persist
-  const rehydrated = useSelector((state: RootState) => state.auth._persist?.rehydrated);
+  const reduxUser = useSelector((state: RootState) => state.auth.user);
+  const reduxLoading = useSelector((state: RootState) => state.auth.isLoading);
   
-  // Get current auth state to avoid unnecessary updates
-  const { user: currentUser } = useSelector((state: RootState) => state.auth);
-
-  const setupAuthListener = useCallback(() => {
-    console.log("Setting up auth listener...");
+  const setupAuthListener = useCallback(async () => {
+    if (typeof window !== 'undefined') {
+      await rehydrationComplete;
+    }
     
-    // Don't set loading if we already have a user from rehydration
-    if (!currentUser) {
+    if (!reduxUser && !reduxLoading) {
       dispatch(setLoading(true));
     }
 
-    // First, check if there's a current user (but only after rehydration)
-    authRepo.getCurrentUser().then((user) => {
-      console.log("getCurrentUser result:", user);
+    try {
+      const currentUser = await authRepo.getCurrentUser();
       
-      // Only update if the user is different from what we have
-      if (JSON.stringify(user) !== JSON.stringify(currentUser)) {
-        if (user) {
-          dispatch(setUser(user));
-        } else {
-          dispatch(setUser(null));
-        }
+      if (currentUser && reduxUser?.uid !== currentUser.uid) {
+        dispatch(setUser(currentUser));
+      } else if (!currentUser && reduxUser) {
+        dispatch(setUser(null));
+      } else if (currentUser && !reduxUser) {
+        dispatch(setUser(currentUser));
       }
       
       setIsInitialized(true);
       dispatch(setLoading(false));
-    });
+    } catch (error) {
+      console.error("Error checking auth state:", error);
+      setIsInitialized(true);
+      dispatch(setLoading(false));
+    }
 
-    // Subscribe to auth state changes - onAuthStateChanged returns unsubscribe function directly
     const unsubscribe = authRepo.onAuthStateChanged((user) => {
-      console.log("onAuthStateChanged:", user);
-      
-      // Only update if the user is different from what we have
-      if (JSON.stringify(user) !== JSON.stringify(currentUser)) {
-        if (user) {
-          dispatch(setUser(user));
-        } else {
-          dispatch(setUser(null));
-        }
+      if (user) {
+        dispatch(setUser(user));
+      } else {
+        dispatch(setUser(null));
       }
-
       dispatch(setLoading(false));
-      setIsInitialized(true);
     });
 
-    // Return the unsubscribe function directly
     return unsubscribe;
-  }, [dispatch, currentUser]);
+  }, [dispatch, reduxUser, reduxLoading]);
 
   useEffect(() => {
-    // Only set up the listener after Redux has rehydrated
-    if (rehydrated) {
-      console.log("Redux rehydrated, setting up auth listener");
-      const unsubscribe = setupAuthListener();
+    const unsubscribePromise = setupAuthListener();
 
-      return () => {
-        console.log("Cleaning up auth listener");
-        if (unsubscribe) {
-          unsubscribe();
-        }
-      };
-    } else {
-      console.log("Waiting for rehydration...");
-    }
-  }, [rehydrated, setupAuthListener]);
-
-  // Consider initialized when we're rehydrated and have checked auth
-  useEffect(() => {
-    if (rehydrated) {
-      // Give a small delay to ensure auth check completes
-      const timer = setTimeout(() => {
-        setIsInitialized(true);
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [rehydrated]);
+    return () => {
+      unsubscribePromise.then(unsubscribe => {
+        if (unsubscribe) unsubscribe();
+      });
+    };
+  }, [setupAuthListener]);
 
   return isInitialized;
 };

@@ -1,8 +1,7 @@
-import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";
+import { AppUser } from "@/domain/entities/app.user.entity";
 import { AuthRepo } from "../../domain/repos/auth.repo";
 import { authService } from "../supabase/authService";
 import { AuthResponse } from "@supabase/supabase-js";
-import { profileService } from "../supabase/profileService";
 
 // Implementation of the Auth Repository
 export class AuthRepoImpl implements AuthRepo {

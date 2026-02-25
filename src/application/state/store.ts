@@ -1,41 +1,53 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { rememberReducer, rememberEnhancer } from "redux-remember";
 import authReducer from "./authSlice";
 
-// Persist configuration
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['auth'], // only auth reducer will be persisted
-};
+const rememberedKeys = ['auth'];
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const rootReducer = rememberReducer({
+  auth: authReducer,
+});
 
-// Configure the Redux store
+const isClient = typeof window !== 'undefined';
+
+export const rehydrationComplete = isClient 
+  ? new Promise((resolve) => {
+      window.addEventListener('redux-remember:rehydrate-complete', () => {
+        resolve(true);
+      });
+      
+      setTimeout(() => resolve(true), 2000);
+    })
+  : Promise.resolve(true);
+
 export const store = configureStore({
-  reducer: {
-    auth: persistedAuthReducer,
-    // todos: todoReducer,
+  reducer: rootReducer,
+  enhancers: (getDefaultEnhancers) => {
+    if (isClient) {
+      return getDefaultEnhancers().concat(
+        rememberEnhancer(
+          window.localStorage,
+          rememberedKeys,
+          {
+            persistWholeStore: false,
+            prefix: 'echama-v1:'
+          }
+        )
+      );
+    }
+    return getDefaultEnhancers();
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Ignore these paths in the state
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, "auth/setUser"],
+        ignoredActions: ["auth/setUser", "persist/REHYDRATE"],
         ignoredPaths: [
-          "auth._persist",
           "auth.user.createdAt",
-          "todos.items.createdAt",
-          "todos.items.updatedAt",
+          "auth.user.updatedAt",
         ],
       },
     }),
 });
 
-// Create the persistor
-export const persistor = persistStore(store);
-
-// Export types for the store
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

@@ -2,19 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { AppUser } from "../../domain/entities/app.user.entity";
 
-// Define the state type for authentication
 interface AuthState {
   user: AppUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  _persist?: {
-    rehydrated: boolean;
-    version: number;
-  };
 }
 
-// Initial state
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
@@ -22,32 +16,26 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Create the auth slice
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    // Set the current user
     setUser: (state, action: PayloadAction<AppUser | null>) => {
       state.user = action.payload;
       state.isAuthenticated = !!action.payload;
       state.isLoading = false;
       state.error = null;
     },
-    // Set the loading state
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
-    // Set error state
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
       state.isLoading = false;
     },
-    // Clear any error
     clearError: (state) => {
       state.error = null;
     },
-    // Reset state (logout)
     resetState: (state) => {
       state.user = null;
       state.isAuthenticated = false;
@@ -56,9 +44,7 @@ export const authSlice = createSlice({
   },
 });
 
-// Export actions
 export const { setUser, setLoading, setError, clearError, resetState } =
   authSlice.actions;
 
-// Export reducer
 export default authSlice.reducer;
