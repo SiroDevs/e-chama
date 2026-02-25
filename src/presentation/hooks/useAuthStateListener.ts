@@ -1,68 +1,45 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AuthRepoImpl } from "@/infrastructure/repos/AuthRepoImpl";
 import { setUser, setLoading } from "@/application/state/authSlice";
-import { AppDispatch, RootState, rehydrationComplete } from "@/application/state/store";
+import { AppDispatch } from "@/application/state/store";
 
 const authRepo = new AuthRepoImpl();
 
 export const useAuthStateListener = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [isInitialized, setIsInitialized] = useState(false);
-  
-  const reduxUser = useSelector((state: RootState) => state.auth.user);
-  const reduxLoading = useSelector((state: RootState) => state.auth.isLoading);
-  
-  const setupAuthListener = useCallback(async () => {
-    if (typeof window !== 'undefined') {
-      await rehydrationComplete;
-    }
-    
-    if (!reduxUser && !reduxLoading) {
-      dispatch(setLoading(true));
-    }
 
-    try {
-      const currentUser = await authRepo.getCurrentUser();
-      
-      if (currentUser && reduxUser?.uid !== currentUser.uid) {
-        dispatch(setUser(currentUser));
-      } else if (!currentUser && reduxUser) {
-        dispatch(setUser(null));
-      } else if (currentUser && !reduxUser) {
-        dispatch(setUser(currentUser));
-      }
-      
-      setIsInitialized(true);
-      dispatch(setLoading(false));
-    } catch (error) {
-      console.error("Error checking auth state:", error);
-      setIsInitialized(true);
-      dispatch(setLoading(false));
-    }
+  const setupAuthListener = useCallback(() => {
+    dispatch(setLoading(true));
 
-    const unsubscribe = authRepo.onAuthStateChanged((user) => {
+    authRepo.getCurrentUser().then((user) => {
       if (user) {
         dispatch(setUser(user));
       } else {
         dispatch(setUser(null));
       }
+      setIsInitialized(true);
       dispatch(setLoading(false));
     });
 
-    return unsubscribe;
-  }, [dispatch, reduxUser, reduxLoading]);
+    return authRepo.onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(setUser(user));
+      } else {
+        dispatch(setUser(null));
+      }
+
+      dispatch(setLoading(false));
+    });
+  }, [dispatch]);
 
   useEffect(() => {
-    const unsubscribePromise = setupAuthListener();
+    const unsubscribe = setupAuthListener();
 
-    return () => {
-      unsubscribePromise.then(unsubscribe => {
-        if (unsubscribe) unsubscribe();
-      });
-    };
+    return () => unsubscribe();
   }, [setupAuthListener]);
 
   return isInitialized;
