@@ -1,45 +1,35 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { rememberReducer, rememberEnhancer } from 'redux-remember';
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import authReducer, { authSlice } from "./authSlice";
+import authReducer from "./authSlice";
+import storage from "@/lib/storage";
 
-const rememberedKeys: (keyof typeof reducers)[] = ['authkey'];
+const rootReducer = combineReducers({
+  auth: authReducer,
+});
 
-const reducers = {
-  authkey: authReducer
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["auth"],
 };
 
-export const actions = {
-  ...authSlice.actions,
-};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: rememberReducer(reducers),
-  enhancers: (getDefaultEnhancers) => getDefaultEnhancers().concat(
-    rememberEnhancer(
-      window.localStorage,
-      rememberedKeys,
-      {
-        persistWholeStore: true
-      }
-    )
-  ),
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["auth/setUser"],
-        ignoredPaths: [
-          "auth.user.createdAt",
-          "todos.items.createdAt",
-          "todos.items.updatedAt",
-        ],
+        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
       },
     }),
 });
 
+export const persistor = persistStore(store);
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-

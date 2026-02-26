@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AppProvider } from "@/presentation/providers/AppProvider";
+import { Geist } from "next/font/google";
+
 import { Toaster } from "@/presentation/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/presentation/components/ui/sonner";
-import { Providers } from "@/presentation/providers/ThemeProvider";
-import { Geist } from "next/font/google";
-import Navbar from "@/presentation/components/common/navbar";
+import { AppProvider } from "@/presentation/providers/ThemeProvider";
+import { ReduxProvider } from "@/presentation/providers/ReduxProvider";
 import Footer from "@/presentation/components/common/footer";
+import Navbar from "@/presentation/components/common/navbar";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -26,15 +27,15 @@ export default function RootLayout({
         className={`${geist.className} antialiased`}
         suppressHydrationWarning
       >
-        <AppProvider>
-          <Providers>
+        <ReduxProvider>
+          <AppProvider>
             <Navbar />
             {children}
             <Toaster />
             <SonnerToaster />
             <Footer />
-          </Providers>
-        </AppProvider>
+          </AppProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

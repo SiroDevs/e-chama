@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import { store } from "@/application/state/store";
+import { persistor, store } from "@/application/state/store";
 import { useAuthStateListener } from "../hooks/useAuthStateListener";
-import RehydrateGate from "./RehydrateGate";
+import { PersistGate } from "redux-persist/integration/react";
 
 const AuthStateListener: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -17,23 +17,40 @@ const AuthStateListener: React.FC<{ children: React.ReactNode }> = ({
   return <>{children}</>;
 };
 
+const LoadingFallback = () => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+    }}
+  >
+    Loading ...
+  </div>
+);
+
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [mounted, setMounted] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    setIsClient(true);
   }, []);
+
+  if (!isClient) {
+    return <Provider store={store}>{children}</Provider>;
+  }
 
   return (
     <Provider store={store}>
-      {mounted ? (
-        <RehydrateGate>
+      {persistor ? (
+        <PersistGate loading={<LoadingFallback />} persistor={persistor}>
           <AuthStateListener>{children}</AuthStateListener>
-        </RehydrateGate>
+        </PersistGate>
       ) : (
-        <div className="contents">{children}</div>
+        <AuthStateListener>{children}</AuthStateListener>
       )}
     </Provider>
   );

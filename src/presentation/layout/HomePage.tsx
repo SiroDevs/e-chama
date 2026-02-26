@@ -5,12 +5,7 @@ import Link from "next/link";
 import { RootState } from "@/application/state/store";
 import { Button } from "@/presentation/components/ui";
 import Faq from "../components/common/faq";
-import Footer from "../components/common/footer";
 import Hero from "../components/common/hero";
-import Partners from "../components/common/partners";
-import Pricing from "../components/common/pricing";
-import Testimonials from "../components/common/testimonials";
-import Stats from "../components/common/stats";
 
 export default function HomePage() {
   const { isAuthenticated, user } = useSelector(

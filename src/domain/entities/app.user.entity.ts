@@ -39,7 +39,7 @@ export interface AppUser {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
-  createdAt?: Date;
+  createdAt?: string;
 }
 
 // Create a new User factory function
@@ -54,6 +54,6 @@ export const createUser = (
     email,
     displayName,
     photoURL,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
   };
 };

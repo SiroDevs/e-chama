@@ -12,16 +12,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/application/state/store";
 
 export default function NavBar() {
-  const { isAuthenticated, user } = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuItems = [
-    { name: "Pricing", href: "#pricing" },
-    { name: "Testimonials", href: "#testimonials" },
-  ];
-  
+  // const menuItems = [
+  //   { name: "Pricing", href: "#pricing" },
+  //   { name: "Testimonials", href: "#testimonials" },
+  // ];
+
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,13 +44,14 @@ export default function NavBar() {
           </div>
           <div className="hidden sm:flex items-center space-x-8">
             <AppIcon />
-
-            <Button asChild variant="ghost" size="sm">
-              <Link href="#faqs">Faqs</Link>
-            </Button>
+            {!isAuthenticated && (
+              <Button asChild variant="ghost" size="sm">
+                <Link href="#faqs">Faqs</Link>
+              </Button>
+            )}
           </div>
           <div className="flex items-center space-x-4">
-            <UserNav/>
+            <UserNav />
             <ThemeSwitcher />
           </div>
         </div>
