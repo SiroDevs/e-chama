@@ -1,20 +1,10 @@
-// Utility type for API responses
-export type ApiResponse<T> = {
-  data: T | null;
-  error: string | null;
-  success: boolean;
-};
-
-// Type for pagination
-export type PaginationParams = {
-  page: number;
-  limit: number;
-  totalPages?: number;
-  totalItems?: number;
-};
-
-// Generic type for paginated API responses
-export type PaginatedResponse<T> = {
-  items: T[];
-  pagination: PaginationParams;
-};
+export * from "./auth";
+export * from "./contribution";
+export * from "./general";
+export * from "./group-member";
+export * from "./group";
+export * from "./member";
+export * from "./paginations";
+export * from "./profiles";
+export * from "./roles";
+export * from "./user-group";

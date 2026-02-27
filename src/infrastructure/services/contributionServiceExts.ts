@@ -1,7 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
-import { ContributionsQueryParams, GrpContributionsResp } from "@/types/contribution";
+import { ContributionsQueryParams, GrpContributionsResp } from "@/types";
 
 export const contributionServiceExts = {
   async getGroupContributions({

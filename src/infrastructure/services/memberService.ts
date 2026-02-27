@@ -1,30 +1,61 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
-import { ContributionsQueryParams, ContributionsResp, Contribution } from "@/types/contribution";
+import { Member, GroupMember, GroupMembersQueryParams, GroupMembersResp } from "@/types";
 
-export const contributionService = {
-  async getContributions({
+export const memberService = {
+  async newMember(member: Member) {
+    const { error: checkError } = await supabase
+      .from("members")
+      .select("id")
+      .eq("user_id", member.user_id)
+      .eq("group_id", member.group_id)
+      .single();
+
+    if (!checkError || checkError.code !== "PGRST116") {
+      console.error("Join group error:", checkError);
+      return { data: null, error: checkError };
+    }
+    return await supabase
+      .from("members")
+      .insert([
+        {
+          group_id: member.group_id,
+          user_id: member.user_id,
+          member_no: member.member_no,
+          role: member.role,
+        },
+      ])
+      .select()
+      .single();
+  },
+
+  async getMemberCount(group_id: string): Promise<number> {
+    const { count, error } = await supabase.from("members")
+      .select("*", { count: "exact" })
+      .eq("group_id", group_id);
+
+    if (error) {
+      console.error("Error getting member count:", error);
+      return 0;
+    }
+
+    return count || 0;
+  },
+
+  async getGroupMembers({
     page,
     pageSize,
     sortField = 'created_at',
     sortOrder = 'desc',
     filters = [],
     groupId,
-    memberId,
-  }: ContributionsQueryParams): Promise<ContributionsResp> {
+  }: GroupMembersQueryParams): Promise<GroupMembersResp> {
     try {
       let query = supabase
-        .from('contributions')
-        .select('*', { count: 'exact' });
-
-      if (groupId) {
-        query = query.eq('group_id', groupId);
-      }
-
-      if (memberId) {
-        query = query.eq('member_id', memberId);
-      }
+        .from('group_members')
+        .select('*', { count: 'exact' })
+        .eq('group_id', groupId);
 
       query = query.order(sortField, { ascending: sortOrder === 'asc' });
 
@@ -62,6 +93,8 @@ export const contributionService = {
       if (error) {
         throw error;
       }
+
+      console.log(`Data found: ${count}`);
       return {
         data: data || [],
         count: count || 0,
@@ -76,16 +109,13 @@ export const contributionService = {
     }
   },
 
-  async getContributionById(id: string): Promise<{
-    data: Contribution | null;
+  async getGroupMemberById(id: string): Promise<{
+    data: GroupMember | null;
     error: Error | null;
   }> {
     try {
       const { data, error } = await supabase
-        .from('contributions')
-        .select('*')
-        .eq('id', id)
-        .single();
+        .from('group_members').select('*').eq('id', id).single();
 
       return {
         data,
@@ -99,16 +129,13 @@ export const contributionService = {
     }
   },
 
-  async createContribution(contribution: Omit<Contribution, 'id' | 'created_at' | 'updated_at'>): Promise<{
-    data: Contribution | null;
+  async getGroupMemberByNo(memberNo: string, groupId: string): Promise<{
+    data: GroupMember | null;
     error: Error | null;
   }> {
     try {
       const { data, error } = await supabase
-        .from('contributions')
-        .insert([contribution])
-        .select()
-        .single();
+        .from('group_members').select('*').eq('member_no', memberNo).eq("group_id", groupId).single();
 
       return {
         data,
@@ -117,55 +144,6 @@ export const contributionService = {
     } catch (error) {
       return {
         data: null,
-        error: error as Error,
-      };
-    }
-  },
-
-  async updateContribution(
-    id: string,
-    updates: Partial<Omit<Contribution, 'id' | 'created_at'>>
-  ): Promise<{
-    data: Contribution | null;
-    error: Error | null;
-  }> {
-    try {
-      const { data, error } = await supabase
-        .from('contributions')
-        .update({ ...updates, updated_at: new Date().toISOString() })
-        .eq('id', id)
-        .select()
-        .single();
-
-      return {
-        data,
-        error,
-      };
-    } catch (error) {
-      return {
-        data: null,
-        error: error as Error,
-      };
-    }
-  },
-
-  async deleteContribution(id: string): Promise<{
-    success: boolean;
-    error: Error | null;
-  }> {
-    try {
-      const { error } = await supabase
-        .from('contributions')
-        .delete()
-        .eq('id', id);
-
-      return {
-        success: !error,
-        error,
-      };
-    } catch (error) {
-      return {
-        success: false,
         error: error as Error,
       };
     }

@@ -1,5 +1,5 @@
-import { ProfileRepo } from "@/domain/repos/profile.repo";
-import { profileService } from "../supabase/profileService";
+import { ProfileRepo } from "@/domain/repositories/profile.repo";
+import { profileService } from "../services/profileService";
 import { Profile } from "@/domain/entities";
 
 export class ProfileRepoImpl implements ProfileRepo {

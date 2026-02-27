@@ -1,9 +1,9 @@
 "use server";
 
 import { getServerClient } from "@/lib/supabase/server";
-import { UserGroup, PaginatedResp, Group, GroupExt } from "@/types/types";
+import { UserGroup, PaginatedResp, Group, GroupExt } from "@/types";
 import { supabase } from "@/lib/supabase/client";
-import { memberService } from "./MemberService";
+import { memberService } from "./memberService";
 
 export const groupService = {
   async newGroup(group: Group) {

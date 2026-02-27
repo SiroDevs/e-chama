@@ -1,4 +1,4 @@
-import { Member, UserRole, isUserRole } from "@/infrastucture/state/role/profiles";
+import { isUserRole, Member, UserRole } from "@/domain/entities";
 
 export function validateRoles(roles: string[]): UserRole[] {
   return roles.filter(isUserRole);

@@ -1,4 +1,4 @@
-import { Member } from "../entities";
+import { Member } from "../../entities";
 import { BaseRepo } from "./base.repo";
 import { BaseSupabaseRepo } from "./base.supabase.repo";
 

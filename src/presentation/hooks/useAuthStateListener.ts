@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { AuthRepoImpl } from "@/infrastructure/repos/AuthRepoImpl";
+import { AuthRepoImpl } from "@/infrastructure/implementations/AuthRepoImpl";
 import { setUser, setLoading } from "@/application/state/authSlice";
 import { AppDispatch } from "@/application/state/store";
 

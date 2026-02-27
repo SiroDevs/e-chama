@@ -1,7 +1,7 @@
 "use server";
 
 import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";
-import { authService } from "@/infrastructure/supabase/authService";
+import { authService } from "@/infrastructure/services/authService";
 import { profileService } from "@/infrastructure/supabase/profileService";
 
 export async function signinUserAction(

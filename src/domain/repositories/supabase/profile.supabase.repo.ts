@@ -1,4 +1,4 @@
-import { Profile } from "../entities";
+import { Profile } from "../../entities";
 import { BaseRepo } from "./base.repo";
 import { BaseSupabaseRepo } from "./base.supabase.repo";
 

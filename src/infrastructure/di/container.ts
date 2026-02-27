@@ -1,7 +1,7 @@
-import { ContributionSupabaseRepo } from '@/domain/repos/contribution.supabase.repo';
-import { GroupSupabaseRepo } from '@/domain/repos/group.supabase.repo';
-import { MemberSupabaseRepo } from '@/domain/repos/member.supabase.repo';
-import { ProfileSupabaseRepo } from '@/domain/repos/profile.supabase.repo';
+import { ContributionSupabaseRepo } from '@/domain/repositories/supabase/contribution.supabase.repo';
+import { GroupSupabaseRepo } from '@/domain/repositories/supabase/group.supabase.repo';
+import { MemberSupabaseRepo } from '@/domain/repositories/supabase/member.supabase.repo';
+import { ProfileSupabaseRepo } from '@/domain/repositories/supabase/profile.supabase.repo';
 import { ContributionUseCase } from '@/application/use-cases/contribution.usecase';
 import { GroupUseCase } from '@/application/use-cases/group.usecase';
 import { MemberUseCase } from '@/application/use-cases/member.usecase';

@@ -90,7 +90,7 @@ export const profileService = {
       .single();
   },
 
-  async updateSelectedGroup(userId: string, groupId: string) {
+  async setProfileGroup(userId: string, groupId: string) {
     try {
       const { error } = await supabase
         .from("profiles")

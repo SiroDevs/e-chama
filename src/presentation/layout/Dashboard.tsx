@@ -6,7 +6,7 @@ import PageContent from "../components/common/page-content";
 import { PageContainer } from "../components/common/page-container";
 import { StatCard, StatCardProps } from "../components/common/stat-card";
 import { RootState } from "@/application/state/store";
-import { memberService } from "@/infrastructure/supabase/MemberService";
+import { memberService } from "@/infrastructure/services/memberService";
 
 export default function Dashboard() {
   const { member } = useSelector((state: RootState) => state.sacco);
