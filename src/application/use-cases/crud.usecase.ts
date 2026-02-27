@@ -1,4 +1,4 @@
-import { BaseRepo, PaginatedResult, PaginationOptions } from "@/domain/repos/base.repo";
+import { BaseRepo, PaginatedResult, PaginationOptions } from "@/domain/repositories/supabase/base.repo";
 
 export abstract class CrudUseCase<T> {
   constructor(protected repository: BaseRepo<T>) { }

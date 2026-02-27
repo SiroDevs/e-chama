@@ -16,5 +16,5 @@ export interface ProfileRepo {
   
   createProfile(profile: Profile): Promise<{ data: Profile | null; error: Error | null }>;
   
-  updateSelectedGroup(userId: string, groupId: string): Promise<void>;
+  setProfileGroup(userId: string, groupId: string): Promise<void>;
 }

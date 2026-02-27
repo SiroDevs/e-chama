@@ -2,7 +2,7 @@
 
 import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";
 import { authService } from "@/infrastructure/services/authService";
-import { profileService } from "@/infrastructure/supabase/profileService";
+import { profileService } from "@/infrastructure/services/profileService";
 
 export async function signinUserAction(
   email: string,
