@@ -1,21 +1,7 @@
-"use client";
+import SignupPage from "@/presentation/layout/auth/SignupPage";
 
-import { SignUpCard } from "@/components/auth";
-import { useAuthStore } from "@/state/auth/auth";
-import { useRouter } from "next/navigation";
+const page = () => {
+  return <SignupPage />;
+};
 
-export default function SignUp() {
-  const router = useRouter();
-  const { isAuthenticated } = useAuthStore();
-
-  if (isAuthenticated) {
-    router.push("/");
-    return null;
-  }
-
-  function handleOnAuthSuccess() {
-    router.push("/");
-  }
-
-  return <SignUpCard onAuthSuccess={handleOnAuthSuccess} />;
-}
+export default page;

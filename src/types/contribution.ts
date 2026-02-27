@@ -1,4 +1,4 @@
-import { DatabaseFilters } from "./types";
+import { DatabaseFilters } from "./general";
 
 export interface Contribution {
   id?: string;
