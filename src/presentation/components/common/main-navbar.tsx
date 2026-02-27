@@ -11,7 +11,7 @@ import UserNav from "./usernav";
 import { useSelector } from "react-redux";
 import { RootState } from "@/application/state/store";
 
-export default function NavBar() {
+export default function MainNavBar() {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

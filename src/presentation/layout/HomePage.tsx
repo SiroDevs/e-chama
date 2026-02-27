@@ -6,6 +6,7 @@ import { RootState } from "@/application/state/store";
 import { Button } from "@/presentation/components/ui";
 import Faq from "../components/common/faq";
 import Hero from "../components/common/hero";
+import Dashboard from "./Dashboard";
 
 export default function HomePage() {
   const { isAuthenticated, user } = useSelector(
@@ -34,11 +35,7 @@ export default function HomePage() {
         </>
       )}
       {isAuthenticated && (
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-          <Link href={`/user/${user?.uid}/todos`}>
-            <Button size="lg">My Todos</Button>
-          </Link>
-        </div>
+        <Dashboard/>
       )}
     </main>
   );

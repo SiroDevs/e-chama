@@ -1,0 +1,219 @@
+"use client";
+
+import Image from "next/image";
+import Link, { LinkProps } from 'next/link'
+import { usePathname } from "next/navigation";
+import {
+  ArrowRight2,
+  Calendar,
+  Element3,
+  Folder2,
+  Headphone,
+  Profile2User,
+  Setting2,
+  Setting4,
+  Star,
+  Timer1,
+} from "iconsax-react";
+
+import React from "react";
+import { AppIcon } from ".";
+import ProfileImage from "../../../../public/profile.png";
+
+interface SidebarProps {
+  onClose?: () => void;
+}
+
+function Sidebar({ onClose }: SidebarProps) {
+  const pathname = usePathname();
+
+  const isActive = (path: string) => pathname === path;
+
+  const handleNavClick = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  return (
+    <div className="w-60 shrink-0 md:block h-screen sticky top-0 overflow-hidden">
+      <div className="w-full h-full border-r dark:border-gray-800">
+        <div className="h-[var(--h-nav)] p-4 md:p-6 flex items-center justify-between">
+          <div className="flex cursor-pointer group items-center gap-2">
+            <AppIcon />
+          </div>
+
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+              aria-label="Close sidebar"
+            >
+              <ArrowRight2 size={20} className="rotate-180" />
+            </button>
+          )}
+        </div>
+
+        <hr className="bg-gray-400 mx-2" />
+
+        <div className="flex flex-col h-full justify-between">
+          <div className="pt-6 text-gray-500 font-medium space-y-1 md:px-2 text-sm overflow-y-auto">
+            <Link
+              href={"/"}
+              onClick={handleNavClick}
+              className={`flex ${isActive("/") ? "text-primary bg-primary/10" : "hover:bg-gray-50 dark:hover:bg-gray-800"} 
+                                duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2 transition-all`}
+            >
+              <Element3 variant="Outline" size={18} />
+              <span>Dashboard</span>
+            </Link>
+
+            <Link
+              href={"/app/teams"}
+              onClick={handleNavClick}
+              className={`flex ${isActive("/app/teams") ? "text-primary bg-primary/10" : "hover:bg-gray-50 dark:hover:bg-gray-800"} 
+                                duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2 transition-all`}
+            >
+              <Profile2User size={18} />
+              <span>Teams</span>
+            </Link>
+
+            <Link
+              href={"/app/integrations"}
+              onClick={handleNavClick}
+              className={`flex ${isActive("/app/integrations") ? "text-primary bg-primary/10" : "hover:bg-gray-50 dark:hover:bg-gray-800"} 
+                                duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2 transition-all`}
+            >
+              <Setting4 size={18} />
+              <span>Integrations</span>
+            </Link>
+
+            <button
+              disabled
+              className={`flex w-full ${isActive("/app/calendar") ? "text-primary bg-primary/10" : ""} 
+                                hover:px-8 disabled:opacity-50 disabled:cursor-not-allowed duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2`}
+            >
+              <Calendar size={18} />
+              <span>Calendar</span>
+              <span className="ml-auto text-xs bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full">
+                Soon
+              </span>
+            </button>
+
+            <button
+              disabled
+              className={`flex w-full ${isActive("/app/timeoff") ? "text-primary bg-primary/10" : ""} 
+                                hover:px-8 disabled:opacity-50 disabled:cursor-not-allowed duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2`}
+            >
+              <Timer1 size={18} />
+              <span>Time Off</span>
+              <span className="ml-auto text-xs bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full">
+                Soon
+              </span>
+            </button>
+
+            <button
+              disabled
+              className={`flex w-full ${isActive("/app/projects") ? "text-primary bg-primary/10" : ""} 
+                                hover:px-8 disabled:opacity-50 disabled:cursor-not-allowed duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2`}
+            >
+              <Folder2 size={18} />
+              <span>Projects</span>
+              <span className="ml-auto text-xs bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full">
+                Soon
+              </span>
+            </button>
+
+            <button
+              disabled
+              className={`flex w-full ${isActive("/app/benefits") ? "text-primary bg-primary/10" : ""} 
+                                hover:px-8 disabled:opacity-50 disabled:cursor-not-allowed duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2`}
+            >
+              <Star size={18} />
+              <span>Benefits</span>
+              <span className="ml-auto text-xs bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full">
+                Soon
+              </span>
+            </button>
+          </div>
+
+          <div>
+            <div className="text-gray-500 text-sm font-medium space-y-1">
+              <Link
+                href={"/settings"}
+                onClick={handleNavClick}
+                className={`flex ${isActive("/app/settings") ? "text-primary bg-primary/10" : "hover:bg-gray-50 dark:hover:bg-gray-800"} 
+                                    duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2 transition-all`}
+              >
+                <Setting2 size={18} />
+                <span>Settings</span>
+              </Link>
+
+              <Link
+                href={"/support"}
+                onClick={handleNavClick}
+                className={`flex ${isActive("/app/support") ? "text-primary bg-primary/10" : "hover:bg-gray-50 dark:hover:bg-gray-800"} 
+                                    duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2 transition-all`}
+              >
+                <Headphone size={18} />
+                <span>Support</span>
+              </Link>
+            </div>
+
+            <hr className="bg-gray-200 dark:bg-gray-800 mx-2 my-4" />
+
+            <div className="flex pb-8 justify-between px-4 md:px-6 items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 py-3 transition-all duration-200 mx-2 rounded-lg mb-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <Image
+                  src={ProfileImage}
+                  alt="User"
+                  width={40}
+                  height={40}
+                  className="rounded-full flex-shrink-0"
+                />
+                <div className="truncate">
+                  <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
+                    Steve Jobs
+                  </p>
+                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">
+                    steve@apple.com
+                  </p>
+                </div>
+              </div>
+
+              <button className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 flex-shrink-0">
+                <ArrowRight2 size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const NavbarLink = ({ href, active }: { href: string, active: boolean }) => {
+    return (
+        <Link
+            href={href}
+
+        >
+
+        </Link>
+    )
+}
+
+const NavLink = React.forwardRef<
+    LinkProps,
+    React.ComponentPropsWithoutRef<'a'>>
+    (({ className, href, ...props }) =>
+        <Link
+            href={href!}
+            className={`flex ${window.location.pathname === href! ? 'text-primary' : ''} hover:px-8 duration-200 rounded-md w-full py-2 px-6 items-center gap-2`}
+            {...props}
+        />
+    )
+NavLink.displayName = 'NavLink'
+
+
+export default Sidebar;

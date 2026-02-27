@@ -2,10 +2,12 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import authReducer from "./authSlice";
+import navReducer from './navSlice';
 import storage from "@/lib/storage";
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  nav: navReducer,
 });
 
 const persistConfig = {

@@ -6,7 +6,7 @@ import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui";
 import { AppIcon } from "./app-icon";
 
-const Footer = () => {
+export default function MainFooter() {
   const year = new Date().getFullYear();
 
   const socialLinks = [
@@ -64,5 +64,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

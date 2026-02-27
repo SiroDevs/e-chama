@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Geist } from "next/font/google";
 
-import { Toaster } from "@/presentation/components/ui/toaster";
-import { Toaster as SonnerToaster } from "@/presentation/components/ui/sonner";
-import { AppProvider } from "@/presentation/providers/ThemeProvider";
+import { AppThemeProvider } from "@/presentation/providers/AppThemeProvider";
 import { ReduxProvider } from "@/presentation/providers/ReduxProvider";
-import Footer from "@/presentation/components/common/footer";
-import Navbar from "@/presentation/components/common/navbar";
+import { MainLayout } from "@/presentation/providers/MainLayout";
+import { Toaster } from "sonner";
+import { Toaster as SonnerToaster } from "@/presentation/components/ui/sonner";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -28,13 +27,13 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ReduxProvider>
-          <AppProvider>
-            <Navbar />
-            {children}
-            <Toaster />
-            <SonnerToaster />
-            <Footer />
-          </AppProvider>
+          <AppThemeProvider>
+            <MainLayout>
+              {children}
+              <Toaster />
+              <SonnerToaster />
+            </MainLayout>
+          </AppThemeProvider>
         </ReduxProvider>
       </body>
     </html>
