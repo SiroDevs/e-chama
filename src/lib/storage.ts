@@ -18,10 +18,8 @@ let storage: ReturnType<typeof createWebStorage> | ReturnType<typeof createNoopS
 
 if (typeof window !== 'undefined') {
   storage = createWebStorage('local');
-  console.log('✅ Using real localStorage on client');
 } else {
   storage = createNoopStorage();
-  console.log('🖥️ Using noop storage on server');
 }
 
 export default storage;

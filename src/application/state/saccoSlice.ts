@@ -1,36 +1,36 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { AppUser } from "../../domain/entities/app.user.entity";
-import { Profile } from "@/domain/entities";
+import { Group, Member, Profile } from "@/domain/entities";
 
-interface AuthState {
-  user: AppUser | null;
-  profile: Profile | null;
+interface SaccoState {
+  member: Member | null;
+  group: Group | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
 }
 
-const initialState: AuthState = {
-  user: null,
-  profile: null,
+const initialState: SaccoState = {
+  member: null,
+  group: null,
   isAuthenticated: false,
   isLoading: true,
   error: null,
 };
 
-export const authSlice = createSlice({
+export const saccoSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<AppUser | null>) => {
-      state.user = action.payload;
+    setMember: (state, action: PayloadAction<Member | null>) => {
+      state.member = action.payload;
       state.isAuthenticated = !!action.payload;
       state.isLoading = false;
       state.error = null;
     },
-    setProfile: (state, action: PayloadAction<Profile | null>) => {
-      state.profile = action.payload;
+    setGroup: (state, action: PayloadAction<Group | null>) => {
+      state.group = action.payload;
       state.isAuthenticated = !!action.payload;
       state.isLoading = false;
       state.error = null;
@@ -46,15 +46,15 @@ export const authSlice = createSlice({
       state.error = null;
     },
     resetState: (state) => {
-      state.user = null;
-      state.profile = null;
+      state.member = null;
+      state.group = null;
       state.isAuthenticated = false;
       state.error = null;
     },
   },
 });
 
-export const { setUser, setProfile, setLoading, setError, clearError, resetState } =
-  authSlice.actions;
+export const { setMember, setGroup, setLoading, setError, clearError, resetState } =
+  saccoSlice.actions;
 
-export default authSlice.reducer;
+export default saccoSlice.reducer;
