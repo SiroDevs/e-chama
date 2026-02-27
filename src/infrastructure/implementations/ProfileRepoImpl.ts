@@ -29,7 +29,7 @@ export class ProfileRepoImpl implements ProfileRepo {
     return profileService.createProfile(profile);
   }
 
-  async updateSelectedGroup(userId: string, groupId: string): Promise<void> {
-    return profileService.updateSelectedGroup(userId, groupId);
+  async setProfileGroup(userId: string, groupId: string): Promise<void> {
+    return profileService.setProfileGroup(userId, groupId);
   }
 }

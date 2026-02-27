@@ -1,9 +1,5 @@
 "use client";
 
-import { Button, Dialog, DialogTitle, DialogContent } from "../ui";
-import { DialogHeader, DialogDescription } from "../ui";
-import { DialogFooter, DialogTrigger } from "../ui";
-
 export default function Hero() {
   return (
     <div className="relative justify-center items-center">

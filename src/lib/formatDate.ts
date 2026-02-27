@@ -1,9 +1,3 @@
-/**
- * Formats a date into a human-readable string
- * @param date The date to format
- * @param options Optional formatting options
- * @returns A formatted date string
- */
 export const formatDate = (
   date: Date | string | number,
   options: {
@@ -13,15 +7,12 @@ export const formatDate = (
 ): string => {
   const { format = 'short', includeTime = false } = options;
   
-  // Convert to Date object if string or number
   const dateObj = date instanceof Date ? date : new Date(date);
   
-  // Check if the date is valid
   if (isNaN(dateObj.getTime())) {
     return 'Invalid date';
   }
 
-  // For relative time formatting
   if (format === 'relative') {
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - dateObj.getTime()) / 1000);
@@ -40,14 +31,12 @@ export const formatDate = (
     }
   }
 
-  // Default formatting options
   const dateFormatOptions: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: format === 'long' ? 'long' : 'short',
     day: 'numeric',
   };
   
-  // Add time if requested
   if (includeTime) {
     dateFormatOptions.hour = '2-digit';
     dateFormatOptions.minute = '2-digit';

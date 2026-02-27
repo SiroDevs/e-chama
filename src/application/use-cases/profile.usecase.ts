@@ -1,4 +1,4 @@
-import { BaseRepo } from '@/domain/repos/base.repo';
+import { BaseRepo } from '@/domain/repositories/supabase/base.repo';
 import { CrudUseCase } from './crud.usecase';
 import { Profile } from '@/domain/entities';
 
