@@ -5,32 +5,19 @@ import { groupService } from "@/infrastructure/services/groupService";
 import { profileService } from "@/infrastructure/services/profileService";
 import { UserGroup } from "@/types";
 
-export async function fetchUserProfile(userId: string): Promise<Profile> {
+export async function fetchUserGroups(userId: string): Promise<UserGroup[]> {
+  let groups: UserGroup[] = [];
   try {
-    const { data, error } = await profileService.fetchUserProfile(userId);
+    groups = await groupService.getUserGroups(userId);
 
-    if (error) throw error;
-    if (!data.user) throw new Error("No profile data returned");
-
-    return dataToProfile(
-      data.id,
-      data.first_name,
-      data.last_name,
-      data.country,
-      data.address,
-      data.sex,
-      data.dob,
-      data.avatar,
-      data.id_number,
-      data.kra_pin,
-    );
   } catch (error: unknown) {
-    console.error("Error fetching in user profile:", error);
+    console.error("Error fetching in user groups:", error);
     throw new Error(
-      `Failed to login: ${error instanceof Error ? error.message : "Unknown error"
+      `Failed to fetch user groups: ${error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }
+  return groups;
 }
 
 export async function setUserGroups(
