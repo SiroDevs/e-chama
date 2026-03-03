@@ -6,7 +6,7 @@ interface AuthData {
   profile?: any;
 }
 
-export const supabaseUserToAppUser = (data: AuthData | null): AppUser | null => {
+export const sbUserToAppUser = (data: AuthData | null): AppUser | null => {
   if (!data || !data.user) return null;
 
   let fullName = data.user.email?.split('@')[0] || 'User';

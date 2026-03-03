@@ -1,6 +1,6 @@
 "use server";
 
-import { AppUser, dataToProfile, Profile, supabaseUserToAppUser } from "@/domain/entities";
+import { dataToProfile, Profile } from "@/domain/entities";
 import { groupService } from "@/infrastructure/services/groupService";
 import { profileService } from "@/infrastructure/services/profileService";
 import { UserGroup } from "@/types";
@@ -20,18 +20,14 @@ export async function fetchUserGroups(userId: string): Promise<UserGroup[]> {
   return groups;
 }
 
-export async function setUserGroups(
-  groups: UserGroup[],
-  groupId?: string
-): Promise<AppUser> {
+export async function fetchUserProfile(
+  userId?: string
+): Promise<Profile> {
   try {
-    if (!groupId) {
-      groupId = groups[0].group_id;
-    }
-    const { data, error } = await groupService.signinUser(groups, groupId);
+    const { data, error } = await profileService.fetchUserProfile(userId!);
 
     if (error) throw error;
-    if (!data.user) throw new Error("No user data returned");
+    if (!data.user) throw new Error("No data returned");
 
     let profileData = null;
     try {
@@ -41,19 +37,25 @@ export async function setUserGroups(
       console.log("No profile found for user:", profileError);
     }
 
-    const domainUser = supabaseUserToAppUser({
-      user: data.user,
-      session: data.session,
-      profile: profileData
+    const profile = dataToProfile({
+      id: data.id,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      country: data.country,
+      address: data.address,
+      sex: data.sex,
+      dob: data.dob,
+      avatar: data.avatar,
+      id_number: data.id_number,
+      kra_pin: data.kra_pin,
     });
 
-    if (!domainUser) {
-      throw new Error("Failed to convert user to app user");
+    if (!profile) {
+      throw new Error("Failed to convert data to profile");
     }
-
-    return domainUser;
+    return profile;
   } catch (error: unknown) {
-    console.error("Error logging in user:", error);
+    console.error("Error fetching profile:", error);
     throw new Error(
       `Failed to login: ${error instanceof Error ? error.message : "Unknown error"
       }`

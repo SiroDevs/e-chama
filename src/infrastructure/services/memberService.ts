@@ -1,5 +1,3 @@
-"use server";
-
 import { supabase } from "@/lib/supabase/client";
 import { Member, GroupMember, GroupMembersQueryParams, GroupMembersResp } from "@/types";
 

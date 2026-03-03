@@ -1,16 +1,17 @@
 "use client";
 
 import { EnterIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { ChevronDown, LogOut, Settings, User } from "lucide-react";
+
 import { Button, DropdownMenu, DropdownMenuContent } from "../ui";
 import { DropdownMenuItem, DropdownMenuLabel } from "../ui";
 import { DropdownMenuSeparator, DropdownMenuTrigger } from "../ui";
 import { AppDispatch, RootState } from "@/application/state/store";
 import { useToast } from "../ui/use-toast";
 import { signoutUser } from "@/application/use-cases/auth/signout";
-import Link from "next/link";
 
 export default function UserNav() {
   const router = useRouter();

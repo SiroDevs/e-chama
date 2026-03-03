@@ -1,5 +1,3 @@
-"use server";
-
 import { getServerClient } from "@/lib/supabase/server";
 import { UserGroup, PaginatedResp, Group, GroupExt } from "@/types";
 import { supabase } from "@/lib/supabase/client";

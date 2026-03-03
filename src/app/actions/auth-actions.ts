@@ -1,6 +1,6 @@
 "use server";
 
-import { AppUser, supabaseUserToAppUser } from "@/domain/entities";
+import { AppUser, sbUserToAppUser } from "@/domain/entities";
 import { authService } from "@/infrastructure/services/authService";
 import { profileService } from "@/infrastructure/services/profileService";
 
@@ -12,7 +12,7 @@ export async function signinUserAction(
     const { data, error } = await authService.signinUser(email, password);
 
     if (error) throw error;
-    if (!data.user) throw new Error("No user data returned");
+    if (!data.user) throw new Error("No data returned");
 
     let profileData = null;
     try {
@@ -22,7 +22,7 @@ export async function signinUserAction(
       console.log("No profile found for user:", profileError);
     }
 
-    const domainUser = supabaseUserToAppUser({
+    const domainUser = sbUserToAppUser({
       user: data.user,
       session: data.session,
       profile: profileData
@@ -58,7 +58,7 @@ export async function signupUserAction(
     );
 
     if (error) throw error;
-    if (!data.user) throw new Error("No user data returned");
+    if (!data.user) throw new Error("No data returned");
 
     let profileData = null;
     try {
@@ -72,7 +72,7 @@ export async function signupUserAction(
       console.log("No profile found for user:", profileError);
     }
 
-    const domainUser = supabaseUserToAppUser({
+    const domainUser = sbUserToAppUser({
       user: data.user,
       session: data.session,
       profile: profileData
