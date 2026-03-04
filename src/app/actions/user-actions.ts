@@ -57,7 +57,7 @@ export async function fetchUserProfile(
   } catch (error: unknown) {
     console.error("Error fetching profile:", error);
     throw new Error(
-      `Failed to login: ${error instanceof Error ? error.message : "Unknown error"
+      `Failed to fetch profile: ${error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }

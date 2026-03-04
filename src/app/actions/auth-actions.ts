@@ -1,43 +1,40 @@
 "use server";
 
-import { AppUser, sbUserToAppUser } from "@/domain/entities";
+import { AppUser, Profile, sbUserToAppUser } from "@/domain/entities";
 import { authService } from "@/infrastructure/services/authService";
 import { profileService } from "@/infrastructure/services/profileService";
+import { fetchUserProfile } from "./user-actions";
 
 export async function signinUserAction(
   email: string,
   password: string
-): Promise<AppUser> {
+): Promise<{ user: AppUser; profile: Profile | null }> {
   try {
     const { data, error } = await authService.signinUser(email, password);
 
     if (error) throw error;
     if (!data.user) throw new Error("No data returned");
 
-    let profileData = null;
-    try {
-      const { data: profile } = await profileService.fetchUserProfile(data.user.id)
-      profileData = profile;
-    } catch (profileError) {
-      console.log("No profile found for user:", profileError);
-    }
+    const profile = await fetchUserProfile(data.user.id);
 
-    const domainUser = sbUserToAppUser({
+    const appUser = sbUserToAppUser({
       user: data.user,
       session: data.session,
-      profile: profileData
+      profile: profile
     });
 
-    if (!domainUser) {
+    if (!appUser) {
       throw new Error("Failed to convert user to app user");
     }
 
-    return domainUser;
+    return {
+      user: appUser,
+      profile: profile
+    };
   } catch (error: unknown) {
     console.error("Error logging in user:", error);
     throw new Error(
-      `Failed to login: ${error instanceof Error ? error.message : "Unknown error"
-      }`
+      `Failed to login: ${error instanceof Error ? error.message : "Unknown error"}`
     );
   }
 }

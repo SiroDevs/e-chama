@@ -17,6 +17,7 @@ import { CardDescription, Alert } from "@/presentation/components/ui";
 import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
 import { signinUser } from "@/application/use-cases/auth/signin";
 import { AppDispatch } from "@/application/state/store";
+import { useToast } from "@/presentation/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -31,6 +32,7 @@ export default function SigninPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -53,6 +55,9 @@ export default function SigninPage() {
       await dispatch(signedUser);
 
       router.push("/");
+      toast({
+        title: "Welcome on board!"
+      });
     } catch (err: unknown) {
       setError(
         err instanceof Error
