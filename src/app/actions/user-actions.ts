@@ -27,15 +27,7 @@ export async function fetchUserProfile(
     const { data, error } = await profileService.fetchUserProfile(userId!);
 
     if (error) throw error;
-    if (!data.user) throw new Error("No data returned");
-
-    let profileData = null;
-    try {
-      const { data: profile } = await profileService.fetchUserProfile(data.user.id)
-      profileData = profile;
-    } catch (profileError) {
-      console.log("No profile found for user:", profileError);
-    }
+    if (!data) throw new Error("No profile data returned");
 
     const profile = dataToProfile({
       id: data.id,
@@ -53,13 +45,16 @@ export async function fetchUserProfile(
     if (!profile) {
       throw new Error("Failed to convert data to profile");
     }
+
     return profile;
+
   } catch (error: unknown) {
     console.error("Error fetching profile:", error);
+
     throw new Error(
-      `Failed to fetch profile: ${error instanceof Error ? error.message : "Unknown error"
+      `Failed to fetch profile: ${
+        error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }
 }
-

@@ -13,7 +13,7 @@ export async function signinUserAction(
     const { data, error } = await authService.signinUser(email, password);
 
     if (error) throw error;
-    if (!data.user) throw new Error("No data returned");
+    if (!data.user) throw new Error("No user data returned");
 
     const profile = await fetchUserProfile(data.user.id);
 
