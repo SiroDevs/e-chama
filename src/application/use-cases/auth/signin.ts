@@ -32,7 +32,12 @@ export const signinUser = (email: string, password: string) => {
 
       const groups = await fetchUserGroups(data.user.uid);
       if (groups.length > 0) {
-        dispatch(setGroup(groups[0] || null));
+        if (data.profile.group_id) {
+          const userGroup = groups.find(group => group.group_id === data.profile!.group_id);
+          dispatch(setGroup(userGroup || null));
+        } else {
+          dispatch(setGroup(groups[0] || null));
+        }
       }
     } catch (error: unknown) {
       dispatch(
