@@ -2,6 +2,8 @@ export interface Profile {
   id?: string;
   first_name?: string;
   last_name?: string;
+  id_number?: string;
+  kra_pin?: string;
   country?: string;
   address?: string;
   sex?: string;
@@ -16,6 +18,8 @@ export const dataToProfile = ({
   id,
   first_name,
   last_name,
+  id_number,
+  kra_pin,
   country,
   address,
   sex,
@@ -28,6 +32,8 @@ export const dataToProfile = ({
   id: string;
   first_name?: string | null;
   last_name?: string | null;
+  id_number?: string | null;
+  kra_pin?: string | null;
   country?: string | null;
   address?: string | null;
   sex?: string | null;
@@ -41,6 +47,8 @@ export const dataToProfile = ({
     id,
     first_name: first_name ?? undefined,
     last_name: last_name ?? undefined,
+    id_number: id_number ?? undefined,
+    kra_pin: kra_pin ?? undefined,
     country: country ?? undefined,
     address: address ?? undefined,
     sex: sex ?? undefined,

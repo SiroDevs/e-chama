@@ -73,7 +73,7 @@ export async function fetchUserMember(
       id: data.id,
       group_id: data.group_id,
       user_id: data.user_id,
-      country: data.country,
+      member_no: data.member_no,
       role: data.role,
       joined_at: data.joined_at,
       created_at: data.created_at,

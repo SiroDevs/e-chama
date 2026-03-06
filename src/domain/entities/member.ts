@@ -4,7 +4,7 @@ export interface Member {
   id?: string;
   group_id?: string;
   user_id?: string;
-  country?: string | null;
+  member_no?: string | null;
   role?: string;
   joined_at?: string | null;
   created_at?: string;
@@ -22,7 +22,7 @@ export const dataToMember = ({
   id,
   group_id,
   user_id,
-  country,
+  member_no,
   role,
   joined_at,
   created_at,
@@ -31,7 +31,7 @@ export const dataToMember = ({
   id: string;
   group_id?: string | null;
   user_id?: string | null;
-  country?: string | null;
+  member_no?: string | null;
   role?: string | null;
   joined_at?: string | null;
   created_at?: string | null;
@@ -41,7 +41,7 @@ export const dataToMember = ({
     id,
     group_id: group_id ?? undefined,
     user_id: user_id ?? undefined,
-    country: country ?? undefined,
+    member_no: member_no ?? undefined,
     role: role ?? undefined,
     joined_at: joined_at ?? undefined,
     created_at: created_at ?? undefined,
