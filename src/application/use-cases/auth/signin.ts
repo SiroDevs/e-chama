@@ -2,7 +2,7 @@ import { Dispatch } from "@reduxjs/toolkit";
 
 import { signinUserAction } from "@/app/actions/auth-actions";
 import { fetchUserGroups, fetchUserMember } from "@/app/actions/user-actions";
-import { setUser, setLoading, setError, setProfile } from "../../state/authSlice";
+import { setUser, setLoading, setError, setProfile } from "@/application/state/authSlice";
 import { setMember, setGroup, setGroups } from "@/application/state/groupSlice";
 
 export const signinUser = (email: string, password: string) => {
