@@ -1,8 +1,7 @@
-"use server";
+import { AuthResponse } from "@supabase/supabase-js";
 
 import { supabase } from "@/lib/supabase/client";
-import { AuthResponse } from "@supabase/supabase-js";
-import { AppUser, supabaseUserToAppUser } from "@/domain/entities/app.user.entity";
+import { AppUser, sbUserToAppUser } from "@/domain/entities/app.user.entity";
 
 export const authService = {
   async signupUser(
@@ -52,7 +51,7 @@ export const authService = {
         return null;
       }
 
-      return supabaseUserToAppUser({ user: session?.user, session: session, profile: null });
+      return sbUserToAppUser({ user: session?.user, session: session, profile: null });
     } catch (error) {
       console.error("Unexpected error in getCurrentUser:", error);
       return null;
@@ -65,7 +64,7 @@ export const authService = {
         console.log("Auth state changed:", event);
         const user = session?.user || null;
         callback(
-          supabaseUserToAppUser({ user: session?.user!, session: session, profile: null })
+          sbUserToAppUser({ user: session?.user!, session: session, profile: null })
         );
       }
     );
