@@ -9,7 +9,7 @@ import { RootState } from "@/application/state/store";
 import { memberService } from "@/infrastructure/services/memberService";
 
 export default function Dashboard() {
-  const { member } = useSelector((state: RootState) => state.sacco);
+  const { member } = useSelector((state: RootState) => state.group);
   const [memberCount, setMemberCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [previousMemberCount, setPreviousMemberCount] = useState<number>(0);

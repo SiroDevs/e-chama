@@ -6,7 +6,7 @@ interface AuthData {
   profile?: any;
 }
 
-export const supabaseUserToAppUser = (data: AuthData | null): AppUser | null => {
+export const sbUserToAppUser = (data: AuthData | null): AppUser | null => {
   if (!data || !data.user) return null;
 
   let fullName = data.user.email?.split('@')[0] || 'User';
@@ -33,7 +33,6 @@ export const supabaseUserToAppUser = (data: AuthData | null): AppUser | null => 
   );
 };
 
-// Domain entity for User
 export interface AppUser {
   uid: string;
   email: string | null;
@@ -42,12 +41,11 @@ export interface AppUser {
   createdAt?: string;
 }
 
-// Create a new User factory function
 export const createUser = (
   uid: string,
   email: string | null,
   displayName: string | null = null,
-  photoURL: string | null = null
+  photoURL: string | null = null,
 ): AppUser => {
   return {
     uid,

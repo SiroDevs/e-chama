@@ -1,5 +1,3 @@
-"use server";
-
 import { Profile } from "@/domain/entities";
 import { Group, Member } from "@/types";
 import { authService } from "./authService";

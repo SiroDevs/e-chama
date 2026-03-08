@@ -17,6 +17,7 @@ import { CardDescription, Alert } from "@/presentation/components/ui";
 import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
 import { signinUser } from "@/application/use-cases/auth/signin";
 import { AppDispatch } from "@/application/state/store";
+import { useToast } from "@/presentation/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -31,6 +32,7 @@ export default function SigninPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -49,9 +51,13 @@ export default function SigninPage() {
       setIsLoading(true);
       setError(null);
 
-      await dispatch(signinUser(values.email, values.password));
+      const signedUser = signinUser(values.email, values.password);
+      await dispatch(signedUser);
 
       router.push("/");
+      toast({
+        title: "Welcome on board!"
+      });
     } catch (err: unknown) {
       setError(
         err instanceof Error
@@ -63,7 +69,6 @@ export default function SigninPage() {
     }
   };
 
-  // Don't render form during SSR/prerendering
   if (!isClient) {
     return (
       <div className="flex items-center justify-center p-4 pt-8 pb-20">
@@ -74,7 +79,7 @@ export default function SigninPage() {
           </CardHeader>
           <CardContent>
             <div className="flex justify-center py-8">
-              <div className="animate-pulse">Loading...</div>
+              <div className="animate-pulse">Loading ...</div>
             </div>
           </CardContent>
         </Card>

@@ -1,5 +1,3 @@
-"use server";
-
 import { supabase } from "@/lib/supabase/client";
 import { ContributionsQueryParams, ContributionsResp, Contribution } from "@/types";
 

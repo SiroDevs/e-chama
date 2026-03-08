@@ -1,14 +1,13 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { setUser, setLoading, setError } from "../../state/authSlice";
+import { setUser, setLoading, setError, setProfile } from "../../state/authSlice";
 import { signupUserAction } from "@/app/actions/auth-actions";
+import { fetchUserProfile } from "@/app/actions/user-actions";
 
-// Register use case 
 export const signupUser = (first_name: string, last_name: string, phone: string, email: string, password: string) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(setLoading(true));
 
-      // Call the register user action
       const user = await signupUserAction(first_name, last_name, phone, email, password);
 
       if (!user) {
@@ -16,6 +15,13 @@ export const signupUser = (first_name: string, last_name: string, phone: string,
       }
       dispatch(setUser(user));
 
+      const profile = await fetchUserProfile(user.uid);
+
+      if (!profile) {
+        throw new Error("User profile not found after signin");
+      }
+
+      dispatch(setProfile(profile));
       return user;
     } catch (error: unknown) {
       dispatch(

@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 
-import { setUser, setLoading, setError } from "../../state/authSlice";
+import { setUser, setLoading, setError, setProfile } from "../../state/authSlice";
 import { signinUserAction } from "@/app/actions/auth-actions";
 
 export const signinUser = (email: string, password: string) => {
@@ -8,17 +8,19 @@ export const signinUser = (email: string, password: string) => {
     try {
       dispatch(setLoading(true));
 
-      // Call signin action
-      const user = await signinUserAction(email, password);
+      const data = await signinUserAction(email, password);
 
-      if (!user) {
+      if (!data) {
         throw new Error("User not found after signin");
       }
 
-      // Update the auth state
-      dispatch(setUser(user));
+      dispatch(setUser(data.user));
 
-      return user;
+      if (!data.profile) {
+        throw new Error("User profile not found after signin");
+      }
+
+      dispatch(setProfile(data.profile));
     } catch (error: unknown) {
       dispatch(
         setError(error instanceof Error ? error.message : "Failed to signin")

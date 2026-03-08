@@ -31,7 +31,6 @@ export const authSlice = createSlice({
     },
     setProfile: (state, action: PayloadAction<Profile | null>) => {
       state.profile = action.payload;
-      state.isAuthenticated = !!action.payload;
       state.isLoading = false;
       state.error = null;
     },
