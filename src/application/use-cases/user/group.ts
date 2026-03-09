@@ -1,20 +1,22 @@
 import { Dispatch } from "@reduxjs/toolkit";
 
-import { fetchUserGroups, fetchUserMember } from "@/app/actions/user-actions";
-import { setLoading, setError } from "@/application/state/authSlice";
-import { setMember, setGroup, setGroups } from "@/application/state/groupSlice";
-import { Group } from "@/domain/entities";
+import { UserGroup } from "@/domain/entities";
+import { fetchGroupMember } from "@/app/actions/user-actions";
+import { setLoading, setError, setMember, setGroup } from "@/application/state/groupSlice";
 
-export const signinUser = (userid: string, group: Group) => {
+export const switchGroup = (userid: string, group: UserGroup) => {
   return async (dispatch: Dispatch) => {
     try {
-      const member = await fetchUserMember(userid, group.id);
-      if (!member) {
-        throw new Error("Member not found after changing groups");
-      }
-      dispatch(setMember(member));
+      const member = await fetchGroupMember(userid, group.group_id);
 
-      dispatch(setGroup(group));
+      if (member) {
+        dispatch(setMember(member));
+        dispatch(setGroup(group));
+      } else {
+        dispatch(
+          setError("Failed to set user group")
+        );
+      }
     } catch (error: unknown) {
       dispatch(
         setError(error instanceof Error ? error.message : "Failed to set user group")

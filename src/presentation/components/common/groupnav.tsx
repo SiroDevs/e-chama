@@ -8,29 +8,38 @@ import { Button, DropdownMenu, DropdownMenuContent } from "../ui";
 import { DropdownMenuItem, DropdownMenuLabel } from "../ui";
 import { DropdownMenuSeparator, DropdownMenuTrigger } from "../ui";
 import { AppDispatch, RootState } from "@/application/state/store";
-import { signoutUser } from "@/application/use-cases/auth/signout";
 import { useToast } from "../ui/use-toast";
+import { switchGroup } from "@/application/use-cases/user/group";
+import { UserGroup } from "@/domain/entities";
 
 export function GroupNav() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { group, groups } = useSelector((state: RootState) => state.group);
+  const { user } = useSelector((state: RootState) => state.auth);
   const { toast } = useToast();
 
-  const handleLogout = async () => {
+  const handleGroupSwitch = async (selectedGroup: UserGroup) => {
     try {
-      await dispatch(signoutUser());
-      router.push("/signin");
-      toast({
-        title: "Success",
-        description: "You have been signed out successfully",
-      });
+      if (user) {
+        await dispatch(switchGroup(user.uid, selectedGroup));
+        toast({
+          title: "Success",
+          description: "You have been switched groups successfully",
+        });
+      } else {
+        toast({
+          title: "Failure",
+          description: "Failed to switch groups",
+        });
+      }
+      router.push("/");
     } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Error",
         description:
-          error instanceof Error ? error.message : "Failed to log out",
+          error instanceof Error ? error.message : "Failed to switch group",
       });
     }
   };
@@ -59,10 +68,13 @@ export function GroupNav() {
           >
             <DropdownMenuLabel>Switch Group</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {groups.map((group) => (
-              <DropdownMenuItem key={group.id}>
+            {groups.map((grp) => (
+              <DropdownMenuItem
+                key={grp.group_id}
+                onClick={() => handleGroupSwitch(grp)}
+              >
                 <SquareChevronRight className="h-4 w-4 mr-2" />
-                <span>{group.title}</span>
+                <span>{grp.title}</span>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

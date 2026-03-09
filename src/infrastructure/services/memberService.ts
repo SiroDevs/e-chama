@@ -145,5 +145,20 @@ export const memberService = {
         error: error as Error,
       };
     }
-  }
+  },
+  async fetchGroupMember(userId: string, groupId: string | null) {
+    const { data: member, error: memberError } = await supabase
+      .from("members")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("group_id", groupId)
+      .maybeSingle();
+
+    if (memberError) {
+      console.error("Member fetch error:", memberError);
+      return { data: null, error: memberError };
+    }
+
+    return { data: member, error: null };
+  },
 }
