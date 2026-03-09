@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { ChevronDown, ChevronRight, Users } from "lucide-react";
+import { ChevronDown, SquareChevronRight, Users } from "lucide-react";
 
 import { Button, DropdownMenu, DropdownMenuContent } from "../ui";
 import { DropdownMenuItem, DropdownMenuLabel } from "../ui";
@@ -14,9 +14,7 @@ import { useToast } from "../ui/use-toast";
 export function GroupNav() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { group, groups } = useSelector(
-    (state: RootState) => state.group,
-  );
+  const { group, groups } = useSelector((state: RootState) => state.group);
   const { toast } = useToast();
 
   const handleLogout = async () => {
@@ -38,38 +36,49 @@ export function GroupNav() {
   };
 
   return (
-    <div className="px-6 py-2.5">
+    <div className="px-2 py-2 w-full">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="flex items-center space-x-1">
-            <Users className="h-4 w-4" />
-            <span className="hidden sm:flex max-w-[100px] truncate">
-              {group ? group.title : "No Group"}
-            </span>
-            <ChevronDown className="h-4 w-4" />
+          <Button
+            variant="outline"
+            className="w-full flex items-center justify-between space-x-1"
+          >
+            <div className="flex items-center truncate">
+              <Users className="h-4 w-4 mr-2 flex-shrink-0" />
+              <span className="hidden sm:block truncate">
+                {group ? group.title : "No Group"}
+              </span>
+            </div>
+            <ChevronDown className="h-4 w-4 flex-shrink-0" />
           </Button>
         </DropdownMenuTrigger>
         {groups && groups.length > 0 ? (
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent
+            align="end"
+            className="w-[var(--radix-dropdown-menu-trigger-width)]"
+          >
             <DropdownMenuLabel>Switch Group</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {groups.map((group) => (
               <DropdownMenuItem key={group.id}>
-                <ChevronRight className="h-4 w-4 mr-2" />
+                <SquareChevronRight className="h-4 w-4 mr-2" />
                 <span>{group.title}</span>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         ) : (
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent
+            align="end"
+            className="w-[var(--radix-dropdown-menu-trigger-width)]"
+          >
             <DropdownMenuLabel>Take an Action</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <ChevronRight className="h-4 w-4 mr-2" />
+              <SquareChevronRight className="h-4 w-4 mr-2" />
               <span>Join a Group</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <ChevronRight className="h-4 w-4 mr-2" />
+              <SquareChevronRight className="h-4 w-4 mr-2" />
               <span>Create a Group</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
