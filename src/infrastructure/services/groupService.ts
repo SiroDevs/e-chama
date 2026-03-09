@@ -1,7 +1,8 @@
 import { getServerClient } from "@/lib/supabase/server";
-import { UserGroup, PaginatedResp, Group, GroupExt } from "@/types";
+import { UserGroup, Group, GroupExt } from "@/domain/entities";
 import { supabase } from "@/lib/supabase/client";
 import { memberService } from "./memberService";
+import { PaginatedResp } from "@/types/paginations";
 
 export const groupService = {
   async newGroup(group: Group) {
@@ -140,7 +141,6 @@ export const groupService = {
 
     if (error) {
       if (error.code === "PGRST116") {
-        // No rows found
         return null;
       }
       throw new Error(`Failed to fetch user role: ${error.message}`);
