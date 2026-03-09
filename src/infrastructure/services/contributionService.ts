@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase/client";
-import { ContributionsQueryParams, ContributionsResp, Contribution } from "@/types";
+import { ContributionsQueryParams, ContributionsResp, Contribution } from "@/domain/entities";
 
 export const contributionService = {
   async getContributions({

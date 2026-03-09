@@ -1,4 +1,4 @@
-import { DatabaseFilters } from "./general";
+import { DatabaseFilters } from "@/types/general";
 
 export interface GroupMember {
   id: string;
@@ -36,3 +36,4 @@ export interface GroupMembersResp {
   count: number;
   error: Error | null;
 }
+

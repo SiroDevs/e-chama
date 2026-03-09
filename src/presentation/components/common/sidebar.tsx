@@ -4,11 +4,11 @@ import React from "react";
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
+import { HandCoins, LayoutDashboard, Users } from "lucide-react";
 import { ArrowRight2, Headphone, Setting2, Star } from "iconsax-react";
 
-import { AppIcon } from ".";
+import { AppIcon, GroupNav } from ".";
 import ProfileImage from "../../../../public/profile.png";
-import { HandCoins, LayoutDashboard, Users } from "lucide-react";
 
 interface SidebarProps {
   onClose?: () => void;
@@ -48,6 +48,8 @@ function Sidebar({ onClose }: SidebarProps) {
 
         <div className="flex flex-col h-full justify-between">
           <div className="pt-6 text-gray-500 font-medium space-y-1 md:px-2 text-sm overflow-y-auto">
+            <GroupNav/>
+
             <Link
               href={"/"}
               onClick={handleNavClick}
