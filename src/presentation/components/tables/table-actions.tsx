@@ -1,5 +1,5 @@
-import { AlertDialog } from '../dialogs/alert-dialog';
 import { Pencil, Trash2 } from 'lucide-react';
+import { AlertDialog } from '../dialogs/alert-dialog';
 
 interface TableActionsProps {
   onEdit: () => void;
