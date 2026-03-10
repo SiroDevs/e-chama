@@ -148,20 +148,20 @@ function Sidebar({ onClose }: SidebarProps) {
   );
 }
 
-const NavbarLink = ({ href, active }: { href: string; active: boolean }) => {
-  return <Link href={href}></Link>;
-};
+// const NavbarLink = ({ href, active }: { href: string; active: boolean }) => {
+//   return <Link href={href}></Link>;
+// };
 
-const NavLink = React.forwardRef<
-  LinkProps,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, href, ...props }) => (
-  <Link
-    href={href!}
-    className={`flex ${window.location.pathname === href! ? "text-primary" : ""} hover:px-8 duration-200 rounded-md w-full py-2 px-6 items-center gap-2`}
-    {...props}
-  />
-));
-NavLink.displayName = "NavLink";
+// const NavLink = React.forwardRef<
+//   LinkProps,
+//   React.ComponentPropsWithoutRef<"a">
+// >(({ className, href, ...props }) => (
+//   <Link
+//     href={href!}
+//     className={`flex ${window.location.pathname === href! ? "text-primary" : ""} hover:px-8 duration-200 rounded-md w-full py-2 px-6 items-center gap-2`}
+//     {...props}
+//   />
+// ));
+// NavLink.displayName = "NavLink";
 
 export default Sidebar;
