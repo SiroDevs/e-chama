@@ -1,5 +1,4 @@
-import { Profile } from "@/domain/entities";
-import { Group, Member } from "@/types";
+import { Group, Member, Profile } from "@/domain/entities";
 import { authService } from "./authService";
 import { groupService } from "./groupService";
 import { memberService } from "./memberService";

@@ -1,9 +1,8 @@
 "use server";
 
-import { dataToProfile, Profile } from "@/domain/entities";
+import { dataToMember, dataToProfile, Member, Profile, UserGroup } from "@/domain/entities";
 import { groupService } from "@/infrastructure/services/groupService";
 import { profileService } from "@/infrastructure/services/profileService";
-import { UserGroup } from "@/types";
 
 export async function fetchUserGroups(userId: string): Promise<UserGroup[]> {
   let groups: UserGroup[] = [];
@@ -38,8 +37,9 @@ export async function fetchUserProfile(
       sex: data.sex,
       dob: data.dob,
       avatar: data.avatar,
-      id_number: data.id_number,
-      kra_pin: data.kra_pin,
+      group_id: data.group_id,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
     });
 
     if (!profile) {
@@ -53,6 +53,44 @@ export async function fetchUserProfile(
 
     throw new Error(
       `Failed to fetch profile: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
+export async function fetchUserMember(
+  userId?: string,
+  groupId?: string,
+): Promise<Member> {
+  try {
+    const { data, error } = await profileService.fetchUserMember(userId!, groupId!);
+
+    if (error) throw error;
+    if (!data) throw new Error("No profile data returned");
+
+    const member = dataToMember({
+      id: data.id,
+      group_id: data.group_id,
+      user_id: data.user_id,
+      member_no: data.member_no,
+      role: data.role,
+      joined_at: data.joined_at,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
+    });
+
+    if (!member) {
+      throw new Error("Failed to convert data to member");
+    }
+
+    return member;
+
+  } catch (error: unknown) {
+    console.error("Error fetching member:", error);
+
+    throw new Error(
+      `Failed to fetch member: ${
         error instanceof Error ? error.message : "Unknown error"
       }`
     );

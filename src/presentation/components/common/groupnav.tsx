@@ -2,20 +2,19 @@
 
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { ChevronDown, LogOut, Settings, Users } from "lucide-react";
+import { ChevronDown, ChevronRight, Users } from "lucide-react";
 
 import { Button, DropdownMenu, DropdownMenuContent } from "../ui";
 import { DropdownMenuItem, DropdownMenuLabel } from "../ui";
 import { DropdownMenuSeparator, DropdownMenuTrigger } from "../ui";
 import { AppDispatch, RootState } from "@/application/state/store";
-import { useToast } from "../ui/use-toast";
 import { signoutUser } from "@/application/use-cases/auth/signout";
+import { useToast } from "../ui/use-toast";
 
 export function GroupNav() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.auth);
-  const { group, member, groups, hasGroups } = useSelector(
+  const { group, groups } = useSelector(
     (state: RootState) => state.group,
   );
   const { toast } = useToast();
@@ -45,23 +44,36 @@ export function GroupNav() {
           <Button variant="outline" className="flex items-center space-x-1">
             <Users className="h-4 w-4" />
             <span className="hidden sm:flex max-w-[100px] truncate">
-              {user ? user.displayName : "No Group"}
+              {group ? group.title : "No Group"}
             </span>
             <ChevronDown className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Manage My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => router.push(`/user/settings`)}>
-            <Settings className="h-4 w-4 mr-2" />
-            <span>Settings</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogout}>
-            <LogOut className="h-4 w-4 mr-2" />
-            <span>Signout</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
+        {groups && groups.length > 0 ? (
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Switch Group</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {groups.map((group) => (
+              <DropdownMenuItem key={group.id}>
+                <ChevronRight className="h-4 w-4 mr-2" />
+                <span>{group.title}</span>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        ) : (
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Take an Action</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <ChevronRight className="h-4 w-4 mr-2" />
+              <span>Join a Group</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <ChevronRight className="h-4 w-4 mr-2" />
+              <span>Create a Group</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        )}
       </DropdownMenu>
     </div>
   );

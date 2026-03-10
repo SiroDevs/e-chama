@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Group, Member, UserGroup } from "@/domain/entities";
+import { Group, Member } from "@/domain/entities";
 
 interface GroupState {
   member: Member | null;
   group: Group | null;
-  groups: UserGroup[] | null;
-  hasGroups: boolean;
+  groups: Group[] | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -15,7 +14,6 @@ const initialState: GroupState = {
   member: null,
   group: null,
   groups: [],
-  hasGroups: false,
   isLoading: true,
   error: null,
 };
@@ -26,13 +24,16 @@ export const groupSlice = createSlice({
   reducers: {
     setMember: (state, action: PayloadAction<Member | null>) => {
       state.member = action.payload;
-      state.hasGroups = !!action.payload;
       state.isLoading = false;
       state.error = null;
     },
     setGroup: (state, action: PayloadAction<Group | null>) => {
       state.group = action.payload;
-      state.hasGroups = !!action.payload;
+      state.isLoading = false;
+      state.error = null;
+    },
+    setGroups: (state, action: PayloadAction<Group[]>) => {
+      state.groups = action.payload;
       state.isLoading = false;
       state.error = null;
     },
@@ -49,13 +50,12 @@ export const groupSlice = createSlice({
     resetState: (state) => {
       state.member = null;
       state.group = null;
-      state.hasGroups = false;
       state.error = null;
     },
   },
 });
 
-export const { setMember, setGroup, setLoading, setError, clearError, resetState } =
+export const { setMember, setGroup, setGroups, setLoading, setError, clearError, resetState } =
   groupSlice.actions;
 
 export default groupSlice.reducer;
