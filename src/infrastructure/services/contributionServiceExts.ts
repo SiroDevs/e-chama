@@ -1,5 +1,5 @@
+import { ContributionsQueryParams, GrpContributionsResp } from "@/domain/entities";
 import { supabase } from "@/lib/supabase/client";
-import { ContributionsQueryParams, GrpContributionsResp } from "@/types";
 
 export const contributionServiceExts = {
   async getGroupContributions({

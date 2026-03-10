@@ -77,13 +77,13 @@ export const profileService = {
           id: profile.id,
           first_name: profile.first_name,
           last_name: profile.last_name,
+          id_number: profile.id_number,
+          kra_pin: profile.kra_pin,
           country: profile.country,
           address: profile.address,
           sex: profile.sex,
           dob: profile.dob,
           avatar: profile.avatar,
-          id_number: profile.id_number,
-          kra_pin: profile.kra_pin,
         },
       ])
       .select()

@@ -1,14 +1,13 @@
 "use client";
 
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { AnimatePresence, motion } from "framer-motion";
 
 import MainNavBar from "../components/common/main-navbar";
 import MainFooter from "../components/common/main-footer";
 import { RootState, useAppSelector } from "@/application/state/store";
-import { AnimatePresence, motion } from "framer-motion";
-import Sidebar from "../components/common/sidebar";
 import { setIsSidebarOpen } from "@/application/state/navSlice";
+import Sidebar from "../components/common/sidebar";
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);

@@ -1,5 +1,5 @@
+import { GroupMember, GroupMembersQueryParams, GroupMembersResp, Member } from "@/domain/entities";
 import { supabase } from "@/lib/supabase/client";
-import { Member, GroupMember, GroupMembersQueryParams, GroupMembersResp } from "@/types";
 
 export const memberService = {
   async newMember(member: Member) {
