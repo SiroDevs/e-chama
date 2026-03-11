@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -12,12 +12,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, Form, FormField } from "@/presentation/components/ui";
 import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui";
 import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
-import { CardHeader, CardFooter } from "@/presentation/components/ui";
-import { CardDescription, Alert } from "@/presentation/components/ui";
+import { Alert, CardFooter } from "@/presentation/components/ui";
 import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
+import { CardHeader, CardDescription } from "@/presentation/components/ui";
 import { signinUser } from "@/application/use-cases/auth/signin";
 import { AppDispatch } from "@/application/state/store";
 import { useToast } from "@/presentation/components/ui/use-toast";
+import LoadingSpinner from "@/presentation/components/ui/states/loading-spinner";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -27,7 +28,6 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SigninPage() {
-  const [isClient, setIsClient] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -42,10 +42,6 @@ export default function SigninPage() {
     },
   });
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   const onSubmit = async (values: FormValues) => {
     try {
       setIsLoading(true);
@@ -56,7 +52,7 @@ export default function SigninPage() {
 
       router.push("/");
       toast({
-        title: "Welcome on board!"
+        title: "Welcome on board!",
       });
     } catch (err: unknown) {
       setError(
@@ -68,24 +64,6 @@ export default function SigninPage() {
       setIsLoading(false);
     }
   };
-
-  if (!isClient) {
-    return (
-      <div className="flex items-center justify-center p-4 pt-8 pb-20">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="text-2xl">Welcome back</CardTitle>
-            <CardDescription>Sign in to your account</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-center py-8">
-              <div className="animate-pulse">Loading ...</div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="flex items-center justify-center p-4 pt-8 pb-20">
@@ -103,37 +81,49 @@ export default function SigninPage() {
             </Alert>
           )}
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <Input placeholder="email@example.com" {...field} />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <Input placeholder="email@example.com" {...field} />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <Input type="password" placeholder="••••••••" {...field} />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <Input
+                        type="password"
+                        placeholder="••••••••"
+                        {...field}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Signing in..." : "Sign In"}
-              </Button>
-            </form>
-          </Form>
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Signing in..." : "Sign In"}
+                </Button>
+              </form>
+            </Form>
+          )}
+          
         </CardContent>
         <CardFooter className="flex justify-center">
           <div className="text-sm text-gray-500 dark:text-gray-400">

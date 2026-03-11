@@ -17,7 +17,7 @@ export * from "./form";
 export * from "./hover-card";
 export * from "./input";
 export * from "./label";
-export * from "./loading-spinner";
+export * from "./states/loading-spinner";
 export * from "./menu-bar";
 export * from "./navigation-menu";
 export * from "./popover";

@@ -61,7 +61,7 @@ function Sidebar({ onClose }: SidebarProps) {
             </Link>
 
             <Link
-              href={"/app/teams"}
+              href={"/members"}
               onClick={handleNavClick}
               className={`flex ${isActive("/app/teams") ? "text-primary bg-primary/10" : "hover:bg-gray-50 dark:hover:bg-gray-800"} 
                                 duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2 transition-all`}
@@ -71,7 +71,7 @@ function Sidebar({ onClose }: SidebarProps) {
             </Link>
 
             <Link
-              href={"/app/integrations"}
+              href={"/contributions"}
               onClick={handleNavClick}
               className={`flex ${isActive("/app/integrations") ? "text-primary bg-primary/10" : "hover:bg-gray-50 dark:hover:bg-gray-800"} 
                                 duration-200 px-6 py-2.5 items-center gap-3 rounded-lg mx-2 transition-all`}
@@ -148,20 +148,20 @@ function Sidebar({ onClose }: SidebarProps) {
   );
 }
 
-const NavbarLink = ({ href, active }: { href: string; active: boolean }) => {
-  return <Link href={href}></Link>;
-};
+// const NavbarLink = ({ href, active }: { href: string; active: boolean }) => {
+//   return <Link href={href}></Link>;
+// };
 
-const NavLink = React.forwardRef<
-  LinkProps,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, href, ...props }) => (
-  <Link
-    href={href!}
-    className={`flex ${window.location.pathname === href! ? "text-primary" : ""} hover:px-8 duration-200 rounded-md w-full py-2 px-6 items-center gap-2`}
-    {...props}
-  />
-));
-NavLink.displayName = "NavLink";
+// const NavLink = React.forwardRef<
+//   LinkProps,
+//   React.ComponentPropsWithoutRef<"a">
+// >(({ className, href, ...props }) => (
+//   <Link
+//     href={href!}
+//     className={`flex ${window.location.pathname === href! ? "text-primary" : ""} hover:px-8 duration-200 rounded-md w-full py-2 px-6 items-center gap-2`}
+//     {...props}
+//   />
+// ));
+// NavLink.displayName = "NavLink";
 
 export default Sidebar;

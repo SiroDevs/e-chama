@@ -1,7 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
 
 import { signinUserAction } from "@/app/actions/auth-actions";
-import { fetchUserGroups, fetchUserMember } from "@/app/actions/user-actions";
+import { fetchUserGroups, fetchGroupMember } from "@/app/actions/user-actions";
 import { setUser, setLoading, setError, setProfile } from "@/application/state/authSlice";
 import { setMember, setGroup, setGroups } from "@/application/state/groupSlice";
 
@@ -24,7 +24,7 @@ export const signinUser = (email: string, password: string) => {
 
       dispatch(setProfile(data.profile));
 
-      const member = await fetchUserMember(data.user.uid, data.profile.group_id);
+      const member = await fetchGroupMember(data.user.uid, data.profile.group_id);
       if (!member) {
         throw new Error("Member not found after signin");
       }
