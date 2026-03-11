@@ -34,7 +34,7 @@ export default function PageContent(props: PageContentProps) {
             {showBackButton && (
               <button
                 onClick={handleBack}
-                className="flex-shrink-0 p-1.5 sm:p-2 mr-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="flex-shrink-0 mr-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label="Go back"
               >
                 <ArrowLeft
@@ -45,9 +45,7 @@ export default function PageContent(props: PageContentProps) {
             )}
 
             {tagline && (
-              <div>
-                <p className="text-sm font-semibold text-gray-800">{tagline}</p>
-              </div>
+              <h3 className="font-semibold">{tagline}</h3>
             )}
 
             {actions && (

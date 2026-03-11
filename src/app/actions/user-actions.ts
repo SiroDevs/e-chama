@@ -1,14 +1,14 @@
 "use server";
 
-import { dataToMember, dataToProfile, Member, Profile, UserGroup } from "@/domain/entities";
+import { Member, Profile, UserGroup } from "@/domain/entities";
 import { groupService } from "@/infrastructure/services/groupService";
+import { memberService } from "@/infrastructure/services/memberService";
 import { profileService } from "@/infrastructure/services/profileService";
 
 export async function fetchUserGroups(userId: string): Promise<UserGroup[]> {
   let groups: UserGroup[] = [];
   try {
     groups = await groupService.getUserGroups(userId);
-
   } catch (error: unknown) {
     console.error("Error fetching in user groups:", error);
     throw new Error(
@@ -28,25 +28,7 @@ export async function fetchUserProfile(
     if (error) throw error;
     if (!data) throw new Error("No profile data returned");
 
-    const profile = dataToProfile({
-      id: data.id,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      country: data.country,
-      address: data.address,
-      sex: data.sex,
-      dob: data.dob,
-      avatar: data.avatar,
-      group_id: data.group_id,
-      created_at: data.created_at,
-      updated_at: data.updated_at,
-    });
-
-    if (!profile) {
-      throw new Error("Failed to convert data to profile");
-    }
-
-    return profile;
+    return data;
 
   } catch (error: unknown) {
     console.error("Error fetching profile:", error);
@@ -59,33 +41,17 @@ export async function fetchUserProfile(
   }
 }
 
-export async function fetchUserMember(
+export async function fetchGroupMember(
   userId?: string,
   groupId?: string,
 ): Promise<Member> {
   try {
-    const { data, error } = await profileService.fetchUserMember(userId!, groupId!);
+    const { data, error } = await memberService.fetchGroupMember(userId!, groupId!);
 
     if (error) throw error;
-    if (!data) throw new Error("No profile data returned");
+    if (!data) throw new Error("No member data returned");
 
-    const member = dataToMember({
-      id: data.id,
-      group_id: data.group_id,
-      user_id: data.user_id,
-      member_no: data.member_no,
-      role: data.role,
-      joined_at: data.joined_at,
-      created_at: data.created_at,
-      updated_at: data.updated_at,
-    });
-
-    if (!member) {
-      throw new Error("Failed to convert data to member");
-    }
-
-    return member;
-
+    return data;
   } catch (error: unknown) {
     console.error("Error fetching member:", error);
 

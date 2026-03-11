@@ -17,34 +17,3 @@ export interface MemberProfileProps {
   member: ProcessedMember | null;
   user: ProcessedUser | null;
 }
-
-export const dataToMember = ({
-  id,
-  group_id,
-  user_id,
-  member_no,
-  role,
-  joined_at,
-  created_at,
-  updated_at,
-}: {
-  id: string;
-  group_id?: string | null;
-  user_id?: string | null;
-  member_no?: string | null;
-  role?: string | null;
-  joined_at?: string | null;
-  created_at?: string | null;
-  updated_at?: string | null;
-}): Member => {
-  return {
-    id,
-    group_id: group_id ?? undefined,
-    user_id: user_id ?? undefined,
-    member_no: member_no ?? undefined,
-    role: role ?? undefined,
-    joined_at: joined_at ?? undefined,
-    created_at: created_at ?? undefined,
-    updated_at: updated_at ?? undefined,
-  };
-};
