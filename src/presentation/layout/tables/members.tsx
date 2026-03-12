@@ -3,16 +3,16 @@
 import { TableHeader, TableRow } from "../../components/tables/table-parts";
 import { TableCell, TableContainer } from "../../components/tables/table-parts";
 import { Pagination } from "../../components/tables/pagination";
-import { Member } from "@/domain/entities";
+import { GroupMember } from "@/domain/entities";
 import LoadingSpinner from "../../components/ui/states/loading-spinner";
 import { formatDateTime } from "@/application/helpers/utils";
 import { TableActions } from "../../components/tables/table-actions";
 import { EmptyState } from "../../components/ui/states/empty-state";
 
 interface MemberTableProps {
-  members: Member[];
-  onEdit: (member: Member) => void;
-  onDelete: (id: string) => void;
+  records: GroupMember[];
+  onEdit: (record: GroupMember) => void;
+  onMore: (id: string) => void;
   isLoading?: boolean;
   currentPage: number;
   totalPages: number;
@@ -21,13 +21,33 @@ interface MemberTableProps {
   onPageChange: (page: number) => void;
 }
 
-const COLUMNS = ["Member No", "Role", "Joined", "Updated", "Actions"];
-const COLUMN_WIDTHS = ["", "max-w-md", "max-w-md", "max-w-sm", "w-32"];
+const COLUMNS = [
+  "No",
+  "Full Name",
+  "Role",
+  "ID. No",
+  "Sex",
+  "Phone",
+  "Email",
+  "Dates",
+  "Actions",
+];
+const COLUMN_WIDTHS = [
+  "w-10",
+  "max-w-md",
+  "w-16",
+  "w-32",
+  "w-16",
+  "max-w-md",
+  "max-w-md",
+  "w-32",
+  "w-16",
+];
 
-export function MemberTable({
-  members,
+export function MembersTable({
+  records,
   onEdit,
-  onDelete,
+  onMore,
   isLoading = false,
   currentPage,
   totalPages,
@@ -36,12 +56,12 @@ export function MemberTable({
   onPageChange,
 }: MemberTableProps) {
   if (isLoading) return <LoadingSpinner />;
-  const handleRowClick = (member: Member, event: React.MouseEvent) => {
+  const handleRowClick = (record: GroupMember, event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
     if (target.closest("button") || target.closest("a")) {
       return;
     }
-    onEdit(member);
+    onEdit(record);
   };
 
   return (
@@ -50,41 +70,47 @@ export function MemberTable({
         <table className="min-w-full divide-y">
           <TableHeader columns={COLUMNS} columnWidths={COLUMN_WIDTHS} />
           <tbody className="divide-y">
-            {members.length === 0 ? (
+            {records.length === 0 ? (
               <tr>
                 <td colSpan={COLUMNS.length} className="px-6 py-24 text-center">
-                  <EmptyState entityName="members" />
+                  <EmptyState entityName="grpMembers" />
                 </td>
               </tr>
             ) : (
-              members.map((member) => (
+              records.map((record) => (
                 <TableRow
-                  key={member.id}
-                  onClick={(e) => handleRowClick(member, e)}
+                  key={record.id}
+                  onClick={(e) => handleRowClick(record, e)}
                 >
                   <TableCell className="font-medium">
-                    {member.member_no || "-"}
+                    {record.member_no || "-"}
                   </TableCell>
-                  <TableCell>{member.role || "Member"}</TableCell>
+                  <TableCell>{record.full_name}</TableCell>
+                  <TableCell>{record.role || "Member"}</TableCell>
+                  <TableCell>{record.id_number || "-"}</TableCell>
+                  <TableCell>{record.sex || "-"}</TableCell>
+                  <TableCell>{record.phone || "-"}</TableCell>
+                  <TableCell>{record.email || "-"}</TableCell>
 
                   <TableCell className="whitespace-nowrap">
-                    {member.joined_at
-                      ? formatDateTime(member.joined_at, {
+                    Joined:{" "}
+                    {record.joined_at
+                      ? formatDateTime(record.joined_at, {
                           useNumericFormat: true,
                         })
-                      : "-"}
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap">
-                    {member.updated_at
-                      ? formatDateTime(member.updated_at, {
+                      : ""}
+                    <br />
+                    Updated:{" "}
+                    {record.updated_at
+                      ? formatDateTime(record.updated_at, {
                           useNumericFormat: true,
                         })
-                      : "-"}
+                      : ""}
                   </TableCell>
                   <TableCell>
                     <TableActions
-                      onEdit={() => onEdit(member)}
-                      onDelete={() => onDelete(member.id!)}
+                      onEdit={() => onEdit(record)}
+                      onMore={() => onMore(record.id!)}
                       entityType="Member"
                     />
                   </TableCell>
@@ -95,7 +121,7 @@ export function MemberTable({
         </table>
       </TableContainer>
 
-      {members.length > 0 && (
+      {records.length > pageSize && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

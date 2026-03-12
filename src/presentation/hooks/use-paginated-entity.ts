@@ -4,25 +4,24 @@ import { EntityType } from '@/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function usePaginatedEntity<T>(
-  useCase: CrudUseCase<T>, 
+  useCase: CrudUseCase<T>,
   entityType: EntityType,
   paginationOptions: PaginationOptions
 ) {
   const queryClient = useQueryClient();
 
-  const { 
-    data, 
-    isLoading, 
+  const {
+    data,
+    isLoading,
     error,
-    isFetching 
+    isFetching
   } = useQuery({
     queryKey: [entityType, 'paginated', paginationOptions],
     queryFn: () => useCase.getAllPaginated(paginationOptions),
-    // keepPreviousData: true,
   });
 
   const createMutation = useMutation({
-    mutationFn: (data: Omit<T, 'id' | 'created_at' | 'updated_at'>) => 
+    mutationFn: (data: Omit<T, 'id' | 'created_at' | 'updated_at'>) =>
       useCase.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [entityType, 'paginated'] });

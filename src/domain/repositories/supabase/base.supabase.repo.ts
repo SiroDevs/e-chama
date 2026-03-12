@@ -1,18 +1,5 @@
 import { supabase } from "@/lib/supabase/client";
-import { BaseRepo } from "./base.repo";
-
-export interface PaginationOptions {
-  page: number;
-  pageSize: number;
-}
-
-export interface PaginatedResult<T> {
-  data: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
-}
+import { BaseRepo, PaginationOptions, PaginatedResult } from "./base.repo";
 
 export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
   constructor(protected tableName: string) {}
@@ -28,15 +15,25 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
   }
 
   async getAllPaginated(options: PaginationOptions): Promise<PaginatedResult<T>> {
-    const { page, pageSize } = options;
+    const { page, pageSize, filters } = options;
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
-    const { data, error, count } = await supabase
+    let query = supabase
       .from(this.tableName)
       .select('*', { count: 'exact' })
       .order('id', { ascending: true })
       .range(from, to);
+
+    if (filters) {
+      for (const [key, value] of Object.entries(filters)) {
+        if (value !== undefined && value !== null) {
+          query = query.eq(key, value);
+        }
+      }
+    }
+
+    const { data, error, count } = await query;
 
     if (error) throw new Error(`Failed to fetch ${this.tableName}: ${error.message}`);
 
