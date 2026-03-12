@@ -1,4 +1,4 @@
-import { Member, Profile, Group, UserGroup, Contribution, Permission } from "@/domain/entities";
+import { Member, Profile, Group, UserGroup, Contribution, Permission, GroupMember } from "@/domain/entities";
 
 export interface DatabaseFilters {
   field: string;
@@ -20,7 +20,7 @@ export type ApiResponse<T> = {
   success: boolean;
 };
 
-export type EntityType = 'members' | 'profiles' | 'groups' | 'permissions';
-export const entityTypes: EntityType[] = ["members", "profiles", "groups", "permissions"];
+export type EntityType = 'members' | 'profiles' | 'group_members' | 'groups' | 'permissions';
+export const entityTypes: EntityType[] = ["members", "profiles", "group_members", "groups", "permissions"];
 
-export type AnyEntity = Member | Profile | Group | Permission | Contribution | UserGroup;
+export type AnyEntity = Member | Profile | Group | GroupMember | Permission | Contribution | UserGroup;

@@ -1,6 +1,7 @@
 export interface PaginationOptions {
   page: number;
   pageSize: number;
+  filters?: Record<string, unknown>;
 }
 
 export interface PaginatedResult<T> {

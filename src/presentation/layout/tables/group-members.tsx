@@ -21,8 +21,17 @@ interface MemberTableProps {
   onPageChange: (page: number) => void;
 }
 
-const COLUMNS = ["Member No", "Role", "Joined", "Updated", "Actions"];
-const COLUMN_WIDTHS = ["", "max-w-md", "max-w-md", "max-w-sm", "w-32"];
+const COLUMNS = ["No", "Member", "Role", "ID. No", "Sex", "Joined", "Updated", "Actions"];
+const COLUMN_WIDTHS = [
+  "",
+  "max-w-md",
+  "max-w-md",
+  "w-32",
+  "w-32",
+  "w-32",
+  "w-32",
+  "w-32",
+];
 
 export function GroupMembersTable({
   grpMembers,
@@ -65,7 +74,13 @@ export function GroupMembersTable({
                   <TableCell className="font-medium">
                     {grpMember.member_no || "-"}
                   </TableCell>
+                  <TableCell>{grpMember.full_name}</TableCell>
+
                   <TableCell>{grpMember.role || "Member"}</TableCell>
+
+                  <TableCell>{grpMember.id_number || "-"}</TableCell>
+
+                  <TableCell>{grpMember.sex || "-"}</TableCell>
 
                   <TableCell className="whitespace-nowrap">
                     {grpMember.joined_at

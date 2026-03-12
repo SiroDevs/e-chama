@@ -10,14 +10,6 @@ export class ContributionSupabaseRepo
   }
 }
 
-// export class GroupContributionSupabaseRepo 
-//   extends BaseSupabaseRepo<GroupContribution> 
-//   implements BaseRepo<GroupContribution> {
-//   constructor() {
-//     super('group_contributions');
-//   }
-// }
-
 export class GroupMemberSupabaseRepo 
   extends BaseSupabaseRepo<GroupMember> 
   implements BaseRepo<GroupMember> {
