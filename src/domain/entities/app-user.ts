@@ -38,7 +38,7 @@ export interface AppUser {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
-  createdAt?: string;
+  created_at?: string;
 }
 
 export const createUser = (
@@ -52,6 +52,6 @@ export const createUser = (
     email,
     displayName,
     photoURL,
-    createdAt: new Date().toISOString(),
+    created_at: new Date().toISOString(),
   };
 };

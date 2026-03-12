@@ -11,7 +11,7 @@ export function useEntityCrud<T>(useCase: CrudUseCase<T>, entityType: EntityType
   });
 
   const createMutation = useMutation({
-    mutationFn: (data: Omit<T, 'rid' | 'createdAt' | 'updatedAt'>) => 
+    mutationFn: (data: Omit<T, 'id' | 'created_at' | 'updated_at'>) => 
       useCase.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [entityType] });
