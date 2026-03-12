@@ -1,7 +1,7 @@
 "use client";
 
-import { TableContainer } from "./table-container";
-import { TableHeader, TableRow, TableCell } from "./table-parts";
+import { TableHeader, TableRow } from "./table-parts";
+import { TableCell, TableContainer } from "./table-parts";
 import { Pagination } from "./pagination";
 import { Member } from "@/domain/entities";
 import LoadingSpinner from "../ui/states/loading-spinner";
@@ -21,21 +21,8 @@ interface MemberTableProps {
   onPageChange: (page: number) => void;
 }
 
-const COLUMNS = [
-  "ID",
-  "Member No",
-  "Joined",
-  "Updated",
-  "Actions",
-];
-const COLUMN_WIDTHS = [
-  "w-16",
-  "",
-  "max-w-md",
-  "max-w-sm",
-  "w-32",
-  "w-32",
-];
+const COLUMNS = ["Member No", "Role", "Joined", "Updated", "Actions"];
+const COLUMN_WIDTHS = ["", "max-w-md", "max-w-md", "max-w-sm", "w-32"];
 
 export function MemberTable({
   members,
@@ -58,11 +45,11 @@ export function MemberTable({
   };
 
   return (
-    <div className="bg-white shadow rounded-lg">
+    <div>
       <TableContainer>
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y">
           <TableHeader columns={COLUMNS} columnWidths={COLUMN_WIDTHS} />
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="divide-y">
             {members.length === 0 ? (
               <tr>
                 <td colSpan={COLUMNS.length} className="px-6 py-24 text-center">
@@ -75,12 +62,11 @@ export function MemberTable({
                   key={member.id}
                   onClick={(e) => handleRowClick(member, e)}
                 >
-                  <TableCell>{member.id}</TableCell>
                   <TableCell className="font-medium">
                     {member.member_no || "-"}
                   </TableCell>
                   <TableCell>{member.role || "Member"}</TableCell>
-                  
+
                   <TableCell className="whitespace-nowrap">
                     {member.joined_at
                       ? formatDateTime(member.joined_at, {

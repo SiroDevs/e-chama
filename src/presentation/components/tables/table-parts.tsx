@@ -1,3 +1,15 @@
+interface TableContainerProps {
+  children: React.ReactNode;
+}
+
+export function TableContainer({ children }: TableContainerProps) {
+  return (
+    <div className="overflow-x-auto rounded-lg border shadow-sm">
+      {children}
+    </div>
+  );
+}
+
 interface TableHeaderProps {
   columns: string[];
   columnWidths?: string[];
@@ -5,12 +17,12 @@ interface TableHeaderProps {
 
 export function TableHeader({ columns, columnWidths = [] }: TableHeaderProps) {
   return (
-    <thead className="bg-gray-50">
+    <thead>
       <tr>
         {columns.map((column, index) => (
           <th
             key={column}
-            className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
+            className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
               columnWidths[index] || ''
             }`}
           >
@@ -46,7 +58,7 @@ interface TableCellProps {
 
 export function TableCell({ children, className = '' }: TableCellProps) {
   return (
-    <td className={`px-6 py-4 text-sm text-gray-900 ${className}`}>
+    <td className={`px-3 py-1 text-sm ${className}`}>
       {children}
     </td>
   );
