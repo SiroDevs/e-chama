@@ -2,36 +2,30 @@
 
 import { AlertCircle, Users } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { XIcon, SaveIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 
 import { PageContainer } from "@/presentation/components/common/page-container";
 import PageContent from "@/presentation/components/common/page-content";
-import { PageAction, PageButton } from "@/presentation/components/ui/actions";
+import { PageButton } from "@/presentation/components/ui/actions";
 import { useRouter } from "next/navigation";
 import { AppDispatch, RootState } from "@/application/state/store";
 import NewMemberForm, { FormValues } from "./form";
 import { useState } from "react";
-import { signupUser } from "@/application/use-cases/auth/signup";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-  Card,
-  CardContent,
-} from "@/presentation/components/ui";
+import { Alert, AlertTitle, Card } from "@/presentation/components/ui";
+import { AlertDescription, CardContent } from "@/presentation/components/ui";
 import { newMember } from "@/application/use-cases/user/member";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { group } = useSelector((state: RootState) => state.group);
-  const handleSaveMember = () => {};
 
   const handleCancel = () => {
     router.push("/members");
   };
+
   const handleSubmit = async (values: FormValues) => {
     try {
       setIsLoading(true);
@@ -41,12 +35,12 @@ const page = () => {
         newMember(
           values.first_name,
           values.last_name,
-          "",
+          values.phone || "",
           values.email,
           values.password,
-          "",
+          values.member_no || "",
           group?.group_id!,
-        ),
+        )
       );
 
       router.push("/members");
@@ -54,12 +48,13 @@ const page = () => {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to register. Please try again.",
+          : "Failed to register member. Please try again."
       );
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <main className="flex flex-col min-h-dvh">
       <PageContainer pageTitle="Register a New Member" pageIcon={<Users />}>
@@ -72,15 +67,11 @@ const page = () => {
                 onClick={handleCancel}
                 icon={<XIcon />}
               />
-              <PageAction
-                title="Save Member"
-                onClick={handleSaveMember}
-                icon={<SaveIcon />}
-              />
+              {/* Save button removed from here - now only in form */}
             </div>
           }
         >
-          <Card className="w-full p-4">
+          <Card className="w-full md:w-3/4 p-4 m-2">
             <CardContent>
               {error && (
                 <Alert variant="destructive" className="mb-4">
@@ -89,7 +80,11 @@ const page = () => {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <NewMemberForm onSubmit={handleSubmit} isLoading={isLoading} />
+              <NewMemberForm 
+                onSubmit={handleSubmit} 
+                isLoading={isLoading}
+                onCancel={handleCancel}
+              />
             </CardContent>
           </Card>
         </PageContent>
@@ -98,4 +93,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

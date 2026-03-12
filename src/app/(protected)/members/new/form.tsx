@@ -5,18 +5,20 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button, Form, FormInput } from "@/presentation/components/ui";
-import { newMemberSchema } from "./arrays";
+import { newMemberGroups, newMemberFields, newMemberSchema } from "./arrays";
 import { SaveIcon, XIcon } from "lucide-react";
 
 export type FormValues = z.infer<typeof newMemberSchema>;
 
 interface NewMemberFormProps {
   onSubmit: (values: FormValues) => Promise<void> | void;
+  onCancel?: () => void;
   isLoading?: boolean;
 }
 
 export default function NewMemberForm({
   onSubmit,
+  onCancel,
   isLoading = false,
 }: NewMemberFormProps) {
   const form = useForm<FormValues>({
@@ -24,6 +26,9 @@ export default function NewMemberForm({
     defaultValues: {
       first_name: "",
       last_name: "",
+      phone: "",
+      id_number: "",
+      member_no: "",
       email: "",
       password: "",
     },
@@ -35,61 +40,65 @@ export default function NewMemberForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-2">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-4">
-          <FormInput
-            control={form.control}
-            name="first_name"
-            label="First Name"
-            placeholder="Oyonde"
-          />
-          <FormInput
-            control={form.control}
-            name="last_name"
-            label="Last Name"
-            placeholder="Obande"
-          />
-        </div>
-
-        <FormInput
-          control={form.control}
-          name="email"
-          label="Email Address"
-          placeholder="oyonde@obande.com"
-          type="email"
-        />
-
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-4">
-          <FormInput
-            control={form.control}
-            name="password"
-            label="Password"
-            placeholder="••••••••"
-            type="password"
-          />
-        </div>
-
-        <div className="flex flex-row gap-1 ml-auto flex-shrink-0 mt-5">
-          <div className="flex flex-row items-center gap-3">
-            <Button
-              type="submit"
-              className="w-full"
-              size="lg"
-              disabled={isLoading}
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        {newMemberGroups.map((grp) => (
+          <div key={grp.id}>
+            <fieldset
+              className={grp.fields.length > 1 
+                ? "grid grid-cols-1 gap-4 sm:grid-cols-2" 
+                : "w-full"
+              }
             >
-              <XIcon />
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              className="w-full"
-              size="lg"
-              disabled={isLoading}
-            >
-              <SaveIcon />
-              Save Member
-            </Button>
+              {grp.fields.map((fieldName) => {
+                const field = newMemberFields[fieldName];
+                return (
+                  <FormInput
+                    key={field.name}
+                    control={form.control}
+                    name={field.name}
+                    label={field.label}
+                    placeholder={field.placeholder}
+                    type={field.type}
+                    required={field.required}
+                    autoComplete="off"
+                    disabled={isLoading}
+                  />
+                );
+              })}
+            </fieldset>
           </div>
+        ))}
+
+        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            onClick={onCancel}
+            disabled={isLoading}
+            className="min-w-[120px]"
+          >
+            <XIcon className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            size="lg"
+            disabled={isLoading}
+            className="min-w-[120px]"
+          >
+            {isLoading ? (
+              <>
+                <span className="animate-spin mr-2">⏳</span>
+                Saving...
+              </>
+            ) : (
+              <>
+                <SaveIcon className="w-4 h-4 mr-2" />
+                Save Member
+              </>
+            )}
+          </Button>
         </div>
       </form>
     </Form>
