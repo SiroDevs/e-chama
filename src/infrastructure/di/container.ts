@@ -1,24 +1,21 @@
-import { ContributionSupabaseRepo } from '@/domain/repositories/supabase/contribution.supabase.repo';
-import { GroupSupabaseRepo } from '@/domain/repositories/supabase/group.supabase.repo';
-import { MemberSupabaseRepo } from '@/domain/repositories/supabase/member.supabase.repo';
-import { ProfileSupabaseRepo } from '@/domain/repositories/supabase/profile.supabase.repo';
-import { ContributionUseCase } from '@/application/use-cases/contribution.usecase';
-import { GroupUseCase } from '@/application/use-cases/group.usecase';
-import { MemberUseCase } from '@/application/use-cases/member.usecase';
-import { ProfileUseCase } from '@/application/use-cases/profile.usecase';
+import { ContributionUseCase, GroupMemberUseCase, GroupUseCase, MemberUseCase, ProfileUseCase } from '@/application/use-cases/supabase/supabase.usecase';
+import { ContributionSupabaseRepo, GroupMemberSupabaseRepo, GroupSupabaseRepo, MemberSupabaseRepo, ProfileSupabaseRepo } from '@/domain/repositories/supabase/supabase.repo';
 
 const contributionRepo = new ContributionSupabaseRepo();
+const groupMemberRepo = new GroupMemberSupabaseRepo();
 const groupRepo = new GroupSupabaseRepo();
 const memberRepo = new MemberSupabaseRepo();
 const profileRepo = new ProfileSupabaseRepo();
 
 const contributionUseCase = new ContributionUseCase(contributionRepo);
+const groupMemberUseCase = new GroupMemberUseCase(groupMemberRepo);
 const groupUseCase = new GroupUseCase(groupRepo);
 const memberUseCase = new MemberUseCase(memberRepo);
 const profileUseCase = new ProfileUseCase(profileRepo);
 
 export const container = {
   contributionUseCase,
+  groupMemberUseCase,
   groupUseCase,
   memberUseCase,
   profileUseCase,

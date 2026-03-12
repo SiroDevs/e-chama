@@ -30,7 +30,7 @@ export abstract class CrudUseCase<T> {
     return this.repository.getById(id);
   }
 
-  async create(data: Omit<T, 'rid' | 'createdAt' | 'updatedAt'>): Promise<T> {
+  async create(data: Omit<T, 'id' | 'created_at' | 'updated_at'>): Promise<T> {
     return this.repository.create(data);
   }
 

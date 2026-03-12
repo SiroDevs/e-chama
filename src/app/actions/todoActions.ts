@@ -26,10 +26,10 @@
 //     title: data.title,
 //     completed: data.completed,
 //     userId: data.userId,
-//     createdAt:
-//       data.createdAt?.toDate().toISOString() || new Date().toISOString(),
-//     updatedAt:
-//       data.updatedAt?.toDate().toISOString() || new Date().toISOString(),
+//     created_at:
+//       data.created_at?.toDate().toISOString() || new Date().toISOString(),
+//     updated_at:
+//       data.updated_at?.toDate().toISOString() || new Date().toISOString(),
 //   };
 // };
 
@@ -38,8 +38,8 @@
 //   try {
 //     const todoData = {
 //       ...todo,
-//       createdAt: serverTimestamp(),
-//       updatedAt: serverTimestamp(),
+//       created_at: serverTimestamp(),
+//       updated_at: serverTimestamp(),
 //     };
 
 //     const docRef = await addDoc(collection(db, TODOS_COLLECTION), todoData);
@@ -94,7 +94,7 @@
 
 //     const updateData = {
 //       ...data,
-//       updatedAt: serverTimestamp(),
+//       updated_at: serverTimestamp(),
 //     };
 
 //     await updateDoc(docRef, updateData);

@@ -21,7 +21,7 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
     const { data, error } = await supabase
       .from(this.tableName)
       .select('*')
-      .order('rid', { ascending: true });
+      .order('id', { ascending: true });
 
     if (error) throw new Error(`Failed to fetch ${this.tableName}: ${error.message}`);
     return data as T[];
@@ -35,7 +35,7 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
     const { data, error, count } = await supabase
       .from(this.tableName)
       .select('*', { count: 'exact' })
-      .order('rid', { ascending: true })
+      .order('id', { ascending: true })
       .range(from, to);
 
     if (error) throw new Error(`Failed to fetch ${this.tableName}: ${error.message}`);
@@ -56,19 +56,19 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
     const { data, error } = await supabase
       .from(this.tableName)
       .select('*')
-      .eq('rid', id)
+      .eq('id', id)
       .single();
 
     if (error) return null;
     return data as T;
   }
 
-  async create(data: Omit<T, 'rid' | 'createdAt' | 'updatedAt'>): Promise<T> {
+  async create(data: Omit<T, 'id' | 'created_at' | 'updated_at'>): Promise<T> {
     const { data: result, error } = await supabase
       .from(this.tableName)
       .insert({
         ...data,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
       })
       .select()
       .single();
@@ -80,13 +80,13 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
   async update(id: number, data: Partial<T>): Promise<T> {
     const updateData = {
       ...data,
-      updatedAt: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
 
     const { data: result, error } = await supabase
       .from(this.tableName)
       .update(updateData)
-      .eq('rid', id)
+      .eq('id', id)
       .select()
       .single();
 
@@ -98,7 +98,7 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
     const { error } = await supabase
       .from(this.tableName)
       .delete()
-      .eq('rid', id);
+      .eq('id', id);
 
     if (error) throw new Error(`Failed to delete ${this.tableName}: ${error.message}`);
   }
