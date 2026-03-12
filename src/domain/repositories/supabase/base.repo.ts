@@ -15,7 +15,7 @@ export interface BaseRepo<T> {
   getAll(): Promise<T[]>;
   getAllPaginated?(options: PaginationOptions): Promise<PaginatedResult<T>>;
   getById(id: number): Promise<T | null>;
-  create(data: Omit<T, 'rid' | 'createdAt' | 'updatedAt'>): Promise<T>;
+  create(data: Omit<T, 'id' | 'created_at' | 'updated_at'>): Promise<T>;
   update(id: number, data: Partial<T>): Promise<T>;
   delete(id: number): Promise<void>;
 }

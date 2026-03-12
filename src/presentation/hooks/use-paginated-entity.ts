@@ -1,4 +1,4 @@
-import { CrudUseCase } from '@/application/use-cases/crud.usecase';
+import { CrudUseCase } from '@/application/use-cases/supabase/crud.usecase';
 import { PaginationOptions } from '@/domain/repositories/supabase/base.repo';
 import { EntityType } from '@/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -22,7 +22,7 @@ export function usePaginatedEntity<T>(
   });
 
   const createMutation = useMutation({
-    mutationFn: (data: Omit<T, 'rid' | 'createdAt' | 'updatedAt'>) => 
+    mutationFn: (data: Omit<T, 'id' | 'created_at' | 'updated_at'>) => 
       useCase.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [entityType, 'paginated'] });
