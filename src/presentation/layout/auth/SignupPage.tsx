@@ -9,7 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { AlertCircle } from "lucide-react";
 
-import { Button, Form, FormInput } from "@/presentation/components/ui";
+import { Button } from "@/presentation/components/ui";
+import { Form, FormInput } from "@/presentation/components/ui/inputs";
 import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
 import { CardHeader, CardFooter } from "@/presentation/components/ui";
 import { CardDescription, Alert } from "@/presentation/components/ui";

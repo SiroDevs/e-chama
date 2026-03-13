@@ -22,7 +22,7 @@ const page = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { group } = useSelector((state: RootState) => state.group);
   const { entities, pagination, isLoading, isFetching } = usePaginatedEntity(
-    container.groupMemberUseCase,
+    container.memberUseCase,
     "group_members",
     {
       page: currentPage,
@@ -58,45 +58,36 @@ const page = () => {
     onPageChange: handlePageChange,
   };
 
-  const handleCreateMember = () => {
-    router.push("/members/new");
-  };
-
-  const handleRefresh = () => {
-    // if (groupMembersRef.current) {
-    //   groupMembersRef.current.refresh();
-    // }
-  };
+  const handleNew = () => router.push("/members/new");
+  const handleRefresh = () => router.push("/contributions");
 
   return (
-    <main className="flex flex-col min-h-dvh">
-      <PageContainer pageTitle="Members" pageIcon={<Users />}>
-        <PageContent
-          breadcrumbs={[{ title: "Members" }]}
-          actions={
-            <div className="flex flex-row items-center gap-3">
-              <PageButton
-                title="Reload data"
-                onClick={handleRefresh}
-                icon={<RefreshCcw />}
-              />
-              <PageAction
-                title="New Member"
-                onClick={handleCreateMember}
-                icon={<PlusIcon />}
-              />
-            </div>
-          }
-        >
-          <MembersTable
-            records={entities}
-            onEdit={handleEdit}
-            onMore={handleMore}
-            {...commonProps}
-          />
-        </PageContent>
-      </PageContainer>
-    </main>
+    <PageContainer pageTitle="Members" pageIcon={<Users />}>
+      <PageContent
+        breadcrumbs={[{ title: "Members" }]}
+        actions={
+          <div className="flex flex-row items-center gap-3">
+            <PageButton
+              title="Reload data"
+              onClick={handleRefresh}
+              icon={<RefreshCcw />}
+            />
+            <PageAction
+              title="New Member"
+              onClick={handleNew}
+              icon={<PlusIcon />}
+            />
+          </div>
+        }
+      >
+        <MembersTable
+          records={entities}
+          onEdit={handleEdit}
+          onMore={handleMore}
+          {...commonProps}
+        />
+      </PageContent>
+    </PageContainer>
   );
 };
 

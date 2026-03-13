@@ -20,7 +20,7 @@ export type ApiResponse<T> = {
   success: boolean;
 };
 
-export type EntityType = 'members' | 'profiles' | 'group_members' | 'groups' | 'permissions';
-export const entityTypes: EntityType[] = ["members", "profiles", "group_members", "groups", "permissions"];
+export type EntityType = 'members' | 'profiles' | 'group_members' | 'group_contributions' | 'groups' | 'permissions';
+export const entityTypes: EntityType[] = ["members", "profiles", "group_members", "group_contributions", "groups", "permissions"];
 
-export type AnyEntity = Member | Profile | Group | GroupMember | Permission | Contribution | UserGroup;
+export type AnyEntity = Member | Profile | Group | GroupMember | Permission | UserGroup;

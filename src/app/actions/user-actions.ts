@@ -1,24 +1,55 @@
 "use server";
 
+import { User } from "@supabase/supabase-js";
+
 import { Member, Profile, UserGroup } from "@/domain/entities";
+import { authService } from "@/infrastructure/services/authService";
 import { groupService } from "@/infrastructure/services/groupService";
 import { memberService } from "@/infrastructure/services/memberService";
 import { profileService } from "@/infrastructure/services/profileService";
 
+export async function newUserAccount(
+  first_name: string,
+  last_name: string,
+  phone: string,
+  email: string,
+  password: string
+): Promise<User> {
+  try {
+    const { data, error } = await authService.signupUser(
+      first_name + " " + last_name,
+      email,
+      phone,
+      password,
+    );
+
+    if (error) throw error;
+    if (!data) throw new Error("No user created");
+    return data.user!;
+  } catch (error: unknown) {
+    console.error("Error creating user:", error);
+
+    throw new Error(
+      `Failed to create user: ${error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
 export async function newGroupMember(
   member: Member,
-): Promise<void> {
+): Promise<Member> {
   try {
     const { data, error } = await memberService.newMember(member);
 
     if (error) throw error;
     if (!data) throw new Error("No member created");
+    return data;
   } catch (error: unknown) {
     console.error("Error creating member:", error);
 
     throw new Error(
-      `Failed to create member: ${
-        error instanceof Error ? error.message : "Unknown error"
+      `Failed to create member: ${error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }
@@ -38,6 +69,25 @@ export async function fetchUserGroups(userId: string): Promise<UserGroup[]> {
   return groups;
 }
 
+export async function newUserProfile(
+  profile: Profile,
+): Promise<Profile> {
+  try {
+    const { data, error } = await profileService.createProfile(profile);
+
+    if (error) throw error;
+    if (!data) throw new Error("No profile created");
+    return data;
+  } catch (error: unknown) {
+    console.error("Error creating profile:", error);
+
+    throw new Error(
+      `Failed to create profile: ${error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
 export async function fetchUserProfile(
   userId?: string
 ): Promise<Profile> {
@@ -53,8 +103,7 @@ export async function fetchUserProfile(
     console.error("Error fetching profile:", error);
 
     throw new Error(
-      `Failed to fetch profile: ${
-        error instanceof Error ? error.message : "Unknown error"
+      `Failed to fetch profile: ${error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }
@@ -75,8 +124,7 @@ export async function fetchGroupMember(
     console.error("Error fetching member:", error);
 
     throw new Error(
-      `Failed to fetch member: ${
-        error instanceof Error ? error.message : "Unknown error"
+      `Failed to fetch member: ${error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }

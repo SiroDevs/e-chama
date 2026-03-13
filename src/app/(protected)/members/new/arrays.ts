@@ -10,10 +10,10 @@ export const newMemberSchema = z
     id_number: z.string()
       .min(5, "ID number must be at least 5 characters")
       .max(20, "ID number is too long"),
+    email: z.string().email({ message: "Please enter a valid email address" }),
     member_no: z.string()
       .min(3, "Member number must be at least 3 characters")
       .max(20, "Member number is too long"),
-    email: z.string().email({ message: "Please enter a valid email address" }),
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters long" }),
@@ -34,13 +34,6 @@ export const newMemberFields = {
     required: true,
     type: "text" as const,
   },
-  email: {
-    name: "email" as const,
-    label: "Email Address",
-    placeholder: "member@group.com",
-    required: true,
-    type: "email" as const,
-  },
   phone: {
     name: "phone" as const,
     label: "Phone Number",
@@ -54,6 +47,13 @@ export const newMemberFields = {
     placeholder: "12345678",
     required: false,
     type: "text" as const,
+  },
+  email: {
+    name: "email" as const,
+    label: "Email Address",
+    placeholder: "member@group.com",
+    required: true,
+    type: "email" as const,
   },
   member_no: {
     name: "member_no" as const,

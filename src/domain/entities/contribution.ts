@@ -16,7 +16,7 @@ export interface Contribution {
   updated_at?: string;
 }
 
-export interface GrpContribution {
+export interface GroupContribution {
   id?: string;
   group_id?: string;
   member_id?: string;
@@ -53,7 +53,7 @@ export interface ContributionsResp {
 }
 
 export interface GrpContributionsResp {
-  data: GrpContribution[];
+  data: GroupContribution[];
   count: number;
   error: Error | null;
 }

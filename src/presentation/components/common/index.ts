@@ -4,6 +4,7 @@ export * from "./groupnav";
 export * from "./hero";
 export * from "./main-footer";
 export * from "./main-navbar";
+export * from "./member-search";
 export * from "./partners";
 export * from "./pricing";
 export * from "./stats";
