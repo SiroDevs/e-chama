@@ -106,7 +106,24 @@ export const memberService = {
       };
     }
   },
+  async searchGroupMembers(groupId: string, query: string, limit = 10): Promise<{
+    data: GroupMember[];
+    error: Error | null;
+  }> {
+    try {
+      const { data, error } = await supabase
+        .from('group_members')
+        .select('id, full_name, member_no, role')
+        .eq('group_id', groupId)
+        .or(`full_name.ilike.%${query}%,member_no.ilike.%${query}%`)
+        .order('full_name', { ascending: true })
+        .limit(limit);
 
+      return { data: (data || []) as GroupMember[], error };
+    } catch (error) {
+      return { data: [], error: error as Error };
+    }
+  },
   async getGroupMemberById(id: string): Promise<{
     data: GroupMember | null;
     error: Error | null;
@@ -115,10 +132,7 @@ export const memberService = {
       const { data, error } = await supabase
         .from('group_members').select('*').eq('id', id).single();
 
-      return {
-        data,
-        error,
-      };
+      return { data, error };
     } catch (error) {
       return {
         data: null,

@@ -58,12 +58,13 @@ export function ContributionsTable({
 
   if (isLoading) return <LoadingSpinner />;
 
-  const handleRowClick = (record: GroupContribution, event: React.MouseEvent) => {
+  const handleRowClick = (
+    record: GroupContribution,
+    event: React.MouseEvent,
+  ) => {
     const target = event.target as HTMLElement;
-    if (target.closest("button") || target.closest("a")) {
-      return;
-    }
-    router.push(`/contributions/${record.id}`);
+    if (target.closest("button") || target.closest("a")) return;
+    onEdit(record);
   };
 
   return (

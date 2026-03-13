@@ -58,13 +58,8 @@ const page = () => {
     onPageChange: handlePageChange,
   };
 
-  const handleNewMember = () => {
-    router.push("/members/new");
-  };
-
-  const handleRefresh = () => {
-    router.push("/members");
-  };
+  const handleNew = () => router.push("/members/new");
+  const handleRefresh = () => router.push("/contributions");
 
   return (
     <PageContainer pageTitle="Members" pageIcon={<Users />}>
@@ -79,7 +74,7 @@ const page = () => {
             />
             <PageAction
               title="New Member"
-              onClick={handleNewMember}
+              onClick={handleNew}
               icon={<PlusIcon />}
             />
           </div>

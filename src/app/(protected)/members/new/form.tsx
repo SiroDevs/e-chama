@@ -4,9 +4,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Button, Form, FormInput } from "@/presentation/components/ui";
 import { newMemberGroups, newMemberFields, newMemberSchema } from "./arrays";
-import { SaveIcon, XIcon } from "lucide-react";
+import { Form, FormActions, FormInput } from "@/presentation/components/ui/inputs";
 
 export type FormValues = z.infer<typeof newMemberSchema>;
 
@@ -44,9 +43,10 @@ export default function NewMemberForm({
         {newMemberGroups.map((grp) => (
           <div key={grp.id}>
             <fieldset
-              className={grp.fields.length > 1 
-                ? "grid grid-cols-1 gap-4 sm:grid-cols-2" 
-                : "w-full"
+              className={
+                grp.fields.length > 1
+                  ? "grid grid-cols-1 gap-4 sm:grid-cols-2"
+                  : "w-full"
               }
             >
               {grp.fields.map((fieldName) => {
@@ -69,37 +69,12 @@ export default function NewMemberForm({
           </div>
         ))}
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            onClick={onCancel}
-            disabled={isLoading}
-            className="min-w-[120px]"
-          >
-            <XIcon className="w-4 h-4 mr-2" />
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            size="lg"
-            disabled={isLoading}
-            className="min-w-[120px]"
-          >
-            {isLoading ? (
-              <>
-                <span className="animate-spin mr-2">⏳</span>
-                Saving...
-              </>
-            ) : (
-              <>
-                <SaveIcon className="w-4 h-4 mr-2" />
-                Save Member
-              </>
-            )}
-          </Button>
-        </div>
+        <FormActions
+          onCancel={onCancel}
+          isLoading={isLoading}
+          disabled={!isLoading}
+          saveLabel="Save Member"
+        />
       </form>
     </Form>
   );

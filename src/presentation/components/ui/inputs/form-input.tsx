@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Control, FieldValues, Path } from "react-hook-form";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
 
-import { Button, FormField, FormControl } from "@/presentation/components/ui";
-import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui";
-import { Input } from "@/presentation/components/ui";
+import { FormField, FormControl, Input } from "@/presentation/components/ui/inputs";
+import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/inputs";
+import { Button } from "../button";
 
 interface FormInputProps<T extends FieldValues> {
   control: Control<T>;
