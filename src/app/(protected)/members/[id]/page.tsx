@@ -1,19 +1,53 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users } from "lucide-react";
+import { Briefcase, Calendar, User, MapPin } from "lucide-react";
+import { UserCheck, HandCoins, RefreshCcw, Edit2Icon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { RefreshCcw, PlusIcon, Edit2Icon } from "lucide-react";
+import { useSelector } from "react-redux";
 
 import { PageContainer } from "@/presentation/components/common/page-container";
 import PageContent from "@/presentation/components/common/page-content";
 import { PageAction, PageButton } from "@/presentation/components/ui/actions";
 import { GroupMember } from "@/domain/entities";
 import { setError } from "@/application/state/authSlice";
-import { useSelector } from "react-redux";
 import { RootState } from "@/application/state/store";
 import { memberService } from "@/infrastructure/services/memberService";
-import ProfilePage from "./details";
+import { GenericAvatar } from "@/presentation/components/ui";
+import ProfileTab from "./profile-tab";
+import ContributionsTab from "./contributions-tab";
+import { capitalize } from "@/application/helpers/utils";
+
+type Tab = "Profile" | "Contributions";
+
+const TAB_ICONS: Record<Tab, React.ReactNode> = {
+  Profile: <User size={15} />,
+  Contributions: <HandCoins size={15} />,
+};
+
+function TabButton({
+  tab,
+  active,
+  onClick,
+}: {
+  tab: Tab;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-xl border-b-2 ${
+        active
+          ? "border-blue-500 text-white bg-blue-500 dark:bg-blue-600"
+          : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/5"
+      }`}
+    >
+      {TAB_ICONS[tab]}
+      {tab}
+    </button>
+  );
+}
 
 const page = () => {
   const router = useRouter();
@@ -60,35 +94,74 @@ const page = () => {
     }
   }, [memberNo]);
 
-  const pageTitle = isLoading
-    ? "Fetching details"
-    : memberData?.full_name || "Unknown Member";
+  const TABS: Tab[] = ["Profile", "Contributions"];
+  const [activeTab, setActiveTab] = useState<Tab>("Profile");
 
   return (
-      <PageContainer pageTitle={pageTitle} pageIcon={<Users />}>
-        <PageContent
-          breadcrumbs={[
-            { title: "Members", path: "/members" },
-            { title: `Member ${memberNo}` },
-          ]}
-          actions={
-            <div className="flex flex-row items-center gap-3">
-              <PageButton
-                title="Reload data"
-                onClick={handleRefresh}
-                icon={<RefreshCcw />}
-              />
-              <PageAction
-                title="Edit Member"
-                onClick={handleEditMember}
-                icon={<Edit2Icon />}
-              />
+    <PageContainer pageTitle="Member Profile" pageIcon={<User />}>
+      <PageContent
+        breadcrumbs={[
+          { title: "Members", path: "/members" },
+          { title: `Member ${memberNo}` },
+        ]}
+        actions={
+          <div className="flex flex-row items-center gap-3">
+            <PageButton
+              title="Reload data"
+              onClick={handleRefresh}
+              icon={<RefreshCcw />}
+            />
+            <PageAction
+              title="Edit Member"
+              onClick={handleEditMember}
+              icon={<Edit2Icon />}
+            />
+          </div>
+        }
+      >
+        <div className="px-3 py-3 flex rounded-lg items-center justify-between border bg-white dark:bg-[#1d1d20] shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="ring-3 ring-blue dark:ring-[#2a2d3e] rounded-lg overflow-hidden shrink-0">
+              <GenericAvatar size={100} className="rounded-lg" />
             </div>
-          }
-        >
-          <ProfilePage />
-        </PageContent>
-      </PageContainer>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                {memberData?.full_name || "Unknown Member"}
+              </h1>
+              <div className="flex flex-wrap gap-4 mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <span className="flex items-center gap-1">
+                  <Briefcase size={14} /> {capitalize(memberData?.role!) || "member"}
+                </span>
+                <span className="flex items-center gap-1">
+                  <MapPin size={14} /> {memberData?.address || "Nairobi"}, {memberData?.country || "Kenya"}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Calendar size={14} /> Joined A long time ago
+                </span>
+              </div>
+
+              <hr className="border-gray-100 dark:border-white/5 py-1" />
+              <div className="flex gap-1">
+                {TABS.map((tab) => (
+                  <TabButton
+                    key={tab}
+                    tab={tab}
+                    active={activeTab === tab}
+                    onClick={() => setActiveTab(tab)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+          <button className="flex items-center gap-2 bg-green-600 hover:bg-green-500 transition-colors text-white text-sm font-semibold px-4 py-2 rounded-lg">
+            <UserCheck size={16} /> Active
+          </button>
+        </div>
+
+        {activeTab === "Profile" && <ProfileTab member={memberData!} />}
+        {activeTab === "Contributions" && <ContributionsTab member={memberData!} />}
+      </PageContent>
+    </PageContainer>
   );
 };
 
