@@ -129,7 +129,7 @@ export function MemberSearchField({
                 className="flex items-center justify-between px-3 py-2 text-sm cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 text-gray-800 dark:text-gray-200"
               >
                 <span>{m.full_name || "Unknown"}</span>
-                <span className="text-xs text-gray-400">{m.member_no}</span>
+                <span className="text-xs text-gray-400">M: {m.member_no}</span>
               </li>
             ))}
           </ul>

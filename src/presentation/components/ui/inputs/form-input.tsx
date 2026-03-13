@@ -6,6 +6,11 @@ import { FormField, FormControl, Input } from "@/presentation/components/ui/inpu
 import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/inputs";
 import { Button } from "../button";
 
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
 interface FormInputProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
@@ -17,6 +22,7 @@ interface FormInputProps<T extends FieldValues> {
   required?: boolean;
   disabled?: boolean;
   showPasswordToggle?: boolean;
+  options?: SelectOption[];
 }
 
 export function FormInput<T extends FieldValues>({
@@ -30,14 +36,13 @@ export function FormInput<T extends FieldValues>({
   required = false,
   disabled = false,
   showPasswordToggle = false,
+  options,
 }: FormInputProps<T>) {
   const [showPassword, setShowPassword] = useState(false);
 
   const inputType =
     showPasswordToggle && type === "password"
-      ? showPassword
-        ? "text"
-        : "password"
+      ? showPassword ? "text" : "password"
       : type;
 
   return (
@@ -52,51 +57,69 @@ export function FormInput<T extends FieldValues>({
             <FormLabel className="flex items-center gap-1">
               {label}
               {required && (
-                <span className="text-red-500 text-sm" aria-hidden="true">
-                  *
-                </span>
+                <span className="text-red-500 text-sm" aria-hidden="true">*</span>
               )}
             </FormLabel>
             <FormControl>
               <div className="relative">
-                <Input
-                  type={inputType}
-                  placeholder={placeholder}
-                  autoComplete={autoComplete}
-                  autoFocus={autoFocus}
-                  required={required}
-                  disabled={disabled}
-                  className={`
-                    ${showPasswordToggle ? "pr-10" : ""}
-                    ${hasError ? "border-red-500 focus-visible:ring-red-500" : ""}
-                  `}
-                  aria-invalid={hasError}
-                  aria-describedby={hasError ? `${name}-error` : undefined}
-                  {...field}
-                />
-                {showPasswordToggle && type === "password" && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
+                {type === "select" && options ? (
+                  <select
+                    {...field}
                     disabled={disabled}
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
+                    aria-invalid={hasError}
+                    className={`w-full px-3 py-2 text-sm rounded-lg border ${
+                      hasError
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-200 dark:border-gray-700"
+                    } bg-white dark:bg-[#2a2d3e] text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-500" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-gray-500" />
+                    <option value="">{placeholder || `Select`}</option>
+                    {options.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <>
+                    <Input
+                      type={inputType}
+                      placeholder={placeholder}
+                      autoComplete={autoComplete}
+                      autoFocus={autoFocus}
+                      required={required}
+                      disabled={disabled}
+                      className={`
+                        ${showPasswordToggle ? "pr-10" : ""}
+                        ${hasError ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      `}
+                      aria-invalid={hasError}
+                      aria-describedby={hasError ? `${name}-error` : undefined}
+                      {...field}
+                    />
+                    {showPasswordToggle && type === "password" && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                        disabled={disabled}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4 text-gray-500" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-gray-500" />
+                        )}
+                      </Button>
                     )}
-                  </Button>
-                )}
-                {hasError && (
-                  <div className="absolute right-0 top-0 h-full flex items-center pr-3 pointer-events-none">
-                    <AlertCircle className="h-4 w-4 text-red-500" />
-                  </div>
+                    {hasError && (
+                      <div className="absolute right-0 top-0 h-full flex items-center pr-3 pointer-events-none">
+                        <AlertCircle className="h-4 w-4 text-red-500" />
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </FormControl>

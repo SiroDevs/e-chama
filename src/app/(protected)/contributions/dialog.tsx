@@ -28,15 +28,12 @@ export function ContributionDialog({
   const isEditing = !!initial?.id;
 
   const initialMember: GroupMember | null = initial?.member_id
-    ? ({ id: initial.member_id, full_name: initial.full_name || null, member_no: initial.member_no || null } as GroupMember)
+    ? ({ member_id: initial.id, full_name: initial.full_name || null, member_no: initial.member_no || null } as GroupMember)
     : null;
 
-  const handleSubmit = async (values: ContributionFormValues, member: GroupMember) => {
+  const handleSubmit = async (values: ContributionFormValues) => {
     onSubmit({
       ...initial,
-      id: member.id,
-      full_name: member.full_name || undefined,
-      member_no: member.member_no || undefined,
       ...values,
     });
   };
@@ -54,7 +51,7 @@ export function ContributionDialog({
           groupId={groupId}
           member={initialMember}
           defaultValues={initial ? {
-            member_id: initial.member_id || "",
+            member_id: initial.id || "",
             amount: initial.amount,
             mode: initial.mode || "",
             reference: initial.reference || "",
