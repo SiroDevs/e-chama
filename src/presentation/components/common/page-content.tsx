@@ -26,37 +26,48 @@ export default function PageContent(props: PageContentProps) {
             <nav className="flex items-center text-sm" aria-label="Breadcrumb">
               <ol className="flex items-center space-x-1">
                 <li className="flex items-center">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Dashboard
-                  </span>
+                  {breadcrumbs.length > 0 ? (
+                    <Link
+                      href="/"
+                      className="hover:underline transition-colors"
+                    >
+                      Dashboard
+                    </Link>
+                  ) : (
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Dashboard
+                    </span>
+                  )}
                 </li>
 
-                {breadcrumbs.map((breadcrumb, index) => (
-                  <li key={index} className="flex items-center">
-                    <ChevronRight
-                      fontSize="small"
-                      className="text-gray-400 dark:text-gray-600 mx-1"
-                    />
-                    {breadcrumb.path ? (
-                      <Link
-                        href={breadcrumb.path}
-                        className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:underline transition-colors"
-                      >
-                        {breadcrumb.title}
-                      </Link>
-                    ) : (
-                      <span className="text-gray-900 dark:text-white font-semibold">
-                        {breadcrumb.title}
-                      </span>
-                    )}
-                  </li>
-                ))}
+                {breadcrumbs.map((breadcrumb, index) => {
+                  const isLast = index === breadcrumbs.length - 1;
+
+                  return (
+                    <li key={index} className="flex items-center">
+                      <ChevronRight fontSize="small" className="mx-1" />
+
+                      {!isLast && breadcrumb.path ? (
+                        <Link
+                          href={breadcrumb.path}
+                          className="hover:underline transition-colors"
+                        >
+                          {breadcrumb.title}
+                        </Link>
+                      ) : (
+                        <span className="text-gray-900 dark:text-white font-semibold">
+                          {breadcrumb.title}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
               </ol>
             </nav>
           )}
 
           {actions && (
-            <div className="flex flex-row gap-1 ml-auto flex-shrink-0">
+            <div className="flex flex-row gap-1 ml-auto flex-shrink-0 hidden md:block">
               {actions}
             </div>
           )}

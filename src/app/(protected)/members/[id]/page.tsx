@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Users } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { RefreshCcw, PlusIcon } from "lucide-react";
+import { RefreshCcw, PlusIcon, Edit2Icon } from "lucide-react";
 
 import { PageContainer } from "@/presentation/components/common/page-container";
 import PageContent from "@/presentation/components/common/page-content";
@@ -67,7 +67,10 @@ const page = () => {
     <main className="flex flex-col min-h-dvh">
       <PageContainer pageTitle={pageTitle} pageIcon={<Users />}>
         <PageContent
-          breadcrumbs={[{ title: "Members" }, { title: `Member ${memberNo}` }]}
+          breadcrumbs={[
+            { title: "Members", path: "/members" },
+            { title: `Member ${memberNo}` },
+          ]}
           actions={
             <div className="flex flex-row items-center gap-3">
               <PageButton
@@ -78,7 +81,7 @@ const page = () => {
               <PageAction
                 title="Edit Member"
                 onClick={handleEditMember}
-                icon={<PlusIcon />}
+                icon={<Edit2Icon />}
               />
             </div>
           }
