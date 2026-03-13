@@ -9,11 +9,11 @@ import { PageContainer } from "@/presentation/components/common/page-container";
 import PageContent from "@/presentation/components/common/page-content";
 import { usePaginatedEntity } from "@/presentation/hooks/use-paginated-entity";
 import { container } from "@/infrastructure/di/container";
-import { GroupMember } from "@/domain/entities";
+import { GroupContribution } from "@/domain/entities";
 import { RootState } from "@/application/state/store";
-import { MembersTable } from "@/presentation/layout/tables/members";
 import { PageAction, PageButton } from "@/presentation/components/ui/actions";
 import { useRouter } from "next/navigation";
+import { ContributionsTable } from "@/presentation/layout/tables/contributions";
 
 const page = () => {
   const router = useRouter();
@@ -22,8 +22,8 @@ const page = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { group } = useSelector((state: RootState) => state.group);
   const { entities, pagination, isLoading, isFetching } = usePaginatedEntity(
-    container.memberUseCase,
-    "group_members",
+    container.contributionUseCase,
+    "group_contributions",
     {
       page: currentPage,
       pageSize: PAGE_SIZE,
@@ -31,7 +31,7 @@ const page = () => {
     },
   );
 
-  const handleEdit = (entity: GroupMember) => {
+  const handleEdit = (entity: GroupContribution) => {
     // setEditingEntity(entity);
   };
 
@@ -58,18 +58,18 @@ const page = () => {
     onPageChange: handlePageChange,
   };
 
-  const handleNewMember = () => {
+  const handleNewContribution = () => {
     router.push("/members/new");
   };
 
   const handleRefresh = () => {
-    router.push("/members");
+    router.push("/contributions");
   };
 
   return (
-    <PageContainer pageTitle="Members" pageIcon={<Users />}>
+    <PageContainer pageTitle="Contributions" pageIcon={<Users />}>
       <PageContent
-        breadcrumbs={[{ title: "Members" }]}
+        breadcrumbs={[{ title: "Contributions" }]}
         actions={
           <div className="flex flex-row items-center gap-3">
             <PageButton
@@ -78,14 +78,14 @@ const page = () => {
               icon={<RefreshCcw />}
             />
             <PageAction
-              title="New Member"
-              onClick={handleNewMember}
+              title="New Contribution"
+              onClick={handleNewContribution}
               icon={<PlusIcon />}
             />
           </div>
         }
       >
-        <MembersTable
+        <ContributionsTable
           records={entities}
           onEdit={handleEdit}
           onMore={handleMore}
