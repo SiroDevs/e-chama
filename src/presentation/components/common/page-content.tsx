@@ -20,7 +20,7 @@ export default function PageContent(props: PageContentProps) {
 
   return (
     <div className="space-y-1">
-      <div className="border-b border-gray-200 dark:border-gray-800 pb-2">
+      <div className="border-b border-gray-200 dark:border-gray-800 p-2  bg-white dark:bg-[#1d1d20] shadow-xs">
         <div className="flex justify-between items-center px-2">
           {breadcrumbs && breadcrumbs.length > 0 && (
             <nav className="flex items-center text-sm" aria-label="Breadcrumb">
@@ -74,7 +74,7 @@ export default function PageContent(props: PageContentProps) {
         </div>
       </div>
 
-      {children && <div className="pt-2">{children}</div>}
+      {children && <div className="pt-2 px-2">{children}</div>}
     </div>
   );
 }

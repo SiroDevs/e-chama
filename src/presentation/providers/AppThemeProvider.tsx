@@ -16,7 +16,9 @@ export function AppThemeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="dark">
-      {children}
+      <main className="flex flex-col min-h-dvh bg-[#eeeeee] dark:bg-black">
+        {children}
+      </main>
     </ThemeProvider>
   );
 }

@@ -69,34 +69,32 @@ const page = () => {
   };
 
   return (
-    <main className="flex flex-col min-h-dvh">
-      <PageContainer pageTitle="Members" pageIcon={<Users />}>
-        <PageContent
-          breadcrumbs={[{ title: "Members" }]}
-          actions={
-            <div className="flex flex-row items-center gap-3">
-              <PageButton
-                title="Reload data"
-                onClick={handleRefresh}
-                icon={<RefreshCcw />}
-              />
-              <PageAction
-                title="New Member"
-                onClick={handleCreateMember}
-                icon={<PlusIcon />}
-              />
-            </div>
-          }
-        >
-          <MembersTable
-            records={entities}
-            onEdit={handleEdit}
-            onMore={handleMore}
-            {...commonProps}
-          />
-        </PageContent>
-      </PageContainer>
-    </main>
+    <PageContainer pageTitle="Members" pageIcon={<Users />}>
+      <PageContent
+        breadcrumbs={[{ title: "Members" }]}
+        actions={
+          <div className="flex flex-row items-center gap-3">
+            <PageButton
+              title="Reload data"
+              onClick={handleRefresh}
+              icon={<RefreshCcw />}
+            />
+            <PageAction
+              title="New Member"
+              onClick={handleCreateMember}
+              icon={<PlusIcon />}
+            />
+          </div>
+        }
+      >
+        <MembersTable
+          records={entities}
+          onEdit={handleEdit}
+          onMore={handleMore}
+          {...commonProps}
+        />
+      </PageContent>
+    </PageContainer>
   );
 };
 

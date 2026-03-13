@@ -13,6 +13,7 @@ import { setError } from "@/application/state/authSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/application/state/store";
 import { memberService } from "@/infrastructure/services/memberService";
+import ProfilePage from "./details";
 
 const page = () => {
   const router = useRouter();
@@ -64,7 +65,6 @@ const page = () => {
     : memberData?.full_name || "Unknown Member";
 
   return (
-    <main className="flex flex-col min-h-dvh">
       <PageContainer pageTitle={pageTitle} pageIcon={<Users />}>
         <PageContent
           breadcrumbs={[
@@ -85,9 +85,10 @@ const page = () => {
               />
             </div>
           }
-        ></PageContent>
+        >
+          <ProfilePage />
+        </PageContent>
       </PageContainer>
-    </main>
   );
 };
 

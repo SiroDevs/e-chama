@@ -40,7 +40,7 @@ const Page = () => {
           values.password,
           values.member_no || "",
           group?.group_id!,
-        )
+        ),
       );
 
       router.push("/members");
@@ -48,7 +48,7 @@ const Page = () => {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to register member. Please try again."
+          : "Failed to register member. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -56,40 +56,38 @@ const Page = () => {
   };
 
   return (
-    <main className="flex flex-col min-h-dvh">
-      <PageContainer pageTitle="Register a New Member" pageIcon={<Users />}>
-        <PageContent
-          breadcrumbs={[{ title: "Members" }, { title: "New Member" }]}
-          actions={
-            <div className="flex flex-row items-center gap-3">
-              <PageButton
-                title="Cancel"
-                onClick={handleCancel}
-                icon={<XIcon />}
-              />
-              {/* Save button removed from here - now only in form */}
-            </div>
-          }
-        >
-          <Card className="w-full md:w-3/4 p-4 m-2">
-            <CardContent>
-              {error && (
-                <Alert variant="destructive" className="mb-4">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-              <NewMemberForm 
-                onSubmit={handleSubmit} 
-                isLoading={isLoading}
-                onCancel={handleCancel}
-              />
-            </CardContent>
-          </Card>
-        </PageContent>
-      </PageContainer>
-    </main>
+    <PageContainer pageTitle="Register a New Member" pageIcon={<Users />}>
+      <PageContent
+        breadcrumbs={[{ title: "Members" }, { title: "New Member" }]}
+        actions={
+          <div className="flex flex-row items-center gap-3">
+            <PageButton
+              title="Cancel"
+              onClick={handleCancel}
+              icon={<XIcon />}
+            />
+            {/* Save button removed from here - now only in form */}
+          </div>
+        }
+      >
+        <Card className="w-full md:w-3/4 p-4 m-2">
+          <CardContent>
+            {error && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            <NewMemberForm
+              onSubmit={handleSubmit}
+              isLoading={isLoading}
+              onCancel={handleCancel}
+            />
+          </CardContent>
+        </Card>
+      </PageContent>
+    </PageContainer>
   );
 };
 

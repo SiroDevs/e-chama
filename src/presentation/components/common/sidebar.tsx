@@ -26,7 +26,7 @@ function Sidebar({ onClose }: SidebarProps) {
   };
 
   return (
-    <div className="w-60 shrink-0 md:block h-screen sticky top-0 overflow-hidden">
+    <div className="w-60 shrink-0 md:block h-screen sticky top-0 overflow-hidden bg-white dark:bg-[#1d1d20] shadow-xs">
       <div className="w-full h-full border-r dark:border-gray-800">
         <div className="h-[var(--h-nav)] p-4 md:p-4 flex items-center justify-between">
           <div className="p-1">

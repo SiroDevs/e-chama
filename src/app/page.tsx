@@ -13,7 +13,7 @@ const page = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   return (
-    <main className="flex flex-col min-h-dvh">
+    <>
       {isAuthenticated ? (
         <Dashboard />
       ) : (
@@ -32,7 +32,7 @@ const page = () => {
           <Faq />
         </>
       )}
-    </main>
+    </>
   );
 };
 
