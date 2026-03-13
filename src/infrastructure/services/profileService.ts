@@ -3,6 +3,26 @@ import { supabase } from "@/lib/supabase/client";
 import { memberService } from "./memberService";
 
 export const profileService = {
+  async createProfile(profile: Profile) {
+    return await supabase.from("profiles")
+      .insert([
+        {
+          id: profile.id,
+          group_id: profile.group_id,
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          id_number: profile.id_number,
+          kra_pin: profile.kra_pin,
+          country: profile.country,
+          address: profile.address,
+          sex: profile.sex,
+          dob: profile.dob,
+          avatar: profile.avatar,
+        },
+      ])
+      .select()
+      .single();
+  },
   async refreshUserProfile(user: any) {
     console.info("Fetching the user profile");
     const profileResult = await profileService.fetchUserProfile(user.id);
@@ -54,26 +74,6 @@ export const profileService = {
     }
 
     return { data: profile, error: null };
-  },
-
-  async createProfile(profile: Profile) {
-    return await supabase.from("profiles")
-      .insert([
-        {
-          id: profile.id,
-          first_name: profile.first_name,
-          last_name: profile.last_name,
-          id_number: profile.id_number,
-          kra_pin: profile.kra_pin,
-          country: profile.country,
-          address: profile.address,
-          sex: profile.sex,
-          dob: profile.dob,
-          avatar: profile.avatar,
-        },
-      ])
-      .select()
-      .single();
   },
 
   async setProfileGroup(userId: string, groupId: string) {

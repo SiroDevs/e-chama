@@ -72,7 +72,7 @@ export default function NewMemberForm({
         <FormActions
           onCancel={onCancel}
           isLoading={isLoading}
-          disabled={!isLoading}
+          disabled={false}
           saveLabel="Save Member"
         />
       </form>

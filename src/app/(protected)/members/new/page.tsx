@@ -39,7 +39,13 @@ const Page = () => {
           values.email,
           values.password,
           values.member_no || "",
+          values.id_number || "",
+          "",//kra_pin
           group?.group_id!,
+          "",//address
+          "",//country
+          "",//sex
+          "",//dob
         ),
       );
 
@@ -66,7 +72,6 @@ const Page = () => {
               onClick={handleCancel}
               icon={<XIcon />}
             />
-            {/* Save button removed from here - now only in form */}
           </div>
         }
       >
