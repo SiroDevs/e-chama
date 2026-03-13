@@ -9,8 +9,9 @@ import { AlertCircle } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Button, Input, Form, FormField } from "@/presentation/components/ui";
-import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui";
+import { Button } from "@/presentation/components/ui";
+import { Input, Form, FormField } from "@/presentation/components/ui/inputs";
+import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/inputs";
 import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
 import { Alert, CardFooter } from "@/presentation/components/ui";
 import { AlertTitle, AlertDescription } from "@/presentation/components/ui";

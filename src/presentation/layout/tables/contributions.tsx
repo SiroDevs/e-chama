@@ -4,15 +4,15 @@ import { useRouter } from "next/navigation";
 import { TableHeader, TableRow } from "../../components/tables/table-parts";
 import { TableCell, TableContainer } from "../../components/tables/table-parts";
 import { Pagination } from "../../components/tables/pagination";
-import { GroupMember } from "@/domain/entities";
+import { GroupContribution } from "@/domain/entities";
 import LoadingSpinner from "../../components/ui/states/loading-spinner";
 import { formatDateTime } from "@/application/helpers/utils";
 import { TableActions } from "../../components/tables/table-actions";
 import { EmptyState } from "../../components/ui/states/empty-state";
 
-interface MemberTableProps {
-  records: GroupMember[];
-  onEdit: (record: GroupMember) => void;
+interface ContributionTableProps {
+  records: GroupContribution[];
+  onEdit: (record: GroupContribution) => void;
   onMore: (id: string) => void;
   isLoading?: boolean;
   currentPage: number;
@@ -23,29 +23,27 @@ interface MemberTableProps {
 }
 
 const COLUMNS = [
-  "No",
   "Full Name",
-  "Role",
-  "ID. No",
-  "Sex",
-  "Phone",
-  "Email",
-  "Dates",
+  "Reason",
+  "Mode",
+  "Reference",
+  "Status",
+  "Amount",
+  "Paid",
   "Actions",
 ];
 const COLUMN_WIDTHS = [
-  "w-10",
+  "max-w-md",
   "max-w-md",
   "w-16",
   "w-32",
   "w-16",
-  "max-w-md",
-  "max-w-md",
+  "w-32",
   "w-32",
   "w-16",
 ];
 
-export function MembersTable({
+export function ContributionsTable({
   records,
   onEdit,
   onMore,
@@ -55,17 +53,18 @@ export function MembersTable({
   totalItems,
   pageSize,
   onPageChange,
-}: MemberTableProps) {
+}: ContributionTableProps) {
   const router = useRouter();
 
   if (isLoading) return <LoadingSpinner />;
 
-  const handleRowClick = (record: GroupMember, event: React.MouseEvent) => {
+  const handleRowClick = (
+    record: GroupContribution,
+    event: React.MouseEvent,
+  ) => {
     const target = event.target as HTMLElement;
-    if (target.closest("button") || target.closest("a")) {
-      return;
-    }
-    router.push(`/members/${record.member_no}`);
+    if (target.closest("button") || target.closest("a")) return;
+    onEdit(record);
   };
 
   return (
@@ -77,7 +76,7 @@ export function MembersTable({
             {records.length === 0 ? (
               <tr>
                 <td colSpan={COLUMNS.length} className="px-6 py-24 text-center">
-                  <EmptyState entityName="grpMembers" />
+                  <EmptyState entityName="grpContributions" />
                 </td>
               </tr>
             ) : (
@@ -88,38 +87,27 @@ export function MembersTable({
                   className="hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-colors"
                 >
                   <TableCell className="font-medium text-gray-900 dark:text-gray-100">
-                    {record.member_no || "-"}
+                    {record.full_name || "Member"}
                   </TableCell>
                   <TableCell className="text-gray-700 dark:text-gray-300">
-                    {record.full_name}
+                    {record.reason || "-"}
                   </TableCell>
                   <TableCell className="text-gray-700 dark:text-gray-300">
-                    {record.role || "Member"}
+                    {record.mode || "-"}
                   </TableCell>
                   <TableCell className="text-gray-700 dark:text-gray-300">
-                    {record.id_number || "-"}
+                    {record.reference || "-"}
                   </TableCell>
                   <TableCell className="text-gray-700 dark:text-gray-300">
-                    {record.sex || "-"}
+                    {record.status || "-"}
                   </TableCell>
                   <TableCell className="text-gray-700 dark:text-gray-300">
-                    {record.phone || "-"}
-                  </TableCell>
-                  <TableCell className="text-gray-700 dark:text-gray-300">
-                    {record.email || "-"}
+                    {record.amount || "0"}
                   </TableCell>
 
                   <TableCell className="whitespace-nowrap text-gray-700 dark:text-gray-300">
-                    Joined:{" "}
-                    {record.joined_at
-                      ? formatDateTime(record.joined_at, {
-                          useNumericFormat: true,
-                        })
-                      : ""}
-                    <br />
-                    Updated:{" "}
-                    {record.updated_at
-                      ? formatDateTime(record.updated_at, {
+                    {record.created_at
+                      ? formatDateTime(record.created_at, {
                           useNumericFormat: true,
                         })
                       : ""}
@@ -128,7 +116,7 @@ export function MembersTable({
                     <TableActions
                       onEdit={() => onEdit(record)}
                       onMore={() => onMore(record.id!)}
-                      entityType="Member"
+                      entityType="Contribution"
                     />
                   </TableCell>
                 </TableRow>

@@ -43,7 +43,11 @@ interface TableRowProps {
 export function TableRow({ children, onClick, className = "" }: TableRowProps) {
   return (
     <tr 
-      className={`hover:bg-gray-50 transition-colors ${onClick ? 'cursor-pointer' : ''} ${className}`}
+      className={`transition-colors ${
+        onClick 
+          ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/80' 
+          : ''
+      } ${className}`}
       onClick={onClick}
     >
       {children}

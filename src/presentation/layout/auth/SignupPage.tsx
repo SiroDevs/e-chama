@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react"; // Add useEffect here
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { AlertCircle } from "lucide-react";
 
-import { Button, Form, FormInput } from "@/presentation/components/ui";
+import { Button } from "@/presentation/components/ui";
+import { Form, FormInput } from "@/presentation/components/ui/inputs";
 import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
 import { CardHeader, CardFooter } from "@/presentation/components/ui";
 import { CardDescription, Alert } from "@/presentation/components/ui";
@@ -35,7 +36,7 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignupPage() {
-  const [isClient, setIsClient] = useState(false); // Add this
+  const [isClient, setIsClient] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +53,6 @@ export default function SignupPage() {
     },
   });
 
-  // Add this useEffect
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -84,7 +84,6 @@ export default function SignupPage() {
     }
   };
 
-  // Don't render form during SSR/prerendering
   if (!isClient) {
     return (
       <div className="flex items-center justify-center p-4 pt-8 pb-20">
