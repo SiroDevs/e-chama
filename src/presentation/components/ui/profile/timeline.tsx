@@ -2,30 +2,6 @@ import { Paperclip } from "lucide-react";
 import { InfoRowProps, TimelineItemProps } from ".";
 import { GenericAvatar } from "../avatar";
 
-function TabButton({
-  tab,
-  active,
-  onClick,
-}: {
-  tab: Tab;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-xl border-b-2 ${
-        active
-          ? "border-blue-500 text-white bg-blue-500 dark:bg-blue-600"
-          : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/5"
-      }`}
-    >
-      {TAB_ICONS[tab]}
-      {tab}
-    </button>
-  );
-}
-
 export function InfoRow({ icon, label, value }: InfoRowProps) {
   return (
     <li className="flex items-center gap-2 text-sm">

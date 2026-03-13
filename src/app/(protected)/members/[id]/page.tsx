@@ -153,9 +153,9 @@ const page = () => {
               </div>
             </div>
           </div>
-          <button className="flex items-center gap-2 bg-green-600 hover:bg-green-500 transition-colors text-white text-sm font-semibold px-4 py-2 rounded-lg">
+          <div className="flex items-center gap-2 bg-green-600 hover:bg-green-500 transition-colors text-white text-sm font-semibold px-4 py-2 rounded-lg">
             <UserCheck size={16} /> Active
-          </button>
+          </div>
         </div>
 
         {activeTab === "Profile" && <ProfileTab member={memberData!} />}
