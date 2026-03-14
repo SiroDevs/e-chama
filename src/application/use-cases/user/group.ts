@@ -4,7 +4,6 @@ import { Group, GroupExt, UserGroup } from "@/domain/entities";
 import { fetchGroupMember, newGroupMember } from "@/app/actions/user-actions";
 import { setLoading, setError, setMember, setGroup } from "@/application/state/groupSlice";
 import { newGroup } from "@/app/actions/group-actions";
-import { newMember } from "./member";
 import { groupService } from "@/infrastructure/services/groupService";
 
 export const switchGroupAction = (userid: string, group: UserGroup) => {
@@ -34,7 +33,6 @@ export const switchGroupAction = (userid: string, group: UserGroup) => {
 export async function newGroupAction(
   group: Group,
   user_id: string,
-  member_no: string
 ) {
   return async (dispatch: Dispatch) => {
     try {
@@ -42,17 +40,18 @@ export async function newGroupAction(
       if (!data) {
         throw new Error("failed to create user group");
       }
-
+      dispatch(setGroup(data));
       const member = await newGroupMember({
         group_id: data.id,
         user_id: user_id,
-        member_no: member_no,
+        member_no: "001",
         role: "official",
       });
 
       if (!member) {
         throw new Error("Member creation failed");
       }
+      dispatch(setMember(member));
     } catch (error: unknown) {
       dispatch(
         setError(error instanceof Error ? error.message : "Failed to set user group")

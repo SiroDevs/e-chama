@@ -10,6 +10,8 @@ import { RootState } from "@/application/state/store";
 import { Button } from "../../components/ui";
 import { GroupDialog } from "./dialog";
 import { Group } from "@/domain/entities";
+import { newGroupAction } from "@/application/use-cases/user/group";
+import { SearchGroup } from "./SearchGroup";
 
 export function JoinGroup() {
   const router = useRouter();
@@ -34,13 +36,7 @@ export function JoinGroup() {
         address: data.address?.trim(),
       };
 
-      const result = await newGroup(payload);
-
-      if (!result.success) {
-        toast.error(result.error || "Failed to save new group.");
-        return;
-      }
-
+      await newGroupAction(payload, user?.uid!);
       toast.success("Group created successfully.");
       handleCloseDialog();
       router.push("/");
@@ -74,7 +70,7 @@ export function JoinGroup() {
             </>
           )}
 
-          {/* <JoinGroupSection /> */}
+          <SearchGroup />
 
           <hr className="my-4 border-gray-200" />
 
