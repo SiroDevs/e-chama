@@ -47,15 +47,16 @@ export const groupSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-    resetState: (state) => {
+    resetGroupState: (state) => {
       state.member = null;
       state.group = null;
+      state.groups = null;
       state.error = null;
     },
   },
 });
 
-export const { setMember, setGroup, setGroups, setLoading, setError, clearError, resetState } =
+export const { setMember, setGroup, setGroups, setLoading, setError, clearError, resetGroupState } =
   groupSlice.actions;
 
 export default groupSlice.reducer;

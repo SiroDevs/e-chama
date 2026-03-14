@@ -25,7 +25,7 @@ const page = () => {
   const [isSaving, setIsSaving] = useState(false);
   const { group } = useSelector((state: RootState) => state.group);
 
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [openDialog, setDialogOpen] = useState(false);
   const [editingEntity, setEditingEntity] = useState<GroupContribution | null>(null);
 
   const { entities, pagination, isLoading, isFetching } = usePaginatedEntity(
@@ -38,7 +38,7 @@ const page = () => {
     },
   );
 
-  const openNew = () => {
+  const handleOpenDialog = () => {
     setEditingEntity(null);
     setDialogOpen(true);
   };
@@ -48,7 +48,7 @@ const page = () => {
     setDialogOpen(true);
   };
 
-  const handleClose = () => {
+  const handleCloseDialog = () => {
     setDialogOpen(false);
     setEditingEntity(null);
   };
@@ -73,7 +73,7 @@ const page = () => {
 
       if (isEditing) {
         toast.info("Editing contributions is coming soon.");
-        handleClose();
+        handleCloseDialog();
         return;
       }
 
@@ -85,7 +85,7 @@ const page = () => {
       }
 
       toast.success("Contribution saved successfully.");
-      handleClose();
+      handleCloseDialog();
       invalidate();
     } catch (err: unknown) {
       toast.error(
@@ -115,7 +115,7 @@ const page = () => {
             />
             <PageAction
               title="New Contribution"
-              onClick={openNew}
+              onClick={handleOpenDialog}
               icon={<PlusIcon />}
             />
           </div>
@@ -134,8 +134,8 @@ const page = () => {
         />
 
         <ContributionDialog
-          open={dialogOpen}
-          onClose={handleClose}
+          open={openDialog}
+          onClose={handleCloseDialog}
           onSubmit={handleSubmit}
           initial={editingEntity}
           groupId={group?.group_id || ""}

@@ -5,7 +5,7 @@ import {
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/presentation/components/ui/alert-dialog";
+} from "@/presentation/components/ui/dialogs/alert-dialog";
 import { GroupContribution, GroupMember } from "@/domain/entities";
 import { ContributionFormValues } from "./arrays";
 import ContributionForm from "./form";
@@ -27,7 +27,7 @@ export function ContributionDialog({
 }: ContributionDialogProps) {
   const isEditing = !!initial?.id;
 
-  const initialMember: GroupMember | null = initial?.member_id
+  const initialMember: GroupMember | null = initial?.id
     ? ({ member_id: initial.id, full_name: initial.full_name || null, member_no: initial.member_no || null } as GroupMember)
     : null;
 

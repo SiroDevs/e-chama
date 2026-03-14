@@ -76,7 +76,7 @@ export function ContributionsTable({
             {records.length === 0 ? (
               <tr>
                 <td colSpan={COLUMNS.length} className="px-6 py-24 text-center">
-                  <EmptyState entityName="grpContributions" />
+                  <EmptyState entityName="contributions" />
                 </td>
               </tr>
             ) : (

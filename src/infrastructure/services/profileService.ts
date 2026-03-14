@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase/client";
 import { memberService } from "./memberService";
 
 export const profileService = {
-  async createProfile(profile: Profile) {
+  async newUserProfile(profile: Profile) {
     return await supabase.from("profiles")
       .insert([
         {

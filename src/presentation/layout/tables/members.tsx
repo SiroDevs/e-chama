@@ -77,7 +77,7 @@ export function MembersTable({
             {records.length === 0 ? (
               <tr>
                 <td colSpan={COLUMNS.length} className="px-6 py-24 text-center">
-                  <EmptyState entityName="grpMembers" />
+                  <EmptyState entityName="members" />
                 </td>
               </tr>
             ) : (

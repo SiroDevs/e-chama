@@ -10,7 +10,7 @@ interface AlertDialogProps {
   onCancel?: () => void;
 }
 
-export function AlertDialog({
+export function AlertDialog2({
   trigger,
   title,
   description,
