@@ -18,22 +18,19 @@ export const signinUser = (email: string, password: string) => {
 
       dispatch(setUser(data.user));
 
-      if (!data.profile) {
-        throw new Error("User profile not found after signin");
-      }
+      if (data.profile) {
+        dispatch(setProfile(data.profile));
 
-      dispatch(setProfile(data.profile));
-
-      const member = await fetchGroupMember(data.user.uid, data.profile.group_id);
-      if (!member) {
-        throw new Error("Member not found after signin");
+        const member = await fetchGroupMember(data.user.uid, data.profile.group_id);
+        if (member) {
+          dispatch(setMember(member));
+        }
       }
-      dispatch(setMember(member));
 
       const groups = await fetchUserGroups(data.user.uid);
       if (groups.length > 0) {
         dispatch(setGroups(groups));
-        if (data.profile.group_id) {
+        if (data.profile!.group_id) {
           const userGroup = groups.find(group => group.group_id === data.profile!.group_id);
           dispatch(setGroup(userGroup || null));
         } else {

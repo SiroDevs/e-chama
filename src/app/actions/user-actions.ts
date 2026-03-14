@@ -55,25 +55,11 @@ export async function newGroupMember(
   }
 }
 
-export async function fetchUserGroups(userId: string): Promise<UserGroup[]> {
-  let groups: UserGroup[] = [];
-  try {
-    groups = await groupService.getUserGroups(userId);
-  } catch (error: unknown) {
-    console.error("Error fetching in user groups:", error);
-    throw new Error(
-      `Failed to fetch user groups: ${error instanceof Error ? error.message : "Unknown error"
-      }`
-    );
-  }
-  return groups;
-}
-
 export async function newUserProfile(
   profile: Profile,
 ): Promise<Profile> {
   try {
-    const { data, error } = await profileService.createProfile(profile);
+    const { data, error } = await profileService.newUserProfile(profile);
 
     if (error) throw error;
     if (!data) throw new Error("No profile created");
@@ -88,44 +74,53 @@ export async function newUserProfile(
   }
 }
 
+export async function fetchUserGroups(userId: string): Promise<UserGroup[]> {
+  let groups: UserGroup[] = [];
+  try {
+    groups = await groupService.getUserGroups(userId);
+  } catch (error: unknown) {
+    console.error("Error fetching in user groups:", error);
+    throw new Error(
+      `Failed to fetch user groups: ${error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+  return groups;
+}
+
 export async function fetchUserProfile(
   userId?: string
-): Promise<Profile> {
+): Promise<Profile | null> {
   try {
     const { data, error } = await profileService.fetchUserProfile(userId!);
 
-    if (error) throw error;
-    if (!data) throw new Error("No profile data returned");
+    if (error || !data) {
+      console.warn("Profile not found or error occurred:", error);
+      return null;
+    }
 
     return data;
-
   } catch (error: unknown) {
     console.error("Error fetching profile:", error);
-
-    throw new Error(
-      `Failed to fetch profile: ${error instanceof Error ? error.message : "Unknown error"
-      }`
-    );
+    return null;
   }
 }
 
 export async function fetchGroupMember(
   userId?: string,
   groupId?: string,
-): Promise<Member> {
+): Promise<Member | null> {
   try {
     const { data, error } = await memberService.fetchGroupMember(userId!, groupId!);
 
-    if (error) throw error;
-    if (!data) throw new Error("No member data returned");
+    if (error || !data) {
+      console.warn("Member not found or error occurred:", error);
+      return null;
+    }
 
     return data;
   } catch (error: unknown) {
     console.error("Error fetching member:", error);
-
-    throw new Error(
-      `Failed to fetch member: ${error instanceof Error ? error.message : "Unknown error"
-      }`
-    );
+    return null;
   }
 }
