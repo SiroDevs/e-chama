@@ -4,16 +4,19 @@ import { useState } from "react";
 import { Search, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import { useAuthStore } from "@/infrastucture/state/auth/auth";
-import { useGroupStore } from "@/infrastucture/state/auth/group";
-import { joinGroupAction, searchGroupAction } from "@/application/use-cases/user/group";
+import {
+  joinGroupAction,
+  searchGroupAction,
+} from "@/application/use-cases/user/group";
 import { GroupExt } from "@/domain/entities";
 import { GroupItem } from "./GroupItem";
+import { RootState } from "@/application/state/store";
+import { useSelector } from "react-redux";
 
 export function SearchGroup() {
   const router = useRouter();
-  const { user } = useAuthStore();
-  const { setUserGroups } = useGroupStore();
+  const { groups } = useSelector((state: RootState) => state.group);
+  const { user } = useSelector((state: RootState) => state.auth);
   const [joinCode, setJoinCode] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [foundGroup, setFoundGroup] = useState<GroupExt | null>(null);
@@ -31,11 +34,11 @@ export function SearchGroup() {
     setError("");
 
     try {
-      const result = await searchGroupAction(joinCode);
-      if (result.success && result.group) {
-        setFoundGroup(result.group);
+      const group = await searchGroupAction(joinCode);
+      if (group) {
+        setFoundGroup(group);
       } else {
-        setError(result.error || "No group found");
+        setError(error || "No group found");
         setFoundGroup(null);
       }
     } catch (err) {
@@ -57,12 +60,14 @@ export function SearchGroup() {
     setError("");
 
     try {
-      const result = await joinGroupAction(user!.id, foundGroup);
-      if (result.success) {
-        await setUserGroups(result.groups!, foundGroup.id || null);
+      const groups = await joinGroupAction(user!.uid, foundGroup);
+      if (groups) {
+        // dispatch(setGroups(groups));
         router.push("/");
       } else {
-        setError(result.error?.toString() || "Failed to join group. Please try again.");
+        setError(
+          error?.toString() || "Failed to join group. Please try again.",
+        );
       }
     } catch (err) {
       setError("Failed to join group. Please try again.");
