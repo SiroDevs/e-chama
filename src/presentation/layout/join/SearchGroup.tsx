@@ -8,13 +8,12 @@ import {
   joinGroupAction,
   searchGroupAction,
 } from "@/application/use-cases/user/group";
-import { GroupExt } from "@/domain/entities";
+import { GroupExt, UserGroup } from "@/domain/entities";
 import { GroupItem } from "./GroupItem";
 import { RootState } from "@/application/state/store";
 import { useSelector } from "react-redux";
 
 export function SearchGroup() {
-  const router = useRouter();
   const { groups } = useSelector((state: RootState) => state.group);
   const { user } = useSelector((state: RootState) => state.auth);
   const [joinCode, setJoinCode] = useState("");
@@ -60,15 +59,7 @@ export function SearchGroup() {
     setError("");
 
     try {
-      const groups = await joinGroupAction(user!.uid, foundGroup);
-      if (groups) {
-        // dispatch(setGroups(groups));
-        router.push("/");
-      } else {
-        setError(
-          error?.toString() || "Failed to join group. Please try again.",
-        );
-      }
+      await joinGroupAction(user!.uid, foundGroup);
     } catch (err) {
       setError("Failed to join group. Please try again.");
       console.error("Join error:", err);

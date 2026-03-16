@@ -9,8 +9,8 @@ import { DropdownMenuItem, DropdownMenuLabel } from "../ui";
 import { DropdownMenuSeparator, DropdownMenuTrigger } from "../ui";
 import { AppDispatch, RootState } from "@/application/state/store";
 import { useToast } from "../ui/use-toast";
-import { switchGroup } from "@/application/use-cases/user/group";
 import { UserGroup } from "@/domain/entities";
+import { switchGroupAction } from "@/application/use-cases/user/group";
 
 export function GroupNav() {
   const router = useRouter();
@@ -22,7 +22,7 @@ export function GroupNav() {
   const handleGroupSwitch = async (selectedGroup: UserGroup) => {
     try {
       if (user) {
-        await dispatch(switchGroup(user.uid, selectedGroup));
+        await dispatch(switchGroupAction(user.uid, selectedGroup));
         toast({
           title: "Success",
           description: "You have been switched groups successfully",
