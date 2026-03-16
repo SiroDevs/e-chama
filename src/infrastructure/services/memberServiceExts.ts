@@ -100,7 +100,7 @@ export const memberServiceExts = {
         return { data: null, error: error };
       }
 
-      const profileResult = await profileService.createProfile({
+      const profileResult = await profileService.newUserProfile({
         id: data.user?.id,
         first_name: payload.profile.first_name,
         last_name: payload.profile.last_name,

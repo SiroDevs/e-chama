@@ -55,7 +55,6 @@ export const GroupItem = ({
           </div>
         </div>
 
-        {/* Join button */}
         <button
           onClick={onJoinGroup}
           disabled={isJoining}

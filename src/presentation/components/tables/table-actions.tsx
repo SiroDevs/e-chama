@@ -1,5 +1,4 @@
 import { Pencil, MoreVertical } from 'lucide-react';
-import { AlertDialog } from '../ui/dialogs/alert-dialog-2';
 
 interface TableActionsProps {
   onEdit: () => void;

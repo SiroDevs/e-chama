@@ -1,10 +1,10 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useEffect } from "react";
+import { useForm, type Resolver, type Control } from "react-hook-form";
 
-import { newContributionSchema, contributionFields } from "./arrays";
+import { contributionSchema, contributionFields } from "./arrays";
 import { contributionGroups, ContributionFormValues } from "./arrays";
 import { GroupMember } from "@/domain/entities";
 import { Form, FormInput } from "@/presentation/components/ui/inputs";
@@ -36,7 +36,7 @@ export default function ContributionForm({
   );
 
   const form = useForm<ContributionFormValues>({
-    resolver: zodResolver(newContributionSchema),
+    resolver: zodResolver(contributionSchema) as Resolver<ContributionFormValues>,
     defaultValues: {
       member_id: member?.id || "",
       amount: 0,

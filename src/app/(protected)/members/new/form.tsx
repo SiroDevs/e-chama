@@ -4,13 +4,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { newMemberGroups, newMemberFields, newMemberSchema } from "./arrays";
+import { memberGroups, memberFields, memberSchema, MemberFormValues } from "./arrays";
 import { Form, FormActions, FormInput } from "@/presentation/components/ui/inputs";
 
-export type FormValues = z.infer<typeof newMemberSchema>;
-
 interface NewMemberFormProps {
-  onSubmit: (values: FormValues) => Promise<void> | void;
+  onSubmit: (values: MemberFormValues) => Promise<void> | void;
   onCancel?: () => void;
   isLoading?: boolean;
 }
@@ -20,8 +18,8 @@ export default function NewMemberForm({
   onCancel,
   isLoading = false,
 }: NewMemberFormProps) {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(newMemberSchema),
+  const form = useForm<MemberFormValues>({
+    resolver: zodResolver(memberSchema),
     defaultValues: {
       first_name: "",
       last_name: "",
@@ -33,14 +31,14 @@ export default function NewMemberForm({
     },
   });
 
-  const handleSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: MemberFormValues) => {
     await onSubmit(values);
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        {newMemberGroups.map((grp) => (
+        {memberGroups.map((grp) => (
           <div key={grp.id}>
             <fieldset
               className={
@@ -50,7 +48,7 @@ export default function NewMemberForm({
               }
             >
               {grp.fields.map((fieldName) => {
-                const field = newMemberFields[fieldName];
+                const field = memberFields[fieldName];
                 return (
                   <FormInput
                     key={field.name}
