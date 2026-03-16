@@ -14,7 +14,7 @@ export interface ProfileRepo {
     error: Error | null;
   }>;
   
-  createProfile(profile: Profile): Promise<{ data: Profile | null; error: Error | null }>;
+  newUserProfile(profile: Profile): Promise<{ data: Profile | null; error: Error | null }>;
   
   setProfileGroup(userId: string, groupId: string): Promise<void>;
 }

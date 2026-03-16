@@ -1,16 +1,17 @@
 import { z } from "zod";
 
-export const newContributionSchema = z.object({
+export const contributionSchema = z.object({
   member_id: z.string().min(1, "Please select a member"),
-  amount: z.coerce.number()
-    .positive("Amount must be positive")
-    .min(1, "Amount must be at least 1"),
+  amount: z.preprocess(
+    (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
+    z.number().positive("Amount must be positive").min(1, "Amount must be at least 1")
+  ),
   mode: z.string().min(1, "Mode of payment is required"),
   reference: z.string().min(1, "Reference is required"),
   reason: z.string().min(3, "Reason is required").max(100, "Reason is too long"),
 });
 
-export type ContributionFormValues = z.infer<typeof newContributionSchema>;
+export type ContributionFormValues = z.infer<typeof contributionSchema>;
 
 export const contributionFields = {
   member_id: {

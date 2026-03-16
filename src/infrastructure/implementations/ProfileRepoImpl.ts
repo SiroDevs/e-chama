@@ -26,8 +26,8 @@ export class ProfileRepoImpl implements ProfileRepo {
     return profileService.refreshUserProfile(user);
   }
 
-  async createProfile(profile: Profile): Promise<{ data: Profile | null; error: Error | null }> {
-    return profileService.createProfile(profile);
+  async newUserProfile(profile: Profile): Promise<{ data: Profile | null; error: Error | null }> {
+    return profileService.newUserProfile(profile);
   }
 
   async setProfileGroup(userId: string, groupId: string): Promise<void> {

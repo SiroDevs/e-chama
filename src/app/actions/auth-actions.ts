@@ -59,7 +59,7 @@ export async function signupUserAction(
 
     let profileData = null;
     try {
-      const { data: profile } = await profileService.createProfile({
+      const { data: profile } = await profileService.newUserProfile({
         id: data.user.id!,
         first_name: first_name!,
         last_name: last_name!,
