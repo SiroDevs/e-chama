@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const newMemberSchema = z
+export const memberSchema = z
   .object({
     first_name: z.string().min(4, { message: "Your first name is too short" }),
     last_name: z.string().min(4, { message: "Your last name is too short" }),
@@ -19,7 +19,9 @@ export const newMemberSchema = z
       .min(8, { message: "Password must be at least 8 characters long" }),
   });
 
-export const newMemberFields = {
+export type MemberFormValues = z.infer<typeof memberSchema>;
+
+export const memberFields = {
   first_name: {
     name: "first_name" as const,
     label: "First Name",
@@ -71,7 +73,7 @@ export const newMemberFields = {
   },
 };
 
-export const newMemberGroups = [
+export const memberGroups = [
   {
     id: 1,
     fields: ["first_name", "last_name"] as const,
