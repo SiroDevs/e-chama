@@ -58,7 +58,7 @@ export default function GroupForm({
           onCancel={onCancel}
           isLoading={isLoading}
           disabled={false}
-          saveLabel="Save Group"
+          saveLabel="Save Chama"
         />
       </form>
     </Form>

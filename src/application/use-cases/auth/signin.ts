@@ -2,13 +2,16 @@ import { Dispatch } from "@reduxjs/toolkit";
 
 import { signinUserAction } from "@/app/actions/auth-actions";
 import { fetchUserGroups, fetchGroupMember } from "@/app/actions/user-actions";
-import { setUser, setLoading, setError, setProfile } from "@/application/state/authSlice";
+import { setUser, setProfile } from "@/application/state/authSlice";
 import { setMember, setGroup, setGroups } from "@/application/state/groupSlice";
+import { setError } from "@/application/state/appSlice";
+import { useState } from "react";
 
 export const signinUser = (email: string, password: string) => {
+  const [isLoading, setLoading] = useState(false);
   return async (dispatch: Dispatch) => {
     try {
-      dispatch(setLoading(true));
+      setLoading(true);
 
       const data = await signinUserAction(email, password);
 
@@ -43,7 +46,7 @@ export const signinUser = (email: string, password: string) => {
       );
       throw error;
     } finally {
-      dispatch(setLoading(false));
+      setLoading(true);
     }
   };
 };

@@ -1,12 +1,21 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { setUser, setLoading, setError, setProfile } from "../../state/authSlice";
 import { signupUserAction } from "@/app/actions/auth-actions";
 import { fetchUserProfile } from "@/app/actions/user-actions";
+import { setError } from "@/application/state/appSlice";
+import { setProfile, setUser } from "@/application/state/authSlice";
+import { useState } from "react";
 
-export const signupUser = (first_name: string, last_name: string, phone: string, email: string, password: string) => {
+export const signupUser = (
+  first_name: string,
+  last_name: string,
+  phone: string,
+  email: string,
+  password: string
+) => {
+  const [isLoading, setLoading] = useState(false);
   return async (dispatch: Dispatch) => {
     try {
-      dispatch(setLoading(true));
+      setLoading(true);
 
       const user = await signupUserAction(first_name, last_name, phone, email, password);
 
@@ -29,7 +38,7 @@ export const signupUser = (first_name: string, last_name: string, phone: string,
       );
       throw error;
     } finally {
-      dispatch(setLoading(false));
+      setLoading(false);
     }
   };
 };

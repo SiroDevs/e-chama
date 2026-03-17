@@ -1,8 +1,9 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { setLoading, setError } from "../../state/authSlice";
-import { newGroupMember, newUserAccount, newUserProfile } from "@/app/actions/user-actions";
 
-export const newMember = (
+import { newGroupMember, newUserAccount, newUserProfile } from "@/app/actions/user-actions";
+import { setError } from "@/application/state/appSlice";
+
+export const newMemberAction = (
   first_name: string,
   last_name: string,
   phone: string,
@@ -19,7 +20,7 @@ export const newMember = (
 ) => {
   return async (dispatch: Dispatch) => {
     try {
-      dispatch(setLoading(true));
+      // dispatch(setLoading(true));
 
       const user = await newUserAccount(first_name, last_name, phone, email, password);
 
@@ -60,7 +61,7 @@ export const newMember = (
       );
       throw error;
     } finally {
-      dispatch(setLoading(false));
+      // dispatch(setLoading(false));
     }
   };
 };

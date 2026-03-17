@@ -20,8 +20,8 @@ import { AppDispatch } from "@/application/state/store";
 
 const formSchema = z
   .object({
-    first_name: z.string().min(4, { message: "Your first name is too short" }),
-    last_name: z.string().min(4, { message: "Your last name is too short" }),
+    first_name: z.string().min(2, { message: "Your first name is too short" }),
+    last_name: z.string().min(2, { message: "Your last name is too short" }),
     email: z.string().email({ message: "Please enter a valid email address" }),
     password: z
       .string()
