@@ -12,12 +12,14 @@ import { Group } from "@/domain/entities";
 
 interface GroupDialogProps {
   open: boolean;
+  isLoading?: boolean;
   onClose: () => void;
   onSubmit: (data: Partial<Group>) => void;
 }
 
 export function GroupDialog({
   open,
+  isLoading,
   onClose,
   onSubmit,
 }: GroupDialogProps) {
@@ -37,6 +39,7 @@ export function GroupDialog({
         <GroupForm
           onSubmit={handleSubmit}
           onCancel={onClose}
+          isLoading={isLoading}
         />
       </AlertDialogContent>
     </AlertDialog>

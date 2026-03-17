@@ -9,13 +9,13 @@ export async function newGroup(group: Group) {
     const { data, error } = await groupService.newGroup(group);
 
     if (error) throw error;
-    if (!data) throw new Error("No member created");
+    if (!data) throw new Error("No group created");
     return data;
   } catch (error: unknown) {
-    console.error("Error creating member:", error);
+    console.error("Error creating group:", error);
 
     throw new Error(
-      `Failed to create member: ${error instanceof Error ? error.message : "Unknown error"
+      `Failed to create group: ${error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }

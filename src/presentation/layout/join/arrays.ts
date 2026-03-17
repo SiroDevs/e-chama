@@ -8,7 +8,7 @@ export const GroupSchema = z.object({
   initials: z.string()
   .min(3, "Chama initials are required")
   .max(10, "Initials are too long"),
-  location: z.string().min(5, "Chama name is required"),
+  location: z.string().min(5, "Chama location is required"),
   address: z.string().optional(),
 });
 
@@ -32,21 +32,21 @@ export const groupFields = {
   initials: {
     name: "initials" as const,
     label: "Initials",
-    placeholder: "Initials if the name is too long ...",
-    required: false,
+    placeholder: "Initials of your chama",
+    required: true,
     type: "text" as const,
   },
   location: {
     name: "location" as const,
     label: "Location",
-    placeholder: "Location of your Chama ...",
+    placeholder: "Location of your Chama",
     required: true,
     type: "text" as const,
   },
   address: {
     name: "address" as const,
     label: "Address (Optional)",
-    placeholder: "Address of your Chama ...",
+    placeholder: "Address of your Chama",
     required: false,
     type: "text" as const,
   },

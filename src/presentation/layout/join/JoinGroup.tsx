@@ -3,22 +3,24 @@
 import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
-import { RootState } from "@/application/state/store";
+import { AppDispatch, RootState } from "@/application/state/store";
 import { Button } from "../../components/ui";
 import { GroupDialog } from "./dialog";
 import { Group } from "@/domain/entities";
 import { newGroupAction } from "@/application/use-cases/user/group";
 import { SearchGroup } from "./SearchGroup";
+import { setError } from "@/application/state/appSlice";
 
 export function JoinGroup() {
   const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
   const { groups } = useSelector((state: RootState) => state.group);
   const { user } = useSelector((state: RootState) => state.auth);
   const [openDialog, setOpenDialog] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const hasGroups = groups && groups.length > 0;
 
@@ -27,27 +29,29 @@ export function JoinGroup() {
 
   const handleSubmit = async (data: Partial<Group>) => {
     try {
-      setIsSaving(true);
-      const payload = {
-        title: data.title?.trim(),
-        description: data.description?.trim(),
-        initials: data.initials?.trim(),
-        location: data.location?.trim(),
-        address: data.address?.trim(),
-      };
-
-      await newGroupAction(payload, user?.uid!);
-      toast.success("Group created successfully.");
+      setIsLoading(true);
+      setError(null);
+      await dispatch(
+        newGroupAction({
+          owner: user?.uid!,
+          title: data.title?.trim(),
+          description: data.description?.trim(),
+          initials: data.initials?.trim(),
+          location: data.location?.trim(),
+          address: data.address?.trim(),
+        }),
+      );
+      toast.success(`Your new group ${data.title} is up and ready.`);
       handleCloseDialog();
       router.push("/");
     } catch (err: unknown) {
       toast.error(
         err instanceof Error
           ? err.message
-          : "Failed to create group. Please try again.",
+          : `Failed to create group: ${data.title} Please try again.`,
       );
     } finally {
-      setIsSaving(false);
+      setIsLoading(true);
     }
   };
 
@@ -91,6 +95,7 @@ export function JoinGroup() {
 
         <GroupDialog
           open={openDialog}
+          isLoading={isLoading}
           onClose={handleCloseDialog}
           onSubmit={handleSubmit}
         />
