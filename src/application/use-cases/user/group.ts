@@ -1,11 +1,12 @@
 import { Dispatch } from "@reduxjs/toolkit";
 
 import { Group, GroupExt, UserGroup } from "@/domain/entities";
-import { fetchGroupMember, newGroupMember } from "@/app/actions/user-actions";
+import { fetchGroupMember, fetchUserGroups, newGroupMember } from "@/app/actions/user-actions";
 import { setMember, setGroup, setGroups } from "@/application/state/groupSlice";
 import { newGroup } from "@/app/actions/group-actions";
 import { groupService } from "@/infrastructure/services/groupService";
 import { setError } from "@/application/state/appSlice";
+import { profileService } from "@/infrastructure/services/profileService";
 
 export const switchGroupAction = (userid: string, group: UserGroup) => {
   return async (dispatch: Dispatch) => {
@@ -25,21 +26,21 @@ export const switchGroupAction = (userid: string, group: UserGroup) => {
         setError(error instanceof Error ? error.message : "Failed to set user group")
       );
       throw error;
-    } finally {
-      // setLoading(false);
-    }
+    } 
   };
 }
 
 export const newGroupAction = (payload: Group) => {
   return async (dispatch: Dispatch) => {
     try {
-      // dispatch(setLoading(true));
       const group = await newGroup(payload);
       if (!group) {
-        throw new Error(`Failed to create group ${group.title}`);
+        throw new Error(`Failed to create group ${payload.title}`);
       }
       dispatch(setGroup(group));
+      
+      await profileService.setProfileGroup(payload.owner!, group.id);
+      
       const member = await newGroupMember({
         group_id: group.id,
         user_id: payload.owner,
@@ -51,16 +52,16 @@ export const newGroupAction = (payload: Group) => {
         throw new Error("Member creation failed");
       }
       dispatch(setMember(member));
-      const userGroups = await groupService.getUserGroups(payload.owner!);
+      
+      const userGroups = await fetchUserGroups(payload.owner!);
       dispatch(setGroups(userGroups));
-      // dispatch(setLoading(false));
+      
+      return group;
     } catch (error: unknown) {
       dispatch(
-        setError(error instanceof Error ? error.message : "Failed to set user group")
+        setError(error instanceof Error ? error.message : "Failed to create group successfully")
       );
       throw error;
-    } finally {
-      // dispatch(setLoading(false));
     }
   };
 }

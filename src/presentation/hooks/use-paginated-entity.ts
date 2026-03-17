@@ -1,7 +1,8 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { CrudUseCase } from '@/application/use-cases/supabase/crud.usecase';
 import { PaginationOptions } from '@/domain/repositories/supabase/base.repo';
 import { EntityType } from '@/types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function usePaginatedEntity<T>(
   useCase: CrudUseCase<T>,

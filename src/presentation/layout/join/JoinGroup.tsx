@@ -12,11 +12,10 @@ import { GroupDialog } from "./dialog";
 import { Group } from "@/domain/entities";
 import { newGroupAction } from "@/application/use-cases/user/group";
 import { SearchGroup } from "./SearchGroup";
-import { setError } from "@/application/state/appSlice";
 
 export function JoinGroup() {
   const router = useRouter();
-    const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
   const { groups } = useSelector((state: RootState) => state.group);
   const { user } = useSelector((state: RootState) => state.auth);
   const [openDialog, setOpenDialog] = useState(false);
@@ -30,8 +29,8 @@ export function JoinGroup() {
   const handleSubmit = async (data: Partial<Group>) => {
     try {
       setIsLoading(true);
-      setError(null);
-      await dispatch(
+
+      const result = await dispatch(
         newGroupAction({
           owner: user?.uid!,
           title: data.title?.trim(),
@@ -41,17 +40,22 @@ export function JoinGroup() {
           address: data.address?.trim(),
         }),
       );
-      toast.success(`Your new group ${data.title} is up and ready.`);
-      handleCloseDialog();
-      router.push("/");
+
+      if (result) {
+        toast.success(`Your new group ${data.title} is up and ready.`);
+        handleCloseDialog();
+        router.push("/");
+      } else {
+        toast.error(`Failed to create group: ${data.title}.`);
+      }
     } catch (err: unknown) {
       toast.error(
         err instanceof Error
-          ? err.message
-          : `Failed to create group: ${data.title} Please try again.`,
+          ? `Failed to create group: ${data.title}. ${err.message}`
+          : `Failed to create group: ${data.title}. Please try again.`,
       );
     } finally {
-      setIsLoading(true);
+      setIsLoading(false);
     }
   };
 
@@ -85,7 +89,8 @@ export function JoinGroup() {
           <div className="flex flex-col sm:flex-row gap-3 w-full">
             <Button
               onClick={handleOpenDialog}
-              className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium py-3 px-4 rounded-md transition-colors"
+              disabled={isLoading}
+              className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium py-3 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <UserPlus size={20} />
               Create a Chama

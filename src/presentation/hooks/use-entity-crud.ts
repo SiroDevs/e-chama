@@ -1,6 +1,7 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { CrudUseCase } from '@/application/use-cases/supabase/crud.usecase';
 import { EntityType } from '@/types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useEntityCrud<T>(useCase: CrudUseCase<T>, entityType: EntityType) {
   const queryClient = useQueryClient();

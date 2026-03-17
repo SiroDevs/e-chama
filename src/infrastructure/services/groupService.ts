@@ -1,6 +1,6 @@
 import { getServerClient } from "@/lib/supabase/server";
-import { UserGroup, Group, GroupExt } from "@/domain/entities";
 import { supabase } from "@/lib/supabase/client";
+import { UserGroup, Group, GroupExt } from "@/domain/entities";
 import { memberService } from "./memberService";
 import { PaginatedResp } from "@/types/paginations";
 
@@ -16,6 +16,7 @@ export const groupService = {
           initials: group.initials,
           location: group.location,
           address: group.address,
+          restricted: false,
         },
       ])
       .select()
