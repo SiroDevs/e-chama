@@ -30,20 +30,18 @@ export const switchGroupAction = (userid: string, group: UserGroup) => {
   };
 }
 
-export async function newGroupAction(
-  group: Group,
-  user_id: string,
-) {
+export const newGroupAction = (payload: Group) => {
   return async (dispatch: Dispatch) => {
     try {
-      const { data, error } = await newGroup(group);
-      if (!data) {
-        throw new Error("failed to create user group");
+      dispatch(setLoading(true));
+      const group = await newGroup(payload);
+      if (!group) {
+        throw new Error(`Failed to create group ${group.title}`);
       }
-      dispatch(setGroup(data));
+      dispatch(setGroup(group));
       const member = await newGroupMember({
-        group_id: data.id,
-        user_id: user_id,
+        group_id: group.id,
+        user_id: payload.owner,
         member_no: "001",
         role: "official",
       });
@@ -52,6 +50,9 @@ export async function newGroupAction(
         throw new Error("Member creation failed");
       }
       dispatch(setMember(member));
+      const userGroups = await groupService.getUserGroups(payload.owner!);
+      dispatch(setGroups(userGroups));
+      dispatch(setLoading(false));
     } catch (error: unknown) {
       dispatch(
         setError(error instanceof Error ? error.message : "Failed to set user group")

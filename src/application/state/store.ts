@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
+import appReducer from "./appSlice";
 import authReducer from "./authSlice";
 import groupReducer from './groupSlice';
 import navReducer from './navSlice';
@@ -16,7 +17,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "group", "nav"],
+  whitelist: ["app", "auth", "group", "nav"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

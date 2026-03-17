@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Group, Member, UserGroup } from "@/domain/entities";
+import { Member, UserGroup } from "@/domain/entities";
 
 interface GroupState {
   member: Member | null;

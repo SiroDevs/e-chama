@@ -13,7 +13,7 @@ import NewMemberForm from "./form";
 import { useState } from "react";
 import { Alert, AlertTitle, Card } from "@/presentation/components/ui";
 import { AlertDescription, CardContent } from "@/presentation/components/ui";
-import { newMember } from "@/application/use-cases/user/member";
+import { newMemberAction } from "@/application/use-cases/user/member";
 import { MemberFormValues } from "./arrays";
 
 const Page = () => {
@@ -33,7 +33,7 @@ const Page = () => {
       setError(null);
 
       await dispatch(
-        newMember(
+        newMemberAction(
           values.first_name,
           values.last_name,
           values.phone || "",
