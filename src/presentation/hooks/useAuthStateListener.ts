@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+
 import { AuthRepoImpl } from "@/infrastructure/implementations/AuthRepoImpl";
 import { setUser } from "@/application/state/authSlice";
 import { AppDispatch } from "@/application/state/store";
@@ -13,8 +14,6 @@ export const useAuthStateListener = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const setupAuthListener = useCallback(() => {
-    // dispatch(setLoading(true));
-
     authRepo.getCurrentUser().then((user) => {
       if (user) {
         dispatch(setUser(user));
@@ -22,7 +21,6 @@ export const useAuthStateListener = () => {
         dispatch(setUser(null));
       }
       setIsInitialized(true);
-      // dispatch(setLoading(false));
     });
 
     return authRepo.onAuthStateChanged((user) => {
@@ -31,8 +29,6 @@ export const useAuthStateListener = () => {
       } else {
         dispatch(setUser(null));
       }
-
-      // dispatch(setLoading(false));
     });
   }, [dispatch]);
 

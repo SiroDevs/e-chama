@@ -1,7 +1,12 @@
 "use client";
 
+import { AlertCircle } from "lucide-react";
+
 import {
+  Alert,
   AlertDialog,
+  AlertTitle,
+  AlertDescription,
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -9,6 +14,8 @@ import {
 import { GroupFormValues } from "./arrays";
 import GroupForm from "./form";
 import { Group } from "@/domain/entities";
+import { RootState } from "@/application/state/store";
+import { useSelector } from "react-redux";
 
 interface GroupDialogProps {
   open: boolean;
@@ -23,6 +30,7 @@ export function GroupDialog({
   onClose,
   onSubmit,
 }: GroupDialogProps) {
+  const { error } = useSelector((state: RootState) => state.app);
   const handleSubmit = async (values: GroupFormValues) => {
     onSubmit(values);
   };
@@ -33,6 +41,13 @@ export function GroupDialog({
         <AlertDialogHeader>
           <AlertDialogTitle className="text-gray-900 dark:text-gray-100">
             Create a New Chama
+            {/* {error && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )} */}
           </AlertDialogTitle>
         </AlertDialogHeader>
 
