@@ -4,12 +4,14 @@ import { resetAuthState} from "../../state/authSlice";
 import { signoutUserAction } from "@/app/actions/auth-actions";
 import { resetGroupState } from "@/application/state/groupSlice";
 import { resetNavState } from "@/application/state/navSlice";
-import { resetAppState, setError, setLoading } from "@/application/state/appSlice";
+import { resetAppState, setError } from "@/application/state/appSlice";
+import { useState } from "react";
 
 export const signoutUser = () => {
+  const [isLoading, setLoading] = useState(false);
   return async (dispatch: Dispatch) => {
     try {
-      dispatch(setLoading(true));
+      setLoading(true);
 
       await signoutUserAction();
 
@@ -23,7 +25,7 @@ export const signoutUser = () => {
       );
       throw error;
     } finally {
-      dispatch(setLoading(false));
+      setLoading(false);
     }
   };
 };

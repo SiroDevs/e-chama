@@ -5,7 +5,7 @@ import { fetchGroupMember, newGroupMember } from "@/app/actions/user-actions";
 import { setMember, setGroup, setGroups } from "@/application/state/groupSlice";
 import { newGroup } from "@/app/actions/group-actions";
 import { groupService } from "@/infrastructure/services/groupService";
-import { setError, setLoading } from "@/application/state/appSlice";
+import { setError } from "@/application/state/appSlice";
 
 export const switchGroupAction = (userid: string, group: UserGroup) => {
   return async (dispatch: Dispatch) => {
@@ -26,7 +26,7 @@ export const switchGroupAction = (userid: string, group: UserGroup) => {
       );
       throw error;
     } finally {
-      dispatch(setLoading(false));
+      // setLoading(false);
     }
   };
 }
@@ -34,7 +34,7 @@ export const switchGroupAction = (userid: string, group: UserGroup) => {
 export const newGroupAction = (payload: Group) => {
   return async (dispatch: Dispatch) => {
     try {
-      dispatch(setLoading(true));
+      // dispatch(setLoading(true));
       const group = await newGroup(payload);
       if (!group) {
         throw new Error(`Failed to create group ${group.title}`);
@@ -53,14 +53,14 @@ export const newGroupAction = (payload: Group) => {
       dispatch(setMember(member));
       const userGroups = await groupService.getUserGroups(payload.owner!);
       dispatch(setGroups(userGroups));
-      dispatch(setLoading(false));
+      // dispatch(setLoading(false));
     } catch (error: unknown) {
       dispatch(
         setError(error instanceof Error ? error.message : "Failed to set user group")
       );
       throw error;
     } finally {
-      dispatch(setLoading(false));
+      // dispatch(setLoading(false));
     }
   };
 }
