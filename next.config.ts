@@ -1,11 +1,11 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
-  productionBrowserSourceMaps: true, // Enable source maps in production
-  // If you're using Next.js 15+, you can also enable server source maps
-  experimental: {
-    serverSourceMaps: true, // Helps with server-side error traces [citation:1]
-  },
+  // Your existing Next.js configuration
 };
-
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+  org: "futuristicken",
+  project: "echama",
+  silent: !process.env.CI,
+});

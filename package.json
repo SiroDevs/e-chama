@@ -14,6 +14,8 @@
     "@radix-ui/themes": "^3.3.0",
     "@reduxjs/toolkit": "^2.11.2",
     "@sentry/nextjs": "^10.39.0",
+    "@sentry/react": "^10.43.0",
+    "@sentry/tracing": "^7.120.4",
     "@supabase/auth-helpers-nextjs": "^0.15.0",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.97.0",
