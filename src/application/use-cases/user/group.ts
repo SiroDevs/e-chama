@@ -2,9 +2,10 @@ import { Dispatch } from "@reduxjs/toolkit";
 
 import { Group, GroupExt, UserGroup } from "@/domain/entities";
 import { fetchGroupMember, newGroupMember } from "@/app/actions/user-actions";
-import { setLoading, setError, setMember, setGroup, setGroups } from "@/application/state/groupSlice";
+import { setMember, setGroup, setGroups } from "@/application/state/groupSlice";
 import { newGroup } from "@/app/actions/group-actions";
 import { groupService } from "@/infrastructure/services/groupService";
+import { setError, setLoading } from "@/application/state/appSlice";
 
 export const switchGroupAction = (userid: string, group: UserGroup) => {
   return async (dispatch: Dispatch) => {

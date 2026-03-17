@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AuthRepoImpl } from "@/infrastructure/implementations/AuthRepoImpl";
-import { setUser, setLoading } from "@/application/state/authSlice";
+import { setUser } from "@/application/state/authSlice";
 import { AppDispatch } from "@/application/state/store";
+import { setLoading } from "@/application/state/appSlice";
 
 const authRepo = new AuthRepoImpl();
 

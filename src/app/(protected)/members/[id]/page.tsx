@@ -10,7 +10,7 @@ import { PageContainer } from "@/presentation/components/common/page-container";
 import PageContent from "@/presentation/components/common/page-content";
 import { PageAction, PageButton } from "@/presentation/components/ui/actions";
 import { GroupMember } from "@/domain/entities";
-import { setError } from "@/application/state/authSlice";
+import { setError } from "@/application/state/appSlice";
 import { RootState } from "@/application/state/store";
 import { memberService } from "@/infrastructure/services/memberService";
 import { GenericAvatar } from "@/presentation/components/ui";

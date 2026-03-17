@@ -9,6 +9,7 @@ import navReducer from './navSlice';
 import storage from "@/lib/storage";
 
 const rootReducer = combineReducers({
+  app: appReducer,
   auth: authReducer,
   group: groupReducer,
   nav: navReducer,

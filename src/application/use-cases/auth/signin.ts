@@ -2,8 +2,9 @@ import { Dispatch } from "@reduxjs/toolkit";
 
 import { signinUserAction } from "@/app/actions/auth-actions";
 import { fetchUserGroups, fetchGroupMember } from "@/app/actions/user-actions";
-import { setUser, setLoading, setError, setProfile } from "@/application/state/authSlice";
+import { setUser, setProfile } from "@/application/state/authSlice";
 import { setMember, setGroup, setGroups } from "@/application/state/groupSlice";
+import { setLoading, setError } from "@/application/state/appSlice";
 
 export const signinUser = (email: string, password: string) => {
   return async (dispatch: Dispatch) => {

@@ -1,6 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { setLoading, setError } from "../../state/authSlice";
+
 import { newGroupMember, newUserAccount, newUserProfile } from "@/app/actions/user-actions";
+import { setLoading,setError } from "@/application/state/appSlice";
 
 export const newMemberAction = (
   first_name: string,
