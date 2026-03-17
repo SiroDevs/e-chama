@@ -135,6 +135,7 @@ const page = () => {
 
         <ContributionDialog
           open={openDialog}
+          isLoading={isSaving}
           onClose={handleCloseDialog}
           onSubmit={handleSubmit}
           initial={editingEntity}

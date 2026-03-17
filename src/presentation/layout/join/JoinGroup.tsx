@@ -12,6 +12,7 @@ import { GroupDialog } from "./dialog";
 import { Group } from "@/domain/entities";
 import { newGroupAction } from "@/application/use-cases/user/group";
 import { SearchGroup } from "./SearchGroup";
+import { setError } from "@/application/state/appSlice";
 
 export function JoinGroup() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export function JoinGroup() {
   const { groups } = useSelector((state: RootState) => state.group);
   const { user } = useSelector((state: RootState) => state.auth);
   const [openDialog, setOpenDialog] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const hasGroups = groups && groups.length > 0;
 
@@ -28,7 +29,8 @@ export function JoinGroup() {
 
   const handleSubmit = async (data: Partial<Group>) => {
     try {
-      setIsSaving(true);
+      setIsLoading(true);
+      setError(null);
       await dispatch(
         newGroupAction({
           owner: user?.uid!,
@@ -49,7 +51,7 @@ export function JoinGroup() {
           : `Failed to create group: ${data.title} Please try again.`,
       );
     } finally {
-      setIsSaving(false);
+      setIsLoading(true);
     }
   };
 
@@ -93,6 +95,7 @@ export function JoinGroup() {
 
         <GroupDialog
           open={openDialog}
+          isLoading={isLoading}
           onClose={handleCloseDialog}
           onSubmit={handleSubmit}
         />
