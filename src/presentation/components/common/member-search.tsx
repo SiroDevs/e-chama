@@ -124,7 +124,7 @@ export function MemberSearchField({
           <ul className="absolute z-50 mt-1 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#2a2d3e] shadow-lg max-h-48 overflow-y-auto">
             {results.map((m) => (
               <li
-                key={m.id}
+                key={m.member_id}
                 onMouseDown={() => handleSelect(m)}
                 className="flex items-center justify-between px-3 py-2 text-sm cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 text-gray-800 dark:text-gray-200"
               >

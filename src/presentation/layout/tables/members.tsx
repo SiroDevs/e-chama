@@ -83,7 +83,7 @@ export function MembersTable({
             ) : (
               records.map((record) => (
                 <TableRow
-                  key={record.id}
+                  key={record.member_id}
                   onClick={(e) => handleRowClick(record, e)}
                   className="hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-colors"
                 >
@@ -127,7 +127,7 @@ export function MembersTable({
                   <TableCell>
                     <TableActions
                       onEdit={() => onEdit(record)}
-                      onMore={() => onMore(record.id!)}
+                      onMore={() => onMore(record.member_id!)}
                       entityType="Member"
                     />
                   </TableCell>
