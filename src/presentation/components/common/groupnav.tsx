@@ -54,7 +54,7 @@ export function GroupNav() {
           >
             <div className="flex items-center truncate">
               <Users className="h-4 w-4 mr-2 flex-shrink-0" />
-              <span className="hidden sm:block truncate">
+              <span className="sm:block truncate">
                 {group ? group.title : "No Group"}
               </span>
             </div>
