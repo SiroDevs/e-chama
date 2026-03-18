@@ -5,14 +5,10 @@ import { fetchUserGroups, fetchGroupMember } from "@/app/actions/user-actions";
 import { setUser, setProfile } from "@/application/state/authSlice";
 import { setMember, setGroup, setGroups } from "@/application/state/groupSlice";
 import { setError } from "@/application/state/appSlice";
-import { useState } from "react";
 
 export const signinUser = (email: string, password: string) => {
-  const [isLoading, setLoading] = useState(false);
   return async (dispatch: Dispatch) => {
     try {
-      setLoading(true);
-
       const data = await signinUserAction(email, password);
 
       if (!data) {
@@ -45,8 +41,6 @@ export const signinUser = (email: string, password: string) => {
         setError(error instanceof Error ? error.message : "Failed to signin")
       );
       throw error;
-    } finally {
-      setLoading(true);
     }
   };
 };
