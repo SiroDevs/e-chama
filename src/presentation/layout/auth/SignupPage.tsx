@@ -7,16 +7,19 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { AlertCircle } from "lucide-react";
+import * as Sentry from "@sentry/nextjs";
 
-import { Button } from "@/presentation/components/ui";
-import { Form, FormInput } from "@/presentation/components/ui/inputs";
-import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
+import { Alert, Button, Card } from "@/presentation/components/ui";
+import { CardTitle, CardContent } from "@/presentation/components/ui";
 import { CardHeader, CardFooter } from "@/presentation/components/ui";
-import { CardDescription, Alert } from "@/presentation/components/ui";
-import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
+import {
+  AlertDescription,
+  CardDescription,
+} from "@/presentation/components/ui";
+import { Form, FormInput } from "@/presentation/components/ui/inputs";
 import { signupUser } from "@/application/use-cases/auth/signup";
 import { AppDispatch } from "@/application/state/store";
+import { handleError } from "@/application/helpers/error-utils";
 
 const formSchema = z
   .object({
@@ -66,7 +69,7 @@ export default function SignupPage() {
         signupUser(
           values.first_name,
           values.last_name,
-          '',
+          "",
           values.email,
           values.password,
         ),
@@ -74,11 +77,12 @@ export default function SignupPage() {
 
       router.push("/");
     } catch (err: unknown) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Failed to register. Please try again.",
-      );
+      const errMsg = handleError(err, {
+        tags: { component: "Contribution", action: "submit" },
+        userMessage:
+          "Failed to signup. Please check your credentials and try again.",
+      });
+      setError(errMsg);
     } finally {
       setIsLoading(false);
     }
@@ -116,8 +120,6 @@ export default function SignupPage() {
         <CardContent>
           {error && (
             <Alert variant="destructive" className="mb-4">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
