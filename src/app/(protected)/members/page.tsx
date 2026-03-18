@@ -31,24 +31,12 @@ const page = () => {
     },
   );
 
-  const handleEdit = (entity: GroupMember) => {
-    // setEditingEntity(entity);
-  };
+  const handleEdit = (entity: GroupMember) => {};
 
-  const handleMore = async (id: string) => {
-    // try {
-    //   await deleteEntity(id);
-    //   if (entities.length === 1 && currentPage > 1) {
-    //     setCurrentPage(currentPage - 1);
-    //   }
-    // } catch (error) {
-    //   console.error("Failed to delete entity:", error);
-    // }
-  };
+  const handleMore = async (id: string) => {};
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  const handlePageChange = (page: number) => setCurrentPage(page);
+
   const commonProps = {
     isLoading: isLoading || isFetching,
     currentPage,

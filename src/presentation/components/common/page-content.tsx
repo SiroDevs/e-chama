@@ -18,26 +18,25 @@ export interface PageContentProps {
 export default function PageContent(props: PageContentProps) {
   const { children, breadcrumbs, actions = null } = props;
 
+  if (!breadcrumbs || !actions) {
+    return (
+      <div className="space-y-1">
+        {children && <div className="pt-2 px-2">{children}</div>}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-1">
-      <div className="border-b border-gray-200 dark:border-gray-800 p-2  bg-white dark:bg-[#1d1d20] shadow-xs">
+      <div className="border-b border-gray-200 dark:border-gray-800 p-2 bg-white dark:bg-[#1d1d20] shadow-xs">
         <div className="flex justify-between items-center px-2">
-          {breadcrumbs && breadcrumbs.length > 0 && (
+          {breadcrumbs.length > 0 && (
             <nav className="flex items-center text-sm" aria-label="Breadcrumb">
               <ol className="flex items-center space-x-1">
                 <li className="flex items-center">
-                  {breadcrumbs.length > 0 ? (
-                    <Link
-                      href="/"
-                      className="hover:underline transition-colors"
-                    >
-                      Dashboard
-                    </Link>
-                  ) : (
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Dashboard
-                    </span>
-                  )}
+                  <Link href="/" className="hover:underline transition-colors">
+                    Dashboard
+                  </Link>
                 </li>
 
                 {breadcrumbs.map((breadcrumb, index) => {
@@ -45,7 +44,7 @@ export default function PageContent(props: PageContentProps) {
 
                   return (
                     <li key={index} className="flex items-center">
-                      <ChevronRight fontSize="small" className="mx-1" />
+                      <ChevronRight className="h-4 w-4 mx-1 text-gray-400" />
 
                       {!isLast && breadcrumb.path ? (
                         <Link
