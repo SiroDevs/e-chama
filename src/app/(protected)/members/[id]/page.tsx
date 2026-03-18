@@ -17,6 +17,7 @@ import { GenericAvatar } from "@/presentation/components/ui";
 import ProfileTab from "./profile-tab";
 import ContributionsTab from "./contributions-tab";
 import { capitalize } from "@/application/helpers/utils";
+import { handleError } from "@/application/helpers/error-utils";
 
 type Tab = "Profile" | "Contributions";
 
@@ -83,7 +84,10 @@ const page = () => {
         }
       } catch (err) {
         setError("Failed to fetch member data");
-        console.error(err);
+        handleError(err, {
+          tags: { component: "Contribution", action: "submit" },
+          userMessage: "Failed to fetch member data",
+        });
       } finally {
         setIsLoading(false);
       }
@@ -130,10 +134,12 @@ const page = () => {
               </h1>
               <div className="flex flex-wrap gap-4 mt-1 text-sm text-gray-500 dark:text-gray-400">
                 <span className="flex items-center gap-1">
-                  <Briefcase size={14} /> {capitalize(memberData?.role!) || "member"}
+                  <Briefcase size={14} />{" "}
+                  {capitalize(memberData?.role!) || "member"}
                 </span>
                 <span className="flex items-center gap-1">
-                  <MapPin size={14} /> {memberData?.address || "Nairobi"}, {memberData?.country || "Kenya"}
+                  <MapPin size={14} /> {memberData?.address || "Nairobi"},{" "}
+                  {memberData?.country || "Kenya"}
                 </span>
                 <span className="flex items-center gap-1">
                   <Calendar size={14} /> Joined A long time ago
@@ -159,7 +165,9 @@ const page = () => {
         </div>
 
         {activeTab === "Profile" && <ProfileTab member={memberData!} />}
-        {activeTab === "Contributions" && <ContributionsTab member={memberData!} />}
+        {activeTab === "Contributions" && (
+          <ContributionsTab member={memberData!} />
+        )}
       </PageContent>
     </PageContainer>
   );

@@ -5,13 +5,10 @@ import { signoutUserAction } from "@/app/actions/auth-actions";
 import { resetGroupState } from "@/application/state/groupSlice";
 import { resetNavState } from "@/application/state/navSlice";
 import { resetAppState, setError } from "@/application/state/appSlice";
-import { useState } from "react";
 
 export const signoutUser = () => {
-  const [isLoading, setLoading] = useState(false);
   return async (dispatch: Dispatch) => {
     try {
-      setLoading(true);
 
       await signoutUserAction();
 
@@ -24,8 +21,6 @@ export const signoutUser = () => {
         setError(error instanceof Error ? error.message : "Failed to logout")
       );
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 };
