@@ -38,7 +38,7 @@ export default function ContributionForm({
   const form = useForm<ContributionFormValues>({
     resolver: zodResolver(contributionSchema) as Resolver<ContributionFormValues>,
     defaultValues: {
-      member_id: member?.member_id || "",
+      member_id: member?.id || "",
       amount: 0,
       mode: "",
       reference: "",
@@ -49,12 +49,12 @@ export default function ContributionForm({
 
   useEffect(() => {
     setSelectedMember(member || null);
-    form.setValue("member_id", member?.member_id || "");
+    form.setValue("member_id", member?.id || "");
   }, [member]);
 
   const handleMemberChange = (member: GroupMember | null) => {
     setSelectedMember(member);
-    form.setValue("member_id", member?.member_id || "", { shouldValidate: true });
+    form.setValue("member_id", member?.id || "", { shouldValidate: true });
   };
 
   const handleSubmit = async (values: ContributionFormValues) => {

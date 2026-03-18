@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import { TableHeader, TableRow } from "../../components/tables/table-parts";
 import { TableCell, TableContainer } from "../../components/tables/table-parts";
 import { Pagination } from "../../components/tables/pagination";
@@ -83,7 +84,7 @@ export function MembersTable({
             ) : (
               records.map((record) => (
                 <TableRow
-                  key={record.member_id}
+                  key={record.id}
                   onClick={(e) => handleRowClick(record, e)}
                   className="hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-colors"
                 >
@@ -127,7 +128,7 @@ export function MembersTable({
                   <TableCell>
                     <TableActions
                       onEdit={() => onEdit(record)}
-                      onMore={() => onMore(record.member_id!)}
+                      onMore={() => onMore(record.id!)}
                       entityType="Member"
                     />
                   </TableCell>

@@ -16,8 +16,8 @@ export interface GroupMember {
     dob: string | null;
     avatar: string | null;
     joined_at: string | null;
+    id: string | null;
     user_id: string | null;
-    member_id: string | null;
     group_id: string | null;
     created_at: string | null;
     updated_at: string | null;
