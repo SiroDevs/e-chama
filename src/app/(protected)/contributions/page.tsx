@@ -17,6 +17,7 @@ import { PageAction, PageButton } from "@/presentation/components/ui/actions";
 import { ContributionsTable } from "@/presentation/layout/tables/contributions";
 import { ContributionDialog } from "./dialog";
 import { newContribution } from "@/application/use-cases/user/contribution";
+import { handleError } from "@/application/helpers/error-utils";
 
 const page = () => {
   const queryClient = useQueryClient();
@@ -88,11 +89,11 @@ const page = () => {
       handleCloseDialog();
       invalidate();
     } catch (err: unknown) {
-      toast.error(
-        err instanceof Error
-          ? err.message
-          : "Failed to save contribution. Please try again.",
-      );
+      const errMsg = handleError(err, {
+        tags: { component: 'Contribution', action: 'submit' },
+        userMessage: "Failed to save contribution. Please try again.",
+      });
+      toast.error(errMsg);
     } finally {
       setIsSaving(false);
     }

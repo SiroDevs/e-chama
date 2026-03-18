@@ -5,21 +5,25 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { AlertCircle } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/presentation/components/ui";
 import { Input, Form, FormField } from "@/presentation/components/ui/inputs";
-import { FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/inputs";
+import {
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/presentation/components/ui/inputs";
 import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
 import { Alert, CardFooter } from "@/presentation/components/ui";
-import { AlertTitle, AlertDescription } from "@/presentation/components/ui";
+import { AlertDescription } from "@/presentation/components/ui";
 import { CardHeader, CardDescription } from "@/presentation/components/ui";
 import { signinUser } from "@/application/use-cases/auth/signin";
 import { AppDispatch } from "@/application/state/store";
 import { useToast } from "@/presentation/components/ui/use-toast";
 import LoadingSpinner from "@/presentation/components/ui/states/loading-spinner";
+import { handleError } from "@/application/helpers/error-utils";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -56,11 +60,12 @@ export default function SigninPage() {
         title: "Welcome on board!",
       });
     } catch (err: unknown) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Failed to signin. Please check your credentials and try again.",
-      );
+      const errMsg = handleError(err, {
+        tags: { component: "Signin", action: "submit" },
+        userMessage:
+          "Failed to signin. Please check your credentials and try again.",
+      });
+      setError(errMsg);
     } finally {
       setIsLoading(false);
     }
@@ -76,8 +81,6 @@ export default function SigninPage() {
         <CardContent>
           {error && (
             <Alert variant="destructive" className="mb-4">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
@@ -124,7 +127,6 @@ export default function SigninPage() {
               </form>
             </Form>
           )}
-          
         </CardContent>
         <CardFooter className="flex justify-center">
           <div className="text-sm text-gray-500 dark:text-gray-400">
