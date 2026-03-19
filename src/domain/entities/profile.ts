@@ -1,3 +1,5 @@
+import { GroupMember } from "./group-member";
+
 export interface Profile {
   id?: string;
   first_name?: string;
@@ -12,4 +14,21 @@ export interface Profile {
   group_id?: string;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface FormProfile {
+  id?: string;
+  first_name?: string;
+  last_name?: string;
+  id_number?: string;
+  kra_pin?: string;
+  country?: string;
+  address?: string;
+  sex?: string;
+  dob?: string;
+  avatar?: string;
+  phone?: string;
+  email?: string;
+  member_no?: string;
+  password?: string;
 }

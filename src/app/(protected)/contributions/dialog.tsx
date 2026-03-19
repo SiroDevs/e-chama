@@ -30,7 +30,7 @@ export function ContributionDialog({
   const isEditing = !!initial?.id;
 
   const initialMember: GroupMember | null = initial?.id
-    ? ({ member_id: initial.id, full_name: initial.full_name || null, member_no: initial.member_no || null } as GroupMember)
+    ? ({ member_id: initial.id, full_name: initial.full_name || null, member_no: initial.member_no || null } as unknown as GroupMember)
     : null;
 
   const handleSubmit = async (values: ContributionFormValues) => {
