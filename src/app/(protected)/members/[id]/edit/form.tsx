@@ -3,20 +3,25 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { memberGroups, memberFields, memberSchema, MemberFormValues } from "./arrays";
-import { Form, FormActions, FormInput } from "@/presentation/components/ui/inputs";
+import { memberGroups, memberFields } from "./arrays";
+import { memberSchema, MemberFormValues } from "./arrays";
+import { Form, FormActions } from "@/presentation/components/ui/inputs";
+import { FormInput } from "@/presentation/components/ui/inputs";
+import { useEffect } from "react";
 
-interface NewMemberFormProps {
+interface EditMemberFormProps {
+  initialData?: MemberFormValues;
   onSubmit: (values: MemberFormValues) => Promise<void> | void;
   onCancel?: () => void;
   isLoading?: boolean;
 }
 
-export default function NewMemberForm({
+export default function EditMemberForm({
+  initialData,
   onSubmit,
   onCancel,
   isLoading = false,
-}: NewMemberFormProps) {
+}: EditMemberFormProps) {
   const form = useForm<MemberFormValues>({
     resolver: zodResolver(memberSchema),
     defaultValues: {
@@ -30,6 +35,11 @@ export default function NewMemberForm({
     },
   });
 
+  useEffect(() => {
+    if (initialData) {
+      form.reset(initialData);
+    }
+  }, [initialData, form]);
   const handleSubmit = async (values: MemberFormValues) => {
     await onSubmit(values);
   };
@@ -70,7 +80,7 @@ export default function NewMemberForm({
           onCancel={onCancel}
           isLoading={isLoading}
           disabled={false}
-          saveLabel="Save Member"
+          saveLabel="Edit Member"
         />
       </form>
     </Form>
