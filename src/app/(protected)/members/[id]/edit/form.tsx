@@ -39,7 +39,8 @@ export default function EditMemberForm({
     if (initialData) {
       form.reset(initialData);
     }
-  }, [initialData, form]);
+  }, [initialData]); // form is a stable ref, safe to omit
+
   const handleSubmit = async (values: MemberFormValues) => {
     await onSubmit(values);
   };

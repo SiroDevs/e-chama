@@ -1,24 +1,26 @@
 import { GroupMember } from "@/domain/entities";
 import { z } from "zod";
 
-export const memberSchema = z
-  .object({
-    first_name: z.string().min(4, { message: "Your first name is too short" }),
-    last_name: z.string().min(4, { message: "Your last name is too short" }),
-    phone: z.string()
-      .min(10, "Phone number must be at least 10 digits")
-      .max(15, "Phone number is too long"),
-    id_number: z.string()
-      .min(5, "ID number must be at least 5 characters")
-      .max(20, "ID number is too long"),
-    email: z.string().email({ message: "Please enter a valid email address" }),
-    member_no: z.string()
-      .min(3, "Member number must be at least 3 characters")
-      .max(20, "Member number is too long"),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" }),
-  });
+export const memberSchema = z.object({
+  first_name: z.string().min(4, { message: "Your first name is too short" }),
+  last_name: z.string().min(4, { message: "Your last name is too short" }),
+  phone: z
+    .string()
+    .min(10, "Phone number must be at least 10 digits")
+    .max(15, "Phone number is too long"),
+  id_number: z
+    .string()
+    .min(5, "ID number must be at least 5 characters")
+    .max(20, "ID number is too long"),
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  member_no: z
+    .string()
+    .min(3, "Member number must be at least 3 characters")
+    .max(20, "Member number is too long"),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" }),
+});
 
 export type MemberFormValues = z.infer<typeof memberSchema>;
 
@@ -93,7 +95,8 @@ export const memberGroups = [
   },
 ];
 
-export const memberToFormValues = (member: GroupMember): MemberFormValues => {
+export const memberToFormValues = (member: GroupMember | null): MemberFormValues | undefined => {
+  if (!member) return undefined;
   return {
     first_name: member.first_name ?? "",
     last_name: member.last_name ?? "",
