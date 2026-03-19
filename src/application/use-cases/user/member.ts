@@ -63,7 +63,8 @@ export const newMemberAction = (
 };
 
 export const editMemberAction = (
-  groupid: string,
+  user_id: string,
+  group_id: string,
   first_name: string,
   last_name: string,
   phone: string,
@@ -78,15 +79,15 @@ export const editMemberAction = (
 ) => {
   return async (dispatch: Dispatch) => {
     try {
-      const user = await editUserInfo(first_name, last_name, phone);
+      const userUpdated = await editUserInfo(first_name, last_name, phone);
 
-      if (!user) {
+      if (!userUpdated) {
         throw new Error("Account updating failed");
       }
 
-      const profile = await updateUserProfile({
-        id: user.id,
-        group_id: groupid,
+      const profileUpdated = await updateUserProfile({
+        id: user_id,
+        group_id: group_id,
         first_name: first_name,
         last_name: last_name,
         id_number: id_number,
@@ -97,7 +98,7 @@ export const editMemberAction = (
         dob: dob,
       });
 
-      if (!profile) {
+      if (!profileUpdated) {
         throw new Error("Profile updating failed");
       }
 

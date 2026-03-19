@@ -39,6 +39,7 @@ const Page = () => {
 
       await dispatch(
         editMemberAction(
+          profileData?.id!,
           group?.group_id!,
           values.first_name,
           values.last_name,

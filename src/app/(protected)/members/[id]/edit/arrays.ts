@@ -4,23 +4,47 @@ import { z } from "zod";
 export const memberSchema = z.object({
   first_name: z.string().min(4, { message: "Your first name is too short" }),
   last_name: z.string().min(4, { message: "Your last name is too short" }),
+
   phone: z
     .string()
-    .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number is too long"),
+    .max(15, "Phone number is too long")
+    .refine((val) => val === "" || val.length >= 10, {
+      message: "Phone number must be at least 10 digits",
+    })
+    .optional()
+    .or(z.literal("")),
+
   id_number: z
     .string()
-    .min(5, "ID number must be at least 5 characters")
-    .max(20, "ID number is too long"),
+    .max(20, "ID number is too long")
+    .refine((val) => val === "" || val.length >= 5, {
+      message: "ID number must be at least 5 characters",
+    })
+    .optional()
+    .or(z.literal("")),
+
   kra_pin: z
     .string()
-    .min(5, "KRA PIN must be at least 5 characters")
-    .max(20, "KRA PIN is too long"),
-  role: z.string().min(5, { message: "Please pick a valid role" }),
+    .max(20, "KRA PIN is too long")
+    .refine((val) => val === "" || val.length >= 5, {
+      message: "KRA PIN must be at least 5 characters",
+    })
+    .optional()
+    .or(z.literal("")),
+
   member_no: z
     .string()
-    .min(3, "Member number must be at least 3 characters")
-    .max(20, "Member number is too long"),
+    .max(20, "Member number is too long")
+    .refine((val) => val === "" || val.length >= 3, {
+      message: "Member number must be at least 3 characters",
+    })
+    .optional()
+    .or(z.literal("")),
+
+  role: z
+    .string()
+    .optional()
+    .or(z.literal("")),
 });
 
 export type MemberFormValues = z.infer<typeof memberSchema>;

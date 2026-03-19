@@ -41,7 +41,7 @@ export async function editUserInfo(
   first_name: string,
   last_name: string,
   phone: string,
-): Promise<User> {
+): Promise<Boolean> {
   try {
     const { data, error } = await userService.updateUserInfo(
       first_name + " " + last_name,
@@ -50,7 +50,7 @@ export async function editUserInfo(
 
     if (error) throw error;
     if (!data) throw new Error("No user info updated");
-    return data.user!;
+    return true;
   } catch (error: unknown) {
     console.error("Error updating user info:", error);
 
@@ -61,13 +61,13 @@ export async function editUserInfo(
   }
 }
 
-export async function editUserEmail(email: string): Promise<User> {
+export async function editUserEmail(email: string): Promise<Boolean> {
   try {
     const { data, error } = await userService.updateUserEmail(email);
 
     if (error) throw error;
     if (!data) throw new Error("No user email updated");
-    return data.user!;
+    return true;
   } catch (error: unknown) {
     console.error("Error updating user email:", error);
 
@@ -78,13 +78,13 @@ export async function editUserEmail(email: string): Promise<User> {
   }
 }
 
-export async function editUserPassword(password: string): Promise<User> {
+export async function editUserPassword(password: string): Promise<Boolean> {
   try {
     const { data, error } = await userService.updateUserPassword(password);
 
     if (error) throw error;
     if (!data) throw new Error("No user password updated");
-    return data.user!;
+    return true;
   } catch (error: unknown) {
     console.error("Error updating user password:", error);
 
