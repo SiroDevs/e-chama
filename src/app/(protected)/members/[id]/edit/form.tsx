@@ -28,10 +28,10 @@ export default function EditMemberForm({
       first_name: "",
       last_name: "",
       phone: "",
-      id_number: "",
       member_no: "",
-      email: "",
-      password: "",
+      id_number: "",
+      kra_pin: "",
+      role: "",
     },
   });
 
@@ -39,7 +39,8 @@ export default function EditMemberForm({
     if (initialData) {
       form.reset(initialData);
     }
-  }, [initialData, form]);
+  }, [initialData]); // form is a stable ref, safe to omit
+
   const handleSubmit = async (values: MemberFormValues) => {
     await onSubmit(values);
   };

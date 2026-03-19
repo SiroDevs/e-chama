@@ -1,23 +1,22 @@
 "use client";
 
-import { AlertCircle, Edit2Icon } from "lucide-react";
+import { Edit2Icon, XIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 
 import { PageContainer } from "@/presentation/components/common/page-container";
 import PageContent from "@/presentation/components/common/page-content";
 import { PageButton } from "@/presentation/components/ui/actions";
-import { useParams, useRouter } from "next/navigation";
 import { AppDispatch, RootState } from "@/application/state/store";
-import EditMemberForm from "./form";
-import { Alert, AlertTitle, Card } from "@/presentation/components/ui";
+import { Alert, Card } from "@/presentation/components/ui";
 import { AlertDescription, CardContent } from "@/presentation/components/ui";
-import { newMemberAction } from "@/application/use-cases/user/member";
+import { editMemberAction } from "@/application/use-cases/user/member";
 import { MemberFormValues, memberToFormValues } from "./arrays";
 import { handleError } from "@/application/helpers/error-utils";
 import { memberService } from "@/infrastructure/services/memberService";
 import { GroupMember } from "@/domain/entities";
+import EditMemberForm from "./form";
 
 const Page = () => {
   const router = useRouter();
@@ -39,20 +38,20 @@ const Page = () => {
       setError(null);
 
       await dispatch(
-        newMemberAction(
+        editMemberAction(
+          profileData?.id!,
+          group?.group_id!,
           values.first_name,
           values.last_name,
           values.phone || "",
-          values.email,
-          values.password,
+          values.id_number || "",
+          values.kra_pin || "",
           values.member_no || "",
           values.id_number || "",
-          "", //kra_pin
-          group?.group_id!,
-          "", //address
-          "", //country
-          "", //sex
-          "", //dob
+          "",
+          "",
+          "",
+          "",
         ),
       );
 
@@ -73,7 +72,7 @@ const Page = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const { data, error } = await memberService.fetchGroupMember(
+        const { data, error } = await memberService.getGroupMemberByNo(
           memberNo,
           group!.group_id!,
         );
@@ -123,13 +122,13 @@ const Page = () => {
           <CardContent>
             {error && (
               <Alert variant="destructive" className="mb-4">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
             <EditMemberForm
-              initialData={memberToFormValues(profileData!)}
+              initialData={
+                profileData ? memberToFormValues(profileData) : undefined
+              }
               onSubmit={handleSubmit}
               isLoading={isLoading}
               onCancel={handleCancel}

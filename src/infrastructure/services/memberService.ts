@@ -28,6 +28,18 @@ export const memberService = {
       .single();
   },
 
+  async editMember(member: Member) {
+    return await supabase
+      .from("members")
+      .update([
+        {
+          member_no: member.member_no,
+          role: member.role,
+        },
+      ])
+      .eq("id", member.id);
+  },
+
   async getMemberCount(group_id: string): Promise<number> {
     const { count, error } = await supabase.from("members")
       .select("*", { count: "exact" })
