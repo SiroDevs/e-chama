@@ -1,4 +1,4 @@
-import { AuthResponse } from "@supabase/supabase-js";
+import { AuthResponse, UserResponse } from "@supabase/supabase-js";
 
 import { supabase } from "@/lib/supabase/client";
 
@@ -24,5 +24,26 @@ export const userService = {
         emailRedirectTo: redirectTo,
       },
     });
+  },
+  async updateUserInfo(
+    full_name: string,
+    phone: string,
+  ): Promise<UserResponse> {
+    return await supabase.auth.updateUser({
+      phone: phone,
+      data: {
+        full_name: full_name,
+      },
+    });
+  },
+  async updateUserEmail(
+    email: string,
+  ): Promise<UserResponse> {
+    return await supabase.auth.updateUser({ email: email });
+  },
+  async updateUserPassword(
+    password: string,
+  ): Promise<UserResponse> {
+    return await supabase.auth.updateUser({ password: password });
   },
 };

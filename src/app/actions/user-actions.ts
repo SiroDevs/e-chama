@@ -7,6 +7,7 @@ import { authService } from "@/infrastructure/services/authService";
 import { groupService } from "@/infrastructure/services/groupService";
 import { memberService } from "@/infrastructure/services/memberService";
 import { profileService } from "@/infrastructure/services/profileService";
+import { userService } from "@/infrastructure/services/userService";
 
 export async function newUserAccount(
   first_name: string,
@@ -36,11 +37,86 @@ export async function newUserAccount(
   }
 }
 
+export async function editUserInfo(
+  first_name: string,
+  last_name: string,
+  phone: string,
+): Promise<User> {
+  try {
+    const { data, error } = await userService.updateUserInfo(
+      first_name + " " + last_name,
+      phone,
+    );
+
+    if (error) throw error;
+    if (!data) throw new Error("No user info updated");
+    return data.user!;
+  } catch (error: unknown) {
+    console.error("Error updating user info:", error);
+
+    throw new Error(
+      `Failed to update user info: ${error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
+export async function editUserEmail(email: string): Promise<User> {
+  try {
+    const { data, error } = await userService.updateUserEmail(email);
+
+    if (error) throw error;
+    if (!data) throw new Error("No user email updated");
+    return data.user!;
+  } catch (error: unknown) {
+    console.error("Error updating user email:", error);
+
+    throw new Error(
+      `Failed to update user email: ${error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
+export async function editUserPassword(password: string): Promise<User> {
+  try {
+    const { data, error } = await userService.updateUserPassword(password);
+
+    if (error) throw error;
+    if (!data) throw new Error("No user password updated");
+    return data.user!;
+  } catch (error: unknown) {
+    console.error("Error updating user password:", error);
+
+    throw new Error(
+      `Failed to update user password: ${error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
 export async function newGroupMember(
   member: Member,
 ): Promise<Member> {
   try {
     const { data, error } = await memberService.newMember(member);
+
+    if (error) throw error;
+    if (!data) throw new Error("No member created");
+    return data;
+  } catch (error: unknown) {
+    console.error("Error creating member:", error);
+
+    throw new Error(
+      `Failed to create member: ${error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
+export async function updateGroupMember(member: Member): Promise<Member> {
+  try {
+    const { data, error } = await memberService.editMember(member);
 
     if (error) throw error;
     if (!data) throw new Error("No member created");
@@ -69,6 +145,25 @@ export async function newUserProfile(
 
     throw new Error(
       `Failed to create profile: ${error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
+export async function updateUserProfile(
+  profile: Profile,
+): Promise<Profile> {
+  try {
+    const { data, error } = await profileService.updateUserProfile(profile);
+
+    if (error) throw error;
+    if (!data) throw new Error("No profile updated");
+    return data;
+  } catch (error: unknown) {
+    console.error("Error updating profile:", error);
+
+    throw new Error(
+      `Failed to update profile: ${error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }

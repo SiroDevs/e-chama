@@ -28,10 +28,10 @@ export default function EditMemberForm({
       first_name: "",
       last_name: "",
       phone: "",
-      id_number: "",
       member_no: "",
-      email: "",
-      password: "",
+      id_number: "",
+      kra_pin: "",
+      role: "",
     },
   });
 

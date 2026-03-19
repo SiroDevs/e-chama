@@ -12,14 +12,15 @@ export const memberSchema = z.object({
     .string()
     .min(5, "ID number must be at least 5 characters")
     .max(20, "ID number is too long"),
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  kra_pin: z
+    .string()
+    .min(5, "KRA PIN must be at least 5 characters")
+    .max(20, "KRA PIN is too long"),
+  role: z.string().min(5, { message: "Please pick a valid role" }),
   member_no: z
     .string()
     .min(3, "Member number must be at least 3 characters")
     .max(20, "Member number is too long"),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" }),
 });
 
 export type MemberFormValues = z.infer<typeof memberSchema>;
@@ -53,12 +54,19 @@ export const memberFields = {
     required: false,
     type: "text" as const,
   },
-  email: {
-    name: "email" as const,
-    label: "Email Address",
-    placeholder: "member@group.com",
-    required: true,
-    type: "email" as const,
+  kra_pin: {
+    name: "kra_pin" as const,
+    label: "KRA PIN",
+    placeholder: "A123345434J",
+    required: false,
+    type: "text" as const,
+  },
+  role: {
+    name: "role" as const,
+    label: "Member Role",
+    placeholder: "member",
+    required: false,
+    type: "text" as const,
   },
   member_no: {
     name: "member_no" as const,
@@ -66,13 +74,6 @@ export const memberFields = {
     placeholder: "001",
     required: false,
     type: "text" as const,
-  },
-  password: {
-    name: "password" as const,
-    label: "Password",
-    placeholder: "*******",
-    required: true,
-    type: "password" as const,
   },
 };
 
@@ -83,15 +84,11 @@ export const memberGroups = [
   },
   {
     id: 2,
-    fields: ["phone", "id_number"] as const,
+    fields: ["phone", "member_no"] as const,
   },
   {
-    id: 3,
-    fields: ["email"] as const,
-  },
-  {
-    id: 4,
-    fields: ["member_no", "password"] as const,
+    id: 2,
+    fields: ["id_number", "kra_pin"] as const,
   },
 ];
 
@@ -101,9 +98,9 @@ export const memberToFormValues = (member: GroupMember | null): MemberFormValues
     first_name: member.first_name ?? "",
     last_name: member.last_name ?? "",
     phone: member.phone ?? "",
-    id_number: member.id_number ?? "",
-    email: member.email ?? "",
     member_no: member.member_no ?? "",
-    password: "",
+    id_number: member.id_number ?? "",
+    kra_pin: member.kra_pin ?? "",
+    role: member.role ?? "",
   };
 };

@@ -11,7 +11,7 @@ import { PageButton } from "@/presentation/components/ui/actions";
 import { AppDispatch, RootState } from "@/application/state/store";
 import { Alert, Card } from "@/presentation/components/ui";
 import { AlertDescription, CardContent } from "@/presentation/components/ui";
-import { newMemberAction } from "@/application/use-cases/user/member";
+import { editMemberAction } from "@/application/use-cases/user/member";
 import { MemberFormValues, memberToFormValues } from "./arrays";
 import { handleError } from "@/application/helpers/error-utils";
 import { memberService } from "@/infrastructure/services/memberService";
@@ -38,16 +38,15 @@ const Page = () => {
       setError(null);
 
       await dispatch(
-        newMemberAction(
+        editMemberAction(
+          group?.group_id!,
           values.first_name,
           values.last_name,
           values.phone || "",
-          values.email,
-          values.password,
+          values.id_number || "",
+          values.kra_pin || "",
           values.member_no || "",
           values.id_number || "",
-          "",
-          group?.group_id!,
           "",
           "",
           "",

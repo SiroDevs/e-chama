@@ -23,6 +23,23 @@ export const profileService = {
       .select()
       .single();
   },
+  async updateUserProfile(profile: Profile) {
+    return await supabase.from("profiles")
+      .update([
+        {
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          id_number: profile.id_number,
+          kra_pin: profile.kra_pin,
+          country: profile.country,
+          address: profile.address,
+          sex: profile.sex,
+          dob: profile.dob,
+          avatar: profile.avatar,
+        },
+      ])
+      .eq("id", profile.id);
+  },
   async refreshUserProfile(user: any) {
     console.info("Fetching the user profile");
     const profileResult = await profileService.fetchUserProfile(user.id);
