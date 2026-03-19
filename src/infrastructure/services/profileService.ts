@@ -76,6 +76,25 @@ export const profileService = {
     return { data: profile, error: null };
   },
 
+  async fetchUserProfileFromGroup(memberNo: string, groupId: string) {
+    const { data, error } = await memberService.getGroupMemberByNo(memberNo, groupId);
+    if (error) {
+      return { data: null, error: error };
+    }
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", data?.user_id)
+      .single();
+
+    if (profileError) {
+      console.error("Profile fetch error:", profileError);
+      return { data: null, error: profileError };
+    }
+
+    return { data: profile, error: null };
+  },
+
   async setProfileGroup(userId: string, groupId: string) {
     try {
       const { error } = await supabase
