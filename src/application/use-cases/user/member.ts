@@ -79,7 +79,7 @@ export const editMemberAction = (
 ) => {
   return async (dispatch: Dispatch) => {
     try {
-      const userUpdated = await editUserInfo(first_name, last_name, phone);
+      const userUpdated = await editUserInfo(first_name + " " + last_name, phone);
 
       if (!userUpdated) {
         throw new Error("Account updating failed");

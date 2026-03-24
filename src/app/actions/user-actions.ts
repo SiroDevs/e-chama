@@ -37,16 +37,9 @@ export async function newUserAccount(
   }
 }
 
-export async function editUserInfo(
-  first_name: string,
-  last_name: string,
-  phone: string,
-): Promise<Boolean> {
+export async function editUserInfo(full_name: string,phone: string): Promise<Boolean> {
   try {
-    const { data, error } = await userService.updateUserInfo(
-      first_name + " " + last_name,
-      phone,
-    );
+    const { data, error } = await userService.updateUserInfo(full_name, phone);
 
     if (error) throw error;
     if (!data) throw new Error("No user info updated");

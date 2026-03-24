@@ -1,7 +1,7 @@
-import { AuthResponse, SupabaseClient, UserResponse } from "@supabase/supabase-js";
+import { AuthResponse, UserResponse } from "@supabase/supabase-js";
 
 import { supabase } from "@/lib/supabase/client";
-import { getServerClient } from "@/lib/supabase/server";
+import { getAdminClient } from "@/lib/supabase/server";
 
 export const userService = {
   async createUser(
@@ -27,8 +27,8 @@ export const userService = {
   },
 
   async updateUserInfo(full_name: string, phone: string): Promise<UserResponse> {
-    const sbServeClient = await getServerClient();
-    const { data, error } = await sbServeClient.auth.updateUser({
+    const supabase = await getAdminClient();
+    const { data, error } = await supabase.auth.updateUser({
       data: { full_name, phone },
     });
 
@@ -37,16 +37,16 @@ export const userService = {
   },
 
   async updateUserEmail(email: string): Promise<UserResponse> {
-    const sbServeClient = await getServerClient();
-    const { data, error } = await sbServeClient.auth.updateUser({ email });
+    const supabase = await getAdminClient();
+    const { data, error } = await supabase.auth.updateUser({ email });
 
     if (error) throw error;
     return { data, error: null };
   },
 
   async updateUserPassword(password: string): Promise<UserResponse> {
-    const sbServeClient = await getServerClient();
-    const { data, error } = await sbServeClient.auth.updateUser({ password });
+    const supabase = await getAdminClient();
+    const { data, error } = await supabase.auth.updateUser({ password });
 
     if (error) throw error;
     return { data, error: null };
