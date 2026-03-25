@@ -37,9 +37,9 @@ export async function newUserAccount(
   }
 }
 
-export async function editUserInfo(full_name: string,phone: string): Promise<Boolean> {
+export async function editUserInfo(userid: string, full_name: string, phone: string): Promise<Boolean> {
   try {
-    const { data, error } = await userService.updateUserInfo(full_name, phone);
+    const { data, error } = await userService.updateUserInfo(userid, full_name, phone);
 
     if (error) throw error;
     if (!data) throw new Error("No user info updated");
@@ -54,9 +54,9 @@ export async function editUserInfo(full_name: string,phone: string): Promise<Boo
   }
 }
 
-export async function editUserEmail(email: string): Promise<Boolean> {
+export async function editUserEmail(userid: string, email: string): Promise<Boolean> {
   try {
-    const { data, error } = await userService.updateUserEmail(email);
+    const { data, error } = await userService.updateUserEmail(userid, email);
 
     if (error) throw error;
     if (!data) throw new Error("No user email updated");
@@ -71,9 +71,9 @@ export async function editUserEmail(email: string): Promise<Boolean> {
   }
 }
 
-export async function editUserPassword(password: string): Promise<Boolean> {
+export async function editUserPassword(userid: string, password: string): Promise<Boolean> {
   try {
-    const { data, error } = await userService.updateUserPassword(password);
+    const { data, error } = await userService.updateUserPassword(userid, password);
 
     if (error) throw error;
     if (!data) throw new Error("No user password updated");

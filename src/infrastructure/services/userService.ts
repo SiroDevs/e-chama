@@ -1,7 +1,6 @@
-import { AuthResponse, UserResponse } from "@supabase/supabase-js";
+import { UserResponse } from "@supabase/supabase-js";
 
-// import { supabase } from "@/lib/supabase/client";
-import { getAdminClient, getServerClient } from "@/lib/supabase/server";
+import { getAdminClient } from "@/lib/supabase/server";
 
 export const userService = {
   async createUser(
@@ -9,47 +8,41 @@ export const userService = {
     email: string,
     phone: string,
     password: string,
-  ): Promise<AuthResponse> {
-    const supabase = await getServerClient();
-    const isProduction = process.env.NODE_ENV === "production";
-    const redirectTo = isProduction
-      ? "https://echama.vercel.app/verify"
-      : "http://localhost:3000/verify";
+  ): Promise<UserResponse> {
+    const supabase = await getAdminClient();
+    return await supabase.auth.admin.createUser({
+      email: email,
+      phone: phone,
+      password: password,
+      user_metadata: { name: full_name }
 
-    return await supabase.auth.signUp({
-      email,
-      phone,
-      password,
-      options: {
-        data: { full_name },
-        emailRedirectTo: redirectTo,
-      },
-    });
+    });;
   },
 
-  async updateUserInfo(full_name: string, phone: string): Promise<UserResponse> {
+  async updateUserInfo(userId: string, full_name: string, phone: string): Promise<UserResponse> {
     const supabase = await getAdminClient();
-    const { data, error } = await supabase.auth.updateUser({
-      data: { full_name, phone },
-    });
-
-    if (error) throw error;
-    return { data, error: null };
+    return await supabase.auth.admin.updateUserById(
+      userId,
+      { 
+        user_metadata: { name: full_name },
+        phone: phone,
+      }
+    );
   },
 
-  async updateUserEmail(email: string): Promise<UserResponse> {
+  async updateUserEmail(userId: string, email: string): Promise<UserResponse> {
     const supabase = await getAdminClient();
-    const { data, error } = await supabase.auth.updateUser({ email });
-
-    if (error) throw error;
-    return { data, error: null };
+    return await supabase.auth.admin.updateUserById(
+      userId,
+      { email: email }
+    );
   },
 
-  async updateUserPassword(password: string): Promise<UserResponse> {
+  async updateUserPassword(userId: string, password: string): Promise<UserResponse> {
     const supabase = await getAdminClient();
-    const { data, error } = await supabase.auth.updateUser({ password });
-
-    if (error) throw error;
-    return { data, error: null };
+    return await supabase.auth.admin.updateUserById(
+      userId,
+      { password: password }
+    );
   },
 };
