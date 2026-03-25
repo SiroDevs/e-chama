@@ -2,8 +2,8 @@ import { GroupMember } from "@/domain/entities";
 import { z } from "zod";
 
 export const memberSchema = z.object({
-  first_name: z.string().min(4, { message: "Your first name is too short" }),
-  last_name: z.string().min(4, { message: "Your last name is too short" }),
+  first_name: z.string().min(2, { message: "Your first name is too short" }),
+  last_name: z.string().min(2, { message: "Your last name is too short" }),
 
   phone: z
     .string()

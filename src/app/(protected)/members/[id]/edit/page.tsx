@@ -26,7 +26,7 @@ const Page = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { group } = useSelector((state: RootState) => state.group);
-  const [profileData, setProfileData] = useState<GroupMember | null>(null);
+  const [grpMember, setProfileData] = useState<GroupMember | null>(null);
 
   const handleCancel = () => {
     router.push(`/members/${memberNo}`);
@@ -39,19 +39,20 @@ const Page = () => {
 
       await dispatch(
         editMemberAction(
-          profileData?.id!,
+          grpMember?.user_id!,
+          grpMember?.id!,
           group?.group_id!,
           values.first_name,
           values.last_name,
           values.phone || "",
-          values.id_number || "",
-          values.kra_pin || "",
           values.member_no || "",
           values.id_number || "",
-          "",
-          "",
-          "",
-          "",
+          values.kra_pin || "",
+          grpMember?.address!,
+          grpMember?.country!,
+          grpMember?.sex!,
+          "1995-01-01",
+          grpMember?.role!,
         ),
       );
 
@@ -127,7 +128,7 @@ const Page = () => {
             )}
             <EditMemberForm
               initialData={
-                profileData ? memberToFormValues(profileData) : undefined
+                grpMember ? memberToFormValues(grpMember) : undefined
               }
               onSubmit={handleSubmit}
               isLoading={isLoading}
