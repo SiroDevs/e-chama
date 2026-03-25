@@ -8,6 +8,7 @@ import { cookies } from 'next/headers';
 
 export async function getServerClient({ readOnly = false } = {}) {
   const cookieStore = cookies();
+
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -22,7 +23,7 @@ export async function getServerClient({ readOnly = false } = {}) {
         ...(readOnly
           ? {}
           : {
-              setAll(
+              async setAll(
                 cookiesToSet: {
                   name: string;
                   value: string;
@@ -30,11 +31,12 @@ export async function getServerClient({ readOnly = false } = {}) {
                 }[]
               ) {
                 try {
-                  cookiesToSet.forEach(async ({ name, value, options }) =>
-                    (await cookieStore).set({ name, value, ...options })
-                  );
+                  const store = await cookieStore;
+                  for (const { name, value, options } of cookiesToSet) {
+                    store.set({ name, value, ...options });
+                  }
                 } catch {
-                  // safe to ignore on RSC
+                  // safe to ignore in RSC
                 }
               },
             }),
@@ -45,10 +47,12 @@ export async function getServerClient({ readOnly = false } = {}) {
 
 export async function getAdminClient({ readOnly = false } = {}) {
   const cookieStore = cookies();
+  console.log('SUPABASE URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+  console.log('SERVICE ROLE:', process.env.SUPABASE_SERVICE_ROLE);
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SERVICE_ROLE!,
+    process.env.SUPABASE_SERVICE_ROLE!,
     {
       cookies: {
         async getAll() {
@@ -60,7 +64,7 @@ export async function getAdminClient({ readOnly = false } = {}) {
         ...(readOnly
           ? {}
           : {
-              setAll(
+              async setAll(
                 cookiesToSet: {
                   name: string;
                   value: string;
@@ -68,11 +72,12 @@ export async function getAdminClient({ readOnly = false } = {}) {
                 }[]
               ) {
                 try {
-                  cookiesToSet.forEach(async ({ name, value, options }) =>
-                    (await cookieStore).set({ name, value, ...options })
-                  );
+                  const store = await cookieStore;
+                  for (const { name, value, options } of cookiesToSet) {
+                    store.set({ name, value, ...options });
+                  }
                 } catch {
-                  // safe to ignore on RSC
+                  // safe to ignore in RSC
                 }
               },
             }),

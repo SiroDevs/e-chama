@@ -1,7 +1,7 @@
 import { AuthResponse, UserResponse } from "@supabase/supabase-js";
 
-import { supabase } from "@/lib/supabase/client";
-import { getAdminClient } from "@/lib/supabase/server";
+// import { supabase } from "@/lib/supabase/client";
+import { getAdminClient, getServerClient } from "@/lib/supabase/server";
 
 export const userService = {
   async createUser(
@@ -10,6 +10,7 @@ export const userService = {
     phone: string,
     password: string,
   ): Promise<AuthResponse> {
+    const supabase = await getServerClient();
     const isProduction = process.env.NODE_ENV === "production";
     const redirectTo = isProduction
       ? "https://echama.vercel.app/verify"
