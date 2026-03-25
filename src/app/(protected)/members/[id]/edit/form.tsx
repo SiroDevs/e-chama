@@ -3,11 +3,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { memberGroups, memberFields } from "./arrays";
-import { memberSchema, MemberFormValues } from "./arrays";
+import { memberSchema, MemberFormValues } from "./schema";
 import { Form, FormActions } from "@/presentation/components/ui/inputs";
 import { FormInput } from "@/presentation/components/ui/inputs";
 import { useEffect } from "react";
+import { fieldGroups, memberFields } from "./fields";
 
 interface EditMemberFormProps {
   initialData?: MemberFormValues;
@@ -48,7 +48,7 @@ export default function EditMemberForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        {memberGroups.map((grp) => (
+        {fieldGroups.map((grp) => (
           <div key={grp.id}>
             <fieldset
               className={

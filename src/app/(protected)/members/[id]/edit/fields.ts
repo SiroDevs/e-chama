@@ -1,53 +1,7 @@
-import { GroupMember } from "@/domain/entities";
 import { z } from "zod";
 
-export const memberSchema = z.object({
-  first_name: z.string().min(2, { message: "Your first name is too short" }),
-  last_name: z.string().min(2, { message: "Your last name is too short" }),
-
-  phone: z
-    .string()
-    .max(15, "Phone number is too long")
-    .refine((val) => val === "" || val.length >= 10, {
-      message: "Phone number must be at least 10 digits",
-    })
-    .optional()
-    .or(z.literal("")),
-
-  id_number: z
-    .string()
-    .max(20, "ID number is too long")
-    .refine((val) => val === "" || val.length >= 5, {
-      message: "ID number must be at least 5 characters",
-    })
-    .optional()
-    .or(z.literal("")),
-
-  kra_pin: z
-    .string()
-    .max(20, "KRA PIN is too long")
-    .refine((val) => val === "" || val.length >= 5, {
-      message: "KRA PIN must be at least 5 characters",
-    })
-    .optional()
-    .or(z.literal("")),
-
-  member_no: z
-    .string()
-    .max(20, "Member number is too long")
-    .refine((val) => val === "" || val.length >= 3, {
-      message: "Member number must be at least 3 characters",
-    })
-    .optional()
-    .or(z.literal("")),
-
-  role: z
-    .string()
-    .optional()
-    .or(z.literal("")),
-});
-
-export type MemberFormValues = z.infer<typeof memberSchema>;
+import { GroupMember } from "@/domain/entities";
+import { MemberFormValues } from "./schema";
 
 export const memberFields = {
   first_name: {
@@ -99,9 +53,30 @@ export const memberFields = {
     required: false,
     type: "text" as const,
   },
+  dob: {
+    name: "dob" as const,
+    label: "Date of Birth",
+    placeholder: "Select date",
+    required: false,
+    type: "date" as const,
+  },
+  sex: {
+    name: "sex" as const,
+    label: "Gender",
+    placeholder: "Select gender",
+    required: false,
+    type: "select" as const,
+  },
+  country: {
+    name: "country" as const,
+    label: "Country",
+    placeholder: "Select country",
+    required: false,
+    type: "select" as const,
+  },
 };
 
-export const memberGroups = [
+export const fieldGroups = [
   {
     id: 1,
     fields: ["first_name", "last_name"] as const,
@@ -111,13 +86,30 @@ export const memberGroups = [
     fields: ["phone", "member_no"] as const,
   },
   {
-    id: 2,
+    id: 3,
     fields: ["id_number", "kra_pin"] as const,
+  },
+  {
+    id: 4,
+    fields: ["dob", "sex"] as const,
+  },
+  {
+    id: 5,
+    fields: ["country"] as const,
   },
 ];
 
 export const memberToFormValues = (member: GroupMember | null): MemberFormValues | undefined => {
   if (!member) return undefined;
+  
+  const getValidSex = (sex: string | undefined): "male" | "female" | "other" | "" => {
+    if (!sex) return "";
+    if (sex === "male" || sex === "female" || sex === "other") {
+      return sex as "male" | "female" | "other";
+    }
+    return "";
+  };
+
   return {
     first_name: member.first_name ?? "",
     last_name: member.last_name ?? "",
@@ -126,5 +118,8 @@ export const memberToFormValues = (member: GroupMember | null): MemberFormValues
     id_number: member.id_number ?? "",
     kra_pin: member.kra_pin ?? "",
     role: member.role ?? "",
+    dob: member.dob ?? "",
+    sex: getValidSex(member.sex!),
+    country: member.country ?? "",
   };
 };
