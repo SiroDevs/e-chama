@@ -64,6 +64,7 @@ export const newMemberAction = (
 
 export const editMemberAction = (
   user_id: string,
+  member_id: string,
   group_id: string,
   first_name: string,
   last_name: string,
@@ -79,7 +80,7 @@ export const editMemberAction = (
 ) => {
   return async (dispatch: Dispatch) => {
     try {
-      const userUpdated = await editUserInfo(first_name + " " + last_name, phone);
+      const userUpdated = await editUserInfo(user_id, first_name + " " + last_name, phone);
 
       if (!userUpdated) {
         throw new Error("Account updating failed");
@@ -103,6 +104,7 @@ export const editMemberAction = (
       }
 
       const member = await updateGroupMember({
+        id: member_id,
         member_no: member_no,
         role: role,
       });
