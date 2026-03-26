@@ -102,7 +102,7 @@ const Page = () => {
           </div>
         }
       >
-        <Card className="w-full md:w-3/4 p-4 m-2">
+        <Card className="w-full md:w-3/4 py-2 my-1">
           <CardContent>
             {error && (
               <Alert variant="destructive" className="mb-4">

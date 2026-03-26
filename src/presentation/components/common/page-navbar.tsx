@@ -50,7 +50,7 @@ PageNavbarPrimaryButton.displayName = "PageNavbarPrimaryButton";
 function PageNavbar({ children }: { children: React.ReactNode }) {
   return (
     <div>
-      <div className="h-[var(--h-nav)] flex p-4 md:p-4 text-gray-500 justify-between items-center">
+      <div className="h-[var(--h-nav)] flex p-2 md:p-4 text-gray-500 justify-between items-center">
         {children}
       </div>
       <hr className="bg-gray-400 mx-2" />
