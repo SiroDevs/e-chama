@@ -1,13 +1,11 @@
 'use server';
 
-import {
-  createServerClient,
-  type CookieOptions,
-} from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 export async function getServerClient({ readOnly = false } = {}) {
   const cookieStore = cookies();
+
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -22,22 +20,22 @@ export async function getServerClient({ readOnly = false } = {}) {
         ...(readOnly
           ? {}
           : {
-              setAll(
-                cookiesToSet: {
-                  name: string;
-                  value: string;
-                  options?: CookieOptions;
-                }[]
-              ) {
-                try {
-                  cookiesToSet.forEach(async ({ name, value, options }) =>
-                    (await cookieStore).set({ name, value, ...options })
-                  );
-                } catch {
-                  // safe to ignore on RSC
+            async setAll(
+              cookiesToSet: {
+                name: string;
+                value: string;
+                options?: CookieOptions;
+              }[]
+            ) {
+              try {
+                const store = await cookieStore;
+                for (const { name, value, options } of cookiesToSet) {
+                  store.set({ name, value, ...options });
                 }
-              },
-            }),
+              } catch {
+              }
+            },
+          }),
       },
     }
   );
@@ -48,7 +46,7 @@ export async function getAdminClient({ readOnly = false } = {}) {
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SERVICE_ROLE!,
+    process.env.SUPABASE_SERVICE_ROLE!,
     {
       cookies: {
         async getAll() {
@@ -60,22 +58,22 @@ export async function getAdminClient({ readOnly = false } = {}) {
         ...(readOnly
           ? {}
           : {
-              setAll(
-                cookiesToSet: {
-                  name: string;
-                  value: string;
-                  options?: CookieOptions;
-                }[]
-              ) {
-                try {
-                  cookiesToSet.forEach(async ({ name, value, options }) =>
-                    (await cookieStore).set({ name, value, ...options })
-                  );
-                } catch {
-                  // safe to ignore on RSC
+            async setAll(
+              cookiesToSet: {
+                name: string;
+                value: string;
+                options?: CookieOptions;
+              }[]
+            ) {
+              try {
+                const store = await cookieStore;
+                for (const { name, value, options } of cookiesToSet) {
+                  store.set({ name, value, ...options });
                 }
-              },
-            }),
+              } catch {
+              }
+            },
+          }),
       },
     }
   );

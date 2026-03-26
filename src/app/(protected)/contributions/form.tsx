@@ -7,8 +7,8 @@ import { useForm, type Resolver, type Control } from "react-hook-form";
 import { contributionSchema, contributionFields } from "./arrays";
 import { contributionGroups, ContributionFormValues } from "./arrays";
 import { GroupMember } from "@/domain/entities";
-import { Form, FormInput } from "@/presentation/components/ui/inputs";
-import { FormActions } from "@/presentation/components/ui/inputs";
+import { Form, FormInput } from "@/presentation/components/ui/form";
+import { FormActions } from "@/presentation/components/ui/form";
 import { MemberSearchField } from "@/presentation/components/common";
 
 interface ContributionFormProps {

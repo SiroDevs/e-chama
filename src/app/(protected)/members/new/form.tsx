@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { memberGroups, memberFields, memberSchema, MemberFormValues } from "./arrays";
-import { Form, FormActions, FormInput } from "@/presentation/components/ui/inputs";
+import { Form, FormActions, FormInput } from "@/presentation/components/ui/form";
 
 interface NewMemberFormProps {
   onSubmit: (values: MemberFormValues) => Promise<void> | void;

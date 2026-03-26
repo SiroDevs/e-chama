@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { GroupSchema, groupFields, GroupFormValues } from "./arrays";
-import { Form, FormInput } from "@/presentation/components/ui/inputs";
-import { FormActions } from "@/presentation/components/ui/inputs";
+import { Form, FormInput } from "@/presentation/components/ui/form";
+import { FormActions } from "@/presentation/components/ui/form";
 
 interface GroupFormProps {
   onSubmit: (values: GroupFormValues) => Promise<void> | void;

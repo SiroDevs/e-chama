@@ -37,16 +37,9 @@ export async function newUserAccount(
   }
 }
 
-export async function editUserInfo(
-  first_name: string,
-  last_name: string,
-  phone: string,
-): Promise<Boolean> {
+export async function editUserInfo(userid: string, full_name: string, phone: string): Promise<Boolean> {
   try {
-    const { data, error } = await userService.updateUserInfo(
-      first_name + " " + last_name,
-      phone,
-    );
+    const { data, error } = await userService.updateUserInfo(userid, full_name, phone);
 
     if (error) throw error;
     if (!data) throw new Error("No user info updated");
@@ -61,9 +54,9 @@ export async function editUserInfo(
   }
 }
 
-export async function editUserEmail(email: string): Promise<Boolean> {
+export async function editUserEmail(userid: string, email: string): Promise<Boolean> {
   try {
-    const { data, error } = await userService.updateUserEmail(email);
+    const { data, error } = await userService.updateUserEmail(userid, email);
 
     if (error) throw error;
     if (!data) throw new Error("No user email updated");
@@ -78,9 +71,9 @@ export async function editUserEmail(email: string): Promise<Boolean> {
   }
 }
 
-export async function editUserPassword(password: string): Promise<Boolean> {
+export async function editUserPassword(userid: string, password: string): Promise<Boolean> {
   try {
-    const { data, error } = await userService.updateUserPassword(password);
+    const { data, error } = await userService.updateUserPassword(userid, password);
 
     if (error) throw error;
     if (!data) throw new Error("No user password updated");
@@ -114,18 +107,16 @@ export async function newGroupMember(
   }
 }
 
-export async function updateGroupMember(member: Member): Promise<Member> {
+export async function updateGroupMember(member: Member): Promise<Boolean> {
   try {
-    const { data, error } = await memberService.editMember(member);
-
+    const { error } = await memberService.editMember(member);
     if (error) throw error;
-    if (!data) throw new Error("No member created");
-    return data;
+    return true;
   } catch (error: unknown) {
-    console.error("Error creating member:", error);
+    console.error("Error updating member:", error);
 
     throw new Error(
-      `Failed to create member: ${error instanceof Error ? error.message : "Unknown error"
+      `Failed to update member: ${error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }
@@ -152,16 +143,14 @@ export async function newUserProfile(
 
 export async function updateUserProfile(
   profile: Profile,
-): Promise<Profile> {
+): Promise<Boolean> {
   try {
-    const { data, error } = await profileService.updateUserProfile(profile);
+    const { error } = await profileService.updateUserProfile(profile);
 
     if (error) throw error;
-    if (!data) throw new Error("No profile updated");
-    return data;
+    return true;
   } catch (error: unknown) {
     console.error("Error updating profile:", error);
-
     throw new Error(
       `Failed to update profile: ${error instanceof Error ? error.message : "Unknown error"
       }`

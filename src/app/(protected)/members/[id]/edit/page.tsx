@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "@/application/state/store";
 import { Alert, Card } from "@/presentation/components/ui";
 import { AlertDescription, CardContent } from "@/presentation/components/ui";
 import { editMemberAction } from "@/application/use-cases/user/member";
-import { MemberFormValues, memberToFormValues } from "./arrays";
+import { memberToFormValues, MemberFormValues } from "./schema";
 import { handleError } from "@/application/helpers/error-utils";
 import { memberService } from "@/infrastructure/services/memberService";
 import { GroupMember } from "@/domain/entities";
@@ -26,7 +26,7 @@ const Page = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { group } = useSelector((state: RootState) => state.group);
-  const [profileData, setProfileData] = useState<GroupMember | null>(null);
+  const [grpMember, setProfileData] = useState<GroupMember | null>(null);
 
   const handleCancel = () => {
     router.push(`/members/${memberNo}`);
@@ -37,23 +37,7 @@ const Page = () => {
       setIsLoading(true);
       setError(null);
 
-      await dispatch(
-        editMemberAction(
-          profileData?.id!,
-          group?.group_id!,
-          values.first_name,
-          values.last_name,
-          values.phone || "",
-          values.id_number || "",
-          values.kra_pin || "",
-          values.member_no || "",
-          values.id_number || "",
-          "",
-          "",
-          "",
-          "",
-        ),
-      );
+      await dispatch(editMemberAction(values, grpMember!, group?.group_id!));
 
       router.push(`/members/${memberNo}`);
     } catch (err: unknown) {
@@ -118,7 +102,7 @@ const Page = () => {
           </div>
         }
       >
-        <Card className="w-full md:w-3/4 p-4 m-2">
+        <Card className="w-full md:w-3/4 py-2 my-1">
           <CardContent>
             {error && (
               <Alert variant="destructive" className="mb-4">
@@ -127,7 +111,7 @@ const Page = () => {
             )}
             <EditMemberForm
               initialData={
-                profileData ? memberToFormValues(profileData) : undefined
+                grpMember ? memberToFormValues(grpMember) : undefined
               }
               onSubmit={handleSubmit}
               isLoading={isLoading}

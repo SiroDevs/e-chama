@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import * as Sentry from "@sentry/nextjs";
 
 import { Alert, Button, Card } from "@/presentation/components/ui";
 import { CardTitle, CardContent } from "@/presentation/components/ui";
@@ -16,7 +15,7 @@ import {
   AlertDescription,
   CardDescription,
 } from "@/presentation/components/ui";
-import { Form, FormInput } from "@/presentation/components/ui/inputs";
+import { Form, FormInput } from "@/presentation/components/ui/form";
 import { signupUser } from "@/application/use-cases/auth/signup";
 import { AppDispatch } from "@/application/state/store";
 import { handleError } from "@/application/helpers/error-utils";
