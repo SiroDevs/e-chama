@@ -8,13 +8,13 @@ import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Button } from "@/presentation/components/ui";
-import { Input, Form, FormField } from "@/presentation/components/ui/inputs";
+import { Button, Input } from "@/presentation/components/ui";
+import { Form, FormField } from "@/presentation/components/ui/form";
 import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/presentation/components/ui/inputs";
+} from "@/presentation/components/ui/form";
 import { Card, CardTitle, CardContent } from "@/presentation/components/ui";
 import { Alert, CardFooter } from "@/presentation/components/ui";
 import { AlertDescription } from "@/presentation/components/ui";

@@ -2,7 +2,8 @@
 
 import { UseFormReturn } from "react-hook-form";
 import { FormControl, FormDescription, FormField, FormItem } from ".";
-import { FormLabel, FormMessage, Input } from ".";
+import { FormLabel, FormMessage } from ".";
+import { Input } from "..";
 
 interface FormDatePickerProps {
   control: UseFormReturn<any>["control"];

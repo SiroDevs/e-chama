@@ -12,12 +12,11 @@ import { AppDispatch, RootState } from "@/application/state/store";
 import { Alert, Card } from "@/presentation/components/ui";
 import { AlertDescription, CardContent } from "@/presentation/components/ui";
 import { editMemberAction } from "@/application/use-cases/user/member";
-import { memberToFormValues } from "./fields";
+import { memberToFormValues, MemberFormValues } from "./schema";
 import { handleError } from "@/application/helpers/error-utils";
 import { memberService } from "@/infrastructure/services/memberService";
 import { GroupMember } from "@/domain/entities";
 import EditMemberForm from "./form";
-import { MemberFormValues } from "./schema";
 
 const Page = () => {
   const router = useRouter();
