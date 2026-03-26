@@ -4,17 +4,17 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { memberSchema, MemberFormValues } from "./schema";
+import { editMemberSchema, EditMemberFormValues } from "./schema";
 import { FormDatePicker } from "@/presentation/components/ui/form";
 import { FormRadioGroup } from "@/presentation/components/ui/form";
 import { Form, FormActions } from "@/presentation/components/ui/form";
 import { FormInput, FormSelect } from "@/presentation/components/ui/form";
-import { fieldGroups, memberFields } from "./fields";
+import { editMemberFieldGroups, editMemberFields } from "./fields";
 import { countries, sexOptions } from "@/lib";
 
 interface EditMemberFormProps {
-  initialData?: MemberFormValues;
-  onSubmit: (values: MemberFormValues) => Promise<void> | void;
+  initialData?: EditMemberFormValues;
+  onSubmit: (values: EditMemberFormValues) => Promise<void> | void;
   onCancel?: () => void;
   isLoading?: boolean;
 }
@@ -25,8 +25,8 @@ export default function EditMemberForm({
   onCancel,
   isLoading = false,
 }: EditMemberFormProps) {
-  const form = useForm<MemberFormValues>({
-    resolver: zodResolver(memberSchema),
+  const form = useForm<EditMemberFormValues>({
+    resolver: zodResolver(editMemberSchema),
     defaultValues: {
       first_name: "",
       last_name: "",
@@ -45,12 +45,12 @@ export default function EditMemberForm({
       form.reset(initialData);
     }
   }, [initialData]);
-  const handleSubmit = async (values: MemberFormValues) => {
+  const handleSubmit = async (values: EditMemberFormValues) => {
     await onSubmit(values);
   };
 
-  const renderField = (fieldName: keyof typeof memberFields) => {
-    const field = memberFields[fieldName];
+  const renderField = (fieldName: keyof typeof editMemberFields) => {
+    const field = editMemberFields[fieldName];
 
     switch (field.type) {
       case "date":
@@ -123,7 +123,7 @@ export default function EditMemberForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        {fieldGroups.map((grp) => (
+        {editMemberFieldGroups.map((grp) => (
           <div key={grp.id}>
             <fieldset
               className={

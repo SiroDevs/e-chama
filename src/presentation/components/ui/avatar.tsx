@@ -60,7 +60,7 @@ function GenericAvatar({
     >
       <User
         size={size * 0.55}
-        className="text-gray-400 dark:text-gray-400 mt-1"
+        className="text-gray-400 dark:text-gray-400"
       />
     </div>
   );
