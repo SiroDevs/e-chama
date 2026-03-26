@@ -1,4 +1,4 @@
-export const memberFields = {
+export const newMemberFields = {
   first_name: {
     name: "first_name" as const,
     label: "First Name",
@@ -17,14 +17,14 @@ export const memberFields = {
     name: "phone" as const,
     label: "Phone Number",
     placeholder: "0712345678",
-    required: false,
+    required: true,
     type: "tel" as const,
   },
   id_number: {
     name: "id_number" as const,
     label: "ID Number",
     placeholder: "12345678",
-    required: false,
+    required: true,
     type: "text" as const,
   },
   kra_pin: {
@@ -38,21 +38,21 @@ export const memberFields = {
     name: "member_no" as const,
     label: "Member Number",
     placeholder: "001",
-    required: false,
+    required: true,
     type: "text" as const,
   },
   sex: {
     name: "sex" as const,
     label: "Gender",
     placeholder: "Select gender",
-    required: false,
+    required: true,
     type: "radio" as const,
   },
   dob: {
     name: "dob" as const,
     label: "Date of Birth",
     placeholder: "Select date",
-    required: false,
+    required: true,
     type: "date" as const,
   },
   address: {
@@ -66,12 +66,33 @@ export const memberFields = {
     name: "country" as const,
     label: "Country",
     placeholder: "Select country",
-    required: false,
+    required: true,
     type: "select" as const,
+  },
+  email: {
+    name: "email" as const,
+    label: "Email Address",
+    placeholder: "member@group.com",
+    required: true,
+    type: "email" as const,
+  },
+  password: {
+    name: "password" as const,
+    label: "Password",
+    placeholder: "*******",
+    required: true,
+    type: "password" as const,
+  },
+  confirm_password: {
+    name: "confirm_password" as const,
+    label: "Confirm Password",
+    placeholder: "*******",
+    required: true,
+    type: "password" as const,
   },
 };
 
-export const fieldGroups = [
+export const newMemberFieldGroups = [
   {
     id: 1,
     fields: ["first_name", "last_name"] as const,
@@ -91,5 +112,13 @@ export const fieldGroups = [
   {
     id: 5,
     fields: ["address", "country"] as const,
+  },
+  {
+    id: 6,
+    fields: ["email"] as const,
+  },
+  {
+    id: 7,
+    fields: ["password", "confirm_password"] as const,
   },
 ];

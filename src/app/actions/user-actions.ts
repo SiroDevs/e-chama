@@ -3,22 +3,20 @@
 import { User } from "@supabase/supabase-js";
 
 import { Member, Profile, UserGroup } from "@/domain/entities";
-import { authService } from "@/infrastructure/services/authService";
 import { groupService } from "@/infrastructure/services/groupService";
 import { memberService } from "@/infrastructure/services/memberService";
 import { profileService } from "@/infrastructure/services/profileService";
 import { userService } from "@/infrastructure/services/userService";
 
 export async function newUserAccount(
-  first_name: string,
-  last_name: string,
+  full_name: string,
   phone: string,
   email: string,
   password: string
 ): Promise<User> {
   try {
-    const { data, error } = await authService.signupUser(
-      first_name + " " + last_name,
+    const { data, error } = await userService.createUser(
+      full_name,
       email,
       phone,
       password,

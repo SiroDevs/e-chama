@@ -1,7 +1,6 @@
-import { GroupMember } from "@/domain/entities";
 import { z } from "zod";
 
-export const memberSchema = z.object({
+export const newMemberSchema = z.object({
   first_name: z.string().min(2, { message: "Your first name is too short" }),
   last_name: z.string().min(2, { message: "Your last name is too short" }),
 
@@ -77,31 +76,19 @@ export const memberSchema = z.object({
     .min(2, { message: "Please select a country" })
     .optional()
     .or(z.literal("")),
+    
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" }),
+    
+  confirm_password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" }),
+}).refine((data) => data.password === data.confirm_password, {
+  message: "Passwords do not match",
+  path: ["confirm_password"],
 });
 
-export type MemberFormValues = z.infer<typeof memberSchema>;
-
-export const memberToFormValues = (member: GroupMember | null): MemberFormValues | undefined => {
-  if (!member) return undefined;
-  
-  const getValidSex = (sex: string | undefined): "male" | "female" | "other" | "" => {
-    if (!sex) return "";
-    if (sex === "male" || sex === "female" || sex === "other") {
-      return sex as "male" | "female" | "other";
-    }
-    return "";
-  };
-
-  return {
-    first_name: member.first_name ?? "",
-    last_name: member.last_name ?? "",
-    phone: member.phone ?? "",
-    member_no: member.member_no ?? "",
-    id_number: member.id_number ?? "",
-    kra_pin: member.kra_pin ?? "",
-    sex: getValidSex(member.sex!),
-    dob: member.dob ?? "",
-    address: member.address ?? "",
-    country: member.country ?? "",
-  };
-};
+export type NewMemberFormValues = z.infer<typeof newMemberSchema>;
