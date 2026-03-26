@@ -2,6 +2,9 @@ import { Dispatch } from "@reduxjs/toolkit";
 
 import { editUserInfo, newGroupMember, newUserAccount, newUserProfile, updateGroupMember, updateUserProfile } from "@/app/actions/user-actions";
 import { setError } from "@/application/state/appSlice";
+import { GroupMember } from "@/domain/entities";
+import { MemberFormValues } from "@/app/(protected)/members/[id]/edit/schema";
+import { toE164 } from "@/lib/utils";
 
 export const newMemberAction = (
   first_name: string,
@@ -63,55 +66,49 @@ export const newMemberAction = (
 };
 
 export const editMemberAction = (
-  user_id: string,
-  member_id: string,
+  values: MemberFormValues,
+  member: GroupMember,
   group_id: string,
-  first_name: string,
-  last_name: string,
-  phone: string,
-  member_no: string,
-  id_number: string,
-  kra_pin: string,
-  address: string,
-  country: string,
-  sex: string,
-  dob: string,
-  role: string,
 ) => {
   return async (dispatch: Dispatch) => {
     try {
-      const userUpdated = await editUserInfo(user_id, first_name + " " + last_name, phone);
+      const userUpdated = await editUserInfo(
+        member?.user_id!,
+        values.first_name + " " + values.last_name,
+        toE164(values.phone!)
+      );
 
       if (!userUpdated) {
         throw new Error("Account updating failed");
       }
 
       const profileUpdated = await updateUserProfile({
-        id: user_id,
+        id: member.user_id!,
         group_id: group_id,
-        first_name: first_name,
-        last_name: last_name,
-        id_number: id_number,
-        kra_pin: kra_pin,
-        country: country,
-        address: address,
-        sex: sex,
-        dob: dob,
+        first_name: values.first_name,
+        last_name: values.last_name,
+        id_number: values.id_number,
+        kra_pin: member.kra_pin!,
+        country: member.country!,
+        address: member.address!,
+        sex: member.sex!,
+        dob: "1995-01-01",
       });
 
       if (!profileUpdated) {
         throw new Error("Profile updating failed");
       }
 
-      const member = await updateGroupMember({
-        id: member_id,
-        member_no: member_no,
-        role: role,
+      const memberUpdated = await await updateGroupMember({
+        id: member.id!,
+        member_no: values.member_no,
+        role: member.role!,
       });
 
-      if (!member) {
-        throw new Error("Member creation failed");
+      if (!memberUpdated) {
+        throw new Error("Member updating failed");
       }
+
     } catch (error: unknown) {
       dispatch(
         setError(error instanceof Error ? error.message : "Failed to update member")

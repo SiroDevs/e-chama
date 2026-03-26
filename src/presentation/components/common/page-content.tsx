@@ -20,19 +20,22 @@ export default function PageContent(props: PageContentProps) {
 
   if (!breadcrumbs || !actions) {
     return (
-      <div className="space-y-1">
-        {children && <div className="pt-2 px-2">{children}</div>}
+      <div className="">
+        {children && <div className="pt-1 px-1">{children}</div>}
       </div>
     );
   }
 
   return (
-    <div className="space-y-1">
-      <div className="border-b border-gray-200 dark:border-gray-800 p-2 bg-white dark:bg-[#1d1d20] shadow-xs">
-        <div className="flex justify-between items-center px-2">
+    <div className="">
+      <div className="border-b border-gray-200 dark:border-gray-800 p-1 bg-white dark:bg-[#1d1d20] shadow-xs">
+        <div className="flex justify-between items-center">
           {breadcrumbs.length > 0 && (
-            <nav className="flex items-center text-sm" aria-label="Breadcrumb">
-              <ol className="flex items-center space-x-1">
+            <nav
+              className="flex items-center text-sm overflow-x-auto whitespace-nowrap scrollbar-thin"
+              aria-label="Breadcrumb"
+            >
+              <ol className="flex items-center space-x-1 min-w-max">
                 <li className="flex items-center">
                   <Link href="/" className="hover:underline transition-colors">
                     Dashboard
@@ -44,7 +47,7 @@ export default function PageContent(props: PageContentProps) {
 
                   return (
                     <li key={index} className="flex items-center">
-                      <ChevronRight className="h-4 w-4 mx-1 text-gray-400" />
+                      <ChevronRight className="h-4 w-4 mx-1 text-gray-400 flex-shrink-0" />
 
                       {!isLast && breadcrumb.path ? (
                         <Link
@@ -73,7 +76,7 @@ export default function PageContent(props: PageContentProps) {
         </div>
       </div>
 
-      {children && <div className="pt-2 px-2">{children}</div>}
+      {children && <div className="pt-1">{children}</div>}
     </div>
   );
 }

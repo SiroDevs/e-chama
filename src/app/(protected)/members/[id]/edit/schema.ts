@@ -7,7 +7,7 @@ export const memberSchema = z.object({
 
   phone: z
     .string()
-    .max(15, "Phone number is too long")
+    .max(12, "Phone number is too long")
     .refine((val) => val === "" || val.length >= 10, {
       message: "Phone number must be at least 10 digits",
     })
@@ -16,7 +16,7 @@ export const memberSchema = z.object({
 
   id_number: z
     .string()
-    .max(20, "ID number is too long")
+    .max(8, "ID number is too long")
     .refine((val) => val === "" || val.length >= 5, {
       message: "ID number must be at least 5 characters",
     })
@@ -25,7 +25,7 @@ export const memberSchema = z.object({
 
   kra_pin: z
     .string()
-    .max(20, "KRA PIN is too long")
+    .max(15, "KRA PIN is too long")
     .refine((val) => val === "" || val.length >= 5, {
       message: "KRA PIN must be at least 5 characters",
     })
@@ -34,90 +34,64 @@ export const memberSchema = z.object({
 
   member_no: z
     .string()
-    .max(20, "Member number is too long")
+    .max(5, "Member number is too long")
     .refine((val) => val === "" || val.length >= 3, {
       message: "Member number must be at least 3 characters",
     })
     .optional()
     .or(z.literal("")),
 
-  role: z
+  sex: z
+    .enum(["male", "female", "other"])
+    .optional()
+    .or(z.literal(""))
+    .refine((val) => {
+      if (val === "") return true;
+      return ["male", "female", "other"].includes(val!);
+    }, { message: "Please select a valid gender" }),
+
+  dob: z
     .string()
+    .optional()
+    .or(z.literal(""))
+    .refine((val) => {
+      if (!val) return true;
+      const date = new Date(val);
+      const today = new Date();
+      const age = today.getFullYear() - date.getFullYear();
+      const monthDiff = today.getMonth() - date.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < date.getDate())) {
+        return age - 1 >= 18;
+      }
+      return age >= 18;
+    }, { message: "Member must be at least 18 years old" }),
+
+  address: z
+    .string()
+    .min(2, { message: "Please type member's address" })
+    .optional()
+    .or(z.literal("")),
+
+  country: z
+    .string()
+    .min(2, { message: "Please select a country" })
     .optional()
     .or(z.literal("")),
 });
 
 export type MemberFormValues = z.infer<typeof memberSchema>;
 
-export const memberFields = {
-  first_name: {
-    name: "first_name" as const,
-    label: "First Name",
-    placeholder: "Jane",
-    required: true,
-    type: "text" as const,
-  },
-  last_name: {
-    name: "last_name" as const,
-    label: "Last Name",
-    placeholder: "Doe",
-    required: true,
-    type: "text" as const,
-  },
-  phone: {
-    name: "phone" as const,
-    label: "Phone Number",
-    placeholder: "0712345678",
-    required: false,
-    type: "tel" as const,
-  },
-  id_number: {
-    name: "id_number" as const,
-    label: "ID Number",
-    placeholder: "12345678",
-    required: false,
-    type: "text" as const,
-  },
-  kra_pin: {
-    name: "kra_pin" as const,
-    label: "KRA PIN",
-    placeholder: "A123345434J",
-    required: false,
-    type: "text" as const,
-  },
-  role: {
-    name: "role" as const,
-    label: "Member Role",
-    placeholder: "member",
-    required: false,
-    type: "text" as const,
-  },
-  member_no: {
-    name: "member_no" as const,
-    label: "Member Number",
-    placeholder: "001",
-    required: false,
-    type: "text" as const,
-  },
-};
-
-export const memberGroups = [
-  {
-    id: 1,
-    fields: ["first_name", "last_name"] as const,
-  },
-  {
-    id: 2,
-    fields: ["phone", "member_no"] as const,
-  },
-  {
-    id: 2,
-    fields: ["id_number", "kra_pin"] as const,
-  },
-];
-
 export const memberToFormValues = (member: GroupMember | null): MemberFormValues | undefined => {
   if (!member) return undefined;
+  
+  const getValidSex = (sex: string | undefined): "male" | "female" | "other" | "" => {
+    if (!sex) return "";
+    if (sex === "male" || sex === "female" || sex === "other") {
+      return sex as "male" | "female" | "other";
+    }
+    return "";
+  };
+
   return {
     first_name: member.first_name ?? "",
     last_name: member.last_name ?? "",
@@ -125,6 +99,9 @@ export const memberToFormValues = (member: GroupMember | null): MemberFormValues
     member_no: member.member_no ?? "",
     id_number: member.id_number ?? "",
     kra_pin: member.kra_pin ?? "",
-    role: member.role ?? "",
+    sex: getValidSex(member.sex!),
+    dob: member.dob ?? "",
+    address: member.address ?? "",
+    country: member.country ?? "",
   };
 };

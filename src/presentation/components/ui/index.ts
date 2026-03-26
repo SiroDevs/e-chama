@@ -13,6 +13,7 @@ export * from "./context-menu";
 export * from "./dialog";
 export * from "./dropdown-menu";
 export * from "./hover-card";
+export * from "./input";
 export * from "./label";
 export * from "./menu-bar";
 export * from "./navigation-menu";

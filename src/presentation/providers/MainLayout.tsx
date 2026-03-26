@@ -63,7 +63,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
       animate="visible"
       variants={contentVariants}
       transition={{ duration: 0.5 }}
-      className={`${isSidebarOpen ? "overflow-hidden md:overflow-visible" : ""} h-screen flex flex-col`}
+      className="h-screen flex flex-col"
     >
       <AnimatePresence>
         {isSidebarOpen && (
@@ -102,9 +102,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         </aside>
 
         <main className="w-full overflow-y-auto">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            {children}
-          </div>
+          {children}
         </main>
       </div>
     </motion.div>

@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "@/application/state/store";
 import { Alert, Card } from "@/presentation/components/ui";
 import { AlertDescription, CardContent } from "@/presentation/components/ui";
 import { editMemberAction } from "@/application/use-cases/user/member";
-import { MemberFormValues, memberToFormValues } from "./arrays";
+import { memberToFormValues, MemberFormValues } from "./schema";
 import { handleError } from "@/application/helpers/error-utils";
 import { memberService } from "@/infrastructure/services/memberService";
 import { GroupMember } from "@/domain/entities";
@@ -37,24 +37,7 @@ const Page = () => {
       setIsLoading(true);
       setError(null);
 
-      await dispatch(
-        editMemberAction(
-          grpMember?.user_id!,
-          grpMember?.id!,
-          group?.group_id!,
-          values.first_name,
-          values.last_name,
-          values.phone || "",
-          values.member_no || "",
-          values.id_number || "",
-          values.kra_pin || "",
-          grpMember?.address!,
-          grpMember?.country!,
-          grpMember?.sex!,
-          "1995-01-01",
-          grpMember?.role!,
-        ),
-      );
+      await dispatch(editMemberAction(values, grpMember!, group?.group_id!));
 
       router.push(`/members/${memberNo}`);
     } catch (err: unknown) {
@@ -119,7 +102,7 @@ const Page = () => {
           </div>
         }
       >
-        <Card className="w-full md:w-3/4 p-4 m-2">
+        <Card className="w-full md:w-3/4 py-2 my-1">
           <CardContent>
             {error && (
               <Alert variant="destructive" className="mb-4">
