@@ -1,4 +1,4 @@
-export const editMemberFields = {
+export const memberFields = {
   first_name: {
     name: "first_name" as const,
     label: "First Name",
@@ -71,7 +71,7 @@ export const editMemberFields = {
   },
 };
 
-export const editMemberFieldGroups = [
+export const fieldGroups = [
   {
     id: 1,
     fields: ["first_name", "last_name"] as const,

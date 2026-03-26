@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "@/application/state/store";
 import { Alert, Card } from "@/presentation/components/ui";
 import { AlertDescription, CardContent } from "@/presentation/components/ui";
 import { editMemberAction } from "@/application/use-cases/user/member";
-import { memberToFormValues, MemberFormValues } from "./schema";
+import { editMemberToFormValues, EditMemberFormValues } from "./schema";
 import { handleError } from "@/application/helpers/error-utils";
 import { memberService } from "@/infrastructure/services/memberService";
 import { GroupMember } from "@/domain/entities";
@@ -32,7 +32,7 @@ const Page = () => {
     router.push(`/members/${memberNo}`);
   };
 
-  const handleSubmit = async (values: MemberFormValues) => {
+  const handleSubmit = async (values: EditMemberFormValues) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -111,7 +111,7 @@ const Page = () => {
             )}
             <EditMemberForm
               initialData={
-                grpMember ? memberToFormValues(grpMember) : undefined
+                grpMember ? editMemberToFormValues(grpMember) : undefined
               }
               onSubmit={handleSubmit}
               isLoading={isLoading}

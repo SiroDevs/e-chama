@@ -3,7 +3,7 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { editUserInfo, newGroupMember, newUserAccount, newUserProfile, updateGroupMember, updateUserProfile } from "@/app/actions/user-actions";
 import { setError } from "@/application/state/appSlice";
 import { GroupMember } from "@/domain/entities";
-import { MemberFormValues } from "@/app/(protected)/members/[id]/edit/schema";
+import { EditMemberFormValues } from "@/app/(protected)/members/[id]/edit/schema";
 import { toE164 } from "@/lib/utils";
 
 export const newMemberAction = (
@@ -66,7 +66,7 @@ export const newMemberAction = (
 };
 
 export const editMemberAction = (
-  values: MemberFormValues,
+  values: EditMemberFormValues,
   member: GroupMember,
   group_id: string,
 ) => {

@@ -1,7 +1,7 @@
 import { GroupMember } from "@/domain/entities";
 import { z } from "zod";
 
-export const editMemberSchema = z.object({
+export const memberSchema = z.object({
   first_name: z.string().min(2, { message: "Your first name is too short" }),
   last_name: z.string().min(2, { message: "Your last name is too short" }),
 
@@ -79,9 +79,9 @@ export const editMemberSchema = z.object({
     .or(z.literal("")),
 });
 
-export type EditMemberFormValues = z.infer<typeof editMemberSchema>;
+export type MemberFormValues = z.infer<typeof memberSchema>;
 
-export const editMemberToFormValues = (member: GroupMember | null): EditMemberFormValues | undefined => {
+export const memberToFormValues = (member: GroupMember | null): MemberFormValues | undefined => {
   if (!member) return undefined;
   
   const getValidSex = (sex: string | undefined): "male" | "female" | "other" | "" => {
