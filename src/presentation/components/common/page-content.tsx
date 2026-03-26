@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
+import { Button } from "../ui";
 
 export interface Breadcrumb {
   title: string;
@@ -13,21 +14,59 @@ export interface PageContentProps {
   children?: React.ReactNode;
   breadcrumbs?: Breadcrumb[];
   actions?: React.ReactNode;
+  showFab?: boolean;
+  fabIcon?: React.ReactNode;
+  fabOnClick?: () => void;
+  fabHref?: string;
 }
 
 export default function PageContent(props: PageContentProps) {
-  const { children, breadcrumbs, actions = null } = props;
+  const {
+    children,
+    breadcrumbs,
+    actions = null,
+    showFab = false,
+    fabIcon = <Plus className="h-5 w-5" />,
+    fabOnClick,
+    fabHref,
+  } = props;
+
+  const FabButton = () => {
+    const buttonClasses =
+      "bg-[#eee] dark:bg-[#000] text-black dark:text-white border-black dark:border-white shadow-xs rounded-full w-14 h-14 p-0 flex items-center justify-center";
+
+    if (fabHref) {
+      return (
+        <Link href={fabHref}>
+          <Button variant="outline" className={buttonClasses}>
+            {fabIcon}
+          </Button>
+        </Link>
+      );
+    }
+
+    return (
+      <Button variant="outline" onClick={fabOnClick} className={buttonClasses}>
+        {fabIcon}
+      </Button>
+    );
+  };
 
   if (!breadcrumbs || !actions) {
     return (
-      <div className="">
+      <div className="relative">
         {children && <div className="pt-1 px-1">{children}</div>}
+        {showFab && (
+          <div className="fixed bottom-6 right-6 z-50">
+            <FabButton />
+          </div>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="">
+    <div className="relative">
       <div className="border-b border-gray-200 dark:border-gray-800 p-1 bg-white dark:bg-[#1d1d20] shadow-xs">
         <div className="flex justify-between items-center">
           {breadcrumbs.length > 0 && (
@@ -76,7 +115,13 @@ export default function PageContent(props: PageContentProps) {
         </div>
       </div>
 
-      {children && <div className="pt-1">{children}</div>}
+      {children && <div className="pt-2">{children}</div>}
+
+      {showFab && (
+        <div className="fixed bottom-10 right-6 z-50 block md:hidden">
+          <FabButton />
+        </div>
+      )}
     </div>
   );
 }

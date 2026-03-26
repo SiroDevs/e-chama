@@ -67,6 +67,9 @@ const page = () => {
             />
           </div>
         }
+        showFab={true}
+        fabIcon={<PlusIcon />}
+        fabHref="/members/new"
       >
         <MembersTable
           records={entities}
