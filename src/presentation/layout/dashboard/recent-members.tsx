@@ -52,7 +52,7 @@ function Avatar({ name, url }: { name: string; url?: string | null }) {
   );
 }
 
-export default function RecentMembers({
+export function RecentMembers({
   members,
   periodDays = 90,
 }: RecentMembersProps) {

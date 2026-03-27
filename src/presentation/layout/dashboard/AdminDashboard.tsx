@@ -8,16 +8,13 @@ import { RootState } from "@/application/state/store";
 import { memberService } from "@/infrastructure/services/memberService";
 import { contributionService } from "@/infrastructure/services/contributionService";
 import GroupAnalytics from "./group-anlytics";
-import RecentMembers from "./recent-members";
+import { MonthlyMeetings, RecentContributions, RecentMembers } from ".";
 import { GroupContribution, GroupMember } from "@/domain/entities";
-import RecentContributions from "./recent-contributions";
-import MonthlyMeetings from "./montly-meetings";
 
-export default function Dashboard() {
+export function AdminDashboard() {
   const { member } = useSelector((state: RootState) => state.group);
   const [memberCount, setMemberCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const [previousMemberCount, setPreviousMemberCount] = useState<number>(0);
   const [totalContributions, setTotalContributions] = useState<number>(0);
   const [members, setMembers] = useState<GroupMember[]>([]);
   const [contributions, setContributions] = useState<GroupContribution[]>([]);

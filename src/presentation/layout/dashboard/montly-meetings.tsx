@@ -1,5 +1,5 @@
 
-export default function MonthlyMeetings() {
+export function MonthlyMeetings() {
   return (
     <div className="border border-gray-200 dark:border-gray-800 p-5 rounded-lg"
       style={{

@@ -50,7 +50,7 @@ function StatusBadge({ status }: { status?: string }) {
   );
 }
 
-export default function RecentContributions({
+export function RecentContributions({
   contributions,
   periodDays = 30,
 }: RecentContributionsProps) {

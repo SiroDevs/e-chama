@@ -7,20 +7,29 @@ import { RootState } from "@/application/state/store";
 import Faq from "@/presentation/components/common/faq";
 import Hero from "@/presentation/components/common/hero";
 import { Button } from "@/presentation/components/ui";
-import Dashboard from "@/presentation/layout/dashboard/Dashboard";
 import { JoinGroup } from "@/presentation/layout/join/JoinGroup";
+import { AdminDashboard, MemberDashboard } from "@/presentation/layout/dashboard";
 
-const Page = () => { 
-  const { groups } = useSelector((state: RootState) => state.group);
+const Page = () => {
+  const { member, groups } = useSelector((state: RootState) => state.group);
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   const hasGroups = groups && groups.length > 0;
 
+  const renderDashboard = () => {
+    switch (member?.role) {
+      case "admin":
+        return <AdminDashboard />;
+      default:
+        return <MemberDashboard />;
+    }
+  };
+
   return (
-    <>
+    <div>
       {isAuthenticated ? (
         hasGroups ? (
-          <Dashboard />
+          renderDashboard()
         ) : (
           <JoinGroup />
         )
@@ -40,7 +49,7 @@ const Page = () => {
           <Faq />
         </>
       )}
-    </>
+    </div>
   );
 };
 
