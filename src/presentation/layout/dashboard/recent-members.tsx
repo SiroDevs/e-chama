@@ -62,7 +62,6 @@ export default function RecentMembers({
         borderRadius: "16px",
         padding: "24px 20px",
         width: "100%",
-        maxWidth: "340px",
         boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
         boxSizing: "border-box" as const,
       }}
