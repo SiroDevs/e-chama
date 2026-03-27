@@ -1,10 +1,10 @@
 import { Profile } from "@/domain/entities/profile";
 import { memberService } from "./memberService";
 import { getServerClient } from "@/lib/supabase/server";
+import { supabase } from "@/lib/supabase/client";
 
 export const profileService = {
   async newUserProfile(profile: Profile) {
-    const supabase = await getServerClient();
     return await supabase.from("profiles")
       .insert([
         {
@@ -81,7 +81,6 @@ export const profileService = {
     };
   },
   async fetchUserProfile(userId: string) {
-    const supabase = await getServerClient();
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("*")
@@ -118,7 +117,6 @@ export const profileService = {
 
   async setProfileGroup(userId: string, groupId: string) {
     try {
-      const supabase = await getServerClient();
       const { error } = await supabase
         .from("profiles")
         .update({

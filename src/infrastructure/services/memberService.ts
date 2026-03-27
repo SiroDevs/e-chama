@@ -1,9 +1,8 @@
 import { GroupMember, GroupMembersQueryParams, GroupMembersResp, Member } from "@/domain/entities";
-import { getServerClient } from "@/lib/supabase/server";
+import { supabase } from "@/lib/supabase/client";
 
 export const memberService = {
   async newMember(member: Member) {
-    const supabase = await getServerClient();
     const { error: checkError } = await supabase
       .from("members")
       .select("id")
@@ -30,7 +29,6 @@ export const memberService = {
   },
 
   async editMember(member: Member) {
-    const supabase = await getServerClient();
     return await supabase
       .from("members")
       .update([
@@ -43,7 +41,6 @@ export const memberService = {
   },
 
   async getMemberCount(group_id: string): Promise<number> {
-    const supabase = await getServerClient();
     const { count, error } = await supabase.from("members")
       .select("*", { count: "exact" })
       .eq("group_id", group_id);
@@ -65,7 +62,6 @@ export const memberService = {
     groupId,
   }: GroupMembersQueryParams): Promise<GroupMembersResp> {
     try {
-    const supabase = await getServerClient();
       let query = supabase
         .from('group_members')
         .select('*', { count: 'exact' })
@@ -127,7 +123,6 @@ export const memberService = {
     error: Error | null;
   }> {
     try {
-    const supabase = await getServerClient();
       const { data, error } = await supabase
         .from('group_members')
         .select('*')
@@ -147,7 +142,6 @@ export const memberService = {
     error: Error | null;
   }> {
     try {
-    const supabase = await getServerClient();
       const { data, error } = await supabase
         .from('group_members')
         .select('id, full_name, member_no, role')
@@ -166,7 +160,6 @@ export const memberService = {
     error: Error | null;
   }> {
     try {
-    const supabase = await getServerClient();
       const { data, error } = await supabase
         .from('group_members').select('*').eq('id', id).single();
 
@@ -184,7 +177,6 @@ export const memberService = {
     error: Error | null;
   }> {
     try {
-    const supabase = await getServerClient();
       const { data, error } = await supabase
         .from('group_members').select('*').eq('member_no', memberNo).eq("group_id", groupId).single();
 
@@ -200,7 +192,6 @@ export const memberService = {
     }
   },
   async fetchGroupMember(userId: string, groupId: string | null) {
-    const supabase = await getServerClient();
     const { data: member, error: memberError } = await supabase
       .from("members")
       .select("*")

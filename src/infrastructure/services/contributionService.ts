@@ -1,5 +1,5 @@
 import { Contribution, GroupContribution } from "@/domain/entities";
-import { getServerClient } from "@/lib/supabase/server";
+import { supabase } from "@/lib/supabase/client";
 
 export const contributionService = {
   async getContributionById(id: string): Promise<{
@@ -7,7 +7,6 @@ export const contributionService = {
     error: Error | null;
   }> {
     try {
-      const supabase = await getServerClient();
       const { data, error } = await supabase
         .from('contributions')
         .select('*')
@@ -31,7 +30,6 @@ export const contributionService = {
     error: Error | null;
   }> {
     try {
-      const supabase = await getServerClient();
       const { data, error } = await supabase
         .from('contributions')
         .insert([contribution])
@@ -58,7 +56,6 @@ export const contributionService = {
     error: Error | null;
   }> {
     try {
-      const supabase = await getServerClient();
       const { data, error } = await supabase
         .from('contributions')
         .update({ ...updates, updated_at: new Date().toISOString() })
@@ -83,7 +80,6 @@ export const contributionService = {
     error: Error | null;
   }> {
     try {
-      const supabase = await getServerClient();
       const { error } = await supabase
         .from('contributions')
         .delete()
@@ -109,7 +105,6 @@ export const contributionService = {
     error: Error | null;
   }> {
     try {
-      const supabase = await getServerClient();
       const { data, error } = await supabase
         .from('group_contributions')
         .select('amount')
@@ -133,7 +128,6 @@ export const contributionService = {
     error: Error | null;
   }> {
     try {
-      const supabase = await getServerClient();
       const { data, error } = await supabase
         .from('group_contributions')
         .select('*')

@@ -1,5 +1,5 @@
 import { ContributionsQueryParams, GrpContributionsResp } from "@/domain/entities";
-import { getServerClient } from "@/lib/supabase/server";
+import { supabase } from "@/lib/supabase/client";
 
 export const contributionServiceExts = {
   async getGroupContributions({
@@ -11,7 +11,6 @@ export const contributionServiceExts = {
     groupId,
   }: ContributionsQueryParams): Promise<GrpContributionsResp> {
     try {
-    const supabase = await getServerClient();
       let query = supabase
         .from('group_contributions')
         .select('*', { count: 'exact' })
