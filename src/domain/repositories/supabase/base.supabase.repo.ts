@@ -1,10 +1,11 @@
-import { supabase } from "@/lib/supabase/client";
+import { getServerClient } from "@/lib/supabase/server";
 import { BaseRepo, PaginationOptions, PaginatedResult } from "./base.repo";
 
 export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
-  constructor(protected tableName: string) {}
+  constructor(protected tableName: string) { }
 
   async getAll(): Promise<T[]> {
+    const supabase = await getServerClient();
     const { data, error } = await supabase
       .from(this.tableName)
       .select('*')
@@ -15,6 +16,7 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
   }
 
   async getAllPaginated(options: PaginationOptions): Promise<PaginatedResult<T>> {
+    const supabase = await getServerClient();
     const { page, pageSize, filters } = options;
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
@@ -50,6 +52,7 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
   }
 
   async getById(id: number): Promise<T | null> {
+    const supabase = await getServerClient();
     const { data, error } = await supabase
       .from(this.tableName)
       .select('*')
@@ -61,6 +64,7 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
   }
 
   async create(data: Omit<T, 'id' | 'created_at' | 'updated_at'>): Promise<T> {
+    const supabase = await getServerClient();
     const { data: result, error } = await supabase
       .from(this.tableName)
       .insert({
@@ -75,6 +79,7 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
   }
 
   async update(id: number, data: Partial<T>): Promise<T> {
+    const supabase = await getServerClient();
     const updateData = {
       ...data,
       updated_at: new Date().toISOString(),
@@ -92,6 +97,7 @@ export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
   }
 
   async delete(id: number): Promise<void> {
+    const supabase = await getServerClient();
     const { error } = await supabase
       .from(this.tableName)
       .delete()

@@ -1,11 +1,11 @@
 import { getServerClient } from "@/lib/supabase/server";
-import { supabase } from "@/lib/supabase/client";
 import { UserGroup, Group, GroupExt } from "@/domain/entities";
 import { memberService } from "./memberService";
 import { PaginatedResp } from "@/types/paginations";
 
 export const groupService = {
   async newGroup(group: Group) {
+    const supabase = await getServerClient();
     return await supabase
       .from("groups")
       .insert([

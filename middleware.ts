@@ -1,41 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = [
-  "/contributions",
-  "/members",
-  "/meetings",
-  "/settings",
-  "/profile",
-];
+import { getCurrentUser } from "@/app/actions/auth-actions";
 
+const protectedRoutes = ["/contributions", "/members", "/meetings", "/settings", "/profile"];
 const authRoutes = ["/signin", "/signout"];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const token = request.cookies.get("token")?.value;
+  let response = NextResponse.next({
+    request: { headers: request.headers },
+  });
 
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  const userInfo = await getCurrentUser();
 
-  const isAuthRoute = authRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  const isProtectedRoute = protectedRoutes.some((r) => pathname.startsWith(r));
+  const isAuthRoute = authRoutes.some((r) => pathname.startsWith(r));
 
-  if (!token && isProtectedRoute) {
+  if (!userInfo && isProtectedRoute) {
     return NextResponse.redirect(new URL("/signin", request.url));
   }
 
-  if (token && isAuthRoute) {
-    return NextResponse.redirect(new URL("/contributions", request.url)); // or dashboard
+  if (userInfo && isAuthRoute) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

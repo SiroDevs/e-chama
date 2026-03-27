@@ -5,12 +5,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import appReducer from "./appSlice";
 import authReducer from "./authSlice";
 import groupReducer from './groupSlice';
+import navReducer from './navSlice';
 import storage from "@/lib/storage";
 
 const rootReducer = combineReducers({
   app: appReducer,
   auth: authReducer,
   group: groupReducer,
+  nav: navReducer,
 });
 
 const persistConfig = {

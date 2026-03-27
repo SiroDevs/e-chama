@@ -1,8 +1,9 @@
-import { supabase } from "@/lib/supabase/client";
+import { getServerClient } from "@/lib/supabase/server";
 
 export const verifyService = {
   async resendVerificationEmail(email: string): Promise<{ success: boolean; error?: string }> {
     try {
+      const supabase = await getServerClient();
       const { error } = await supabase.auth.resend({
         type: 'signup',
         email: email,
@@ -28,6 +29,7 @@ export const verifyService = {
 
   async verifyToken(token: string) {
     try {
+      const supabase = await getServerClient();
       const { data, error } = await supabase.auth.verifyOtp({
         token_hash: token,
         type: "signup",
