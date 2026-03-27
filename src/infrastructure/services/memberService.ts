@@ -118,6 +118,25 @@ export const memberService = {
       };
     }
   },
+  async getRecentMembers(groupId: string, limit: number = 3): Promise<{
+    data: GroupMember[];
+    error: Error | null;
+  }> {
+    try {
+      const { data, error } = await supabase
+        .from('group_members')
+        .select('*')
+        .eq('group_id', groupId)
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (error) throw error;
+
+      return { data: data || [], error: null };
+    } catch (error) {
+      return { data: [], error: error as Error };
+    }
+  },
   async searchGroupMembers(groupId: string, query: string, limit = 10): Promise<{
     data: GroupMember[];
     error: Error | null;
