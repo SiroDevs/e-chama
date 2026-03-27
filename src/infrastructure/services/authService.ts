@@ -1,9 +1,8 @@
-import { AuthResponse } from "@supabase/supabase-js";
+import { AuthResponse, SupabaseClient } from "@supabase/supabase-js";
 
-import { supabase } from "@/lib/supabase/client";
 import { AppUser, sbUserToAppUser } from "@/domain/entities/app-user";
 
-export const authService = {
+export const createAuthService = (supabase: SupabaseClient) => ({
   async signupUser(
     full_name: string,
     email: string,
@@ -73,4 +72,4 @@ export const authService = {
       subscription.unsubscribe();
     };
   },
-};
+});

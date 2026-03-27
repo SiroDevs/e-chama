@@ -1,4 +1,5 @@
 import { GroupMember } from "@/domain/entities";
+import Link from "next/link";
 
 interface RecentMembersProps {
   members: GroupMember[];
@@ -52,17 +53,17 @@ function Avatar({ name, url }: { name: string; url?: string | null }) {
   );
 }
 
-export default function RecentMembers({
+export function RecentMembers({
   members,
   periodDays = 90,
 }: RecentMembersProps) {
   return (
-    <div className="border border-gray-200 dark:border-gray-800 p-5 rounded-lg"
+    <div
+      className="border border-gray-200 dark:border-gray-800 p-5 rounded-lg"
       style={{
         borderRadius: "16px",
         padding: "24px 20px",
         width: "100%",
-        maxWidth: "340px",
         boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
         boxSizing: "border-box" as const,
       }}
@@ -108,7 +109,13 @@ export default function RecentMembers({
                 >
                   {member.full_name!}
                 </p>
-                <p style={{ margin: "2px 0 0 0", fontSize: "13px", color: "#888" }}>
+                <p
+                  style={{
+                    margin: "2px 0 0 0",
+                    fontSize: "13px",
+                    color: "#888",
+                  }}
+                >
                   {member.role ?? "Member"} · #{member.member_no ?? "—"}
                 </p>
               </div>
@@ -117,22 +124,24 @@ export default function RecentMembers({
         })}
       </div>
 
-      <button
-        style={{
-          background: "#2a2a2a",
-          color: "#f0f0f0",
-          border: "none",
-          borderRadius: "999px",
-          padding: "12px 24px",
-          fontSize: "14px",
-          fontWeight: 600,
-          cursor: "pointer",
-          transition: "background 0.15s ease",
-          fontFamily: "inherit",
-        }}
-      >
-        See all
-      </button>
+      <Link href="/members" passHref>
+        <button
+          style={{
+            background: "#2a2a2a",
+            color: "#f0f0f0",
+            border: "none",
+            borderRadius: "999px",
+            padding: "12px 24px",
+            fontSize: "14px",
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "background 0.15s ease",
+            fontFamily: "inherit",
+          }}
+        >
+          See all
+        </button>
+      </Link>
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import { Group, Member, Profile } from "@/domain/entities";
-import { authService } from "./authService";
 import { groupService } from "./groupService";
 import { memberService } from "./memberService";
 import { profileService } from "./profileService";
+import { getServerClient } from "@/lib/supabase/server";
+import { createAuthService } from "./authService";
 
 export const memberServiceExts = {
   async newMemberGroup(group: Group) {
@@ -89,6 +90,8 @@ export const memberServiceExts = {
     member: Member;
   }) {
     try {
+      const supabase = await getServerClient();
+      const authService = createAuthService(supabase);
       const { data, error } = await authService.signupUser(
         payload.profile.first_name + ' ' + payload.profile.last_name,
         payload.email,

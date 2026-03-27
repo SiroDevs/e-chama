@@ -1,6 +1,7 @@
 import { Profile } from "@/domain/entities/profile";
-import { supabase } from "@/lib/supabase/client";
 import { memberService } from "./memberService";
+import { getServerClient } from "@/lib/supabase/server";
+import { supabase } from "@/lib/supabase/client";
 
 export const profileService = {
   async newUserProfile(profile: Profile) {
@@ -24,6 +25,7 @@ export const profileService = {
       .single();
   },
   async updateUserProfile(profile: Profile) {
+    const supabase = await getServerClient();
     return await supabase.from("profiles")
       .update([
         {
@@ -98,6 +100,7 @@ export const profileService = {
     if (error) {
       return { data: null, error: error };
     }
+    const supabase = await getServerClient();
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("*")

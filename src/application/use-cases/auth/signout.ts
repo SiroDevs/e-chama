@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 
-import { resetAuthState} from "../../state/authSlice";
+import { resetAuthState } from "../../state/authSlice";
 import { signoutUserAction } from "@/app/actions/auth-actions";
 import { resetGroupState } from "@/application/state/groupSlice";
 import { resetNavState } from "@/application/state/navSlice";

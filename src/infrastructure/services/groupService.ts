@@ -1,8 +1,7 @@
-import { getServerClient } from "@/lib/supabase/server";
-import { supabase } from "@/lib/supabase/client";
 import { UserGroup, Group, GroupExt } from "@/domain/entities";
 import { memberService } from "./memberService";
 import { PaginatedResp } from "@/types/paginations";
+import { supabase } from "@/lib/supabase/client";
 
 export const groupService = {
   async newGroup(group: Group) {
@@ -24,7 +23,6 @@ export const groupService = {
   },
 
   async getUserGroups(userId: string): Promise<UserGroup[]> {
-    const supabase = await getServerClient();
     console.info("Fetching user's groups");
     const { data, error } = await supabase
       .from("user_groups")
@@ -41,7 +39,6 @@ export const groupService = {
   async getUserGroup(
     userId: string, groupId: string
   ): Promise<UserGroup> {
-    const supabase = await getServerClient();
     const { data, error } = await supabase
       .from("user_groups")
       .select("*")
@@ -59,7 +56,6 @@ export const groupService = {
     userId: string,
     groupId: string
   ): Promise<UserGroup | null> {
-    const supabase = await getServerClient();
     const { data, error } = await supabase
       .from("user_groups")
       .select("*")
@@ -81,7 +77,6 @@ export const groupService = {
     userId: string,
     searchTerm: string
   ): Promise<UserGroup[]> {
-    const supabase = await getServerClient();
     const { data, error } = await supabase
       .from("user_groups")
       .select("*")
@@ -104,7 +99,6 @@ export const groupService = {
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
-    const supabase = await getServerClient();
     const { data, error, count } = await supabase
       .from("user_groups")
       .select("*", { count: "exact" })
@@ -132,7 +126,6 @@ export const groupService = {
     userId: string,
     groupId: string
   ): Promise<string | null> {
-    const supabase = await getServerClient();
     const { data, error } = await supabase
       .from("members")
       .select("role")
@@ -151,7 +144,6 @@ export const groupService = {
   },
 
   async isUserMemberOfGroup(userId: string, groupId: string): Promise<boolean> {
-    const supabase = await getServerClient();
     const { data, error } = await supabase
       .from("members")
       .select("id")
@@ -170,7 +162,6 @@ export const groupService = {
   },
 
   async searchByCode(code: string): Promise<(GroupExt & { member_count: number }) | null> {
-    const supabase = await getServerClient();
     const { data, error } = await supabase
       .from("groups")
       .select("*")

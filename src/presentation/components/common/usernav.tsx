@@ -23,10 +23,6 @@ export default function UserNav() {
     try {
       await dispatch(signoutUser());
       router.push("/signin");
-      toast({
-        title: "Success",
-        description: "You have been signed out successfully",
-      });
     } catch (error: unknown) {
       toast({
         variant: "destructive",
