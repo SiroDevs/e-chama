@@ -2,15 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { getCurrentUser } from "@/app/actions/auth-actions";
 
-const protectedRoutes = ["/contributions", "/members", "/meetings", "/settings", "/profile"];
-const authRoutes = ["/signin", "/signout"];
+const authRoutes = ["/signin", "/signup", "/signout"];
+const protectedRoutes = [
+  "/contributions",
+  "/members",
+  "/meetings",
+  "/settings",
+  "/profile"
+];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
-  let response = NextResponse.next({
-    request: { headers: request.headers },
-  });
 
   const userInfo = await getCurrentUser();
 
@@ -25,7 +27,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
