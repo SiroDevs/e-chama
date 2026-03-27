@@ -3,27 +3,22 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { editUserInfo, newGroupMember, newUserAccount, newUserProfile, updateGroupMember, updateUserProfile } from "@/app/actions/user-actions";
 import { setError } from "@/application/state/appSlice";
 import { GroupMember } from "@/domain/entities";
-import { MemberFormValues } from "@/app/(protected)/members/[id]/edit/schema";
+import { EditMemberFormValues } from "@/app/(protected)/members/[id]/edit/schema";
 import { toE164 } from "@/lib/utils";
+import { NewMemberFormValues } from "@/app/(protected)/members/new/schema";
 
 export const newMemberAction = (
-  first_name: string,
-  last_name: string,
-  phone: string,
-  email: string,
-  password: string,
-  memberno: string,
-  id_number: string,
-  kra_pin: string,
-  groupid: string,
-  address: string,
-  country: string,
-  sex: string,
-  dob: string,
+  values: NewMemberFormValues,
+  group_id: string,
 ) => {
   return async (dispatch: Dispatch) => {
     try {
-      const user = await newUserAccount(first_name, last_name, phone, email, password);
+      const user = await newUserAccount(
+        values.first_name + ' ' + values.last_name,
+        toE164(values.phone!),
+        values.email,
+        values.password
+      );
 
       if (!user) {
         throw new Error("Account creation failed");
@@ -31,15 +26,15 @@ export const newMemberAction = (
 
       const profile = await newUserProfile({
         id: user.id,
-        group_id: groupid,
-        first_name: first_name,
-        last_name: last_name,
-        id_number: id_number,
-        // kra_pin: kra_pin,
-        // country: country,
-        // address: address,
-        // sex: sex,
-        // dob: dob,
+        group_id: group_id,
+        first_name: values.first_name,
+        last_name: values.last_name,
+        id_number: values.id_number,
+        kra_pin: values.kra_pin,
+        country: values.country,
+        address: values.address,
+        sex: values.sex,
+        dob: values.dob,
       });
 
       if (!profile) {
@@ -47,9 +42,9 @@ export const newMemberAction = (
       }
 
       const member = await newGroupMember({
-        group_id: groupid,
+        group_id: group_id,
         user_id: user.id,
-        member_no: memberno,
+        member_no: values.member_no,
         role: "member",
       });
 
@@ -66,7 +61,7 @@ export const newMemberAction = (
 };
 
 export const editMemberAction = (
-  values: MemberFormValues,
+  values: EditMemberFormValues,
   member: GroupMember,
   group_id: string,
 ) => {
@@ -88,11 +83,11 @@ export const editMemberAction = (
         first_name: values.first_name,
         last_name: values.last_name,
         id_number: values.id_number,
-        kra_pin: member.kra_pin!,
-        country: member.country!,
-        address: member.address!,
-        sex: member.sex!,
-        dob: "1995-01-01",
+        kra_pin: values.kra_pin,
+        country: values.country,
+        address: values.address,
+        sex: values.sex,
+        dob: values.dob,
       });
 
       if (!profileUpdated) {

@@ -121,6 +121,9 @@ const page = () => {
             />
           </div>
         }
+        showFab={true}
+        fabIcon={<PlusIcon />}
+        fabHref="/contributions/new"
       >
         <ContributionsTable
           records={entities}

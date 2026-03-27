@@ -14,7 +14,7 @@ import NewMemberForm from "./form";
 import { Alert, AlertTitle, Card } from "@/presentation/components/ui";
 import { AlertDescription, CardContent } from "@/presentation/components/ui";
 import { newMemberAction } from "@/application/use-cases/user/member";
-import { MemberFormValues } from "./arrays";
+import { NewMemberFormValues } from "./schema";
 
 const Page = () => {
   const router = useRouter();
@@ -27,28 +27,12 @@ const Page = () => {
     router.push("/members");
   };
 
-  const handleSubmit = async (values: MemberFormValues) => {
+  const handleSubmit = async (values: NewMemberFormValues) => {
     try {
       setIsLoading(true);
       setError(null);
 
-      await dispatch(
-        newMemberAction(
-          values.first_name,
-          values.last_name,
-          values.phone || "",
-          values.email,
-          values.password,
-          values.member_no || "",
-          values.id_number || "",
-          "",//kra_pin
-          group?.group_id!,
-          "",//address
-          "",//country
-          "",//sex
-          "",//dob
-        ),
-      );
+      await dispatch(newMemberAction(values,group?.group_id!),);
 
       router.push("/members");
     } catch (err: unknown) {
@@ -76,7 +60,7 @@ const Page = () => {
           </div>
         }
       >
-        <Card className="w-full md:w-3/4 p-4 m-2">
+        <Card className="w-full md:w-3/4 py-4 y-2">
           <CardContent>
             {error && (
               <Alert variant="destructive" className="mb-4">

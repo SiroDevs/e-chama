@@ -26,11 +26,7 @@ const TAB_ICONS: Record<Tab, React.ReactNode> = {
   Contributions: <HandCoins size={15} />,
 };
 
-function TabButton({
-  tab,
-  active,
-  onClick,
-}: {
+function TabButton({tab, active, onClick}: {
   tab: Tab;
   active: boolean;
   onClick: () => void;
@@ -122,32 +118,49 @@ const page = () => {
             />
           </div>
         }
+        showFab={true}
+        fabIcon={<Edit2Icon />}
+        fabHref={`/members/${memberNo}/edit`}
       >
-        <div className="px-3 py-3 flex rounded-lg items-center justify-between border bg-white dark:bg-[#1d1d20] shadow-xs">
-          <div className="flex items-center gap-3">
-            <div className="ring-3 ring-blue dark:ring-[#2a2d3e] rounded-lg overflow-hidden shrink-0">
-              <GenericAvatar size={100} className="rounded-lg" />
+        <div className="px-3 py-3 flex flex-col md:flex-row rounded-lg items-center justify-between border bg-white dark:bg-[#1d1d20] shadow-xs gap-4 md:gap-0">
+          <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 w-full md:w-auto">
+            <div className="ring-3 ring-blue dark:ring-[#2a2d3e] rounded-full overflow-hidden shrink-0">
+              <GenericAvatar
+                size={120}
+                className="rounded-full w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
+              />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="text-center sm:text-left">
+              <h1 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
                 {memberData?.full_name || "Unknown Member"}
               </h1>
-              <div className="flex flex-wrap gap-4 mt-1 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3 md:gap-4 mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 <span className="flex items-center gap-1">
-                  <Briefcase size={14} />{" "}
+                  <Briefcase
+                    size={12}
+                    className="sm:w-3 sm:h-3 md:w-[14px] md:h-[14px]"
+                  />{" "}
                   {capitalize(memberData?.role!) || "member"}
                 </span>
                 <span className="flex items-center gap-1">
-                  <MapPin size={14} /> {memberData?.address || "Nairobi"},{" "}
+                  <MapPin
+                    size={12}
+                    className="sm:w-3 sm:h-3 md:w-[14px] md:h-[14px]"
+                  />{" "}
+                  {memberData?.address || "Nairobi"},{" "}
                   {memberData?.country || "Kenya"}
                 </span>
                 <span className="flex items-center gap-1">
-                  <Calendar size={14} /> Joined A long time ago
+                  <Calendar
+                    size={12}
+                    className="sm:w-3 sm:h-3 md:w-[14px] md:h-[14px]"
+                  />{" "}
+                  Joined A long time ago
                 </span>
               </div>
 
-              <hr className="border-gray-100 dark:border-white/5 py-1" />
-              <div className="flex gap-1">
+              <hr className="border-gray-100 dark:border-white/5 my-2 sm:my-2 md:my-3" />
+              <div className="flex flex-wrap justify-center sm:justify-start gap-1">
                 {TABS.map((tab) => (
                   <TabButton
                     key={tab}
@@ -159,8 +172,8 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-green-600 hover:bg-green-500 transition-colors text-white text-sm font-semibold px-4 py-2 rounded-lg">
-            <UserCheck size={16} /> Active
+          <div className="hidden md:flex flex items-center gap-2 bg-green-600 hover:bg-green-500 transition-colors text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg shrink-0">
+            <UserCheck size={14} className="sm:w-4 sm:h-4" /> Active
           </div>
         </div>
 
