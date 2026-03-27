@@ -1,7 +1,9 @@
+import Link from "next/link";
 
 export function MonthlyMeetings() {
   return (
-    <div className="border border-gray-200 dark:border-gray-800 p-5 rounded-lg"
+    <div
+      className="border border-gray-200 dark:border-gray-800 p-5 rounded-lg"
       style={{
         borderRadius: "16px",
         padding: "24px 20px",
@@ -24,22 +26,24 @@ export function MonthlyMeetings() {
         No montly meeting data is available
       </p>
 
-      <button
-        style={{
-          background: "#2a2a2a",
-          color: "#f0f0f0",
-          border: "none",
-          borderRadius: "999px",
-          padding: "12px 24px",
-          fontSize: "14px",
-          fontWeight: 600,
-          cursor: "pointer",
-          transition: "background 0.15s ease",
-          fontFamily: "inherit",
-        }}
-      >
-        See all
-      </button>
+      <Link href="/meetings" passHref>
+        <button
+          style={{
+            background: "#2a2a2a",
+            color: "#f0f0f0",
+            border: "none",
+            borderRadius: "999px",
+            padding: "12px 24px",
+            fontSize: "14px",
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "background 0.15s ease",
+            fontFamily: "inherit",
+          }}
+        >
+          See all
+        </button>
+      </Link>
     </div>
   );
 }

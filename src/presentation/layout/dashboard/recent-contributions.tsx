@@ -1,4 +1,5 @@
 import { GroupContribution } from "@/domain/entities";
+import Link from "next/link";
 
 interface RecentContributionsProps {
   contributions: GroupContribution[];
@@ -55,7 +56,8 @@ export function RecentContributions({
   periodDays = 30,
 }: RecentContributionsProps) {
   return (
-    <div className="border border-gray-200 dark:border-gray-800 p-5 rounded-lg"
+    <div
+      className="border border-gray-200 dark:border-gray-800 p-5 rounded-lg"
       style={{
         borderRadius: "16px",
         padding: "24px 20px",
@@ -94,7 +96,8 @@ export function RecentContributions({
               alignItems: "center",
               justifyContent: "space-between",
               padding: "12px 0",
-              borderBottom: index < contributions.length - 1 ? "1px solid #252525" : "none",
+              borderBottom:
+                index < contributions.length - 1 ? "1px solid #252525" : "none",
               gap: "12px",
             }}
           >
@@ -112,7 +115,9 @@ export function RecentContributions({
               >
                 {c.full_name ?? "Unknown"}
               </p>
-              <p style={{ margin: "2px 0 0 0", fontSize: "12px", color: "#888" }}>
+              <p
+                style={{ margin: "2px 0 0 0", fontSize: "12px", color: "#888" }}
+              >
                 {c.created_at ? formatDate(c.created_at) : "—"}
                 {c.mode ? ` · ${c.mode}` : ""}
               </p>
@@ -135,22 +140,24 @@ export function RecentContributions({
         ))}
       </div>
 
-      <button
-        style={{
-          background: "#2a2a2a",
-          color: "#f0f0f0",
-          border: "none",
-          borderRadius: "999px",
-          padding: "12px 24px",
-          fontSize: "14px",
-          fontWeight: 600,
-          cursor: "pointer",
-          transition: "background 0.15s ease",
-          fontFamily: "inherit",
-        }}
-      >
-        See all
-      </button>
+      <Link href="/contributions" passHref>
+        <button
+          style={{
+            background: "#2a2a2a",
+            color: "#f0f0f0",
+            border: "none",
+            borderRadius: "999px",
+            padding: "12px 24px",
+            fontSize: "14px",
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "background 0.15s ease",
+            fontFamily: "inherit",
+          }}
+        >
+          See all
+        </button>
+      </Link>
     </div>
   );
 }

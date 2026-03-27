@@ -1,28 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Define protected routes that require authentication
-const protectedRoutes = ["/todos", "/settings", "/profile"];
-// Define auth routes (accessible only when not logged in)
+const protectedRoutes = [
+  "/contributions",
+  "/members",
+  "/meetings",
+  "/settings",
+  "/profile",
+];
+
 const authRoutes = ["/signin", "/signout"];
 
-// This middleware shouldn't interfere with Firebase authentication
-// Firebase handles auth client-side, so we'll just let the pages handle auth checks
 export function middleware(request: NextRequest) {
-  // Let the client-side Firebase auth handle the authentication
+  const { pathname } = request.nextUrl;
+
+  const token = request.cookies.get("token")?.value;
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  const isAuthRoute = authRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  if (!token && isProtectedRoute) {
+    return NextResponse.redirect(new URL("/signin", request.url));
+  }
+
+  if (token && isAuthRoute) {
+    return NextResponse.redirect(new URL("/contributions", request.url)); // or dashboard
+  }
+
   return NextResponse.next();
 }
 
-// Configure which routes this middleware will run on
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    "/((?!_next/static|_next/image|favicon.ico|public).*)",
-    "/api/:path*",
+    "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };
