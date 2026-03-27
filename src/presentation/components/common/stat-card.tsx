@@ -43,7 +43,6 @@ export function StatCard({
   return (
     <div className="h-full flex-grow border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-950 shadow-sm hover:shadow-md transition-shadow">
       <div className="p-4">
-        {/* Header */}
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {title}
@@ -53,9 +52,7 @@ export function StatCard({
           </span>
         </div>
 
-        {/* Main content */}
         <div className="flex flex-col gap-2">
-          {/* Value and trend */}
           <div className="flex justify-between items-center">
             <p className="text-2xl font-semibold text-gray-900 dark:text-white">
               {value}
@@ -65,7 +62,6 @@ export function StatCard({
             </span>
           </div>
 
-          {/* Chart with Recharts */}
           <div className="w-full h-[50px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
@@ -93,7 +89,6 @@ export function StatCard({
             </ResponsiveContainer>
           </div>
 
-          {/* Link button */}
           {link && (
             <div className="w-full mt-2">
               <Link href={link} passHref>

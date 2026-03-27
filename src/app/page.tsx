@@ -7,7 +7,7 @@ import { RootState } from "@/application/state/store";
 import Faq from "@/presentation/components/common/faq";
 import Hero from "@/presentation/components/common/hero";
 import { Button } from "@/presentation/components/ui";
-import Dashboard from "@/presentation/layout/Dashboard";
+import Dashboard from "@/presentation/layout/dashboard/Dashboard";
 import { JoinGroup } from "@/presentation/layout/join/JoinGroup";
 
 const Page = () => { 
