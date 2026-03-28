@@ -9,6 +9,7 @@ const protectedRoutes = [
   "/members",
   "/meetings",
   "/settings",
+  "/groups",
   "/profile"
 ];
 

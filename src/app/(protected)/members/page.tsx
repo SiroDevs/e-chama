@@ -13,6 +13,7 @@ import { RootState } from "@/application/state/store";
 import { MembersTable } from "@/presentation/layout/tables/members";
 import { PageAction, PageButton } from "@/presentation/components/ui/actions";
 import { useRouter } from "next/navigation";
+import { EmptyState } from "@/presentation/components/ui/states";
 
 const page = () => {
   const router = useRouter();
@@ -70,12 +71,27 @@ const page = () => {
         fabIcon={<PlusIcon />}
         fabHref="/members/new"
       >
-        <MembersTable
-          records={entities}
-          onEdit={handleEdit}
-          onMore={handleMore}
-          {...commonProps}
-        />
+        {!isLoading && !isFetching && entities.length === 0 ? (
+          <EmptyState
+            icon={Users}
+            title="No members found"
+            description="No members in this chama yet."
+            action={
+              <PageAction
+                title="Register a New Member"
+                onClick={handleNew}
+                icon={<PlusIcon />}
+              />
+            }
+          />
+        ) : (
+          <MembersTable
+            records={entities}
+            onEdit={handleEdit}
+            onMore={handleMore}
+            {...commonProps}
+          />
+        )}
       </PageContent>
     </PageContainer>
   );

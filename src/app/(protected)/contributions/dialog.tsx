@@ -12,6 +12,7 @@ import ContributionForm from "./form";
 
 interface ContributionDialogProps {
   open: boolean;
+  isMember: boolean;
   isLoading: boolean;
   onClose: () => void;
   onSubmit: (data: Partial<GroupContribution>) => void;
@@ -21,6 +22,7 @@ interface ContributionDialogProps {
 
 export function ContributionDialog({
   open,
+  isMember,
   isLoading,
   onClose,
   onSubmit,
@@ -61,6 +63,7 @@ export function ContributionDialog({
           } : undefined}
           onSubmit={handleSubmit}
           onCancel={onClose}
+          isMember={isMember}
           isLoading={isLoading}
         />
       </AlertDialogContent>

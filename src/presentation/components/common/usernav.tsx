@@ -49,7 +49,7 @@ export default function UserNav() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Manage My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => router.push(`/user/settings`)}>
+            <DropdownMenuItem onClick={() => router.push(`/settings`)}>
               <Settings className="h-4 w-4 mr-2" />
               <span>Settings</span>
             </DropdownMenuItem>

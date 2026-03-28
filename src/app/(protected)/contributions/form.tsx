@@ -17,6 +17,7 @@ interface ContributionFormProps {
     member: GroupMember,
   ) => Promise<void> | void;
   onCancel?: () => void;
+  isMember?: boolean;
   isLoading?: boolean;
   groupId: string;
   member?: GroupMember | null;
@@ -26,6 +27,7 @@ interface ContributionFormProps {
 export default function ContributionForm({
   onSubmit,
   onCancel,
+  isMember = false,
   isLoading = false,
   groupId,
   member,
@@ -36,7 +38,9 @@ export default function ContributionForm({
   );
 
   const form = useForm<ContributionFormValues>({
-    resolver: zodResolver(contributionSchema) as Resolver<ContributionFormValues>,
+    resolver: zodResolver(
+      contributionSchema,
+    ) as Resolver<ContributionFormValues>,
     defaultValues: {
       member_id: member?.id || "",
       amount: 0,
@@ -78,6 +82,8 @@ export default function ContributionForm({
                 const field = contributionFields[fieldName];
 
                 if (field.type === "member-search") {
+                  if (isMember) return null;
+
                   return (
                     <MemberSearchField
                       key={field.name}
