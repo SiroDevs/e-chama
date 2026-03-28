@@ -45,6 +45,7 @@ export function GroupNav() {
       });
     }
   };
+  const handleJoinGroup = () => router.push("/groups");
 
   return (
     <div className="px-2 py-2 w-full">
@@ -68,7 +69,7 @@ export function GroupNav() {
             align="end"
             className="w-[var(--radix-dropdown-menu-trigger-width)]"
           >
-            <DropdownMenuLabel>Switch Group</DropdownMenuLabel>
+            <DropdownMenuLabel>Switch a Chama</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {groups.map((grp) => (
               <DropdownMenuItem
@@ -80,12 +81,10 @@ export function GroupNav() {
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <Link href="/groups">
-              <DropdownMenuItem>
-                <EnterIcon className="mr-2 h-4 w-4" />
-                <span>Join a Group</span>
-              </DropdownMenuItem>
-            </Link>
+            <DropdownMenuItem key="join-group" onClick={handleJoinGroup}>
+              <EnterIcon className="mr-2 h-4 w-4" />
+              <span>Join a Group</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         ) : (
           <DropdownMenuContent
@@ -96,11 +95,11 @@ export function GroupNav() {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <SquareChevronRight className="h-4 w-4 mr-2" />
-              <span>Join a Group</span>
+              <span>Join a Chama</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <SquareChevronRight className="h-4 w-4 mr-2" />
-              <span>Create a Group</span>
+              <span>Create a Chama</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         )}
