@@ -4,6 +4,7 @@ import Link from "next/link";
 interface RecentContributionsProps {
   contributions: GroupContribution[];
   periodDays?: number;
+  isMember?: boolean;
 }
 
 function formatAmount(amount: number): string {
@@ -54,6 +55,7 @@ function StatusBadge({ status }: { status?: string }) {
 export function RecentContributions({
   contributions,
   periodDays = 30,
+  isMember = false,
 }: RecentContributionsProps) {
   return (
     <div
@@ -107,7 +109,6 @@ export function RecentContributions({
                   margin: 0,
                   fontSize: "14px",
                   fontWeight: 600,
-                  color: "#f0f0f0",
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis",

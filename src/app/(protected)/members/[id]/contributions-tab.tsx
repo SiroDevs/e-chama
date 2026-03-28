@@ -14,7 +14,7 @@ import { usePaginatedEntity } from "@/presentation/hooks/use-paginated-entity";
 import { RootState } from "@/application/state/store";
 import { container } from "@/infrastructure/di/container";
 
-export default function ContributionsTab({ member }: { member: GroupMember }) {
+export function ContributionsTab({ member }: { member: GroupMember }) {
   const queryClient = useQueryClient();
   const PAGE_SIZE = 20;
   const [currentPage, setCurrentPage] = useState(1);

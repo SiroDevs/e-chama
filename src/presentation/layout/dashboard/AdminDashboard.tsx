@@ -2,104 +2,73 @@ import { LayoutDashboard } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 
-import PageContent from "../../components/common/page-content";
-import { PageContainer } from "../../components/common/page-container";
+import { PageContent, PageContainer } from "../../components/common";
 import { RootState } from "@/application/state/store";
 import { memberService } from "@/infrastructure/services/memberService";
 import { contributionService } from "@/infrastructure/services/contributionService";
-import GroupAnalytics from "./group-anlytics";
-import { MonthlyMeetings, RecentContributions, RecentMembers } from ".";
+import { DashboardAnalytics, MonthlyMeetings } from ".";
+import { RecentContributions, RecentMembers } from ".";
 import { GroupContribution, GroupMember } from "@/domain/entities";
+import { formatNumber } from "@/lib";
 
 export function AdminDashboard() {
+  const PERIOD_DAYS = 28;
+
   const { member } = useSelector((state: RootState) => state.group);
-  const [memberCount, setMemberCount] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [totalContributions, setTotalContributions] = useState<number>(0);
+
+  const [loading, setLoading] = useState(true);
+  const [memberCount, setMemberCount] = useState(0);
+  const [totalContributions, setTotalContributions] = useState(0);
   const [members, setMembers] = useState<GroupMember[]>([]);
   const [contributions, setContributions] = useState<GroupContribution[]>([]);
 
   useEffect(() => {
-    const fetchMemberCount = async () => {
-      if (!member?.group_id) return;
+    if (!member?.group_id) return;
 
-      try {
-        setLoading(true);
-        const count = await memberService.getMemberCount(member.group_id);
-
-        setMemberCount(count);
-      } catch (error) {
-        console.error("Error fetching member count:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMemberCount();
-  }, [member?.group_id]);
-
-  useEffect(() => {
-    const fetchTotalContributions = async () => {
-      if (!member?.group_id) return;
+    const fetchDashboardData = async () => {
+      setLoading(true);
 
       const dateTo = new Date().toISOString();
       const dateFrom = new Date(
-        Date.now() - 28 * 24 * 60 * 60 * 1000,
+        Date.now() - PERIOD_DAYS * 24 * 60 * 60 * 1000,
       ).toISOString();
 
-      const { data, error } = await contributionService.getTotalContributions(
-        member.group_id,
-        dateFrom,
-        dateTo,
-      );
-
-      if (!error && data !== null) {
-        setTotalContributions(data);
-      }
-    };
-
-    fetchTotalContributions();
-  }, [member?.group_id]);
-
-  useEffect(() => {
-    const fetchRecentMembers = async () => {
-      if (!member?.group_id) return;
-
       try {
-        setLoading(true);
-        const { data } = await memberService.getRecentMembers(member.group_id);
+        const [count, recentMembers, recentContributions, totalContribs] =
+          await Promise.all([
+            memberService.getMemberCount(member.group_id!),
+            memberService.getRecentMembers(member.group_id!),
+            contributionService.getRecentContributions({
+              groupId: member.group_id!,
+            }),
+            contributionService.getTotalContributions({
+              groupId: member.group_id!,
+              dateFrom: dateFrom,
+              dateTo: dateTo,
+            }),
+          ]);
 
-        setMembers(data || []);
+        setMemberCount(count);
+        setMembers(recentMembers.data || []);
+        setContributions(recentContributions.data || []);
+
+        if (!totalContribs.error && totalContribs.data !== null) {
+          setTotalContributions(totalContribs.data);
+        }
       } catch (error) {
-        console.error("Error fetching recent members:", error);
+        console.error("Error fetching dashboard data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchRecentMembers();
+    fetchDashboardData();
   }, [member?.group_id]);
 
-  useEffect(() => {
-    const fetchRecentContributions = async () => {
-      if (!member?.group_id) return;
-
-      try {
-        setLoading(true);
-        const { data } = await contributionService.getRecentContributions(
-          member.group_id,
-        );
-
-        setContributions(data || []);
-      } catch (error) {
-        console.error("Error fetching recent contributions:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRecentContributions();
-  }, [member?.group_id]);
+  const summaryItems = [
+    { label: "Contributions", value: formatNumber(totalContributions) },
+    { label: "Loans repayment", value: (0).toLocaleString() },
+  ];
 
   return (
     <PageContainer pageTitle="Chama Dashboard" pageIcon={<LayoutDashboard />}>
@@ -107,12 +76,13 @@ export function AdminDashboard() {
         <div className="py-3 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="flex flex-col gap-4">
-              <GroupAnalytics
-                members={loading ? 0 : memberCount}
-                memberGrowth={loading ? 0 : memberCount}
-                contributions={totalContributions}
-                loans={0}
-                periodDays={28}
+              <DashboardAnalytics
+                title="Group analytics"
+                metricLabel="Total members"
+                metricValue={loading ? 0 : memberCount}
+                metricGrowth={loading ? 0 : memberCount}
+                periodDays={PERIOD_DAYS}
+                summaryItems={summaryItems}
               />
               <MonthlyMeetings />
             </div>

@@ -14,8 +14,8 @@ export const userService = {
       email: email,
       phone: phone,
       password: password,
-      user_metadata: { name: full_name }
-
+      user_metadata: { name: full_name },
+      email_confirm: true
     });;
   },
 

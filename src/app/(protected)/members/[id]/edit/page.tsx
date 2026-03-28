@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { PageContainer } from "@/presentation/components/common/page-container";
-import PageContent from "@/presentation/components/common/page-content";
+import { PageContent, PageContainer } from "@/presentation/components/common";
 import { PageButton } from "@/presentation/components/ui/actions";
 import { AppDispatch, RootState } from "@/application/state/store";
 import { Alert, Card } from "@/presentation/components/ui";

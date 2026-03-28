@@ -20,7 +20,7 @@ export interface PageContentProps {
   fabHref?: string;
 }
 
-export default function PageContent(props: PageContentProps) {
+export function PageContent(props: PageContentProps) {
   const {
     children,
     breadcrumbs,

@@ -6,6 +6,8 @@ export * from "./main-footer";
 export * from "./main-navbar";
 export * from "./member-search";
 export * from "./partners";
+export * from "./page-container";
+export * from "./page-content";
 export * from "./pricing";
 export * from "./stats";
 export * from "./testimonials";

@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Users } from "lucide-react";
 import { useSelector } from "react-redux";
-import { RefreshCcw, PlusIcon } from "lucide-react";
+import { HandCoins, RefreshCcw, PlusIcon } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { PageContainer } from "@/presentation/components/common/page-container";
-import PageContent from "@/presentation/components/common/page-content";
+import { PageContent, PageContainer } from "@/presentation/components/common";
 import { usePaginatedEntity } from "@/presentation/hooks/use-paginated-entity";
 import { container } from "@/infrastructure/di/container";
 import { GroupContribution } from "@/domain/entities";
@@ -24,10 +22,13 @@ const page = () => {
   const PAGE_SIZE = 20;
   const [currentPage, setCurrentPage] = useState(1);
   const [isSaving, setIsSaving] = useState(false);
-  const { group } = useSelector((state: RootState) => state.group);
+  const { member, group } = useSelector((state: RootState) => state.group);
+  const isMember = member?.role === "member";
 
   const [openDialog, setDialogOpen] = useState(false);
-  const [editingEntity, setEditingEntity] = useState<GroupContribution | null>(null);
+  const [editingEntity, setEditingEntity] = useState<GroupContribution | null>(
+    null,
+  );
 
   const { entities, pagination, isLoading, isFetching } = usePaginatedEntity(
     container.contributionUseCase,
@@ -35,7 +36,12 @@ const page = () => {
     {
       page: currentPage,
       pageSize: PAGE_SIZE,
-      filters: { group_id: group?.group_id },
+      filters: isMember
+        ? {
+            member_id: member?.id,
+            group_id: group?.group_id,
+          }
+        : { group_id: group?.group_id },
     },
   );
 
@@ -55,7 +61,9 @@ const page = () => {
   };
 
   const invalidate = () => {
-    queryClient.invalidateQueries({ queryKey: ["group_contributions", "paginated"] });
+    queryClient.invalidateQueries({
+      queryKey: ["group_contributions", "paginated"],
+    });
   };
 
   const handleSubmit = async (data: Partial<GroupContribution>) => {
@@ -90,7 +98,7 @@ const page = () => {
       invalidate();
     } catch (err: unknown) {
       const errMsg = handleError(err, {
-        tags: { component: 'Contribution', action: 'submit' },
+        tags: { component: "Contribution", action: "submit" },
         userMessage: "Failed to save contribution. Please try again.",
       });
       toast.error(errMsg);
@@ -104,9 +112,12 @@ const page = () => {
   const handleRefresh = () => invalidate();
 
   return (
-    <PageContainer pageTitle="Contributions" pageIcon={<Users />}>
+    <PageContainer
+      pageTitle={`${isMember ? "Member " : ""}Contributions`}
+      pageIcon={<HandCoins />}
+    >
       <PageContent
-        breadcrumbs={[{ title: "Contributions" }]}
+        breadcrumbs={[{ title: `${isMember ? "Your " : ""}Contributions` }]}
         actions={
           <div className="flex flex-row items-center gap-3">
             <PageButton

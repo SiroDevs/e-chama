@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/app/actions/auth-actions";
 
 const authRoutes = ["/signin", "/signup", "/signout"];
+
 const protectedRoutes = [
   "/contributions",
   "/members",
