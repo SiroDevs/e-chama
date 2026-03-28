@@ -28,6 +28,9 @@ const Page = () => {
             />
           </div>
         }
+        showFab={true}
+        fabIcon={<XIcon />}
+        fabOnClick={handleCancel}
       >
         <JoinGroup />
       </PageContent>
