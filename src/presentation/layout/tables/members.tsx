@@ -9,7 +9,6 @@ import { GroupMember } from "@/domain/entities";
 import LoadingSpinner from "../../components/ui/states/loading-spinner";
 import { formatDateTime } from "@/application/helpers/utils";
 import { TableActions } from "../../components/tables/table-actions";
-import { EmptyState } from "../../components/ui/states/empty-state";
 
 interface MemberTableProps {
   records: GroupMember[];
@@ -78,7 +77,9 @@ export function MembersTable({
             {records.length === 0 ? (
               <tr>
                 <td colSpan={COLUMNS.length} className="px-6 py-24 text-center">
-                  <EmptyState entityName="members" />
+                  <div className="text-center py-8 text-gray-500">
+                    No members found
+                  </div>
                 </td>
               </tr>
             ) : (

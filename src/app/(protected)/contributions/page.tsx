@@ -16,6 +16,7 @@ import { ContributionsTable } from "@/presentation/layout/tables/contributions";
 import { ContributionDialog } from "./dialog";
 import { newContribution } from "@/application/use-cases/user/contribution";
 import { handleError } from "@/application/helpers/error-utils";
+import { EmptyState } from "@/presentation/components/ui/states/empty-state";
 
 const page = () => {
   const queryClient = useQueryClient();
@@ -136,20 +137,40 @@ const page = () => {
         fabIcon={<PlusIcon />}
         fabHref="/contributions/new"
       >
-        <ContributionsTable
-          records={entities}
-          onEdit={openEdit}
-          onMore={handleMore}
-          isLoading={isLoading || isFetching || isSaving}
-          currentPage={currentPage}
-          totalPages={pagination.totalPages}
-          totalItems={pagination.total}
-          pageSize={PAGE_SIZE}
-          onPageChange={setCurrentPage}
-        />
+        {!isLoading && !isFetching && entities.length === 0 ? (
+          <EmptyState
+            icon={HandCoins}
+            title="No contributions found"
+            description={
+              isMember
+                ? "You haven't made any contributions yet."
+                : "No contributions have been recorded for this chama."
+            }
+            action={
+              <PageAction
+                title="Add a New Contribution"
+                onClick={handleOpenDialog}
+                icon={<PlusIcon />}
+              />
+            }
+          />
+        ) : (
+          <ContributionsTable
+            records={entities}
+            onEdit={openEdit}
+            onMore={handleMore}
+            isLoading={isLoading || isFetching || isSaving}
+            currentPage={currentPage}
+            totalPages={pagination.totalPages}
+            totalItems={pagination.total}
+            pageSize={PAGE_SIZE}
+            onPageChange={setCurrentPage}
+          />
+        )}
 
         <ContributionDialog
           open={openDialog}
+          isMember={isMember}
           isLoading={isSaving}
           onClose={handleCloseDialog}
           onSubmit={handleSubmit}
