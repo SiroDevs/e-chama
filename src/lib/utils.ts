@@ -30,3 +30,8 @@ export function toE164(phone: string, countryCode = "254"): string {
 
   return `+${normalizedCountryCode}${cleaned}`;
 }
+
+export function formatNumber(n: number): string {
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+  return n.toLocaleString();
+}

@@ -116,10 +116,8 @@ export async function signoutUserAction(): Promise<void> {
 
 export const getCurrentUser = async () => {
   const accessToken = (await cookies()).get("accessToken")?.value;
-  let decodedData = null;
   if (accessToken) {
-    decodedData = await jwtDecode(accessToken);
-    return decodedData;
+    return accessToken;
   } else {
     return null;
   }

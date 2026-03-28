@@ -5,8 +5,7 @@ import { Users } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RefreshCcw, PlusIcon } from "lucide-react";
 
-import { PageContainer } from "@/presentation/components/common/page-container";
-import PageContent from "@/presentation/components/common/page-content";
+import { PageContent, PageContainer } from "@/presentation/components/common";
 import { usePaginatedEntity } from "@/presentation/hooks/use-paginated-entity";
 import { container } from "@/infrastructure/di/container";
 import { GroupMember } from "@/domain/entities";
