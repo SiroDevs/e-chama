@@ -74,7 +74,7 @@ const page = () => {
 
       const payload = {
         group_id: group?.group_id,
-        member_id: data.member_id,
+        member_id: isMember ? data.member_id : member?.id,
         reason: data.reason?.trim(),
         mode: data.mode?.trim(),
         amount: data.amount,
@@ -135,7 +135,7 @@ const page = () => {
         }
         showFab={true}
         fabIcon={<PlusIcon />}
-        fabHref="/contributions/new"
+        fabOnClick={handleOpenDialog}
       >
         {!isLoading && !isFetching && entities.length === 0 ? (
           <EmptyState

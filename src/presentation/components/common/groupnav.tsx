@@ -11,6 +11,8 @@ import { AppDispatch, RootState } from "@/application/state/store";
 import { useToast } from "../ui/use-toast";
 import { UserGroup } from "@/domain/entities";
 import { switchGroupAction } from "@/application/use-cases/user/group";
+import { EnterIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export function GroupNav() {
   const router = useRouter();
@@ -77,6 +79,13 @@ export function GroupNav() {
                 <span>{grp.title}</span>
               </DropdownMenuItem>
             ))}
+            <DropdownMenuSeparator />
+            <Link href="/groups">
+              <DropdownMenuItem>
+                <EnterIcon className="mr-2 h-4 w-4" />
+                <span>Join a Group</span>
+              </DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         ) : (
           <DropdownMenuContent
