@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase/client";
 import { BaseRepo, PaginationOptions, PaginatedResult } from "./base.repo";
 
 export abstract class BaseSupabaseRepo<T> implements BaseRepo<T> {
-  constructor(protected tableName: string) {}
+  constructor(protected tableName: string) { }
 
   async getAll(): Promise<T[]> {
     const { data, error } = await supabase

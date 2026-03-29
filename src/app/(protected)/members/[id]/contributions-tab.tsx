@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
+import { HandCoins, PlusIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { GroupContribution, GroupMember } from "@/domain/entities";
@@ -13,8 +14,10 @@ import { handleError } from "@/application/helpers/error-utils";
 import { usePaginatedEntity } from "@/presentation/hooks/use-paginated-entity";
 import { RootState } from "@/application/state/store";
 import { container } from "@/infrastructure/di/container";
+import { PageAction } from "@/presentation/components/ui/actions";
+import { EmptyState } from "@/presentation/components/ui/states";
 
-export default function ContributionsTab({ member }: { member: GroupMember }) {
+export function ContributionsTab({ member }: { member: GroupMember }) {
   const queryClient = useQueryClient();
   const PAGE_SIZE = 20;
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,7 +25,9 @@ export default function ContributionsTab({ member }: { member: GroupMember }) {
   const { group } = useSelector((state: RootState) => state.group);
 
   const [openDialog, setDialogOpen] = useState(false);
-  const [editingEntity, setEditingEntity] = useState<GroupContribution | null>(null);
+  const [editingEntity, setEditingEntity] = useState<GroupContribution | null>(
+    null,
+  );
 
   const { entities, pagination, isLoading, isFetching } = usePaginatedEntity(
     container.contributionUseCase,
@@ -30,9 +35,9 @@ export default function ContributionsTab({ member }: { member: GroupMember }) {
     {
       page: currentPage,
       pageSize: PAGE_SIZE,
-      filters: { 
+      filters: {
         member_id: member?.id,
-        group_id: group?.group_id
+        group_id: group?.group_id,
       },
     },
   );
@@ -53,7 +58,9 @@ export default function ContributionsTab({ member }: { member: GroupMember }) {
   };
 
   const invalidate = () => {
-    queryClient.invalidateQueries({ queryKey: ["group_contributions", "paginated"] });
+    queryClient.invalidateQueries({
+      queryKey: ["group_contributions", "paginated"],
+    });
   };
 
   const handleSubmit = async (data: Partial<GroupContribution>) => {
@@ -88,7 +95,7 @@ export default function ContributionsTab({ member }: { member: GroupMember }) {
       invalidate();
     } catch (err: unknown) {
       const errMsg = handleError(err, {
-        tags: { component: 'Contribution', action: 'submit' },
+        tags: { component: "Contribution", action: "submit" },
         userMessage: "Failed to save contribution. Please try again.",
       });
       toast.error(errMsg);
@@ -99,24 +106,38 @@ export default function ContributionsTab({ member }: { member: GroupMember }) {
 
   const handleMore = async (id: string) => {};
 
-  const handleRefresh = () => invalidate();
-
   return (
     <div className="py-3">
-      <ContributionsTable
-        records={entities}
-        onEdit={openEdit}
-        onMore={handleMore}
-        isLoading={isLoading || isFetching || isSaving}
-        currentPage={currentPage}
-        totalPages={pagination.totalPages}
-        totalItems={pagination.total}
-        pageSize={PAGE_SIZE}
-        onPageChange={setCurrentPage}
-      />
+      {!isLoading && !isFetching && entities.length === 0 ? (
+        <EmptyState
+          icon={HandCoins}
+          title="No contributions found"
+          description="No contributions have been recorded for this member."
+          action={
+            <PageAction
+              title="Add a New Contribution"
+              onClick={handleOpenDialog}
+              icon={<PlusIcon />}
+            />
+          }
+        />
+      ) : (
+        <ContributionsTable
+          records={entities}
+          onEdit={openEdit}
+          onMore={handleMore}
+          isLoading={isLoading || isFetching || isSaving}
+          currentPage={currentPage}
+          totalPages={pagination.totalPages}
+          totalItems={pagination.total}
+          pageSize={PAGE_SIZE}
+          onPageChange={setCurrentPage}
+        />
+      )}
 
       <ContributionDialog
         open={openDialog}
+        isMember={true}
         isLoading={isSaving}
         onClose={handleCloseDialog}
         onSubmit={handleSubmit}

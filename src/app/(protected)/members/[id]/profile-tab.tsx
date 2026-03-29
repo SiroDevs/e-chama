@@ -16,7 +16,7 @@ function GenderIcon({ sex }: { sex: string | null }) {
   return <Mars size={14} />;
 }
 
-export default function ProfileTab({ member }: { member: GroupMember }) {
+export function ProfileTab({ member }: { member: GroupMember }) {
   return (
     <div className="py-3 w-full">
       <div className="flex flex-col md:flex-row gap-3">

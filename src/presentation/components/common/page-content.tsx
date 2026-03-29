@@ -20,7 +20,7 @@ export interface PageContentProps {
   fabHref?: string;
 }
 
-export default function PageContent(props: PageContentProps) {
+export function PageContent(props: PageContentProps) {
   const {
     children,
     breadcrumbs,
@@ -52,7 +52,7 @@ export default function PageContent(props: PageContentProps) {
     );
   };
 
-  if (!breadcrumbs || !actions) {
+  if (!breadcrumbs) {
     return (
       <div className="relative">
         {children && <div className="pt-1 px-1">{children}</div>}

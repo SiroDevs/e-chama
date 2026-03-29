@@ -1,5 +1,5 @@
-import { supabase } from "@/lib/supabase/client";
 import { Contribution, GroupContribution } from "@/domain/entities";
+import { supabase } from "@/lib/supabase/client";
 
 export const contributionService = {
   async getContributionById(id: string): Promise<{
@@ -96,22 +96,28 @@ export const contributionService = {
       };
     }
   },
-  async getTotalContributions(
-    groupId: string,
-    dateFrom: string,
-    dateTo: string
-  ): Promise<{
+  async getTotalContributions({groupId, memberNo, dateFrom, dateTo}: {
+    groupId: string;
+    memberNo?: string;
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<{
     data: number | null;
     error: Error | null;
   }> {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('group_contributions')
         .select('amount')
         .eq('group_id', groupId)
         .gte('created_at', dateFrom)
         .lte('created_at', dateTo);
       // .eq('status', 'approved');
+      if (memberNo) {
+        query = query.eq('member_no', memberNo);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
 
@@ -122,24 +128,33 @@ export const contributionService = {
       return { data: null, error: error as Error };
     }
   },
+  async getRecentContributions({ groupId, memberNo, limit = 3 }: {
+    groupId: string;
+    memberNo?: string;
+    limit?: number;
+  }): Promise<{
+    data: GroupContribution[];
+    error: Error | null;
+  }> {
+    try {
+      let query = supabase
+        .from('group_contributions')
+        .select('*')
+        .eq('group_id', groupId)
+        .order('created_at', { ascending: false })
+        .limit(limit);
 
-    async getRecentContributions(groupId: string, limit: number = 3): Promise<{
-      data: GroupContribution[];
-      error: Error | null;
-    }> {
-      try {
-        const { data, error } = await supabase
-          .from('group_contributions')
-          .select('*')
-          .eq('group_id', groupId)
-          .order('created_at', { ascending: false })
-          .limit(limit);
-  
-        if (error) throw error;
-  
-        return { data: data || [], error: null };
-      } catch (error) {
-        return { data: [], error: error as Error };
+      if (memberNo) {
+        query = query.eq('member_no', memberNo);
       }
-    },
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      return { data: data || [], error: null };
+    } catch (error) {
+      return { data: [], error: error as Error };
+    }
+  },
 }

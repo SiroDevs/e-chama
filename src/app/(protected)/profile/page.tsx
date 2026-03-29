@@ -2,59 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { Briefcase, Calendar, User, MapPin } from "lucide-react";
-import { UserCheck, HandCoins, RefreshCcw, Edit2Icon } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { UserCheck, RefreshCcw } from "lucide-react";
 import { useSelector } from "react-redux";
 
 import { PageContent, PageContainer } from "@/presentation/components/common";
-import { PageAction, PageButton } from "@/presentation/components/ui/actions";
+import { PageButton } from "@/presentation/components/ui/actions";
 import { GroupMember } from "@/domain/entities";
 import { setError } from "@/application/state/appSlice";
 import { RootState } from "@/application/state/store";
 import { memberService } from "@/infrastructure/services/memberService";
 import { GenericAvatar } from "@/presentation/components/ui";
 import { capitalize, handleError } from "@/application/helpers";
-import { ContributionsTab, ProfileTab } from ".";
-
-type Tab = "Profile" | "Contributions";
-
-const TAB_ICONS: Record<Tab, React.ReactNode> = {
-  Profile: <User size={15} />,
-  Contributions: <HandCoins size={15} />,
-};
-
-function TabButton({tab, active, onClick}: {
-  tab: Tab;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-xl border-b-2 ${
-        active
-          ? "border-blue-500 text-white bg-blue-500 dark:bg-blue-600"
-          : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/5"
-      }`}
-    >
-      {TAB_ICONS[tab]}
-      {tab}
-    </button>
-  );
-}
+import { ProfileTab } from "../members/[id]";
 
 const page = () => {
-  const router = useRouter();
-  const params = useParams();
-  const memberNo = params.id as string;
   const [isLoading, setIsLoading] = useState(false);
-  const { group } = useSelector((state: RootState) => state.group);
+  const { member, group } = useSelector((state: RootState) => state.group);
 
   const [memberData, setMemberData] = useState<GroupMember | null>(null);
-
-  const handleEditMember = () => {
-    router.push(`/members/${memberNo}/edit`);
-  };
 
   const handleRefresh = () => {};
 
@@ -64,7 +29,7 @@ const page = () => {
         setIsLoading(true);
         setError(null);
         const { data, error } = await memberService.getGroupMemberByNo(
-          memberNo,
+          member?.member_no!,
           group!.group_id!,
         );
 
@@ -86,20 +51,16 @@ const page = () => {
       }
     };
 
-    if (memberNo) {
+    if (member?.member_no) {
       fetchMemberData();
     }
-  }, [memberNo]);
-
-  const TABS: Tab[] = ["Profile", "Contributions"];
-  const [activeTab, setActiveTab] = useState<Tab>("Profile");
+  }, [member?.member_no]);
 
   return (
     <PageContainer pageTitle="Member Profile" pageIcon={<User />}>
       <PageContent
         breadcrumbs={[
-          { title: "Members", path: "/members" },
-          { title: `Member ${memberNo}` },
+          { title: "Your Profile" },
         ]}
         actions={
           <div className="flex flex-row items-center gap-3">
@@ -108,16 +69,8 @@ const page = () => {
               onClick={handleRefresh}
               icon={<RefreshCcw />}
             />
-            <PageAction
-              title="Edit Member"
-              onClick={handleEditMember}
-              icon={<Edit2Icon />}
-            />
           </div>
         }
-        showFab={true}
-        fabIcon={<Edit2Icon />}
-        fabHref={`/members/${memberNo}/edit`}
       >
         <div className="px-3 py-3 flex flex-col md:flex-row rounded-lg items-center justify-between border bg-white dark:bg-[#1d1d20] shadow-xs gap-4 md:gap-0">
           <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 w-full md:w-auto">
@@ -147,6 +100,10 @@ const page = () => {
                   {memberData?.address || "Nairobi"},{" "}
                   {memberData?.country || "Kenya"}
                 </span>
+              </div>
+
+              <hr className="border-gray-100 dark:border-white/5 my-2 sm:my-2 md:my-3" />
+              <div className="flex flex-wrap justify-center sm:justify-start gap-1">
                 <span className="flex items-center gap-1">
                   <Calendar
                     size={12}
@@ -155,18 +112,6 @@ const page = () => {
                   Joined A long time ago
                 </span>
               </div>
-
-              <hr className="border-gray-100 dark:border-white/5 my-2 sm:my-2 md:my-3" />
-              <div className="flex flex-wrap justify-center sm:justify-start gap-1">
-                {TABS.map((tab) => (
-                  <TabButton
-                    key={tab}
-                    tab={tab}
-                    active={activeTab === tab}
-                    onClick={() => setActiveTab(tab)}
-                  />
-                ))}
-              </div>
             </div>
           </div>
           <div className="hidden md:flex flex items-center gap-2 bg-green-600 hover:bg-green-500 transition-colors text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg shrink-0">
@@ -174,10 +119,7 @@ const page = () => {
           </div>
         </div>
 
-        {activeTab === "Profile" && <ProfileTab member={memberData!} />}
-        {activeTab === "Contributions" && (
-          <ContributionsTab member={memberData!} />
-        )}
+        <ProfileTab member={memberData!} />
       </PageContent>
     </PageContainer>
   );

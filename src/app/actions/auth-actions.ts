@@ -1,19 +1,27 @@
 "use server";
 
+import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
+
 import { AppUser, Profile, sbUserToAppUser } from "@/domain/entities";
-import { authService } from "@/infrastructure/services/authService";
+import { createAuthService } from "@/infrastructure/services/authService";
 import { profileService } from "@/infrastructure/services/profileService";
 import { fetchUserProfile } from "./user-actions";
+import { getServerClient } from "@/lib/supabase/server";
 
 export async function signinUserAction(
   email: string,
   password: string
 ): Promise<{ user: AppUser; profile: Profile | null }> {
   try {
+    const supabase = await getServerClient();
+    const authService = createAuthService(supabase);
     const { data, error } = await authService.signinUser(email, password);
 
     if (error) throw error;
     if (!data.user) throw new Error("No user data returned");
+
+    (await cookies()).set("accessToken", new Date(Date.now()).toISOString());
 
     const profile = await fetchUserProfile(data.user.id);
 
@@ -47,6 +55,8 @@ export async function signupUserAction(
   password: string
 ): Promise<AppUser> {
   try {
+    const supabase = await getServerClient();
+    const authService = createAuthService(supabase);
     const { data, error } = await authService.signupUser(
       first_name + " " + last_name,
       email,
@@ -90,7 +100,11 @@ export async function signupUserAction(
 
 export async function signoutUserAction(): Promise<void> {
   try {
+    const supabase = await getServerClient();
+    const authService = createAuthService(supabase);
     await authService.signoutUser();
+    (await cookies()).delete("accessToken");
+
   } catch (error: unknown) {
     console.error("Error signing out user:", error);
     throw new Error(
@@ -99,3 +113,12 @@ export async function signoutUserAction(): Promise<void> {
     );
   }
 }
+
+export const getCurrentUser = async () => {
+  const accessToken = (await cookies()).get("accessToken")?.value;
+  if (accessToken) {
+    return accessToken;
+  } else {
+    return null;
+  }
+};

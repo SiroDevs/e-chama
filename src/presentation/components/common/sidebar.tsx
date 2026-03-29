@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { HandCoins, LayoutDashboard, Users } from "lucide-react";
+import { HandCoins, LayoutDashboard, Users, User } from "lucide-react";
 import { Settings2Icon, Headphones, ArrowRight } from "lucide-react";
 
 import { AppIcon, GroupNav } from ".";
-import ProfileImage from "../../../../public/profile.png";
+import { RootState } from "@/application/state/store";
+import { useSelector } from "react-redux";
 
 interface SidebarProps {
   onClose?: () => void;
@@ -15,6 +15,8 @@ interface SidebarProps {
 
 function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname();
+  const { member } = useSelector((state: RootState) => state.group);
+  const isMember = member?.role === "member";
 
   const isActive = (path: string) => {
     if (path === "/") return pathname === "/";
@@ -57,17 +59,29 @@ function Sidebar({ onClose }: SidebarProps) {
           <div className="pt-6 text-gray-500 font-medium space-y-1 md:px-2 text-sm overflow-y-auto">
             <GroupNav />
 
-            <Link href="/" onClick={handleNavClick} className={navLinkClass("/")}>
+            <Link
+              href="/"
+              onClick={handleNavClick}
+              className={navLinkClass("/")}
+            >
               <LayoutDashboard />
               <span>Dashboard</span>
             </Link>
 
-            <Link href="/members" onClick={handleNavClick} className={navLinkClass("/members")}>
-              <Users />
-              <span>Members</span>
+            <Link
+              href={isMember ? "/profile" : "/members"}
+              onClick={handleNavClick}
+              className={navLinkClass(isMember ? "/profile" : "/members")}
+            >
+              {isMember ? <User /> : <Users />}
+              <span>{isMember ? "Profile" : "Members"}</span>
             </Link>
 
-            <Link href="/contributions" onClick={handleNavClick} className={navLinkClass("/contributions")}>
+            <Link
+              href="/contributions"
+              onClick={handleNavClick}
+              className={navLinkClass("/contributions")}
+            >
               <HandCoins />
               <span>Contributions</span>
             </Link>
@@ -86,38 +100,26 @@ function Sidebar({ onClose }: SidebarProps) {
 
           <div>
             <div className="text-gray-500 text-sm font-medium space-y-1">
-              <Link href="/settings" onClick={handleNavClick} className={navLinkClass("/settings")}>
+              <Link
+                href="/settings"
+                onClick={handleNavClick}
+                className={navLinkClass("/settings")}
+              >
                 <Settings2Icon size={18} />
                 <span>Settings</span>
               </Link>
 
-              <Link href="/support" onClick={handleNavClick} className={navLinkClass("/support")}>
+              <Link
+                href="/support"
+                onClick={handleNavClick}
+                className={navLinkClass("/support")}
+              >
                 <Headphones size={18} />
                 <span>Support</span>
               </Link>
             </div>
 
-            <hr className="bg-gray-200 dark:bg-gray-800 mx-2 my-4" />
-
             <div className="flex pb-8 justify-between px-4 md:px-6 items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 py-3 transition-all duration-200 mx-2 rounded-lg mb-4">
-              <div className="flex items-center gap-3 min-w-0">
-                <Image
-                  src={ProfileImage}
-                  alt="User"
-                  width={40}
-                  height={40}
-                  className="rounded-full flex-shrink-0"
-                />
-                <div className="truncate">
-                  <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
-                    Steve Jobs
-                  </p>
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">
-                    steve@apple.com
-                  </p>
-                </div>
-              </div>
-
               <button className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 flex-shrink-0">
                 <ArrowRight size={16} />
               </button>

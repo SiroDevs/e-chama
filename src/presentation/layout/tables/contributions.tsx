@@ -8,7 +8,6 @@ import { GroupContribution } from "@/domain/entities";
 import LoadingSpinner from "../../components/ui/states/loading-spinner";
 import { formatDateTime } from "@/application/helpers/utils";
 import { TableActions } from "../../components/tables/table-actions";
-import { EmptyState } from "../../components/ui/states/empty-state";
 
 interface ContributionTableProps {
   records: GroupContribution[];
@@ -76,7 +75,9 @@ export function ContributionsTable({
             {records.length === 0 ? (
               <tr>
                 <td colSpan={COLUMNS.length} className="px-6 py-24 text-center">
-                  <EmptyState entityName="contributions" />
+                  <div className="text-center py-8 text-gray-500">
+                    No contributions found
+                  </div>
                 </td>
               </tr>
             ) : (

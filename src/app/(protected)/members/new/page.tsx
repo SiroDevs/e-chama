@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { XIcon } from "lucide-react";
 import { useState } from "react";
 
-import { PageContainer } from "@/presentation/components/common/page-container";
-import PageContent from "@/presentation/components/common/page-content";
+import { PageContent, PageContainer } from "@/presentation/components/common";
 import { PageButton } from "@/presentation/components/ui/actions";
 import { useRouter } from "next/navigation";
 import { AppDispatch, RootState } from "@/application/state/store";
