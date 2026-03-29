@@ -15,6 +15,7 @@ const Page = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   const hasGroups = groups && groups.length > 0;
+  const isMember = member?.role === "member";
 
   const renderDashboard = () => {
     switch (member?.role) {
@@ -29,7 +30,8 @@ const Page = () => {
     <div>
       {isAuthenticated ? (
         hasGroups ? (
-          renderDashboard()
+          // renderDashboard()
+          isMember ? <MemberDashboard /> : <AdminDashboard />
         ) : (
           <JoinGroup />
         )
