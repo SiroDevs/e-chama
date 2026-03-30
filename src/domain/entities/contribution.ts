@@ -36,16 +36,6 @@ export interface GroupContribution {
   updated_at?: string;
 }
 
-export interface ContributionsQueryParams {
-  page: number;
-  pageSize: number;
-  sortField?: string;
-  sortOrder?: 'asc' | 'desc';
-  filters?: DatabaseFilters[];
-  groupId?: string;
-  memberId?: string;
-}
-
 export interface ContributionsResp {
   data: Contribution[];
   count: number;
