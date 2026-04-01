@@ -1,4 +1,4 @@
-import { Group, GroupMember, GroupContribution, Permission, Profile } from "../../entities";
+import { Group, GroupMember, GroupContribution, Permission, Profile, GroupMeeting } from "../../entities";
 import { BaseRepo } from "./base.repo";
 import { BaseSupabaseRepo } from "./base.supabase.repo";
 
@@ -23,6 +23,14 @@ export class MemberSupabaseRepo
   implements BaseRepo<GroupMember> {
   constructor() {
     super('group_members');
+  }
+}
+
+export class MeetingSupabaseRepo
+  extends BaseSupabaseRepo<GroupMeeting>
+  implements BaseRepo<GroupMeeting> {
+  constructor() {
+    super('group_meetings');
   }
 }
 

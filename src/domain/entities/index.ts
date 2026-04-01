@@ -1,6 +1,7 @@
 export * from "./app-user";
 export * from "./contribution";
 export * from "./group-member";
+export * from "./meeting";
 export * from "./group";
 export * from "./member";
 export * from "./permission";

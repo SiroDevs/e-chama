@@ -2,19 +2,19 @@
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { HandCoins, RefreshCcw, PlusIcon } from "lucide-react";
+import { CalendarsIcon, RefreshCcw, PlusIcon } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { PageContent, PageContainer } from "@/presentation/components/common";
 import { usePaginatedEntity } from "@/presentation/hooks/use-paginated-entity";
 import { container } from "@/infrastructure/di/container";
-import { GroupContribution } from "@/domain/entities";
+import { GroupMeeting } from "@/domain/entities";
 import { RootState } from "@/application/state/store";
 import { PageAction, PageButton } from "@/presentation/components/ui/actions";
-import { ContributionsTable } from "@/presentation/layout/tables/contributions";
-import { ContributionDialog } from "./dialog";
-import { newContribution } from "@/application/use-cases/user/contribution";
+import { MeetingsTable } from "@/presentation/layout/tables/meetings";
+import { MeetingDialog } from "./dialog";
+import { newMeeting } from "@/application/use-cases/user/meeting";
 import { handleError } from "@/application/helpers/error-utils";
 import { EmptyState } from "@/presentation/components/ui/states/empty-state";
 
@@ -27,13 +27,13 @@ const page = () => {
   const isMember = member?.role === "member";
 
   const [openDialog, setDialogOpen] = useState(false);
-  const [editingEntity, setEditingEntity] = useState<GroupContribution | null>(
+  const [editingEntity, setEditingEntity] = useState<GroupMeeting | null>(
     null,
   );
 
   const { entities, pagination, isLoading, isFetching } = usePaginatedEntity(
-    container.contributionUseCase,
-    "group_contributions",
+    container.meetingUseCase,
+    "group_meetings",
     {
       page: currentPage,
       pageSize: PAGE_SIZE,
@@ -51,7 +51,7 @@ const page = () => {
     setDialogOpen(true);
   };
 
-  const openEdit = (entity: GroupContribution) => {
+  const openEdit = (entity: GroupMeeting) => {
     setEditingEntity(entity);
     setDialogOpen(true);
   };
@@ -63,44 +63,44 @@ const page = () => {
 
   const invalidate = () => {
     queryClient.invalidateQueries({
-      queryKey: ["group_contributions", "paginated"],
+      queryKey: ["group_meetings", "paginated"],
     });
   };
 
-  const handleSubmit = async (data: Partial<GroupContribution>) => {
+  const handleSubmit = async (data: Partial<GroupMeeting>) => {
     try {
       setIsSaving(true);
       const isEditing = !!editingEntity?.id;
 
       const payload = {
         group_id: group?.group_id,
-        member_id: isMember ? data.member_id : member?.id,
-        reason: data.reason?.trim(),
-        mode: data.mode?.trim(),
-        amount: data.amount,
-        reference: data.reference?.trim(),
+        creator: isMember ? data.creator : member?.id,
+        title: data.title?.trim(),
+        description: data.description?.trim(),
+        date: data.date,
+        location: data.location?.trim(),
       };
 
       if (isEditing) {
-        toast.info("Editing contributions is coming soon.");
+        toast.info("Editing meetings is coming soon.");
         handleCloseDialog();
         return;
       }
 
-      const result = await newContribution(payload);
+      const result = await newMeeting(payload);
 
       if (!result.success) {
-        toast.error(result.error || "Failed to save contribution.");
+        toast.error(result.error || "Failed to save meeting.");
         return;
       }
 
-      toast.success("Contribution saved successfully.");
+      toast.success("Meeting saved successfully.");
       handleCloseDialog();
       invalidate();
     } catch (err: unknown) {
       const errMsg = handleError(err, {
-        tags: { component: "Contribution", action: "submit" },
-        userMessage: "Failed to save contribution. Please try again.",
+        tags: { component: "Meeting", action: "submit" },
+        userMessage: "Failed to save meeting. Please try again.",
       });
       toast.error(errMsg);
     } finally {
@@ -114,11 +114,11 @@ const page = () => {
 
   return (
     <PageContainer
-      pageTitle={`${isMember ? "Member " : ""}Contributions`}
-      pageIcon={<HandCoins />}
+      pageTitle={`${isMember ? "Member " : ""}Meetings`}
+      pageIcon={<CalendarsIcon />}
     >
       <PageContent
-        breadcrumbs={[{ title: `${isMember ? "Your " : ""}Contributions` }]}
+        breadcrumbs={[{ title: `${isMember ? "Your " : ""}Meetings` }]}
         actions={
           <div className="flex flex-row items-center gap-3">
             <PageButton
@@ -127,7 +127,7 @@ const page = () => {
               icon={<RefreshCcw />}
             />
             <PageAction
-              title="New Contribution"
+              title="New Meeting"
               onClick={handleOpenDialog}
               icon={<PlusIcon />}
             />
@@ -139,23 +139,23 @@ const page = () => {
       >
         {!isLoading && !isFetching && entities.length === 0 ? (
           <EmptyState
-            icon={HandCoins}
-            title="No contributions found"
+            icon={CalendarsIcon}
+            title="No meetings found"
             description={
               isMember
-                ? "You haven't made any contributions yet."
-                : "No contributions have been recorded for this chama."
+                ? "You haven't made any meetings yet."
+                : "No meetings have been recorded for this chama."
             }
             action={
               <PageAction
-                title="Add a New Contribution"
+                title="Add a New Meeting"
                 onClick={handleOpenDialog}
                 icon={<PlusIcon />}
               />
             }
           />
         ) : (
-          <ContributionsTable
+          <MeetingsTable
             records={entities}
             onEdit={openEdit}
             onMore={handleMore}
@@ -168,7 +168,7 @@ const page = () => {
           />
         )}
 
-        <ContributionDialog
+        <MeetingDialog
           open={openDialog}
           isMember={isMember}
           isLoading={isSaving}
