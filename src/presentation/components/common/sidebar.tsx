@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
 import { HandCoins, LayoutDashboard, Users, User } from "lucide-react";
 import { Settings2Icon, Headphones, ArrowRight } from "lucide-react";
+import { CalendarsIcon } from "lucide-react";
 
 import { AppIcon, GroupNav } from ".";
 import { RootState } from "@/application/state/store";
-import { useSelector } from "react-redux";
 
 interface SidebarProps {
   onClose?: () => void;
@@ -96,6 +97,15 @@ function Sidebar({ onClose }: SidebarProps) {
                 Soon
               </span>
             </button>
+
+            <Link
+              href="/meetings"
+              onClick={handleNavClick}
+              className={navLinkClass("/meetings")}
+            >
+              <CalendarsIcon />
+              <span>Meetings</span>
+            </Link>
           </div>
 
           <div>
