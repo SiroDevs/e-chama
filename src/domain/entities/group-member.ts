@@ -23,15 +23,6 @@ export interface GroupMember {
     updated_at: string | null;
 }
 
-export interface GroupMembersQueryParams {
-  page: number;
-  pageSize: number;
-  sortField?: string;
-  sortOrder?: 'asc' | 'desc';
-  filters?: DatabaseFilters[];
-  groupId?: string;
-}
-
 export interface GroupMembersResp {
   data: GroupMember[];
   count: number;

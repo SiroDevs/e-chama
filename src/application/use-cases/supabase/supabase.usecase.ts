@@ -1,6 +1,6 @@
 import { BaseRepo } from '@/domain/repositories/supabase/base.repo';
 import { CrudUseCase } from './crud.usecase';
-import { GroupContribution, Group, GroupMember, Permission, Profile } from '@/domain/entities';
+import { GroupContribution, Group, GroupMember, Permission, Profile, GroupMeeting } from '@/domain/entities';
 
 export class ContributionUseCase extends CrudUseCase<GroupContribution> {
   constructor(repository: BaseRepo<GroupContribution>) {
@@ -16,6 +16,12 @@ export class GroupUseCase extends CrudUseCase<Group> {
 
 export class MemberUseCase extends CrudUseCase<GroupMember> {
   constructor(repository: BaseRepo<GroupMember>) {
+    super(repository);
+  }
+}
+
+export class MeetingUseCase extends CrudUseCase<GroupMeeting> {
+  constructor(repository: BaseRepo<GroupMeeting>) {
     super(repository);
   }
 }
