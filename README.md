@@ -5,9 +5,13 @@ e-Chama is a modern, full-stack web application that helps chamas (savings group
 ---
 ## Screenshots
 
-![Screenshot 1](screenshots/image1.png)
-![Screenshot 2](screenshots/image2.png)
-![Screenshot 3](screenshots/image3.png)
+| | |
+|---|---|
+| ![Screenshot 1](screenshots/image1.png) | ![Screenshot 2](screenshots/image2.png) |
+
+| | | | |
+|---|---|---|---|
+| ![Screenshot 3](screenshots/image3.png) | ![Screenshot 4](screenshots/image4.png) | ![Screenshot 5](screenshots/image5.png) | ![Screenshot 6](screenshots/image6.png) |
 
 ---
 
@@ -144,8 +148,6 @@ src/
 ## Project Structure
 
 ```
-├── supabase/
-│   ├── migrations/                # Database migration SQL files
 ├── src/
 │   ├── app/                       # Next.js App Router pages
 │   │   ├── (auth)/                # Public auth pages: /signin, /signup
@@ -179,7 +181,8 @@ src/
 │   ├── middleware.ts              # Route protection middleware
 │   ├── instrumentation.ts         # Sentry server instrumentation
 │   └── instrumentation-client.ts  # Sentry client instrumentation
-└── package.json
+└── supabase/
+    └── migrations/                # Database migration SQL files
 ```
 
 ---
